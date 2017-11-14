@@ -26,6 +26,7 @@
 		align="start"
 		onload="onAlertLoad()">
 
+	<script type="application/x-javascript" src="chrome://reminderfox/content/utils/rmFxUtils.js" />
 	<script type="application/x-javascript" src="chrome://reminderfox/content/reminderFoxCore.js" />
 	<script type="application/javascript" src="chrome://reminderfox/content/newAlert/newAlert.js" />
 
@@ -33,7 +34,7 @@
 	<vbox id="alertContainer" mousethrough="always">
 		<hbox>
 			<spacer  flex="1" />
-			<toolbarbutton id="closeButton" top="0" right="0" onclick="fadeOutAlert(true);"/>
+			<toolbarbutton id="closeButton" onclick="fadeOutAlert(true);"/>
 		</hbox>
 
 		<hbox>

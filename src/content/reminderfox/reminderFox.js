@@ -1,3 +1,8 @@
+if (Cu === undefined)		var Cu = Components.utils;
+if (Ci === undefined)		var Ci = Components.interfaces;
+if (Cc === undefined)		var Cc = Components.classes;
+
+
 if (!reminderfox)     var reminderfox = {};
 if (!reminderfox.overlay)    reminderfox.overlay = {};
 if (!reminderfox.overlay.consts)    reminderfox.overlay.consts = {};
@@ -362,7 +367,7 @@ msg += "\n  --  if  alarmLastAck >"  +  rmFXtDate(recentReminderOrTodo.alarmLast
         }  // endOf:: if (windowEnumerator.hasMoreElements()) {
         if (alarmInfoArray != null) {
 //var cmsg = " test 4 alarmInfo" 
-//reminderfox.util.Logger("TEST", cmsg)
+//reminderfox.util.Logger('TEST', cmsg)
            msg += ("\n --- overlay.processAlarm ------   \n" + reminderfox.overlay.alarm_Infos(alarmInfoArray) + " --- overlay.processAlarm ------  ")
         }
      }   // endOf::  timeDifferenceInMinutes >= 0 && timeDifferenceInMinutes  <= 60 ) 
@@ -486,7 +491,7 @@ rmFXaLog(msg)
 reminderfox.overlay.showMissedAlarms= function( alarmInfos ) {
 var msg = "*** .overlay.showMissedAlarms  ***  " + alarmInfos.length  + reminderfox.overlay.alarm_Infos(alarmInfos)
 reminderfox.core.logMessageLevel (msg, reminderfox.consts.LOG_LEVEL_SUPER_FINE);
-//reminderfox.util.Logger("TEST", msg)
+//reminderfox.util.Logger('TEST', msg)
 
 //JSON.stringify(alarmInfos)
 
@@ -653,7 +658,7 @@ reminderfox.overlay.openAlarmWindow= function(alarmArray, ignoreCheck) {
 var msg = "*** .overlay.openAlarmWindow  ***  "
 reminderfox.core.logMessageLevel (msg, reminderfox.consts.LOG_LEVEL_SUPER_FINE);
 
-	var calDAVaccounts = reminderfox.core.getReminderEvents()		//gW2015-02            //XXX 
+	var calDAVaccounts = reminderfox.core.getReminderEvents();
 
     var showAlarmsInTabs= reminderfox.core.getPreferenceValue( reminderfox.consts.ALARMS_SHOW_IN_TABS );
 
@@ -944,7 +949,7 @@ reminderfox.overlay.openAboutReminderFoxDialog= function() {
 reminderfox.overlay.processRecentReminders= function(processQuickAlarms){
 var msg = (" #   overlay.processRecentReminders    " )
 //reminderfox.core.logMessageLevel(" #   overlay.processRecentReminders    ", reminderfox.consts.LOG_LEVEL_SUPER_FINE);
-//reminderfox.util.Logger("TEST",msg)
+//reminderfox.util.Logger('TEST',msg)
 
     var changed = false;
     var alarmInfos = new Array();
@@ -979,7 +984,7 @@ var msg = (" #   overlay.processRecentReminders    " )
     startDate.setDate(startDate.getDate() - NUM_OF_PAST_DAYS_TO_PROCESS);
 
 //var msg = " overlay.processRecentReminders  with  startDate " + rmFXtDate(startDate)
-//reminderfox.util.Logger("TEST", msg)
+//reminderfox.util.Logger('TEST', msg)
 
     for (i = 0; i < reminderEvents.length; i++) {
         reminder = reminderEvents[i];
@@ -1909,9 +1914,7 @@ reminderfox.overlay.initializeReminderFoxUpdatingTimer = {
     notify: function (timer) {
 
         var msg =  '   ReminderFoxTimer Fired!    in "overlay.initializeReminderFoxUpdatingTimer" ';		//XXX
-        rmFXaLog(rmFXtDate() + msg)
-
-      //  reminderfox.core.logMessageLevel("initialize ReminderFoxTimer ", reminderfox.consts.LOG_LEVEL_INFO);
+        reminderfox.core.logMessageLevel(msg, reminderfox.consts.LOG_LEVEL_INFO);
 
         reminderfox.overlay.initializeReminderFox(true);
         //do stuff here, this stuff will finish and then timer will start countdown of myTimerInterval.
@@ -1963,13 +1966,12 @@ reminderfox.overlay.initializeReminderFox= function(clearReminders){
          //       lastTimeElapsed = parseInt(lastTime) + reminderfox.overlay.consts.HOUR_TIMEOUT;
                 lastTimeElapsed = parseInt(lastTime) + timeout;
             }
-       //     reminderfox.core.logMessageLevel("  Check ReminderFoxTimer - should Initialize: " + (lastTime == null || lastTime == "" || (currentTime + 1500) >= lastTimeElapsed) + " ==  lastTime " 
        var msg = "  Check ReminderFoxTimer - should Initialize: " + (lastTime == null || lastTime == "" || (currentTime + 1500) >= lastTimeElapsed) + " ==  lastTime " 
                 + lastTime + " -- currentTime: " + currentTime 
                 + " -- lastTimeElapsed: " + lastTimeElapsed 
                 + " - Difference (currentTime+1500) - lastTimeElapsed:" + ((currentTime + 1500) - lastTimeElapsed)
                 + " - Inkrement timer: " + timeout;
-       rmFXaLog(rmFXtDate() + msg)
+       reminderfox.core.logMessageLevel(msg, reminderfox.consts.LOG_LEVEL_SUPER_FINE) 
 
             // make sure that the HOURLY_TIMEOUT has passed before we continue.
             // Also add a 1.5 second buffer, as it seems sometimes Mozilla doesn't call the setTimeout at the
@@ -2435,9 +2437,6 @@ reminderfox.overlay.showAlertSlider= function(){
                         upcomingReminders = null;
                     }
 
-							if (reminderfox._prefsBranch.getBoolPref(reminderfox.consts.ALERT_SOUND)){
-								reminderfox.core.playSound();
-							}
 							var newOptions = {
 								todaysReminders: todaysReminders,
 								upcomingReminders: upcomingReminders,
@@ -2445,11 +2444,17 @@ reminderfox.overlay.showAlertSlider= function(){
 								hideGayPaw:reminderfox.core.getPreferenceValue( reminderfox.consts.HIDE_FOX_PAW )
 							};
 							window.openDialog("chrome://reminderfox/content/newAlert/newAlert.xul", "window:alert", "chrome,dialog=yes,titlebar=no,popup=yes", newOptions);
+							if (reminderfox._prefsBranch.getBoolPref(reminderfox.consts.ALERT_SOUND)){
+								reminderfox.core.playSound('alert');
+							}
 						}
 
                 //checkData  gW:disable this for testing 2014-05-11			reminderfox.core.clearRemindersAndTodos();
                 reminderfox.core.logMessageLevel("AlertSlider ! ", reminderfox.consts.LOG_LEVEL_INFO);
                 reminderfox.overlay.storeTimeOfLastAlert();
+//console.log("----------- testing ---------------  XXXgW");
+//console.trace();
+
             }
         }
     }
@@ -2755,12 +2760,92 @@ reminderfox.overlay.runDebug= function() {
 reminderfox.overlay.start= function(){
     // run this later and let the window load.
 
-    console.log(" rmFX overlay.start", new Date())
+//reminderfox.util.Logger('TEST'," rmFX overlay.start", new Date())
 
     window.setTimeout(function() { reminderfox.overlay.start_postInit(); }, 100);
 
-
+	rmFx_extractXPI("chrome/content/reminderfox/defaults/");	//unpack
 }
+
+
+/**
+ * Extracts dirs/files from xpi 'chrome' directory  
+ *   to ../Profile/{profile.default}/reminderfox
+ * If a file already exsists it will be skipped/no overwrite
+ *
+ * @param  aZipDir     The source ZIP dir in xpi/add-on.
+ */
+function rmFx_extractXPI(aZipDir) {
+//---------------------------------------------------------
+	// aZipDir = "chrome/content/reminderfox/defaults/"
+
+	var aZipDirLen = aZipDir.length;
+
+		function getTargetFile(aDir, entry) {
+			var target =reminderfox.util.ProfD_extend('reminderfox');
+			entry.split("/").forEach(function(aPart) {
+				target.append(aPart);
+			});
+			return target;
+		}
+
+	var aDir =reminderfox.util.ProfD_extend('reminderfox');
+
+	var pathToXpiToRead = OS.Path.join(OS.Constants.Path.profileDir, 
+		'extensions', '{ada4b710-8346-4b82-8199-5de2b400a6ae}.xpi');
+	var aZipFile = new FileUtils.File(pathToXpiToRead);
+
+	var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"]
+		.createInstance(Ci.nsIZipReader);
+	zipReader.open(aZipFile);
+
+	try {
+		// create directories first
+		var entries = zipReader.findEntries(aZipDir + "*/");
+		while (entries.hasMore()) {
+			var entryName = entries.getNext();
+			var target = getTargetFile(aDir, entryName.substring(aZipDirLen));
+
+			if (!target.exists()) {
+				try {
+					target.create(Ci.nsIFile.DIRECTORY_TYPE,
+					FileUtils.PERMS_DIRECTORY);
+				}
+				catch (e) {
+					console.log("rmFx_extractXPI: failed to create target directory for extraction file = " 
+						+ target.path + "\n");
+				}
+			}
+		}
+
+		// extract/copy files 
+		entries = zipReader.findEntries(aZipDir + "*");
+		while (entries.hasMore()) {
+			var entryName = entries.getNext();
+			var target = getTargetFile(aDir, entryName.substring(aZipDirLen));
+
+			if (target.exists())
+				continue;
+
+			zipReader.extract(entryName, target);
+			try {
+				target.permissions |= FileUtils.PERMS_FILE;
+			}
+			catch (e) {
+				console.log("rmFx_extractXPI: Failed to set permissions " 
+					+ FileUtils.PERMS_FILE.toString(8) + " on " + target.path + " " + e + "\n");
+			}
+		}
+	} catch (ex) {
+		reminderfox.util.Logger('Alert', ex)
+	}
+	finally {
+		zipReader.close();
+	}
+};
+
+
+
 reminderfox.overlay.start_postInit= function() {
 //===================================================================
     // the very first time we install reminderfox, we do not need to show the alert slider.
@@ -3280,6 +3365,9 @@ reminderfox.overlay.showCalendar= function(event){
  */
 function reminderfox_xmlPrint (xThis, isXPI) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+console.log("//XXX   reminderfox_xmlPrint ")
+console.trace()
+
     var isReminder = true;
     try {
         isReminder = reminderfox_isReminderTabSelected() ? true : false;
@@ -3349,7 +3437,6 @@ function reminderfox_xmlPrint (xThis, isXPI) {
     var attrElem = xmlGeneral.createElement('version');
     attrElem.textContent= "Reminderfox vers."
         + reminderfox.consts.MIGRATED_PREF_VERSION
-        + reminderfox.consts.SPECIAL_VERSION_DETAIL;
     generalElem.appendChild(attrElem);
 
     var attrElem = xmlGeneral.createElement('template');
@@ -3689,11 +3776,10 @@ function reminderfox_xmlPrint (xThis, isXPI) {
  */
 function reminderfox_prntPath (){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    var prnt = reminderfox.util.ProfD_extend('extensions')
-
-    prnt.append("{ada4b710-8346-4b82-8199-5de2b400a6ae}");
-    prnt.append("defaults");
+    var prnt = reminderfox.util.ProfD_extend('reminderfox')
     prnt.append("printing");
+
+console.log("//XXX   reminderfox_prntPath  ", prnt.path);
     return prnt;
 };
 
@@ -3703,6 +3789,8 @@ function reminderfox_prntPath (){
  */
 function reminderfox_PrintMenuSetup(xThis){
 //---------------------------------------------------------
+console.log("//XXX   reminderfox_PrintMenuSetup ")
+console.trace()
     reminderfox_PrintTemplatesCopy();
 
     // remove all items from popup menu, hold 'Agenda' and separator
@@ -3955,6 +4043,6 @@ function rmFXaLog(msg){
 
     var logLevel = reminderfox._prefsBranch.getIntPref(reminderfox.consts.LOG);
     if (logLevel == 88){
-       console.log(msg)
+       console.info(msg, "\n  ==> " + Components.stack.caller.filename + "#" + Components.stack.caller.lineNumber);
     }
 }

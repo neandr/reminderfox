@@ -563,7 +563,6 @@ function rmFx_mainDialogLoad(restartSkip){
 	} catch (ex) {
 		Components.utils.reportError(ex);
 	}
-	// -------------
 
 	//gWABContact Handling
 	reminderfox.msgnr.whichMessenger();
@@ -1926,6 +1925,8 @@ function createUIListItemReminder(baseReminder){
 					}
 				}
 	}
+
+	var calDAVaccounts = reminderfox.calDAV.getAccounts()
 
 	for (var j = startIndex; j < endIndex; j++) {
 		var treeSelection;
@@ -3427,7 +3428,6 @@ function removeTodoListItem(todo, messageIDtagging){
 					}
 				}
 			}
-		//XXXX  ?????	reminderfox.core.numDaysModelDelete (todo, 'numDaysTodos')
 			break;
 		}
 	}

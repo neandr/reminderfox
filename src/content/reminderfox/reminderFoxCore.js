@@ -9,20 +9,13 @@ if (!reminderfox.calDAV)   reminderfox.calDAV = {};
 if (!reminderfox.calDAV.accounts)   reminderfox.calDAV.accounts = {};    //calDAV  main definition of accounts
 
 // constants
-reminderfox.consts.MIGRATED_PREF_VERSION						= "2.1.5.5";	// update also install.rdf and build.properties
+reminderfox.consts.MIGRATED_PREF_VERSION                = "2.1.6";	// update also install.rdf and build.properties
 
-// ************************* for dev, use "wip"; for offical MOZILLA set to "release"  *****
-// if set to "wip" enables the check-for-update link; if set to release, hides the update link in about dialog
-reminderfox.consts.SPECIAL_VERSION_DETAIL					= "release"  //"release" // "wip" 
-reminderfox.consts.DROPBOX									= "https://dl.dropbox.com/u/35444930/rmFX/XPI/"
-    + reminderfox.consts.SPECIAL_VERSION_DETAIL + "/";
+reminderfox.consts.SUPPORT                              = "reminderfox@googlegroups.com";
 
-
-reminderfox.consts.SUPPORT									= "reminderfox@googlegroups.com";
-
-reminderfox.consts.REMINDER_FOX_WELCOME_UPDATE_PAGE_URL	= "http://www.reminderfox.org/update";
-reminderfox.consts.REMINDER_FOX_PAGE_URL						= "http://www.reminderfox.org";
-reminderfox.consts.REMINDER_FOX_WELCOME_PAGE_URL			= "http://www.reminderfox.org/welcome-to-reminderfox";
+reminderfox.consts.REMINDER_FOX_WELCOME_UPDATE_PAGE_URL = "http://www.reminderfox.org/update";
+reminderfox.consts.REMINDER_FOX_PAGE_URL                = "http://www.reminderfox.org";
+reminderfox.consts.REMINDER_FOX_WELCOME_PAGE_URL        = "http://www.reminderfox.org/welcome-to-reminderfox";
 
 
 //gWCalendar ________________________________________
@@ -33,9 +26,9 @@ reminderfox.core.lastReminderID = null;
 reminderfox.core.lastSendReminder = null
 
 if (!reminderfox.tabInfo) reminderfox.tabInfo = {};
-reminderfox.tabInfo.tabName		= "Reminders";
-reminderfox.tabInfo.tabID			= "Xreminder";		// "xtodo" or "reminderFoxList:{tabName}
-reminderfox.tabInfo.tabIndex			= 0;
+reminderfox.tabInfo.tabName      = "Reminders";
+reminderfox.tabInfo.tabID        = "Xreminder";		// "xtodo" or "reminderFoxList:{tabName}
+reminderfox.tabInfo.tabIndex     = 0;
 
 reminderfox.tabInfo.Set= function (tabName, tabID, tabIndex) {
     var tab = document.getElementById("rmFx-allLists");
@@ -95,9 +88,12 @@ reminderfox.consts.DEFAULTS_ALARM_SNOOZE_ACTION = "defaults.alarm.snooze.action"
 reminderfox.consts.MAIL_PATH = "mail.app.location";
 reminderfox.consts.MAIL_SENDER = "mail.sender";
 
+reminderfox.consts.PREF_ALERTSLIDER_LEFT = "alert.notification.left";
+reminderfox.consts.PREF_ALERTSLIDER_TOP = "alert.notification.top";
+
 reminderfox.consts.ALERT_TIMEOUT_PREF = "alertTimeout";
 reminderfox.consts.ALERT_TIMEOUT_DEFAULT = 120; // number of minutes between alerts
-reminderfox.consts.HTML_STYLESHEET_PREF = "html.stylesheet";
+//P?reminderfox.consts.HTML_STYLESHEET_PREF = "html.stylesheet";
 
 reminderfox.consts.SHOW_WEEK_NUMS_PREF = "showWeekNumbers";
 
@@ -125,11 +121,20 @@ reminderfox.consts.SHOW_TODOS_IN_TOOLTIP_DEFAULT = true;
 reminderfox.consts.ALARM_SOUND = "alarmSound";
 reminderfox.consts.ALARM_SOUND_DEFAULT = true;
 
-reminderfox.consts.ALERT_SOUND = "alertSound";
-reminderfox.consts.ALERT_SOUND_DEFAULT = false;
+reminderfox.consts.ALARM_SOUND_CUSTOM = "alarmSoundCustom";
+reminderfox.consts.ALARM_SOUND_CUSTOM_DEFAULT = true;
 
 reminderfox.consts.ALARM_SOUND_PATH = "alarmSoundPath";
 reminderfox.consts.ALARM_SOUND_PATH__DEFAULT = "";
+
+reminderfox.consts.ALERT_SOUND = "alertSound";
+reminderfox.consts.ALERT_SOUND_DEFAULT = true;
+
+reminderfox.consts.ALERT_SOUND_CUSTOM = "alertSoundCustom";
+reminderfox.consts.ALERT_SOUND_CUSTOM_DEFAULT = true;
+
+reminderfox.consts.ALERT_SOUND_PATH = "alertSoundPath";
+reminderfox.consts.ALERT_SOUND_PATH__DEFAULT = "";
 
 reminderfox.consts.USE_24_HOUR_TIME = "use24HourTime";
 reminderfox.consts.USE_24_HOUR_TIME_DEFAULT = false;
@@ -375,11 +380,14 @@ reminderfox.core.initUserPrefsArray= function(){
     reminderfox._prefsUser[reminderfox.consts.UPCOMING_REMINDER_DAYS_PREF] = reminderfox._prefsTYPE.INT;
     reminderfox._prefsUser[reminderfox.consts.DEFAULT_EDIT] = reminderfox._prefsTYPE.CHAR;
     reminderfox._prefsUser[reminderfox.consts.ALERT_TIMEOUT_PREF] = reminderfox._prefsTYPE.INT;
+    reminderfox._prefsUser[reminderfox.consts.PREF_ALERTSLIDER_LEFT] = reminderfox._prefsTYPE.BOOL;
+    reminderfox._prefsUser[reminderfox.consts.PREF_ALERTSLIDER_TOP] = reminderfox._prefsTYPE.BOOL;
+
     reminderfox._prefsUser[reminderfox.consts.UPCOMING_REMINDERS_LABEL] = reminderfox._prefsTYPE.COMPLEX;
     reminderfox._prefsUser[reminderfox.consts.TODAYS_REMINDERS_LABEL] = reminderfox._prefsTYPE.COMPLEX;
     reminderfox._prefsUser[reminderfox.consts.LIST_DATE_LABEL] = reminderfox._prefsTYPE.COMPLEX;
     reminderfox._prefsUser[reminderfox.consts.ALARM_SOUND] = reminderfox._prefsTYPE.BOOL;
-    reminderfox._prefsUser[reminderfox.consts.ALERT_SOUND] = reminderfox._prefsTYPE.BOOL;
+    reminderfox._prefsUser[reminderfox.consts.ALARM_SOUND_CUSTOM] = reminderfox._prefsTYPE.BOOL;
     reminderfox._prefsUser[reminderfox.consts.CALENDAR_START_DAY] = reminderfox._prefsTYPE.INT;
     reminderfox._prefsUser[reminderfox.consts.SHOW_WEEK_NUMS_PREF] = reminderfox._prefsTYPE.INT;
     reminderfox._prefsUser[reminderfox.consts.CALENDAR_SIZE] = reminderfox._prefsTYPE.INT;
@@ -398,6 +406,7 @@ reminderfox.core.initUserPrefsArray= function(){
     reminderfox._prefsUser[reminderfox.consts.PREF_ALERTSLIDER_MAX_HEIGHT] = reminderfox._prefsTYPE.INT;
     reminderfox._prefsUser[reminderfox.consts.PREF_ALERTSLIDER_OPEN_TIME] = reminderfox._prefsTYPE.INT;
     reminderfox._prefsUser[reminderfox.consts.ALARM_SOUND_PATH] = reminderfox._prefsTYPE.CHAR;
+    reminderfox._prefsUser[reminderfox.consts.ALERT_SOUND_PATH] = reminderfox._prefsTYPE.CHAR;
     reminderfox._prefsUser[reminderfox.consts.KEY_SHORTCUT_OPEN] = reminderfox._prefsTYPE.CHAR;
     reminderfox._prefsUser[reminderfox.consts.KEY_SHORTCUT_ADD] = reminderfox._prefsTYPE.CHAR;
     reminderfox._prefsUser[reminderfox.consts.DEFAULT_ALL_DAY] = reminderfox._prefsTYPE.BOOL;
@@ -410,7 +419,7 @@ reminderfox.core.initUserPrefsArray= function(){
     reminderfox._prefsUser[reminderfox.consts.ADDRESS] = reminderfox._prefsTYPE.CHAR;
     reminderfox._prefsUser[reminderfox.consts.USERNAME] = reminderfox._prefsTYPE.CHAR;
 
-    reminderfox._prefsUser[reminderfox.consts.HTML_STYLESHEET_PREF] = reminderfox._prefsTYPE.CHAR;
+//P?    reminderfox._prefsUser[reminderfox.consts.HTML_STYLESHEET_PREF] = reminderfox._prefsTYPE.CHAR;
     reminderfox._prefsUser[reminderfox.consts.TODO_LISTS] = reminderfox._prefsTYPE.COMPLEX;
     reminderfox._prefsUser[reminderfox.consts.SUBSCRIPTIONS] = reminderfox._prefsTYPE.COMPLEX;
     reminderfox._prefsUser[reminderfox.consts.CATEGORIES] = reminderfox._prefsTYPE.COMPLEX;
@@ -553,14 +562,15 @@ reminderfox.core.logMessageLevel= function(logString, level){
 
             var caller0 = ""
             try {
-                caller0 = Components.stack.caller.caller.filename.replace("chrome://reminderfox/content", " ..") + " #" + Components.stack.caller.caller.lineNumber
+                caller0 = Components.stack.caller.caller.filename + " #" + Components.stack.caller.caller.lineNumber
             } catch (ex) {}
-            var caller1 = Components.stack.caller.filename.replace("chrome://reminderfox/content", " ..") + " #" + Components.stack.caller.lineNumber
 
-            console.log("reminderfox: " + new Date().toLocaleFormat("%Y-%m-%d %H:%M:%S")
-                + " >" + +(new Date()) + "<  " + " [" + caller0 + " --> " + caller1
-                + "] \n  " + logString);
+            var caller1 = Components.stack.caller.filename + " #" + Components.stack.caller.lineNumber
 
+            console.info("Reminderfox: [" + level +" |" + logLevel +"]  ", new Date(), (" >"+ +(new Date()) + "<"), 
+                 "\n  ",  logString, "   ",
+                 "\n  ==>", caller0, 
+                 "\n  --> ", caller1);
         }
     }
 
@@ -621,37 +631,6 @@ reminderfox.core.logMessageLevel= function(logString, level){
             }
         }
     }
-};
-
-
-reminderfox.core.debug_printStack= function(){
-    var errno = errno;
-    var fileName = Components.stack.caller.filename;
-    var lineNumber = Components.stack.caller.lineNumber;
-    var functionName = Components.stack.caller.name;
-
-
-    var frame = Components.stack.caller;
-    var str = "";
-    while (frame) {
-        var name = frame.functionName ? frame.functionName : "[anonymous]";
-
-        if (frame.filename)
-            str += frame.filename + ", Line " + frame.lineNumber;
-        else
-            str += "[" + gConsoleBundle.getString("noFile") + "]";
-
-        str += " --> ";
-
-        if (frame.functionName)
-            str += frame.functionName;
-        else
-            str += "[" + gConsoleBundle.getString("noFunction") + "]";
-
-        str += "\n";
-        frame = frame.caller;
-    }
-    dump(str + "\n");
 };
 
 
@@ -1954,48 +1933,53 @@ reminderfox.core.getWindowEnumerator= function(){
 };
 
 
-reminderfox.core.playSound= function(){
-    console.trace()
+reminderfox.core.playSound= function(mode, savefilePath){
+//console.trace()
 
-    var gSound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
-    var savefilePath;
-    // check if user has specified a specific file path for sound in their preferences
-    try {
-        savefilePath = reminderfox._prefsBranch.getCharPref(reminderfox.consts.ALARM_SOUND_PATH);
-    }
-    catch (e) {
-    }
+	var gSound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
+	//  var savefilePath;
+	var soundCustom = false;
 
-    // if not, then play default beep sound
-    if (!savefilePath || savefilePath === "") {
+	// check if user has specified a specific file path for sound in their preferences
+	try {
+		if (((mode != null) && (mode == 'test'))) {
+			soundCustom = true;
+		} else {
+			if ((mode != null) && (mode == 'alert')) {
+				savefilePath = reminderfox._prefsBranch.getCharPref(reminderfox.consts.ALERT_SOUND_PATH);
+				soundCustom = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.ALERT_SOUND_CUSTOM);
+			} 
+			else {
+				savefilePath = reminderfox._prefsBranch.getCharPref(reminderfox.consts.ALARM_SOUND_PATH);
+				soundCustom = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.ALARM_SOUND_CUSTOM);
+			}
+		}
+	}
+	catch (e) {}
 
-        // console.log("XXXalert playSound Core    beep:", gSound)
-        gSound.beep();
-    }
-    else {
-        // console.log("XXXalert playSound Core    savefilePath:", savefilePath, gSound)
+	if (!soundCustom) {
+		gSound.beep();
+	}
+	else {
+		var _ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+		var _soundService = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
+		_soundService.init();
 
-        var _ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-        var _soundService = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
-        _soundService.init();
+		var uri = null;
+		try {
+			var localFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
+			localFile.initWithPath(savefilePath);
 
-        var uri = null;
-        try {
-            var localFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
-            localFile.initWithPath(savefilePath);
+			if (localFile.exists())
+				uri = _ioService.newFileURI(localFile);
+		}
+		catch (e) {
+			uri = _ioService.newURI(aPath, null, null);
+		}
 
-            if (localFile.exists())
-                uri = _ioService.newFileURI(localFile);
-        }
-        catch (e) {
-            uri = _ioService.newURI(aPath, null, null);
-        }
-
-        if (uri)
-            _soundService.play(uri);
-        // console.log("XXXalert playSound Core    soundService.play(uri):", uri)
-
-    }
+		if (uri)
+			_soundService.play(uri);
+		}
 };
 
 
@@ -2968,6 +2952,11 @@ reminderfox.core.constructReminderOutput= function(reminderEvents, _todosArray, 
 
     reminderfox.core.utc = reminderfox.core.getPreferenceValue (reminderfox.consts.UTC_DEFAULT, false)
 
+    var msg =  "  ---- constructReminderOutput  .utc " + reminderfox.core.utc		//gWcheckData
+    	+ "  isCalDAV : " + isCalDAV	//gWcheckData
+    reminderfox.util.Logger('checkData', msg)
+
+
     if (navigator.appVersion.lastIndexOf('Win') != -1) {
         newline = "\r\n";
     }
@@ -3370,7 +3359,7 @@ reminderfox.core.createStringForDate= function(reminderOrTodo, currentDate, isEx
     else
 
     //  UTC Format 
-    if ((reminderfox.core.utc == true) && !isCalDAV) {
+    if ((reminderfox.core.utc) || isCalDAV) {
 
         var dateZ = new Date(currentDate).toISOString().replace(/-/g,"").replace(/:/g,"").substring(0,15)+"Z"
         outputStr = "DTSTART" + separator + dateZ + newline;
@@ -5024,9 +5013,9 @@ reminderfox.core.readInReminderTodo= function(reminderTodo, index, readIn, remin
                 reminderTodo.date = new Date(eventDate.substring(0, 4), monthInt, eventDate.substring(6, 8));
                 reminderTodo.date.setHours(eventDate.substring(9, 11), eventDate.substring(11, 13));
 
-//console.log("XXXutc   readin DTSTART  in  eventDate:", "_"+eventDate+"_", "   _"+reminderTodo.date+"_")
-                reminderfox.date.adjustTimeZones(eventDate, readIn, reminderTodo.date);
-//console.log("XXXutc   readin DTSTART  out eventDate:", "_"+eventDate+"_", "   _"+reminderTodo.date+"_")
+//console.log("utc   readin DTSTART  in  eventDate:", "_"+eventDate+"_", "   _"+reminderTodo.date+"_")
+//                reminderfox.date.adjustTimeZones(eventDate, readIn, reminderTodo.date);
+//console.log("utc   readin DTSTART  out eventDate:", "_"+eventDate+"_", "   _"+reminderTodo.date+"_")
 
                 reminderTodo.allDayEvent = false;
             }
@@ -5428,6 +5417,9 @@ reminderfox.core.numDaysModelDelete= function(reminder, namType){
  * Read in a file using UTF8 encoding
  */
 reminderfox.core.readInFileContents= function(file){
+//XXX console.log(" reminderfox.core.readInFileContents= function(   file::",file)
+//console.trace()
+
     var is = Components.classes["@mozilla.org/network/file-input-stream;1"]
         .createInstance(Components.interfaces.nsIFileInputStream);
     try {
@@ -5633,8 +5625,6 @@ reminderfox.core.importRemindersUpdateAll= function(isNetworkImport, lastModifie
     // ex.;  X-REMINDERFOX-SUMMARY:Events=227 Todos=195
     var pos0 = outputStr.search("X-REMINDERFOX-SUMMARY:Events=");
 
-    // console.log(" X-REMINDERFOX-SUMMARY ", outputStr.substring(pos0))
-
     var summary = outputStr.substring(pos0).split("=");
     var nEvents = summary[1].split(' ')[0];
     var nTodos  = summary[2].split('\n')[0];
@@ -5646,9 +5636,8 @@ reminderfox.core.importRemindersUpdateAll= function(isNetworkImport, lastModifie
         +" \nPlease check your reminder store file and restore from backup if necessary!")
         reminderfox.util.Logger('calDAV', "\n" + logMsg + "\n\n");
 
-        var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-        promptService.alert(window, "Reminderfox Warning", logMsg)
-
+    //    var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+    //    promptService.alert(window, "Reminderfox Warning", logMsg)
         return;
     }
 
@@ -6225,7 +6214,7 @@ reminderfox.core.compareColumnReminder1LessThan= function(reminder1, reminder2, 
         return reminderfox.core.compareColumnReminder1LessThanCategory(reminder1, reminder2);
     }
     else
-    /* //XXXCalDAV */																if (column == "calDAVcolLabel") {
+    	if (column == "calDAVcolLabel") {   /* //XXXCalDAV */
         return reminderfox.core.compareColumnReminder1LessThanCalDAV(reminder1, reminder2);
     }
     else
