@@ -1,4 +1,24 @@
-## Reminderfox News   <2017-11-18>
+## Reminderfox News     [2017-11-18]
 
 
-__Reminderfox__, .. more details 
+__Firefox version 57__   _disabled Reminderfox Add-on_
+
+Starting with Firefox Quantum (version 57), Mozilla is ditching the old addon framework (which they call “Legacy addons”) and only supporting addons using a new web-based framework.
+
+Unfortunately long-story short: as this is a passion side-project, we do not have the time and resources to do a complete rewrite of ReminderFox to make it work with the new framework at this time.  Please see this thread for [further background](https://groups.google.com/forum/#!msg/reminderfox/ZX3Hsm3R1jU/MU0S50LhEAAJ)
+
+What can you do?
+
+*  One option is to install __Firefox ESR (Extended Service Release)__ which will continue to work with legacy addons into next year.   <https://www.mozilla.org/en-US/firefox/organizations/all/?q=English%20(US)>  
+> You could run that and continue to run ReminderFox, but even then it will only be a short-term solution. You could at least print out your ReminderFox reminders or export them to ICS format which allows you to import into another calendar app (MS Outlook, Google calendar, etc.).  
+
+*  You can also run __Pale Moon__ (a version of Firefox which supports legacy addons) or __Mozilla Thunderbird__ mail client, where ReminderFox will continue to run.
+
+*  Export your reminder data (it should not be lost, even though ReminderFox is not showing in the latest Firefox), and import it into another calendar or reminder app. 
+  If you just want to get ahold of your reminder data to import into another program, you can find it as part of your user profile directory. For example, on Windows7:   
+```  
+    C:\Users\{username}\AppData\Roaming\Mozilla\Firefox\Profiles\{someRandomNumber}.default\reminderfox\reminderfox.ics
+```
+*  Find another alternative add-on that runs on current Firefox Quantum and has the capabilities that you need.
+
+One example is: <https://addons.mozilla.org/en-US/firefox/addon/reminders/>
