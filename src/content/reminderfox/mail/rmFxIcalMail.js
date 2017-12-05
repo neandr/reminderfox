@@ -1133,31 +1133,6 @@ function getMailAddress(address) {
 };
 
 
-
-
-/**
- *  Set the file for  'export' of reminders/todos
- *  .. and set prefs for it
- 
- */
-reminderfox.iCal.getExportFile= function () {
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	 var currentFileName		= document.getElementById("exportFile").value;
-	 var windowText			= reminderfox.string("rf.export.send.title");	// "Set / Select file to export reminder(s)";
-	 var filterName			= "Event File (ICS)";
-	 var defaultExtension	= "ICS";
-	 var rmFx_exportFile		= "exportEventsFile"	 // set as prefs 'extensions.reminderFox.exportEventsFile'
-
-	 var file = reminderfox.core.filePicker (windowText, filterName, defaultExtension,
-						currentFileName /*defaultString*/, 1 /*mode = modeSave*/)
-
-	 if (file != null) {
-		reminderfox._prefsBranch.setCharPref(rmFx_exportFile, file.path);
-		document.getElementById("exportFile").setAttribute("value", file.path);
-	 }
-};
-
-
 /**
  *  Parse   ORGANIZER;CN=name:MAILTO:mailadr@abc.xx
  *  

@@ -51,10 +51,6 @@
 							<label class="reminderFox_BoldNormal" value="&rf.views.view.header;" align="center" />
 							<spacer flex="1" />
 
-							<!-- //gWDefaultViews !!!!! use this button for test only !!!!! <toolbarbutton 
-								id="view_defaultSet" class="default-Set" oncommand="reminderfox.core.migrate_defaultView('Set');" 
-								tooltiptext="Read in the 'Default Views'" /> -->
-
 							<button id="view_Add" label="&rf.categories.list.button.add;"
 								oncommand="reminderfox.view.ViewAdd()" tooltiptext="&rf.views.ttt.addView;" />
 							<button id="view_Remove"
@@ -68,20 +64,6 @@
 								style="overflow: auto;" rows="8">
 							</listbox>
 						</hbox>
-					</vbox>
-
-
-					<vbox flex="1" hidden="true">
-						<spacer height="24px" />
-						<vbox id="sorter_Box" type="notSet" flex="1">
-							<toolbarbutton id="view_SorterUp" class="sort-Up"
-								sorting="up" oncommand="reminderfox.view.Sorter(this);" tooltiptext="&rf.views.ttt.sortCriteria;" />
-
-							<spacer flex="1" />
-
-							<toolbarbutton id="view_SorterDown" class="sort-Down"
-								sorting="down" oncommand="reminderfox.view.Sorter(this);" tooltiptext="&rf.views.ttt.sortCriteria;" />
-						</vbox>
 					</vbox>
 
 					<vbox flex="3">

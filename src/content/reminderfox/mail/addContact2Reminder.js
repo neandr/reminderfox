@@ -533,7 +533,7 @@ reminderfox.abCard.getCustomLabel = function(iName){
 	iName.substring(0, 1).toLowerCase() +
 	iName.substring(1) + ".label";
 	try {
-		cLabel = moreColsPrefs.getComplexValue(cLabelid, Components.interfaces.nsISupportsString).data;
+		cLabel = moreColsPrefs.getStringPref(cLabelid);
 	} 
 	catch (e) {
 		cLabel = "Custom " + iName.substring(6, 7);
@@ -553,7 +553,7 @@ reminderfox.abCard.readPref = function(){
 		}
 	prefService.setCharPref("rmFx.abCardItems.version", abCardPrefVersion);
 	try {
-		reminderfox.abCard.items = prefService.getComplexValue("rmFx.abCardItems", Components.interfaces.nsISupportsString).data;
+		reminderfox.abCard.items = prefService.getStringPref("rmFx.abCardItems");
 	} 
 	catch (e) {
 		if (abCardPrefVersion == "US") {

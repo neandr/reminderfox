@@ -221,12 +221,15 @@
 								  onclick="rmFx_mainDialogSaveAndClose(false); reminderfox.util.exportReminders(true);"
 								   tooltiptext="&rf.options.file.backup.tooltip;"/>
 						<menuitem label="&rf.options.file.recover;"
-								  onclick="reminderFox_restoreFile();"
+								  onclick="reminderfox.util.recoverICSfile();"
 								   tooltiptext="&rf.options.file.Pick;"/>
 					</menupopup>
 				</menu>
 
 				<menuseparator />
+
+				<menuitem label="Reminderfox News" id="reminderfox-news-open"
+					onclick="reminderfox.go4news.callNews();" />
 
 				<menuitem label="&rf.main.help.label;"
 					onclick="reminderfox.util.launchHelp();reminderfox.calendar.ui.panelClose(); "
@@ -834,6 +837,8 @@
 	//	reminderfox.util.Logger('ALERT', " viewsFilters on XUL start   Events|Lists : " + viewsFilterEvents + "|" + viewsFilterLists)
 		reminderfox.search.viewsFilterEvents = viewsFilterEvents
 		reminderfox.search.viewsFilterLists  = viewsFilterLists
+
+		reminderfox.go4news.setButton();
 
 		rmFx_mainDialogLoad();
 	}

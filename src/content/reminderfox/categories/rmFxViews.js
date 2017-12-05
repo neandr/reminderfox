@@ -94,10 +94,10 @@ if(!reminderfox.view)	reminderfox.view = {
 		CurYear : reminderfox.string("rf.views.currentyear"), //3: "Dieses Jahr"   "CURRENT_YEAR"
 		NextWeek : reminderfox.string("rf.views.nextweek.label"), // "Naechste Woche"  "NEXT_WEEK"
 		Next2Weeks : reminderfox.string("rf.views.next2weeks"), // "2Wochen"        "NEXT_2WEEKS"
-		SortUp : reminderfox.string("rf.views.sorter.viewUp"),
-		SortDn : reminderfox.string("rf.views.sorter.viewDown"),
-		CriteriaSortUp : reminderfox.string("rf.views.sorter.criteriaUp"),
-		CriteriaSortDn : reminderfox.string("rf.views.sorter.criteriaDown"),
+	//	SortUp : reminderfox.string("rf.views.sorter.viewUp"),
+	//	SortDn : reminderfox.string("rf.views.sorter.viewDown"),
+	//	CriteriaSortUp : reminderfox.string("rf.views.sorter.criteriaUp"),
+	//	CriteriaSortDn : reminderfox.string("rf.views.sorter.criteriaDown"),
 		ValidNameString : reminderfox.string("rf.views.criteria.notvalidString") + ":  ; : > <",
 
 		DateAlreadydefined : reminderfox.string("rf.views.date.alreadydefined"),
@@ -361,6 +361,7 @@ reminderfox.view.ManageLoad = function(sortMode) {
  */
 reminderfox.view.ViewFocus = function(mode) {
 //------------------------------------------------------------------------------
+/*------------
 	// for the sorting icon set focus and ttt
 	if(mode == 'view') {
 		document.getElementById('sorter_Box').setAttribute("type", mode);
@@ -372,6 +373,7 @@ reminderfox.view.ViewFocus = function(mode) {
 		document.getElementById('view_SorterUp').tooltipText = reminderfox.view.CriteriaSortUp;
 		document.getElementById('view_SorterDown').tooltipText = reminderfox.view.CriteriaSortDn;
 	}
+--------*/
 
 	// get the 'criteria' for selected 'view'
 	var view_List = document.getElementById('view_List')
@@ -505,12 +507,13 @@ reminderfox.view.CriteriaToEdit = function(mode) {
 		return
 	};
 
+/*-----------
 	// set edit 'criteria'
 	document.getElementById('sorter_Box').setAttribute("type", "criteria");
 
 	document.getElementById('view_SorterUp').tooltipText = reminderfox.view.CriteriaSortUp;
 	document.getElementById('view_SorterDown').tooltipText = reminderfox.view.CriteriaSortDn;
-
+-------*/
 	var criteriaString = mode.selectedItem.label;
 	var thisCritera = criteriaString.split(":")[0];
 	var thisValue = criteriaString.split(":")[1];

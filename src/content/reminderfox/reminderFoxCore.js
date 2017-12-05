@@ -93,7 +93,6 @@ reminderfox.consts.PREF_ALERTSLIDER_TOP = "alert.notification.top";
 
 reminderfox.consts.ALERT_TIMEOUT_PREF = "alertTimeout";
 reminderfox.consts.ALERT_TIMEOUT_DEFAULT = 120; // number of minutes between alerts
-//P?reminderfox.consts.HTML_STYLESHEET_PREF = "html.stylesheet";
 
 reminderfox.consts.SHOW_WEEK_NUMS_PREF = "showWeekNumbers";
 
@@ -419,7 +418,6 @@ reminderfox.core.initUserPrefsArray= function(){
     reminderfox._prefsUser[reminderfox.consts.ADDRESS] = reminderfox._prefsTYPE.CHAR;
     reminderfox._prefsUser[reminderfox.consts.USERNAME] = reminderfox._prefsTYPE.CHAR;
 
-//P?    reminderfox._prefsUser[reminderfox.consts.HTML_STYLESHEET_PREF] = reminderfox._prefsTYPE.CHAR;
     reminderfox._prefsUser[reminderfox.consts.TODO_LISTS] = reminderfox._prefsTYPE.COMPLEX;
     reminderfox._prefsUser[reminderfox.consts.SUBSCRIPTIONS] = reminderfox._prefsTYPE.COMPLEX;
     reminderfox._prefsUser[reminderfox.consts.CATEGORIES] = reminderfox._prefsTYPE.COMPLEX;
@@ -476,7 +474,7 @@ reminderfox.core.getPreferenceValue= function(preferenceName, defaultValue){
     try {
         var prefType = reminderfox._prefsUser[preferenceName];
         if (prefType == reminderfox._prefsTYPE.COMPLEX) {
-            prefValue = reminderfox._prefsBranch.getComplexValue((preferenceName), reminderfox.consts.nsISupportsString).data;
+            prefValue = reminderfox._prefsBranch.getStringPref(preferenceName);
         }
         else
         if (prefType == reminderfox._prefsTYPE.CHAR) {
@@ -538,7 +536,8 @@ reminderfox.core.setPreferenceValue= function(preferenceName, preferenceValue){
  * @param {string} preference name
  **/
 reminderfox.core.getUnicodePref= function(prefName){
-    return reminderfox._prefsBranch.getComplexValue(prefName, reminderfox.consts.nsISupportsString).data;
+ //   return reminderfox._prefsBranch.getComplexValue(prefName, reminderfox.consts.nsISupportsString).data;
+    return reminderfox._prefsBranch.getStringPref(prefName);
 };
 
 
@@ -546,9 +545,7 @@ reminderfox.core.getUnicodePref= function(prefName){
  * set unicode string value
  * */
 reminderfox.core.setUnicodePref= function(prefName, prefValue){
-    var sString = Components.classes["@mozilla.org/supports-string;1"].createInstance(reminderfox.consts.nsISupportsString);
-    sString.data = prefValue;
-    reminderfox._prefsBranch.setComplexValue(prefName, reminderfox.consts.nsISupportsString, sString);
+    reminderfox._prefsBranch.setStringPref(prefName, prefValue);
 };
 
 
@@ -995,7 +992,12 @@ reminderfox.core.loadDefaultPreferences= function(){
     }
 
     // clear out debug file if it's there (just overwrite with a new header)
-    var logFile = reminderfox._prefsBranch.getCharPref(reminderfox.consts.LOG_FILE);
+	var logFile;
+	try {
+		logFile = reminderfox._prefsBranch.getCharPref(reminderfox.consts.LOG_FILE);
+	}
+	catch (e) {
+	};
     if (logFile && logFile.length > 0) {
         // log it to file
         var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
@@ -1955,7 +1957,9 @@ reminderfox.core.playSound= function(mode, savefilePath){
 			}
 		}
 	}
-	catch (e) {}
+	catch (e) {
+		//console.log("reminderfox.core.playSound  err",e)  
+	}
 
 	if (!soundCustom) {
 		gSound.beep();
@@ -7027,39 +7031,6 @@ reminderfox.core.getStoreFile4OS= function(){
     }
     return storeString;
 };
-
-
-/**
- * Call filePicker
- *
- * @param   windowText:       FilePicker Window text
- * @param   filterName:       description of search filter,  eg. 'ICS file'
- * @param   defaultExtension: the extension for 'FilterName' eg. '.ICS'
- * @param   defaultString:    eg. 'reminderfox.ics'  or '*.*'
- * @param   mode:             0='modeOpen' | 1='modeSave' | '2=getFolder'
- * @return  file (object)
- */
-reminderfox.core.filePicker= function(windowText, filterName, defaultExtension, defaultString, mode){
-
-    const nsIFilePicker = Components.interfaces.nsIFilePicker;
-
-    var picker = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-    //	picker.appendFilters( 2); // nsIFilePicker.filterAll);
-    picker.appendFilter(filterName, "*." + defaultExtension);
-    picker.defaultString = defaultString;
-    picker.defaultExtension = defaultExtension;
-    picker.init(window, windowText, mode /*nsIFilePicker.modeOpen*/);
-
-    var rv = picker.show();
-    if ((rv == nsIFilePicker.returnOK) || (rv == nsIFilePicker.returnReplace)) {
-        var file = picker.file;
-        return file;
-    }
-    else {
-        return null;
-    }
-}
-
 
 /**
  * //OSswitching

@@ -1,7 +1,7 @@
 // ReminderFox Prefs
 pref("extensions.reminderFox.news", true);
 pref("extensions.reminderFox.newsStamp", "1443869890924");
-pref("extensions.reminderFox.newsLink", "https://dl.dropbox.com/u/35444930/rmFX/XPI/news.txt");
+pref("extensions.reminderFox.newsLink", "https://neandr.github.io/reminderfox/rmFXnews");
 
 pref("extensions.reminderFox.alarmSound", true);
 pref("extensions.reminderFox.alertSound", false);
@@ -23,13 +23,14 @@ pref("extensions.reminderFox.hideThatRidiculousFox", false);
 pref("extensions.reminderFox.reminderDefaultFilter", 0);
 pref("extensions.reminderFox.alertTimeout", 120);
 pref("extensions.reminderFox.alertOpenTime", 5);
+pref("extensions.reminderFox.alertSoundCustom", false);
 pref("extensions.reminderFox.alarmSoundInterval", -1);
 pref("extensions.reminderFox.calendarStartDay", 0);
 pref("extensions.reminderFox.calendar.daypopup.delay", 1000);
 pref("extensions.reminderFox.calendarMonths", 1 );
 pref("extensions.reminderFox.showWeekNumbers", 0);
 pref("extensions.reminderFox.debug.loglevel", 0);
-//pref("extensions.reminderFox.debug.file", "c:\\reminderfox_log.txt");
+pref("extensions.reminderFox.debug.file", "reminderfox_log.txt");
 pref("extensions.reminderFox.debug.file", ""); 
 pref("extensions.reminderFox.toolbarPosition", -1);
 pref("extensions.reminderFox.upcomingReminderDays", 15);
@@ -65,7 +66,6 @@ pref("extensions.reminderFox.network.address", "");
 pref("extensions.reminderFox.network.protocol", "ftp");
 pref("extensions.reminderFox.network.username", "");
 pref("extensions.reminderFox.reminderDefaultMore", "location,url");
-pref("extensions.reminderFox.html.stylesheet", "http://reminderfox.mozdev.org/project.css");
 pref("extensions.reminderFox.todoLists", "");
 pref("extensions.reminderFox.quickAlarms", "");
 pref("extensions.reminderFox.sortColumns", "");

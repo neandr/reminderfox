@@ -60,8 +60,8 @@ function loadAlarm() {
 	reminderFox_reopeningWindow = false;
 	reminderAlarmArray = window.arguments[0].alarmInfos;
 
-	var msg = " //XXX loadAlarm    no of alarms: " + reminderAlarmArray.length
-	//rmFXaLog(msg)
+	var msg = "loadAlarm    no of alarms: " + reminderAlarmArray.length;
+	//console.log("SOUND ", new Date(), msg);
 
 
 	calDAVaccounts = window.arguments[0].calDAVaccounts;
@@ -86,8 +86,8 @@ function loadAlarm() {
 			tabTitle = reminderAlarmArray[i].quickAlarmText;
 		}
 
-		var msg = "  //XXX loadAlarm   reminder: " + tabTitle
-		//rmFXaLog(msg)  //XXX
+		var msg = "loadAlarm   reminder: " + tabTitle
+		//console.log("SOUND ", new Date(), msg);
 
 		if(tabTitle != null && tabTitle.length > MAX_TAB_TITLE_LENGTH) {
 			tabTitle = tabTitle.substring(0, MAX_TAB_TITLE_LENGTH);
@@ -322,8 +322,8 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 	var tabbox = document.getElementById("tabbox");
 	var selectedPanel = tabbox.selectedPanel;
 
-	var msg = " //XXX    Alarm  TEST ::   prio, completed, showTTT  >>"
-	//rmFXaLog(msg)
+	var msg = "Alarm  TEST ::   prio, completed, showTTT  >>"
+	//console.log("SOUND ", new Date(), msg);
 
 
 	// *** for attributeIcons  check current reminder for some attributes ***
@@ -380,8 +380,8 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 		spacer1.setAttribute("height", "18px");
 
 
-	var msg = " //XXX    Alarm  TEST ::   calDAV, mail, category icons  >>"
-	//rmFXaLog(msg)
+	var msg = "Alarm  TEST ::   calDAV, mail, category icons  >>"
+	//console.log("SOUND ", new Date(), msg);
 
 
 	//gWCalDAV
@@ -417,8 +417,8 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 	};
 
 
-	var msg = " //XXX    Alarm  TEST ::   ruc >>"
-	//rmFXaLog(msg)
+	var msg = "Alarm  TEST ::   ruc >>"
+	//console.log("SOUND ", new Date(), msg);
 
 
 	if (recentReminder != null && recentReminder.remindUntilCompleted != null) { // reminder
@@ -455,8 +455,8 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 	}
 
 
-	var msg = " //XXX    Alarm  TEST ::  notesText "
-	//rmFXaLog(msg)
+	var msg = "Alarm  TEST ::  notesText "
+	//console.log("SOUND", new Date(), msg);
 
 	if((recentReminder != null && recentReminder.notes != null ) 
 	  || (reminderAlarmOptions.quickAlarmNotes != null 
@@ -490,8 +490,8 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 		}
 	}
 
-	var msg = " //XXX    Alarm  TEST ::   location/url  >>"
-	//rmFXaLog(msg)
+	var msg = "Alarm  TEST ::   location/url  >>"
+	//console.log("SOUND ", new Date(), msg);
 
 
 	if(recentReminder != null && recentReminder.location != null && recentReminder.location.length > 0) {
@@ -710,14 +710,15 @@ function calDavInAlarm () {
 function playAlarmSound() {
 	// play a sound for notification (if the user elects to)
 
-var msg = " playAlarmSound  "
-rmFXaLog(rmFXtDate() + msg)
+	var msg = "playAlarmSound  "
+	//console.log("SOUND ", new Date(), msg);
 
 	try {
 		var playSound = true;
 		try {
 			playSound = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.ALARM_SOUND);
 		} catch ( e) {
+			//console.log("SOUND Reminderfox playAlarmSound pref failed: ", playSound, e);
 		}
 		if(playSound) {
 			reminderfox.core.playSound();
@@ -726,6 +727,7 @@ rmFXaLog(rmFXtDate() + msg)
 
 		} // end if
 	} catch ( e ) {
+		//console.log("SOUND Reminderfox playAlarmSound failed: ", e);
 	}
 }
 

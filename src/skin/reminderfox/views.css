@@ -7,15 +7,6 @@
 }
 
 
-#view_MenuBuild[status="off"]  { 				/* s.42*/
-	list-style-image: url("chrome://reminderfox/skin/images/view.png"); 
-	-moz-image-region: rect(0px,36px, 18px,18px);
-}
-#view_MenuBuild[status="on"]  { 
-	list-style-image: url("chrome://reminderfox/skin/images/view.png"); 
-	-moz-image-region: rect(0px,18px, 18px,0px);
-}
-	
 .textButton {
    font-weight: bold;
 	font-family: monospace;
@@ -34,53 +25,6 @@
 }
 
 
-.add-Button[disabled="false"] { 
-  list-style-image: url("chrome://reminderfox/skin/images/view.png");
-   -moz-image-region: rect(18px,18px, 36px,0px);
-}
-.add-Button[disabled="true"] { 
-  list-style-image: url("chrome://reminderfox/skin/images/view.png");
-	-moz-image-region: rect(18px,36px, 36px,18px);
-}
-
-.default-Set { 
-  list-style-image: url("chrome://reminderfox/skin/images/view.png");
-      -moz-image-region: rect(72px,36px, 90px,18px);
-}
-.default-Set:hover { 
-  list-style-image: url("chrome://reminderfox/skin/images/view.png");
-      -moz-image-region: rect(72px,18px, 90px,0px);
-}
-
-
-.remove-Button[disabled="false"] { 
-  list-style-image: url("chrome://reminderfox/skin/images/view.png");
-   -moz-image-region: rect(36px,18px, 54px,0px);
-}
-.remove-Button[disabled="true"] {
-  list-style-image: url("chrome://reminderfox/skin/images/view.png");
-   -moz-image-region: rect(36px,36px, 54px,18px);
-}
-.sort-Up { 
-  list-style-image: url("chrome://reminderfox/skin/images/view.png");
-   -moz-image-region: rect(54px,18px, 72px,0px);
-}
-.sort-Down { 
-  list-style-image: url("chrome://reminderfox/skin/images/view.png");
-   -moz-image-region: rect(54px,36px, 72px,18px);
-}
-
-
-#sorter_Box {
-    border-left: 2px #DBDBDB solid;
-    border-right: 2px #DBDBDB solid;
-}    
-#sorter_Box[type="criteria"] { 
-    border-right: 2px rgb(0,0,156) solid !important;
-}
-#sorter_Box[type="view"] {
-     border-left: 2px rgb(0,0,156) solid !important;
-}
 
 #view_List{
     border-right: 2px #DBDBDB solid !important;

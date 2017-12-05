@@ -452,27 +452,6 @@ reminderfox.userIO.readICSdata = function (icsData, call) {
 }
 
 
-/**
- * Pick an ICS file from fileManger and pass filePath to "Add/Subscribe" dialog
- * with disabled 'Subscribe'
- */
-reminderfox.userIO.readICSfile = function () {
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var file = reminderfox.util.pickFileLocationPicker(window, '*.ics')
-	if(!file) return  // // cancel pressed -- no file selected
-	var localFile = file.path;
-
-	var call = {}
-	call.details = {}
-	call.details.url         = localFile
-	call.details.summary     = 'Import from iCal/ICS file : ' + localFile
-	call.details.noSubscribe = true
-
-	var icsData = reminderfox.util.readInFileContents(localFile)
-	reminderfox.userIO.readICSdata (icsData, call);
-}
-
-
 /*
  * @info   updated 2015-09-29 to use http Requests
  *

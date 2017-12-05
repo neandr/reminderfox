@@ -67,6 +67,13 @@
 		</hbox>
 
 
+		<!--   Box to control  Reminderfox NEWS  -->
+		<hbox id="reminderfox-News-box" hidden="true">
+			<button label="Reminderfox News" id="newsButton"
+				class="reminderfox-calendar-iconLabel reminderFox_BoldBlue" oncommand="reminderfox.go4news.callNews();" />
+		</hbox>
+
+
 		<!-- popup on calendar day event with right mouse, function as context 
 			menu -->
 		<panel id="reminderfox-calendar-contextEvent">

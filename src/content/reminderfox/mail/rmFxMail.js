@@ -186,8 +186,7 @@ reminderfox.mail.doShowMailShortcut = function () {
 
 /**
  * open/displayMail
- *
-<br>  retrieve and display this reminder's associated email in Thunderbird
+ *  retrieve and display this reminder's associated email in Thunderbird
  */
 reminderfox.mail.openByMessageID = function (currentReminder){
 	var finalMessageId = reminderfox.mail.finalMessageId(currentReminder.messageID);

@@ -986,9 +986,8 @@ reminderfox.util.mailAppStringBrowse= function(){
 /**
  * Get the  messenger apps location   <br>
  *  - first check prefs if already set   <br>
- *  
- *  - if host app isn't a messenger (TB/PB/SM) like FX     <br>
- *    lets the user browse for a valid messenger app    <br>
+ *  - if host app isn't a messenger (TB/PB/SM) like FX
+ *    lets the user browse for a valid messenger app
  *  
  *    @return  [object]  file for location of 'messenger' application
  */
@@ -996,9 +995,10 @@ reminderfox.util.messengerApp= function(){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var fileValid = true;
 	var mFile = null;
-	var mailApp = "";
+	var mailApp = reminderfox._prefsBranch.getCharPref(reminderfox.consts.MAIL_PATH);
 
-	var mFileServ = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties);
+	var mFileServ = Components.classes["@mozilla.org/file/directory_service;1"]
+		.getService(Components.interfaces.nsIProperties);
 
 	var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
 	// sets the default location for messenger app
@@ -1023,28 +1023,9 @@ reminderfox.util.messengerApp= function(){
 		}
 	}
 
-	try {
-		mailApp = reminderfox._prefsBranch.getCharPref(reminderfox.consts.MAIL_PATH);
-	}
-	catch (ex) {
-	}
+	fileValid= reminderfox.util.fileCheck(mailApp)
 
-
-	try {
-		file.initWithPath(mailApp);
-		fileValid = file.exists();
-	}
-	catch (ex) {
-		fileValid = false;
-	}
-
-	if ((fileValid === false) && (mFile)) {
-		mailApp = mFile.path;
-		file.initWithPath(mailApp);
-		fileValid = true;
-	}
-
-	if (fileValid === false) { // mailApp / OS not valid, ask user
+	if (fileValid != 1) { //1 = valid fileName  // mailApp / OS not valid, ask user
 		//gW appPicker	2009-10-03  +++2do  change for application menu (see FX --> Options --> Applications)
 
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(Components.interfaces.nsIFilePicker);
@@ -1052,8 +1033,8 @@ reminderfox.util.messengerApp= function(){
 		fp.init(window, winTitle, Components.interfaces.nsIFilePicker.modeOpen);
 		fp.appendFilters(Components.interfaces.nsIFilePicker.filterApps);
 
-		// Prompt the user to pick an app.  If they pick one, and it's a valid
-		// selection, then set it for 'mailto' / 'messenger'
+		// Prompt the user to pick an app.  If picked a valid selection, 
+		// then set it for 'mailto' / 'messenger'
 
 		if (fp.show() == Components.interfaces.nsIFilePicker.returnOK &&
 			fp.file && reminderfox.util.isValidHandlerExecutable(fp.file)) {
@@ -1241,7 +1222,7 @@ reminderfox.util.encodeUTF8= function(aSource){
  *   @param {string}  aSource  source stream
  */
 reminderfox.util.convertFromUnicode= function(aCharset, aSource){
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var unicodeConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
 		.createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
 	unicodeConverter.charset = aCharset;
@@ -1250,7 +1231,7 @@ reminderfox.util.convertFromUnicode= function(aCharset, aSource){
 
 
 reminderfox.util.getIOService= function(){
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	if (reminderfox.util.getIOService.mObject === undefined) {
 		reminderfox.util.getIOService.mObject = Components.classes["@mozilla.org/network/io-service;1"]
 		.getService(Components.interfaces.nsIIOService2);
@@ -1267,7 +1248,7 @@ reminderfox.util.getIOService= function(){
  *                   -2 = parent directory isn't valid
  */
 reminderfox.util.fileCheck= function (filepath) {
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var sfile;
 	if (typeof(filepath) == "string") {
 		sfile = Components.classes["@mozilla.org/file/local;1"]
@@ -1296,206 +1277,250 @@ reminderfox.util.fileCheck= function (filepath) {
 	return 1;
 };
 
+/**
+ * FilePicker   2017-12-01
+ * Changed to not use fp.show but fp.open which is async code
+ * (required for mozilla57)
+ */
+reminderfox.util.filePick = function (aWindow, details, callback) {
+//--------------------------------------------------------------------------
+	var nsIFilePicker = Components.interfaces.nsIFilePicker;
+	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+
+	fp.init(aWindow, details.title, nsIFilePicker[details.fileMode]);
+	fp.appendFilters(nsIFilePicker.filterAll);
+	fp.appendFilter(details.filterName, details.extensions);
+	fp.filterIndex = 1;
+
+	if (details.cDir && details.cDir.parent) fp.displayDirectory = details.cDir.parent;
+	if (details.defaultString) fp.defaultString= details.defaultString;
+
+    return new Promise(resolve => {
+      //show the window
+      fp.open(rv => {
+        if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+
+  //      console.log("filePick resolve ", fp.file, " mode --> ", details.mode );
+        callback(fp.file, details);
+      };
+    });
+  });		
+};
 
 
+//--- Import/Export ICS data ------------------------------------
+/**
+ *  Set the file for  'export' of reminders/todos
+ *  .. and set prefs for it
+ */
+reminderfox.util.getExportFile= function () {
+//---------------------------------------------------------------
+	var details= {};
+	details.currentFileName   = document.getElementById("exportFile").value;
 
+	details.cDir = Components.classes["@mozilla.org/file/local;1"]
+		.createInstance(Components.interfaces.nsIFile);
+	details.cDir.initWithPath(details.currentFileName);
 
-reminderfox.util.reminderFox_filePickerExport= function  (aOpen, aWindow, defaultFileName) {
-	var reminderFox_nsIFilePicker = Components.interfaces.nsIFilePicker;
-	var picker = Components.classes["@mozilla.org/filepicker;1"].createInstance(reminderFox_nsIFilePicker);
+	details.filterName   = "Event File (ICS)";
+	details.extensions   = '*.ics';
+	details.title        = reminderfox.string("rf.export.send.title");	// "Set / Select file to export reminder(s)";
+	details.mode         = 'exportICSfile';
 
-	picker.defaultExtension = "ics";
-	var filterCalendar    = reminderfox.string("rf.options.filepicker.filter.calendar");
-	var extensionCalendar = ".ics";
+	details.fileMode     = 'modeSave';
 
-	picker.appendFilter( filterCalendar, "*" + extensionCalendar );
-	if (defaultFileName != null) picker.defaultString = defaultFileName;
-
-	switch (aOpen) {
-		case 0:
-			picker.init(aWindow, reminderfox.string("rf.options.export.filepicker.title"),
-				reminderFox_nsIFilePicker.modeSave);
-			break
-		case 1:
-			picker.init(aWindow, reminderfox.string("rf.options.import.filepicker.title"),
-				reminderFox_nsIFilePicker.modeOpen);
-			break;
-	};
-
-
-	// get the file and its contents
-	var res = picker.show();
-	if(res == reminderFox_nsIFilePicker.returnCancel)
-		return null;
-	else
-		return picker.file;
-}
+	reminderfox.util.filePick(window, details, 
+		function(file, details) {
+			if (file != null) {
+				var rmFx_exportFile   = "exportEventsFile"	 // set as prefs 'extensions.reminderFox.exportEventsFile'
+				reminderfox._prefsBranch.setCharPref(rmFx_exportFile, file.path);
+				document.getElementById("exportFile").setAttribute("value", file.path);
+	 		}
+		});
+};
 
 /*
  * Export (Backup) the current reminders/events
  * @param {object} backup - if passed store to file with date/time stamp
  */
 reminderfox.util.exportReminders= function (backup) {
+//---------------------------------------------------------------
+	var details = {};
 
-	var i;
+    // get current store file name  
+	var fName = reminderfox.core.getReminderStoreFile();
+	details.cDir = Components.classes["@mozilla.org/file/local;1"]
+		.createInstance(Components.interfaces.nsIFile);
+	details.cDir.initWithPath(fName.path);
 
-	var _reminderEvents = reminderfox.core.getReminderEvents();
-	var _todosArray = reminderfox.core.getReminderTodos();
-	//  ALL todos
-	var outputStr = reminderfox.core.constructReminderOutput(_reminderEvents, _todosArray, true);
+	// set store file name for ics 
+	fName = fName.leafName;
 
-
-	//get file
 	if (backup) {
-		//get current store file name
-		var icsFile = reminderfox.core.getReminderStoreFile().leafName.replace(".ics", "")
+		var icsFile = fName.replace(".ics", "")
 
 		var date = new Date()
 		var dateString = reminderfox.date.getDateAsString (date, 'format')
-		var file = reminderfox.util.reminderFox_filePickerExport(0, window, (icsFile + "_" + dateString + ".ics"));
-	} else {
-		var file = reminderfox.util.reminderFox_filePickerExport(0, window, reminderfox.core.getReminderStoreFile().leafName);
-	}
-	if(!file)
-		return;
+		fName = icsFile + "_" + dateString + ".ics";
+	}	
+    details.defaultString = fName;
 
-	if(file.exists() == false) {
-		file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420);
-	}
+	details.outputStr   = reminderfox.core.constructReminderOutput(
+		reminderfox.core.getReminderEvents(), 
+		reminderfox.core.getReminderTodos(), 
+		true);
 
-	reminderfox.core.writeStringToFile(outputStr, file, true);
+	details.title       = 'Export iCal/ICS reminders';
+	details.mode        = 'exportICS';
 
-	// show success message
-	var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-	promptService.alert(window, reminderfox.string("rf.options.export.success.title"), reminderfox.string("rf.options.export.success.description"));
+	details.filterName  = "Reminder Data (" + details.extensions + ")"
+	details.extensions  = '*.ics';
+	details.fileMode    = 'modeSave';
+
+	reminderfox.util.filePick(window, details, 	
+		function (file, details){	
+			if(!file)
+				return;
+		
+			if(file.exists() == false) {
+				file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420);
+			}
+		
+			reminderfox.core.writeStringToFile(details.outputStr, file, true);
+		
+			// show success message
+			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+			promptService.alert(window, reminderfox.string("rf.options.export.success.title"), reminderfox.string("rf.options.export.success.description"));
+		});
+};
+
+
+reminderfox.util.browseICSfile= function () {
+	var details = {};
+	details.extensions = '*.ics';
+	details.title = 'Browse for iCal/ICS Default Location';
+	details.mode = 'browse_file_location';
+
+	reminderfox.util.pickFileICSfile(details);
 }
 
+reminderfox.util.recoverICSfile= function () {
+	var details = {};
+	details.extensions = '*.ics; *.bak?';
+	details.title = 'Recover iCal/ICS reminders';
+	details.mode = 'recover_reminders';
 
-reminderfox.util.pickFileICSfile= function (extension, xthis) {
-//------------------------------------------------------------------------------
-	if(xthis && xthis.disabled) return;
+	reminderfox.util.pickFileICSfile(details);
+}
 
-	var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-		.getService(Components.interfaces.nsIPromptService);
+/**
+ * Pick an ICS file from fileManger and pass filePath to "Add/Subscribe" dialog
+ * with disabled 'Subscribe'
+ */
+reminderfox.util.importICSreminders= function () {
+	var details = {};
+	details.extensions = '*.ics';
+	details.title = 'Import iCal/ICS reminders';
+	details.mode = 'userIO.readICSfile';
 
-	var title = null;
-	if ( xthis ) {
-		title = xthis.getAttribute("value")
-	}
-	var file = reminderfox.util.pickFileLocationFile(extension, title /*title*/);
-	if (!file) return;  // cancel pressed -- no file selected
+	reminderfox.util.pickFileICSfile(details);
+}
 
-	// var msg = ("New file location selected")
-	if (xthis && xthis.id == 'reminderFox_file_location_browse') {
-		document.getElementById("reminderFox-file-location").value = file.path;
-		document.getElementById("reminderFox-apply").removeAttribute("disabled");
-	}
-	else {
-		reminderfox.core.logMessageLevel("filebrowse1: ", reminderfox.consts.LOG_LEVEL_INFO);
-	//if (!xthis || xthis.id == 'reminderFox_file_recover_browse') {
-		reminderfox.core.logMessageLevel("filebrowse2: ", reminderfox.consts.LOG_LEVEL_INFO)
-		// make sure they REAAAAALY want to overwrite
-		var msg = reminderfox.string("rf.options.import.overwrite.description") 
-			+ "\n\n File to restore: " + file.path;		//$$$_locale
+/**
+ * Pick a ICS data file location for >open<  and
+ * -- Set the Default Location (Options)  :: browse_file_location
+ * -- Import reminders (Options Import/Export button)  :: userIO.readICSfile
+ * -- Restore reminders from a file location (Options) :: recover_reminders
+ * -- Restore from file (Main dialog - foxy menu)      :: recover_reminders
+ */
+reminderfox.util.pickFileICSfile= function (details) {
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//?????	if(xthis && xthis.disabled) return;
 
-		flags = promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 
-			+ promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_1
-			+ promptService.BUTTON_POS_1_DEFAULT;	//  set default button;
-
-		var buttonPressed = promptService.confirmEx(window, reminderfox.string("rf.options.import.overwrite.title"), 
-			msg, flags, 
-			reminderfox.string("rf.options.import.overwritebutton.title"), 
-			reminderfox.string("rf.button.cancel"), null, null, {});
-
-		if(buttonPressed == 1) return;	// cancel pressed
-
-
-
-		var reminderEvents = new Array();
-		var reminderTodos = new Array();
-		reminderfox.core.readInRemindersAndTodosICSFromFile(reminderEvents, reminderTodos, file, false /*ignoreExtraInfo IfImportingAdditionalEvents*/);
-
-		// With CalDAV enabled, each event/todo connected to a CalDAV account will 
-		// be traced in  'reminderfox.calDAV.accounts' 
-		reminderfox.calDAV.getAccounts();
-
-		// check if we've successfully imported any reminders or todo events
-		var importedSuccess = reminderEvents.length !== 0;
-		var numTodos = 0;
-		for(var n in reminderTodos) {
-			var importedTodos = reminderTodos[n];
-			if(importedTodos.length > 0) {
-				importedSuccess = true;
-				numTodos += importedTodos.length;
-				//break;
-			}
-		}
-		var numEvents = reminderEvents.length/*numEvents*/;
-
-		reminderfox.util.PromptAlert("Imported  Reminders: " + numEvents  +  "  ToDo's:" + numTodos);
-
-		reminderfox.core.reminderFoxEvents = reminderEvents;
-		reminderfox.core.reminderFoxTodosArray = reminderTodos;
-		reminderfox.core.importRemindersUpdateAll(false, null);
-	}
-};
-
-
-reminderfox.util.pickFileLocationFile= function (extension, title) {
-//------------------------------------------------------------------------------
-	// check if unsaved events pending
-	if(reminderfox.core.checkModified()) return;
-
-	//get file
-	var file = reminderfox.util.pickFileLocationPicker(window, extension, title); //reminderFox_fileLocationPicker(window);
-	if(!file)
-		return null;
-	var fileLocation = file.path;
-	if(reminderfox.util.fileCheck(fileLocation) == -1) {
-			reminderfox.util.PromptAlert(reminderfox.string("rf.options.isfilelocation.valid"));
-		return null;
-	}
-	return file;
-};
-
-
-
-reminderfox.util.pickFileLocationPicker= function (aWindow, extension, title) {
-//------------------------------------------------------------------------------
-	var cDir = Components.classes["@mozilla.org/file/local;1"]
-		.createInstance(Components.interfaces.nsIFile);
-
+	details.filterName= "Reminder Data (" + details.extensions + ")"
+	
 	// if we're in options dialog, get current file value
-	var cLocation = document.getElementById("reminderFox-file-location");
-	if ( cLocation ) {
-		cDir.initWithPath(cLocation.value);
-	}
-	// otherwise, get stored reminder value
-	else {
-		var rmFx_icsFileLocationCurrent = reminderfox.core.getReminderStoreFile().path;
-		cDir.initWithPath( rmFx_icsFileLocationCurrent );
-	}
-	var reminderFox_nsIFilePicker = Components.interfaces.nsIFilePicker;
-	var filterCalendar    = reminderfox.string("rf.options.filepicker.filter.calendar");
-	var extensionCalendar = extension;
+	var fName = reminderfox.core.getReminderStoreFile().path || document.getElementById("reminderFox-file-location").value;
+	details.cDir = Components.classes["@mozilla.org/file/local;1"]
+		.createInstance(Components.interfaces.nsIFile);
+	details.cDir.initWithPath(fName);
 
-	var picker = Components.classes["@mozilla.org/filepicker;1"].createInstance(reminderFox_nsIFilePicker);
-	picker.init(aWindow, title||reminderfox.string("rf.options.filelocation.filepicker.title"),
-		reminderFox_nsIFilePicker.modeOpen);
-//		reminderFox_nsIFilePicker.modeGetFolder);
-	picker.appendFilters(reminderFox_nsIFilePicker.filterAll);
-	picker.appendFilter(filterCalendar, extensionCalendar);
-	picker.filterIndex=1;
-	picker.defaultExtension = extension;
-	picker.displayDirectory = cDir.parent;
+	details.fileMode = 'modeOpen'
+	
+	reminderfox.util.filePick(window, details, 
+		function (file, details) {
 
-	// get the file and its contents
-	var res = picker.show();
-	if (res == reminderFox_nsIFilePicker.returnCancel)
-	return null;
-		else
-	return picker.file;
+console.log("pickFileICSfile  File location selected", file.path, "mode ", details.mode)
+
+			if (details.mode == 'browse_file_location') {
+				document.getElementById("reminderFox-file-location").value = file.path;
+				document.getElementById("reminderFox-apply").removeAttribute("disabled");
+			}
+		
+			if (details.mode == "recover_reminders") {
+				var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+					.getService(Components.interfaces.nsIPromptService);
+		
+				reminderfox.core.logMessageLevel("filebrowse1: ", reminderfox.consts.LOG_LEVEL_INFO);
+				// make sure they REAAAAALY want to overwrite
+				var msg = reminderfox.string("rf.options.import.overwrite.description") 
+					+ "\n\n File to restore: " + file.path;		//$$$_locale
+		
+				var flags = promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 
+					+ promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_1
+					+ promptService.BUTTON_POS_1_DEFAULT;	//  set default button;
+		
+				var buttonPressed = promptService.confirmEx(window, reminderfox.string("rf.options.import.overwrite.title"), 
+					msg, flags, 
+					reminderfox.string("rf.options.import.overwritebutton.title"), 
+					reminderfox.string("rf.button.cancel"), null, null, {});
+		
+				if(buttonPressed == 1) return;	// cancel pressed
+		
+				var reminderEvents = new Array();
+				var reminderTodos = new Array();
+				reminderfox.core.readInRemindersAndTodosICSFromFile(reminderEvents, reminderTodos, file, false /*ignoreExtraInfo IfImportingAdditionalEvents*/);
+		
+				// With CalDAV enabled, each event/todo connected to a CalDAV account will 
+				// be traced in  'reminderfox.calDAV.accounts' 
+				reminderfox.calDAV.getAccounts();
+		
+				// check if we've successfully imported any reminders or todo events
+				var importedSuccess = reminderEvents.length !== 0;
+				var numTodos = 0;
+				for(var n in reminderTodos) {
+					var importedTodos = reminderTodos[n];
+					if(importedTodos.length > 0) {
+						importedSuccess = true;
+						numTodos += importedTodos.length;
+						//break;
+					}
+				}
+				var numEvents = reminderEvents.length/*numEvents*/;
+		
+				reminderfox.util.PromptAlert("Imported  Reminders: " + numEvents  +  "  ToDo's:" + numTodos);
+		
+				reminderfox.core.reminderFoxEvents = reminderEvents;
+				reminderfox.core.reminderFoxTodosArray = reminderTodos;
+				reminderfox.core.importRemindersUpdateAll(false, null);
+			}
+			
+			if (details.mode == 'userIO.readICSfile') {
+				if(!file) return  // // cancel pressed -- no file selected
+				var localFile = file.path;
+		
+				var call = {}
+				call.details = {}
+				call.details.url         = localFile
+				call.details.summary     = 'Import from iCal/ICS file : ' + localFile
+				call.details.noSubscribe = true
+		
+				var icsData = reminderfox.util.readInFileContents(localFile)
+				reminderfox.userIO.readICSdata (icsData, call);
+			}
+		});
 };
+//^^^ Import/Export ICS data ~~~~~~~~~~~~~~~~~~~~~
 
 
 /**
@@ -1755,7 +1780,7 @@ reminderfox.util.Logger = function (Log, msg) {
 	if (Log.toLowerCase().search('alert') > -1){
 		var date = new Date();
 		logMsg = "\nReminderfox  ** Alert **    "
-			+ date.toLocaleFormat("%Y-%m-%d %H:%M:%S") + " >" + +(new Date()) + "<" 
+			+ date + " >" + +(new Date()) + "<" 
 			+ "\n" + msg;
 
 		if (Log == 'ALERT') logMsg += "\n" + reminderfox.util.STACK();
@@ -2457,26 +2482,26 @@ reminderfox.about= function() {
 reminderfox.promiseRequest = {
 //--------------------------------------------------------------------------
 	get : function (url) {
-	return new Promise(function(resolve, reject) {
-		var req = new XMLHttpRequest();
-		req.open('GET', url);
-		req.onload = function() {
-			if (req.status == 200) {
-			// Resolve the promise with the response text
-				resolve(req.response);
-			}
-			else {
-				reject(Error(req.statusText));
-			}
-		};
-		// Handle network errors
-		req.onerror = function() {
-			reject(Error("Network Error"));
-		};
-		// Make the request
-		req.send();
-	});
-}
+		return new Promise(function(resolve, reject) {
+			var req = new XMLHttpRequest();
+			req.open('GET', url);
+			req.onload = function() {
+				if (req.status == 200) {
+				// Resolve the promise with the response text
+					resolve(req.response);
+				}
+				else {
+					reject(Error(req.statusText));
+				}
+			};
+			// Handle network errors
+			req.onerror = function() {
+				reject(Error("Network Error"));
+			};
+			// Make the request
+			req.send();
+		});
+	}
 }
 
 
@@ -3180,5 +3205,143 @@ reminderfox.online = {
 				reminderfox.core.statusSet(msg, true)
 
 			}
+	}
+};
+
+
+/**
+ * Support "Reminderfox News" 
+ */
+if (!reminderfox.go4news)    reminderfox.go4news = {};
+
+// in /defaults/preferences/reminderfox.js
+//pref("extensions.reminderFox.news", true);   // last news status, set after reading to false
+//pref("extensions.reminderFox.newsStamp", <2015-10-01);   // last news date
+//pref("extensions.reminderFox.newsLink", "https://neandr.github.io/reminderfox/rmFXnews");
+
+// in reminderFoxCore.js
+//reminderfox.consts.NEWS
+//reminderfox.consts.NEWSSTAMP
+//reminderfox.consts.NEWSLINK
+
+
+reminderfox.go4news = {
+//------------------------------------------------------------------------------
+	currentNewsDate : "",
+	currentNews : "--",
+	urlNews: "https://neandr.github.io/reminderfox/rmFXnews",
+
+
+	/**
+	 * Called at startup of reminderfox to check for new News
+	 */
+	status : function () {  // this run *only* at FX/TB startup !
+		this.get('go4_news', 
+		this.urlNews,
+		'statusUpdate')
+	},
+	statusUpdate : function () {
+		var newsStatus = reminderfox.core.getPreferenceValue(reminderfox.consts.NEWS, false);
+		var newsStamp = reminderfox.core.getPreferenceValue(reminderfox.consts.NEWSSTAMP, "");
+		var newsLink = reminderfox.core.getPreferenceValue(reminderfox.consts.NEWSLINK, this.urlNews);
+
+		var msg = " Reminderfox News    "
+			+ " \n" + newsStatus + "  >"  + newsLink + "<  " 
+			+ this.currentNewsDate + "::" + newsStamp + (this.currentNewsDate > newsStamp);
+		reminderfox.util.Logger('Alert', msg);
+
+		if ((newsLink != "") && (this.currentNewsDate > newsStamp)){ 
+			msg = " Reminderfox NEWS available!" // update items to let button shown with MainDialog
+			reminderfox.util.Logger('alert', msg);
+			reminderfox.core.setPreferenceValue(reminderfox.consts.NEWSSTAMP, this.currentNewsDate);
+			reminderfox.core.setPreferenceValue(reminderfox.consts.NEWS, true);
+		}
+
+		else {
+			msg = " Reminderfox News    *** NO news *** " // disable the button/icon on RmFX Main List
+		//	reminderfox.util.Logger('alert',msg);
+			reminderfox.core.getPreferenceValue(reminderfox.consts.NEWS, false);
+		}
+
+		return
+	},
+
+	/**
+	 *  Read&Display RmFX News, called from Main Menu
+	 */
+	callNews: function () {
+		this.get('go4_news', 
+			this.urlNews,
+		 	'openNews')	
+	},
+	openNews : function () {
+		// Open news and hide button so a News is only presented once
+		// With Main Menu item user can always open News directely 
+	//	reminderfox.util.PromptAlert(this.currentNews);
+		var url = this.urlNews + this.currentNewsDate + ".html";
+		reminderfox.util.openURL(url, 'rmFXnews');
+
+		reminderfox.core.setPreferenceValue(reminderfox.consts.NEWS, false)
+		document.getElementById('reminderfox-News-box').setAttribute( "hidden", true);
+	},
+
+	get : function (callback, url, callnext) {
+			this.method       = 'GET';
+			this.urlstr       = url;
+
+			this.body         = '';
+			this.contentType  = 'text/xml';
+			this.headers      = null;
+
+			this.username     = "";
+			this.password     = "";
+
+			this.timeout      = 30;
+
+			this.callback     = callback;
+			this.onError      = callback;
+			this.callnext     = callnext
+
+		reminderfox.HTTP.request(this);
+	},
+
+	/**
+	 *   Reads the actual newsDate from remote
+	 */
+	go4_news : function (status, xml, text, headers, statusText, call) {	
+		if (status === 0 || (status >= 200 && status < 300)) {
+			var parser = new DOMParser();
+			var aText = parser.parseFromString(text, "text/html");
+
+			this.currentNews = aText.body.textContent.replace(/\n /g,'\n').replace(/\n \n/g,'\n').replace(/n\n/g,'\n').replace(/\n\n\n/g,'\n');
+
+			var nLines = this.currentNews;
+			var n1 = nLines.search('\\[');
+			var n2 = nLines.search('\\]') +1;
+			this.currentNewsDate = nLines.substring(n1,n2);
+
+			if (call.callnext != null) {
+	//			console.log("go4_new    go 4 callnext  ???? >>"+ call.callnext+"<<")
+				call[call.callnext]()
+			}
+
+		} else {  // ERROR Handling
+			reminderfox.util.Logger (" *** Reminderfox News missing! ***" 
+				+ "\nCheck News address.");
+		}
+	},
+
+	/**
+	 * Called with opening the Main Dialog to show the button [Reminderfox News]
+	 * pending on prefs setting (hidden or display)
+	 */
+	setButton : function () {
+		var newsStatus = reminderfox.core.getPreferenceValue(reminderfox.consts.NEWS, false)
+		if (newsStatus == true) {
+			document.getElementById('reminderfox-News-box').removeAttribute("hidden");
+		}
+		if (newsStatus == false) {
+			document.getElementById('reminderfox-News-box').setAttribute( "hidden", true);
+		}
 	}
 };

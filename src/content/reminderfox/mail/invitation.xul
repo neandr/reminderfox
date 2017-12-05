@@ -52,7 +52,8 @@
 						<textbox id="exportFile" width="290px" editable="true"
 							value="../reminderfoxEvents.ics" />
 						<button  id="getFileLocationButton" label="..." 
-							tooltiptext="&mail.sendexport.reminder.export.file;" oncommand="reminderfox.iCal.getExportFile()" />
+							tooltiptext="&mail.sendexport.reminder.export.file;" 
+							oncommand="reminderfox.util.getExportFile()" />
 					</hbox>
 				</groupbox>
 			</hbox>
@@ -139,7 +140,8 @@
 								value="undefined" />
 				
 							<toolbarbutton class="image-button" id="mailAppButton"
-								onclick="reminderfox.util.mailAppStringBrowse();" tooltiptext="&mail.send.reminder.invitation.browse;"
+								onclick="reminderfox.util.mailAppStringBrowse();" 
+								tooltiptext="&mail.send.reminder.invitation.browse;"
 								disabled="true" />
 						</hbox>
 					</vbox>

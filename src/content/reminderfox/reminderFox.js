@@ -2081,8 +2081,6 @@ reminderfox.overlay.updateRemindersInWindow= function(){
             }
         }
 
-//console.log("   overlay.updateRemindersInWindow ", reminderString )		//gWXXXTEST 2016-03-22 TEST
-
         if (reminderString != "") {
             // get preference for how many chars to make this
             var statusTextMaxLen = 40;
@@ -2452,9 +2450,6 @@ reminderfox.overlay.showAlertSlider= function(){
                 //checkData  gW:disable this for testing 2014-05-11			reminderfox.core.clearRemindersAndTodos();
                 reminderfox.core.logMessageLevel("AlertSlider ! ", reminderfox.consts.LOG_LEVEL_INFO);
                 reminderfox.overlay.storeTimeOfLastAlert();
-//console.log("----------- testing ---------------  XXXgW");
-//console.trace();
-
             }
         }
     }
@@ -2759,11 +2754,7 @@ reminderfox.overlay.runDebug= function() {
 
 reminderfox.overlay.start= function(){
     // run this later and let the window load.
-
-//reminderfox.util.Logger('TEST'," rmFX overlay.start", new Date())
-
     window.setTimeout(function() { reminderfox.overlay.start_postInit(); }, 100);
-
 	rmFx_extractXPI("chrome/content/reminderfox/defaults/");	//unpack
 }
 
@@ -2906,6 +2897,11 @@ reminderfox.overlay.start_postInit= function() {
 	// initialize  Alert Slider  Timer
     reminderfox.overlay.initializeReminderFoxUpdatingTimer.notify(reminderfox.overlay.timerObject);
 
+    
+    // initialize rmFX News
+    reminderfox.go4news.status();
+    
+    
     // Initialize reminder fox for the browser window
     var windowEnumerator =  reminderfox.core.getWindowEnumerator();
     if (windowEnumerator.hasMoreElements()) {
@@ -3365,9 +3361,6 @@ reminderfox.overlay.showCalendar= function(event){
  */
 function reminderfox_xmlPrint (xThis, isXPI) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-console.log("//XXX   reminderfox_xmlPrint ")
-console.trace()
-
     var isReminder = true;
     try {
         isReminder = reminderfox_isReminderTabSelected() ? true : false;
@@ -3778,8 +3771,6 @@ function reminderfox_prntPath (){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     var prnt = reminderfox.util.ProfD_extend('reminderfox')
     prnt.append("printing");
-
-console.log("//XXX   reminderfox_prntPath  ", prnt.path);
     return prnt;
 };
 
@@ -3789,8 +3780,6 @@ console.log("//XXX   reminderfox_prntPath  ", prnt.path);
  */
 function reminderfox_PrintMenuSetup(xThis){
 //---------------------------------------------------------
-console.log("//XXX   reminderfox_PrintMenuSetup ")
-console.trace()
     reminderfox_PrintTemplatesCopy();
 
     // remove all items from popup menu, hold 'Agenda' and separator

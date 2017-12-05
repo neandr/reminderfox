@@ -106,7 +106,7 @@
 							class="reminderfoxTextboxDisabled" />
 						<button id="reminderFox_file_location_browse" 
 							label="&rf.Browse;.." icon="false" class="reminderfox-editButton"
-							onclick="reminderfox.util.pickFileICSfile('*.ics', this);"
+							onclick="reminderfox.util.browseICSfile();"
 							tooltiptext="&rf.options.browseICS;"/>
 
 						<spacer />
@@ -125,10 +125,10 @@
 
 					<hbox>
 						<spacer width="180px"/>
-						<text id="reminderFox_file_recover_browse" 
+						<text id="recover_reminder" 
 							disabled="false"  class="url" onmouseover="this.style.cursor='pointer';"
-							onclick="reminderfox.util.pickFileICSfile('*.bak?; *.bak1; *.bak2; *.bak3; *.ics', this); 	rmFx_mainDialogLoadReload();
-"
+							onclick="reminderfox.util.recoverICSfile();"
+
 							value="&rf.options.file.recover;"  tooltiptext="&rf.options.file.Pick;"/>
 					</hbox>
 
@@ -993,7 +993,7 @@
 			<vbox>
 				<hbox>
 					<button id="reminderFox_import_reminders" label="&rf.options.importexport.import.label;"
-						flex="1" oncommand="reminderfox.userIO.readICSfile();" />
+						flex="1" oncommand="reminderfox.util.importICSreminders();" />
 					<button id="reminderFox_export_reminders" label="&rf.options.importexport.export.label;"
 						flex="1" oncommand="reminderfox.util.exportReminders();" />
 				</hbox>

@@ -1,15 +1,13 @@
 
-##
-##  version.txt
-##
+   Reminderfox  [2.1.6] release
+      as of:    Sun, 3 Dec 2017 16:47:39 +0100 (CET)
+   'reminderfox_2.1.6_release_20171203_1647.xpi'   <'20171203_1647'>
+   
 
 2017-12-03
-  update for mozilla57 and 58  
+  update filePicker for mozilla58  
   -- fp.show (has been removed), use fp.open (async)
-  -- {get,set}ComplexValue use of nsISupportsString
-  versions:
-  57:  https://github.com/neandr/reminderfox/releases/tag/2.1.6(57)
-  58:  https://github.com/neandr/reminderfox/releases/tag/2.1.6(58)
+
 
 2017-11-21  
   toLocaleFormat  removed in rmFxUtils.js
