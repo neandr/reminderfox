@@ -474,7 +474,13 @@ reminderfox.core.getPreferenceValue= function(preferenceName, defaultValue){
     try {
         var prefType = reminderfox._prefsUser[preferenceName];
         if (prefType == reminderfox._prefsTYPE.COMPLEX) {
-            prefValue = reminderfox._prefsBranch.getStringPref(preferenceName);
+       //     prefValue = reminderfox._prefsBranch.getComplexValue((preferenceName), reminderfox.consts.nsISupportsString).data;
+       //     prefValue = reminderfox._prefsBranch.getStringPref(preferenceName);
+			try
+				{prefValue= reminderfox._prefsBranch.getStringPref(prefName) }
+			catch (ex) 
+				{prefValue= reminderfox._prefsBranch.getComplexValue((prefName), 
+					reminderfox.consts.nsISupportsString).data;}
         }
         else
         if (prefType == reminderfox._prefsTYPE.CHAR) {
@@ -537,7 +543,14 @@ reminderfox.core.setPreferenceValue= function(preferenceName, preferenceValue){
  **/
 reminderfox.core.getUnicodePref= function(prefName){
  //   return reminderfox._prefsBranch.getComplexValue(prefName, reminderfox.consts.nsISupportsString).data;
-    return reminderfox._prefsBranch.getStringPref(prefName);
+ //   return reminderfox._prefsBranch.getStringPref(prefName);
+	var r;
+	try
+		{r= reminderfox._prefsBranch.getStringPref(prefName) }
+	catch (ex) 
+		{r= reminderfox._prefsBranch.getComplexValue((prefName), 
+			reminderfox.consts.nsISupportsString).data;}
+	return r;
 };
 
 
@@ -545,7 +558,19 @@ reminderfox.core.getUnicodePref= function(prefName){
  * set unicode string value
  * */
 reminderfox.core.setUnicodePref= function(prefName, prefValue){
-    reminderfox._prefsBranch.setStringPref(prefName, prefValue);
+    // sString.data = prefValue;
+    // reminderfox._prefsBranch.setComplexValue(prefName, reminderfox.consts.nsISupportsString, sString);
+    // reminderfox._prefsBranch.setStringPref(prefName, prefValue);
+
+	try
+		{r= reminderfox._prefsBranch.setStringPref(prefName, prefValue) }
+	catch (ex) {
+        var sString = Components.classes["@mozilla.org/supports-string;1"]
+        	.createInstance(reminderfox.consts.nsISupportsString);
+		sString.data = prefValue;
+        reminderfox._prefsBranch.setComplexValue(prefName, 
+        	reminderfox.consts.nsISupportsString, sString);
+    }
 };
 
 

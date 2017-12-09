@@ -533,7 +533,13 @@ reminderfox.abCard.getCustomLabel = function(iName){
 	iName.substring(0, 1).toLowerCase() +
 	iName.substring(1) + ".label";
 	try {
-		cLabel = moreColsPrefs.getStringPref(cLabelid);
+	//	cLabel = moreColsPrefs.getComplexValue(cLabelid, Components.interfaces.nsISupportsString).data;
+		try {
+			cLabel = moreColsPrefs.getStringPref(cLabelid);
+		} catch (ex) {
+			cLabel = moreColsPrefs.getComplexValue(cLabelid, 
+				Components.interfaces.nsISupportsString).data;
+		}
 	} 
 	catch (e) {
 		cLabel = "Custom " + iName.substring(6, 7);
