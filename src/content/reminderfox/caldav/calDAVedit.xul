@@ -751,7 +751,7 @@
 
 			var saturation = reminderfox.core.getPreferenceValue(reminderfox.consts.CALDAV_SATURATION, reminderfox.consts.CALDAV_SATURATION_DEFAULT);
 
-			var colorHue = (256-xevent.mozMovementX)*360/256;
+			var colorHue = (256-xevent.offsetX)*360/256;
 			var pickerColor = reminderfox.colorUtil.getRgbCodeByHsv(colorHue, saturation, 98);
 			var pickerColorDark = reminderfox.colorUtil.getRgbCodeByHsv(colorHue, saturation, 50);
 

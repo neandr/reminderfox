@@ -319,7 +319,8 @@ reminderfox.view.ManageLoad = function(sortMode) {
 	//  "DATE");
 	// ("--- load the 'View's from .prefs to 'view_List' ---");
 	try {// gW UnicodePref
-		reminderfox.view.views.Pref = reminderfox.core.getUnicodePref("views");
+//XX		reminderfox.view.views.Pref = reminderfox.core.getUnicodePref("views");
+		reminderfox.view.views.Pref = reminderfox.core.getPreferenceValue(reminderfox.consts.VIEWS);
 		var aViewsPref = reminderfox.view.views.Pref.split(";>,")
 
 		var view_List = document.getElementById('view_List');
@@ -861,11 +862,9 @@ reminderfox.view.prefViewsLoad = function(){
 	reminderfox.view.views.Label = {};
 	reminderfox.view.views.Items = {};
 
-	try {
-		reminderfox.view.views.Pref = reminderfox.core.getUnicodePref("views");
-	} 
-	catch (ex) {
-	}
+//XX		reminderfox.view.views.Pref = reminderfox.core.getUnicodePref("views");
+	reminderfox.view.views.Pref = reminderfox.core.getPreferenceValue(reminderfox.consts.VIEWS, );
+
 
 	if ((reminderfox.view.views.Pref != null) && (reminderfox.view.views.Pref != "")) {
 		var aViewsPref = reminderfox.view.views.Pref.split(";>,");
@@ -1172,7 +1171,8 @@ reminderfox.view.vSaveAndClose = function(mode){
 
 	// 'views' prefs string saved    
 	reminderfox.view.views.Pref = reminderfox.view.prefBuildStr();
-	reminderfox.core.setUnicodePref("views", reminderfox.view.views.Pref);
+//XX	reminderfox.core.setUnicodePref("views", reminderfox.view.views.Pref);
+	reminderfox.core.setPreferenceValue(reminderfox.consts.VIEWS, reminderfox.view.views.Pref);
 	window.close();
 };
 

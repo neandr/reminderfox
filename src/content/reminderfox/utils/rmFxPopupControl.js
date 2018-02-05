@@ -28,7 +28,7 @@ reminderfox.util.popupCheck = function (thisId){
 
 	var contextMenusEnabled = true;
 	try {
-		contextMenusEnabled = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.ENABLE_CONTEXT_MENUS);
+		contextMenusEnabled = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.ENABLE_CONTEXT_MENUS);
 	}
 	catch (e) {}
 
@@ -101,7 +101,7 @@ reminderfox.util.popupCheck = function (thisId){
 			}
 
 			reminderfox.util.JS.dispatch('iCalMail');
-			Components.utils.import("resource://app/modules/gloda/mimemsg.js"); 
+			Components.utils.import("resource:///modules/gloda/mimemsg.js"); 
 
 			if (gDBView.numSelected > 0) {
 				var msgHdr = gDBView.hdrForFirstSelectedMessage;

@@ -37,10 +37,9 @@ function loadEventOptions() {
 
 	var isSubscription = reminderfox_isSubscribedCalendarTabSelected();
 
-	var defaultSyncAccount = reminderfox.core.getPreferenceValue (reminderfox.consts.CALDAV_DEFAULT_ACCOUNT, reminderfox.string('rf.html.heading.reminders'));
+	var defaultSyncAccount = reminderfox.core.getPreferenceValue (reminderfox.consts.CALDAV_DEFAULT_ACCOUNT, reminderfox.string("rf.html.heading.reminders"));
 
-
-/*----
+/*-----
 	msg = '  loadEvent Options     |editThis|isTodo : ' + editThis +"|"+ isTodo;
 	if (newReminder) msg += "\n  reminder.summary|reminderCalDAVid : " + newReminder.summary + "|" +  reminderCalDAVid;
 	if (newTodo)     msg += "\n  Todo.summary|todoCalDAVid|todoCalDAVid : " + isTodo + "|" + newTodo.summary + "|" + todoCalDAVid;
@@ -48,8 +47,6 @@ function loadEventOptions() {
 	+ "\n  tabInfo.tabName|tabID|tabTyp : " +  tabInfo.tabName + "|" + tabInfo.tabID + "|" + tabInfo.tabTyp;
 //reminderfox.util.Logger('Alert', msg);
 ---*/
-
-
 
 	// populate menuList for Reminder and CalDAV and append ToDo's and User list ------------
 	var reminderListChooser = document.getElementById("reminderListChooser");
@@ -78,7 +75,7 @@ function loadEventOptions() {
 			menuitem.setAttribute("class", "menuitem-iconic");
 
 			menuitem.setAttribute("image", reminderfox.consts.SHARE);
-			menuitem.setAttribute("label", '[ ' + account + " ] " + calDAVaccounts[account].Name);
+			menuitem.setAttribute("label", "[ " + account + " ] " + calDAVaccounts[account].Name);
 			menuitem.setAttribute("id", calDAVaccounts[account].Name);
 
 			menuitem.setAttribute("ID", account);
@@ -208,6 +205,9 @@ function loadEventOptions() {
 function reminderFox_ListChooserChanged(listIndex, editThis, firstRun) {
 //------------------------------------------------------------------------------
 	var reminderListChooser = document.getElementById("reminderListChooser");
+
+console.error("XXXX  reminderFox_ListChooserChanged:" ,listIndex, editThis, firstRun); 
+
 	if(listIndex == null)	// compare to null 
 									// .. listIndex will be null with using the pulldown menu
 									// .. listIndex can be '0' from loadEventOptions()

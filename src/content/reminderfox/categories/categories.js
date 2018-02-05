@@ -277,8 +277,5 @@ reminderfox.category.saveGroups = function(mode){
 		if (mode == 'up') rmCategoriesStandard = catArray.sort().join(',');
 		if (mode == 'down') rmCategoriesStandard = catArray.sort().reverse().join(',');
 	}
-	
 	reminderfox.core.writeCategories2prefs(reminderfox.category.NoDup(rmCategoriesStandard));
-	
-	return rmCategoriesStandard;
 };

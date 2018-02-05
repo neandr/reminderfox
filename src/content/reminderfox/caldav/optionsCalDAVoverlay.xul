@@ -24,7 +24,6 @@
 				<tab id="panel1" label="&rf.caldav.sync.about;" linkedpanel="infoPanel" />
 				<tab id="panel2" label="&rf.caldav.calendars;" linkedpanel="calDAV_calendars" />
 				<tab id="panel3" label="&rf.caldav.remote.server;" linkedpanel="reminderFoxVbox4" />
-				<tab id="calDAVTestPanel" label="CalDAV Testing" linkedpanel="calDAVtesting" />
 			</tabs>
 
 			<tabpanels flex="2">
@@ -157,139 +156,6 @@
 
 				</vbox>
 
-
-				<!-- ************ CalDAV Testing ******************************* -->		<!-- THIS section need no locale -->
-
-				<vbox id="calDAVtesting" flex="1" hidden="true">
-
-					<groupbox>
-						<caption id="calDAVrequest" flex="1">
-							<hbox align="center" flex="1">
-								<label value="Request" />
-								<spacer width="10px" />
-								<image class="infoButton" tooltiptext="Remote Calendar - Test support"
-									onclick="reminderfox.util.docRmFX('caldav-testsupport/');" />
-								<spacer flex="4" />
-
-								<label value="Calendar" />
-								<spacer width="5px" />
-
-								<menulist id="calDAVaccount" tooltiptext="Select a defined CalDAV account">
-									<menupopup id="accountSelected" onpopupshowing="testAccount_Selecting(event)">
-										<menuitem id="accountList" label=".. which ?"
-											tooltiptext="Select a CalDAV Account" selected="true" />
-										<menuitem label="0" value="0" tooltiptext="" />
-										<menuitem label="1" value="1" tooltiptext="" />
-									</menupopup>
-								</menulist>
-
-								<spacer flex="2" />
-								<vbox>
-									<button label="Submit" tooltiptext="Send the HTTP Request"
-										oncommand="calDAVTEST.methodRequest(calDAVaccounts);" />
-								</vbox>
-								<spacer flex="1" />
-
-								<hbox>
-									<image class="rmFx-export-icon" tooltiptext="Copy 'Request Box' content"
-										onclick="calDAVTEST.Copy('request');" />
-								</hbox>
-							</hbox>
-						</caption>
-
-						<vbox>
-							<hbox align="center">
-
-								<menulist id="calls" tooltiptext="Select a predefined CalDAV test">
-									<menupopup id="callmenuPopup" onpopupshowing="testCall_Selecting(this);"
-										onpopuphiding="testCallSelected();">
-										<menuitem label="CalDAV call ?" id="callsTest0"
-											tooltiptext="Select a CalDAV Test" selected="true" />
-									</menupopup>
-								</menulist>
-
-								<spacer flex="5" />
-
-								<textbox id="calDAV_method" value=" - - " tooltiptext="method" />
-								<spacer />
-
-								<textbox id="calDAV_header" value="Depth:0"
-									tooltiptext="header as string entry" />
-								<spacer />
-
-								<menulist id="contentType" tooltiptext="Select contentTyp">
-									<menupopup>
-										<menuitem label="xml" value="application/xml"
-											tooltiptext="application/xml" selected="true" />
-										<menuitem label="calendar" value="text/calendar"
-											tooltiptext="text/calendar" />
-										<menuitem label="plain" value="text/plain"
-											tooltiptext="text/plain" />
-										<menuitem label="html" value="text/html" tooltiptext="text/html" />
-										<menuitem label="json" value="application/json"
-											tooltiptext="application/json" />
-										<menuitem label="x/xml" value="text/xml" tooltiptext="text/xml" />
-										<menuitem label="gCal oauth"
-											value=" application/vnd.google.gdata.error+xml" tooltiptext="GCal oauth" />
-									</menupopup>
-								</menulist>
-
-							</hbox>
-						</vbox>
-
-						<hbox flex="1">
-							<label value="urlstr" />
-							<textbox id="calDAV_urlstr" value="" flex="1"
-								tooltiptext="extended URL for eg. reminder.id" />
-						</hbox>
-
-						<vbox>
-							<textbox id="calDAV_content" multiline="true" flex="2"
-								rows="4" />
-						</vbox>
-
-					</groupbox>
-
-					<groupbox>
-						<caption id="calDAVresult" align="center" flex="1">
-							<label value="Result" />
-
-							<hbox>
-								<image class="rmFx-import-icon" tooltiptext="Reload to box last 'Result'"
-									onclick="calDAVTEST.resultReload();" />
-							</hbox>
-							<spacer flex="5" />
-
-							<vbox>
-								<textbox id="resultFilter" label="filter" value="response" />
-							</vbox>
-							<hbox>
-								<image class="rmFx-filter-icon" tooltiptext="Filter last 'Result Box"
-									onclick="calDAVTEST.resultFilter();" />
-							</hbox>
-
-							<spacer flex="5" />
-
-							<hbox>
-								<image class="rmFx-remove-icon" tooltiptext="Clear 'Result Box' content"
-									onclick="document.getElementById('resultTest').value = '';" />
-							</hbox>
-
-							<spacer flex="2" />
-
-							<hbox>
-								<image class="rmFx-export-icon" tooltiptext="Copy 'Result Box' content"
-									onclick="calDAVTEST.Copy('result');" />
-							</hbox>
-
-						</caption>
-
-						<vbox>
-							<textbox id="resultTest" multiline="true" flex="2" rows="3" />
-						</vbox>
-					</groupbox>
-				</vbox>
-			<!--	end testing -->
 			</tabpanels>
 
 		</tabbox>
@@ -308,11 +174,9 @@
 	</vbox>
 
 
-
 	<script type="application/x-javascript"><![CDATA[
 
 		var calDAVaccounts;
-
 
 		/**
 		 * En-/disable a calendar for CalDAV
@@ -416,6 +280,9 @@
 			elem.querySelector(".calDAV_Name").value	= callOptions.Name;
 			elem.querySelector(".calDAV_Name").setAttribute('color',callOptions.Color);
 			elem.querySelector(".calDAV_Name").setAttribute('tooltiptext', callOptions.Url);
+
+			//read color map to get changes after selection
+			reminderfox.colorMap.setup();
 
 			if (+callOptions.Color != 999) 
 				style = "background-color:#" + reminderfox.calDAV.colorMap[callOptions.Color][0] + ";border: green 1px solid;";
@@ -722,219 +589,6 @@
 				urlLink.setAttribute("flex", "1");
 				box.appendChild(urlLink);
 			}
-		}
-
-
-	// ======== testing ==================
-
-	var calDAVTEST = {
-		
-		tester : false,
-
-		methodRequest : function (accounts){
-
-			if ((document.getElementById("calDAVaccount").label == '.. which ?') &&
-					(document.getElementById('calDAV_urlstr').value === "")) {
-				alert ("Select Account or fill in URL !");
-				return;
-			}
-
-			if (document.getElementById("calDAV_method").selectedIndex === 0) {
-				alert ("Select the Method !");
-				return;
-			}
-
-			var call = {};
-
-			var calDAVaccount = document.getElementById('calDAVaccount').label;
-
-			for (var account in accounts) {
-				if (accounts[account].Name == calDAVaccount) {
-					call.username        = accounts[account].Login;
-					call.url             = accounts[account].Url;
-					call.password        = '';
-					call.Typ             = accounts[account].Typ;
-					call.account         = accounts[account];
-				}
-			}
-
-			call.tester = true;
-
-			call.method  = document.getElementById('calDAV_method').value;
-			call.body    = document.getElementById('calDAV_content').value;
-			call.header  = document.getElementById('calDAV_header').value;
-			call.urlstr  = document.getElementById('calDAV_urlstr').value;
-
-			call.contentType     = document.getElementById('contentType').value;
-
-			call.timeout         = 30; // document.getElementById("timeout");
-
-			call.request    = 'request';
-			call.callback   = 'onResult';
-			call.onError    = 'onResult';
-
-			var myHTTP = new reminderfoxX.calDAVhttp();
-			myHTTP.ID = new Date().getTime();
-			myHTTP.sendContentToURL(this, call);
-		},
-
-
-		onResult : function (status, xml, text, headers, statusText, call) {
-		var msg, XML;
-			msg = "TESTING  onResult: " + status + "  " +statusText + "\n" +text;
-			//reminderfox.util.Logger('Alert',msg);
-
-
-		if (status === 0 || (status >= 200 && status < 300)) {
-			msg = "onResult: " + status + "  " +statusText + "\n" +text;
-
-			if (xml) {
-				XML = new reminderfox.HTTP.JXONTree(xml); 
-				var responses = reminderfox.HTTP.XMLobject (XML, "response");
-
-				this.lastResult = JSON.stringify(responses);
-				document.getElementById("resultTest").value = this.lastResult;
-
-
-			} else {
-				document.getElementById("resultTest").value = text;
-				this.lastResultText = text;
-				reminderfox.util.Logger('calDAVtest', msg);
-			}
-
-		} else {  // ERROR Handling
-			msg = "Error " + status + "  " +statusText + "\n" +text;
-
-			document.getElementById("resultTest").value = msg;
-			this.lastResultText = msg;
-
-			if (xml) {
-				XML = new reminderfox.HTTP.JXONTree(xml); 
-				this.lastResult = XML;
-			}
-			reminderfox.util.Logger('calDAVtest', msg);
-		}},
-
-
-		resultFilter : function () {
-			var xml = this.lastResult;
-			document.getElementById('resultFilter').value = document.getElementById('resultFilter').value.toLowerCase();
-
-			var filters = document.getElementById('resultFilter').value;
-			var filterArray = filters.split(",");
-			var XML = getNext (xml, filterArray[0]);
-			var b = JSON.stringify(XML) +"\n";
-
-			var c = b.replace(/,/g, '\n');
-			document.getElementById("resultTest").value = c;
-
-			var b1 = "";
-			var b2 = "";
-
-			if (!XML.length) {
-				var XML1 = reminderfox.HTTP.XMLobject(XML, filterArray[1]);
-				if (XML1) {
-					b1 += JSON.stringify(XML1) +"\n";
-				}
-			}
-
-			if (XML.length > 0) {
-				for (var i =0; i < XML.length; i++) {
-					var XML2 = reminderfox.HTTP.XMLobject(XML[i], filterArray[1]);
-					if (XML2) {
-						b2 += JSON.stringify(XML2) +"\n";
-					}
-				}
-				var x=0;
-			}
-
-			function getNext (xml, filter) {
-				return reminderfox.HTTP.XMLobject (xml, filter);
-			}
-
-			if (b1 !== "") b = b1;
-			if (b2 !== "") b = b2;
-
-			var d = b.replace(/,/g, '\n');
-			document.getElementById("resultTest").value = d;
-		},
-
-
-		resultReload : function () {
-			document.getElementById("resultTest").value = this.lastResultText;
-		},
-
-
-		Copy : function (mode) {
-			var data;
-
-			if (mode == 'request') {
-				var date = new Date();
-				data = "Request     "  + date
-				+ "\n" + document.getElementById('calDAVaccount').value;
-				
-				if (document.getElementById('calDAV_urlstr').value !== "")
-					data += "   " + document.getElementById('calDAV_urlstr').value;
-
-				data += "\n--------------------------------------------------"
-				+ "\n"   + document.getElementById('calls').label + " :  " + document.getElementById('calDAV_method').value
-				+ ";  "  + document.getElementById('calDAV_header').value
-				+ "\n"   + document.getElementById('contentType').value
-				+ "\n\n" + document.getElementById('calDAV_content').value;
-			}
-
-			if (mode == 'result') {
-				data = 
-					"Result\n--------------------------------------------------"
-					+ "\n" + document.getElementById("resultTest").value;
-			}
-
-			reminderfox.util.copytoClipboard (data);
-		}
-	};
-
-		function testAccount_Selecting (xthis) {
-			var accounts = document.getElementById('accountSelected');
-			while (accounts.hasChildNodes()) {
-					accounts.removeChild(accounts.lastChild);
-				if (accounts.lastChild.id == "accountList") break;
-			}
-
-			for (var account in calDAVaccounts) {
-//			<menuitem label="0" value="0" tooltiptext="" />
-				var menuItem = document.createElement("menuitem");
-					menuItem.setAttribute("label", calDAVaccounts[account].Name);
-					menuItem.setAttribute("value", calDAVaccounts[account].Login);
-					menuItem.setAttribute("tooltiptext", calDAVaccounts[account].Url);
-				accounts.appendChild(menuItem);
-			}
-		}
-
-
-		function testCall_Selecting (xthis) {
-			// load settings for CalDAV testing 
-			// remove all current calDAVcalls from dialog
-			var callmenuPopup = document.getElementById("callmenuPopup");
-			while (callmenuPopup.hasChildNodes()) {
-				if (callmenuPopup.lastChild.id == "callsTest0") break;
-					callmenuPopup.removeChild(callmenuPopup.lastChild);
-			}
-			for (var call in reminderfox.calDAVcalls) {
-				var m1 = document.createElement("menuitem");
-					m1.setAttribute("label", call);
-					m1.setAttribute("value", reminderfox.calDAVcalls[call][0]);
-					m1.setAttribute("tooltiptext", reminderfox.calDAVcalls[call][1]);
-				callmenuPopup.appendChild(m1);
-			}
-		}
-
-		function testCallSelected () {
-			var calls = document.getElementById('calls');
-			if (calls.label == "CalDAV call ?") return;
-
-			document.getElementById('calDAV_method').value = reminderfox.calDAVcalls[calls.label][0];
-			document.getElementById('calDAV_content').value = reminderfox.calDAVcalls[calls.label][1];
-			document.getElementById('calDAV_header').value = reminderfox.calDAVcalls[calls.label][2];
 		}
 
 	]]></script>

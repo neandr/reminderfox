@@ -11,8 +11,6 @@ if(!reminderfox.sendPlus) reminderfox.sendPlus = {};
  */
 reminderfox.sendPlus.reminder = function () {	
 // -----------------------------------------------------------
-//reminderfox.util.Logger('send++', "   .sendPlus.reminder Logger")
-
 	reminderfox.util.JS.dispatch('sendPlus');
 
 	// clear reminders from memory

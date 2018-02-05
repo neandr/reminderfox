@@ -20,10 +20,7 @@ reminderfox.iSchedule.persons = function (event)	{ // rev.2007-11-27
 				this adds the ORGANIZER/ATTENDEE data as Iconized display to XUL
 */
 	var timeString = reminderfox.date.getTimeString( event.date );
-	var _dateVariableString;
-	try {
-		_dateVariableString = reminderfox.core.getUnicodePref(reminderfox.consts.LIST_DATE_LABEL);
-	} catch(e) {}
+	var _dateVariableString = reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT);
 	var schDTStart =reminderfox.date.getDateVariable( null, event.date, _dateVariableString ) + "  " + timeString;
 
 	var noAttendees=0;
@@ -35,7 +32,7 @@ reminderfox.iSchedule.persons = function (event)	{ // rev.2007-11-27
 	if ( (cExtra.indexOf("ORGANIZER") > -1)
 		|| (cExtra.indexOf("ATTENDEE")  > -1) ) {
 
-		var myMailAccounts = reminderfox.msgnr.myMailIDs('from schedule.js') + ",";
+		var myMailAccounts = reminderfox.msgnr.myMailIDs("from schedule.js") + ",";
 
 		if (myMailAccounts == "" || myMailAccounts == null) {
 			myMailAccounts = reminderfox.util.mailAppSetup() + ",";}
@@ -242,7 +239,7 @@ reminderfox.iSchedule.elementAttendees = function (element, personsData) {
 					iNeedAction = true;
 					e.setAttribute("id", "myRSVP");
 					e.setAttribute("tooltiptext", personsData.RSVP 
-							+ reminderfox.string('rf.schedule.selectResponse'));
+							+ reminderfox.string("rf.schedule.selectResponse"));
 					reminderfox.iCal.attendeeMyMail = personsData.MAIL;
 					}
 				else {
@@ -269,7 +266,7 @@ reminderfox.iSchedule.elementAttendees = function (element, personsData) {
 	var e = document.createElement("image");				//		PARTIZIPATION
 			if (personsData.PARTSTAT !="") {
 				e.setAttribute("id", personsData.PARTSTAT);
-				if ( (element == 'schMeBox') &&
+				if ( (element == "schMeBox") &&
 						((personsData.PARTSTAT == "Status-ACCEPTED")
 					|| (personsData.PARTSTAT == "Status-DECLINED")) ) { // for mySchedule w. AVV or DECL  make it selectable
 					e.setAttribute("tooltiptext", personsData.PARTSTAT
@@ -288,12 +285,12 @@ reminderfox.iSchedule.elementAttendees = function (element, personsData) {
 	hbox.appendChild(e);
 
 	var e = document.createElement("text");
-		if ( element == 'schMeBox') {
+		if ( element == "schMeBox") {
 			e.setAttribute("id", "myDataMAIL");
 		} else {
 			e.setAttribute("id", "personsDataMAIL");
 		}
-			e.setAttribute("value", personsData.CNAME + '<' + personsData.MAIL +'>');
+			e.setAttribute("value", personsData.CNAME + "<" + personsData.MAIL +">");
 	hbox.appendChild(e);
 
 	aList.appendChild(hbox);
@@ -466,16 +463,16 @@ reminderfox.iSchedule.partizipation = function (status) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var myID = status.parentNode.childNodes[4].attributes[0].value;
 
-	if (status.id.indexOf('ACCEPTED') == -1) {
-		newPartStat = 'ACCEPTED';
+	if (status.id.indexOf("ACCEPTED") == -1) {
+		newPartStat = "ACCEPTED";
 	} else {
-		newPartStat = 'DECLINED';
+		newPartStat = "DECLINED";
 	}
 	check = confirm(reminderfox.string("rf.schedule.changePartStatus") 
 		+ ": '" + newPartStat +"'");
 
 	if (check == true) {
-	// myACTION =  'ACCEPTED'  or  'DECLINED'
+	// myACTION =  "ACCEPTED"  or  "DECLINED"
 		reminderfox.iSchedule.rsvp(newPartStat);
 	} else {
 		// alert("canceled");

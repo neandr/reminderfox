@@ -3,9 +3,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-var ALERT_LEFT = reminderfox.core.getPreferenceValue(reminderfox.consts.PREF_ALERTSLIDER_LEFT, false);
-var ALERT_TOP = reminderfox.core.getPreferenceValue(reminderfox.consts.PREF_ALERTSLIDER_TOP, false);
-var ALERT_MAX_SIZE = reminderfox.core.getPreferenceValue(reminderfox.consts.PREF_ALERTSLIDER_MAX_HEIGHT, 150);
+var ALERT_LEFT = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERTSLIDER_LEFT, false);
+var ALERT_TOP = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERTSLIDER_TOP, false);
+var ALERT_MAX_SIZE = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERTSLIDER_MAX_HEIGHT, 150);
 
 var gOpenTime = 4000; // total time the alert should stay up once we are done animating.
 
@@ -15,16 +15,15 @@ function onAlertLoad() {
 	var upcomingReminders = window.arguments[0].upcomingReminders;
 	var alertType = window.arguments[0].alertTypeToShow;
 
-	rmFX_prefillAlertInfo(todaysReminders, upcomingReminders) // , hideGayPaw)
-
+	rmFX_prefillAlertInfo(todaysReminders, upcomingReminders);
 	setTimeout(function() {showAlert();}, 0);
 }
 
 
-function rmFX_prefillAlertInfo(todaysReminders, upcomingReminders) { //, hideGayPaw) {
-		var hideGayPaw = reminderfox.core.getPreferenceValue( reminderfox.consts.HIDE_FOX_PAW );
-		if ( hideGayPaw ) {
-			document.getElementById('reminderfox-foxpaw').setAttribute("hidden", "true");	
+function rmFX_prefillAlertInfo(todaysReminders, upcomingReminders) {
+		var hideGayPaw = reminderfox.core.getPreferenceValue(reminderfox.consts.HIDE_FOX_PAW, false);
+		if (hideGayPaw) {
+			document.getElementById('reminderfox-foxpaw').setAttribute("hidden", "true");
 		}
 
 		//	remove old reminders boxes
@@ -60,10 +59,8 @@ function showAlert() {
 
 	var alertContainer = document.getElementById("alertContainer");
 
-	try {
-		// get gOpenTime (it is specified in seconds - so multiply by 1000)
-		gOpenTime = reminderfox._prefsBranch.getIntPref(reminderfox.consts.PREF_ALERTSLIDER_OPEN_TIME) * 1000;
-	} catch(e) {}
+	// get gOpenTime (it is specified in seconds - so multiply by 1000)
+	gOpenTime = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERTSLIDER_OPEN_TIME, 5) * 1000;
 
 	alertContainer.addEventListener("animationend", function hideAlert(event) {
 		if (event.animationName == "fade-in") {
@@ -119,7 +116,7 @@ var logMsg = " NewAlert Slider on screen details  "
 	+ "\n  alertSliderMaxHeight | gFinalHeight  :: " 
 		+ alertSliderMaxHeight +" | "+ gFinalHeight 
 	+ "\n";
-//reminderfox.util.Logger("alert",logMsg)
+//reminderfox.util.Logger('alert',logMsg)
 }
 
 

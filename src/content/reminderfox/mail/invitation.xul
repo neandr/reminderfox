@@ -271,11 +271,7 @@ function invitationLoadDialog () {
 			//		 .setAttribute( "hidden", true);
 	}
 
-	try {
-		rmFx_exportFile = reminderfox._prefsBranch.getCharPref("exportEventsFile");
-	} catch (ex) {
-		rmFx_exportFile = reminderfox.util.filePath4storePath ("reminderfoxEvents.ics");
-	}
+	rmFx_exportFile = reminderfox.core.getPreferenceValue("exportEventsFile", "reminderfoxEvents.ics");
 
 	document.getElementById("exportFile").setAttribute ("value", rmFx_exportFile);
 
@@ -349,7 +345,7 @@ function invitationCloseDialog (mode) {
 		var organizer = document.getElementById('organizerMenu').label;
 		window.arguments[0].organizer = organizer;
 
-		reminderfox._prefsBranch.setCharPref(reminderfox.consts.MAIL_SENDER, organizer);
+		reminderfox.core.setPreferenceValue(reminderfox.consts.MAIL_SENDER, organizer);
 
 		if (document.getElementById('inviteEnable').checked == true) {
 			window.arguments[0].selectedTyp = 'invite';
@@ -366,7 +362,7 @@ function invitationCloseDialog (mode) {
 		}
 
 		var mailApp = document.getElementById('mailApp.location.input').value
-		reminderfox._prefsBranch.setCharPref(reminderfox.consts.MAIL_PATH, mailApp);
+		reminderfox.core.setPreferenceValue(reminderfox.consts.MAIL_PATH, mailApp);
 
 		window.close();
 		}
@@ -390,7 +386,7 @@ function invitationCloseDialog (mode) {
 		};
 
 		var prefsName = "exportEventsFile"  // set as prefs 'extensions.reminderFox.exportEventsFile'
-		reminderfox._prefsBranch.setCharPref(prefsName, exportFile);
+		reminderfox.core.setPreferenceValue(prefsName, exportFile);
 		window.close();
 	 }
 };

@@ -187,7 +187,7 @@ reminderfox.abCard.addReminder4Contact = function(op){
 	reminderfox.msgnr.whichMessenger();
 	reminderfox.abCard.selectedABURI = GetSelectedDirectory();
 	reminderfox.abCard.cDirectory = GetDirectoryFromURI(reminderfox.abCard.selectedABURI).dirName;
-reminderfox.util.Logger('AB',"  .abCard.cDirectory: " + reminderfox.abCard.cDirectory + "\n  ..selectedABURI: " + reminderfox.abCard.selectedABURI)
+	reminderfox.util.Logger('AB',"  .abCard.cDirectory: " + reminderfox.abCard.cDirectory + "\n  ..selectedABURI: " + reminderfox.abCard.selectedABURI)
 
 	if (reminderfox.abCard.cDirectory.isMailList) {
 		return;
@@ -195,7 +195,7 @@ reminderfox.util.Logger('AB',"  .abCard.cDirectory: " + reminderfox.abCard.cDire
 	switch (op) {
 		case "Reminder":{ // this is to set a reminder from a selected card
 			reminderfox.abCard.cCard = GetSelectedCard();
-			
+
 			if (reminderfox.abCard.cCard == null) {
 				reminderfox.util.PromptAlert(reminderfox.string("rf.contacts.abcard.single"));
 				return;
@@ -203,16 +203,12 @@ reminderfox.util.Logger('AB',"  .abCard.cDirectory: " + reminderfox.abCard.cDire
 
 			var dirId = reminderfox.abCard.cCard.directoryId.substring(0, reminderfox.abCard.cCard.directoryId.indexOf("&"));
 			var cardDirectory = MailServices.ab.getDirectoryFromId(dirId).URI
-reminderfox.util.Logger('AB',"  card belongs to: "+ cardDirectory)
+			reminderfox.util.Logger('AB',"  card belongs to: "+ cardDirectory)
 
 			// --- setup the reminder -----
 			var time = new Date();
 			var timeString = reminderfox.date.getTimeString(time);
-			var _dateVariableString;
-			try {
-				_dateVariableString = reminderfox.core.getUnicodePref(reminderfox.consts.LIST_DATE_LABEL);
-			}
-			catch (e) {}
+			var _dateVariableString = reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT);
 
 			var remFoxDate = reminderfox.date.getDateVariable(null, time, _dateVariableString) + "  " + timeString;
 			var newDate = new Date();
@@ -231,14 +227,13 @@ reminderfox.util.Logger('AB',"  card belongs to: "+ cardDirectory)
 			var cNotes = '[' + reminderfox.abCard.cDirectory + ']\n';
 			var custItems = "";
 			var labelStr = "";
-			
+
 			// +++++ read  all card-items to be added +++++
 			var rmFx_cardItems = reminderfox.abCard.readPref(); // -- get values
 			var cardItems = rmFx_cardItems.split(";");
 			for (var i = 0; i < cardItems.length; i++) {
 				var anyValue = false;
 				var currentLine = cardItems[i];
-				
 				if (cardItems[i].indexOf("Label") != -1) {
 					if (cardItems[i].charAt(0) != "X") {
 						labelStr = "\n" + reminderfox.abCard.itemName(cardItems[i]) +
@@ -246,17 +241,14 @@ reminderfox.util.Logger('AB',"  card belongs to: "+ cardDirectory)
 					}
 				}
 				else {
-				
 					if ((currentLine != "") &&
 					(currentLine.substring(0, 2) != "//")) {
 						var usAdr = false;
-						
 						if (currentLine.indexOf("WorkCity,WorkState") != -1 ||
 						currentLine.indexOf("HomeCity,HomeState") != -1) usAdr = true;
 						var cItems = currentLine.split(",");
 						for (var j = 0; j < cItems.length; j++) { /* one item */
 							var namString = cItems[j];
-							
 							//  process  cardItem
 							if (namString.charAt(0) == "!") {
 								// this needs to fetch the namString
@@ -268,12 +260,9 @@ reminderfox.util.Logger('AB',"  card belongs to: "+ cardDirectory)
 							if (iName == "HomeWebPage") iName = "WebPage1";
 							if (iName == "WorkWebPage") iName = "WebPage2";
 							var iname = iName.substring(0, 1).toLowerCase() + iName.substring(1);
-							
 							if (iname.charAt(0) != "x") {
 								var thisItem = reminderfox.abCard.cCardItem(reminderfox.abCard.cCard, iName);
-								
 								if (iName.indexOf("Custom") != -1) {
-								
 									if (thisItem != "") {
 										cNotes += labelStr + "    " + reminderfox.abCard.itemName(iName) + " : " +
 										thisItem;
@@ -282,26 +271,24 @@ reminderfox.util.Logger('AB',"  card belongs to: "+ cardDirectory)
 									}
 								}
 								else {
-								
 									if (namString.charAt(0) == "!") {
-									
 										if (thisItem != "") {
 											cNotes += labelStr + "    " + reminderfox.abCard.itemName(iName) + ":\t";
 											anyValue = true;
 											labelStr = "";
 										}
 									}
-									
+
 									if (thisItem != "") {
 									
 										if (labelStr != "" && thisItem != "") {
 											cNotes += labelStr;
 											labelStr = "";
 										}
-										
+
 										if (anyValue == false) cNotes += "    ";
 										cNotes += thisItem;
-										
+
 										if (usAdr == false) {
 											cNotes += "   ";
 										}
@@ -315,12 +302,11 @@ reminderfox.util.Logger('AB',"  card belongs to: "+ cardDirectory)
 							}
 						}
 					}
-					
 					if (anyValue == true) cNotes += "\n";
 				}
 			}
 			newReminderToBeAdded.notes = cNotes;
-			
+
 			if (custItems != "") newReminderToBeAdded.notes += "\n" + custItems + "\n";
 			// --- add ABcard-items to rmFx-fields ---
 
@@ -354,7 +340,7 @@ reminderfox.util.Logger('AB',"  card belongs to: "+ cardDirectory)
 				newReminderToBeAdded.recurrence.type = 0; //reminderfox.consts.RECURRENCE_YEARLY;
 				newReminderToBeAdded.allDayEvent = true;
 			}
-			reminderfox.abCard.writePref();
+
 			//  .... and go to display it .... w 'edit'  to get recurrence + allDay
 			reminderfox.core.addReminderHeadlessly(newReminderToBeAdded, false /*edit*/);  //gWXXX changed to false
 		}
@@ -384,13 +370,13 @@ reminderfox.util.Logger('AB',"  card belongs to: "+ cardDirectory)
 reminderfox.abCard.insertAttendees = function(xAttendees){
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var topWindow = reminderfox.util.getWindow("window:ItemDialog");
-	
+
 	try {
 		topWindow.focus();
 		var attendeeBox = topWindow.document.getElementById("attendees");
 		var attendeeText = attendeeBox.value;
 		var end0 = attendeeBox.selectionEnd;
-		
+
 		if (attendeeText == "" && attendeeText != null) {
 			attendeeBox.value = xAttendees;
 		}
@@ -405,7 +391,7 @@ reminderfox.abCard.insertAttendees = function(xAttendees){
 		var end = attendeeBox.textLength;
 		attendeeBox.setSelectionRange(end);
 		topWindow.focus();
-	} 
+	}
 	catch (e) {
 		}
 };
@@ -431,7 +417,7 @@ reminderfox.abCard.abookOpen = function(){
 		
 		try {
 			go4Process.init(mailApp);
-		} 
+		}
 		catch (ex) {
 				}
 		go4Process.run(false, new Array("-addressbook"), 1);
@@ -467,18 +453,16 @@ reminderfox.abCard.itemName = function(namItem){
 		namItem == "SecondEmail" ||
 		namItem == "ScreenName")
 			return reminderfox.abCard.bundle.getString("property" + namItem);
-		
-		
+
 		if (namItem == "LabelContact" || namItem == "HomeAddress") 			
 			return reminderfox.string(reminderfox.abCard.prop + namItem);
 		
 		if (namItem.indexOf("Label") != -1)
 			return reminderfox.abCard.bundle.getString("heading" + namItem.substring(5));
-		
+
 		if (namItem.indexOf("Number") != -1)
 			return reminderfox.abCard.bundle.getString("property" + namItem.substring(0, namItem.indexOf("N")));
-		
-		
+
 		// ... access morecols.properties  ... if there else addressbook.p
 		if (namItem.indexOf("Custom") != -1)
 			return reminderfox.abCard.getCustomLabel(namItem);
@@ -486,46 +470,42 @@ reminderfox.abCard.itemName = function(namItem){
 		// ... now no entries ... need to set it here (without 'locale' translation)
 		if (namItem.indexOf("Name") != -1)
 			return namItem;
-		
+
 		if (namItem == "JobTitle")
 			return "Job";
 		if (namItem == "Department")
 			return "Department";
 		if (namItem == "Company")
 			return "Company";
-		
+
 		if (namItem == "HomeWebPage" ||
 		namItem == "WorkWebPage") 
 			return "WebPage";
-		
+
 		if (namItem.indexOf("Address2") != -1)
 			return "";
-		
+
 		//  ... delete 'Phone'  from item-name and return it
 		if (namItem.indexOf("Phone") != -1)
 			return namItem.substring(0, 4);
-		
+
 		// ... delete 'Work' or 'Home' from item-name and return it
 		if ((namItem.indexOf("Work") != -1) ||
 		(namItem.indexOf("Home") != -1))
 			return namItem.substring(4);
-		
-		
-	} 
+	}
 	catch (ex) {
 		reminderfox.core.logMessageLevel(reminderfox.abCard.errMsg + "\n[" + reminderfox.msgnr.name + "] " +
 		reminderfox.abCard.errMsg1 +
 		namItem, 2);
 	}
-	
+
 	return namItem;
 };
 
 
-
 reminderfox.abCard.getCustomLabel = function(iName){
 	// ---------- work with Custom 1..4 individual entries  -------------
-	
 	var cLabel = "";
 	var moreColsPrefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 	
@@ -544,49 +524,21 @@ reminderfox.abCard.getCustomLabel = function(iName){
 	catch (e) {
 		cLabel = "Custom " + iName.substring(6, 7);
 	}
-	
 	return cLabel;
 };
 
+
 reminderfox.abCard.readPref = function(){
 	// ------------------------------------------------ READ  PREFS
-	var prefService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-	var abCardPrefVersion = "US";
-	try {
-		abCardPrefVersion = prefService.getCharPref("rmFx.abCardItems.version");
-	} 
-	catch (e) {
-		}
-	prefService.setCharPref("rmFx.abCardItems.version", abCardPrefVersion);
-	try {
-		reminderfox.abCard.items = prefService.getStringPref("rmFx.abCardItems");
-	} 
-	catch (e) {
-		if (abCardPrefVersion == "US") {
-			reminderfox.abCard.items = reminderfox.abCard.itemsUS; // set to US default
-			prefService.setCharPref("rmFx.abCardItems.version", "US");
-		}
-		if (abCardPrefVersion == "EU") {
-			reminderfox.abCard.items = reminderfox.abCard.itemsEU; // set to EU default
-			prefService.setCharPref("rmFx.abCardItems.version", "EU");
-		}
+	var abCardPrefVersion = reminderfox.core.getPreferenceValue(reminderfox.consts.ABCARD, "US");
+	reminderfox.core.setPreferenceValue(reminderfox.consts.ABCARD, abCardPrefVersion);
+
+	if (abCardPrefVersion == "EU") {
+		reminderfox.abCard.items = reminderfox.abCard.itemsEU; // set to EU default
+	} else {
+		reminderfox.abCard.items = reminderfox.abCard.itemsUS; // set to US default
 	}
-	
 	return reminderfox.abCard.items;
-};
-
-
-reminderfox.abCard.writePref = function(){
-	// ------------------------------------------------ WRITE  PREFS
-	var prefService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-	var abCardPrefVersion = "US";
-	try {
-		abCardPrefVersion = prefService.getCharPref("rmFx.abCardItems.version");
-	} 
-	catch (e) {
-		prefService.setCharPref("rmFx.abCardItems.version", abCardPrefVersion);
-	}
-	prefService.setCharPref("rmFx.abCardItems", reminderfox.abCard.items);
 };
 
 

@@ -102,7 +102,7 @@ var gDownloadService=
 
   start:function(aURI,aCallback)
   {
-    //reminderfox.core.logMessageLevel(" gDownloadService.start " , reminderfox.consts.LOG_LEVEL_INFO);
+    //reminderfox.core.logMessageLevel("RmFX   gDownloadService.start " , reminderfox.consts.LOG_LEVEL_INFO);
 
     if( !aURI )
       return false;
@@ -117,7 +117,7 @@ var gDownloadService=
                  
       this._channel = ioService.newChannelFromURI( aURI );
 
-    //reminderfox.core.logMessageLevel(" gDownloadService.start    aURI.scheme: " + aURI.scheme
+    //reminderfox.core.logMessageLevel("RmFX   gDownloadService.start    aURI.scheme: " + aURI.scheme
     //	+ "  nsIStreamLoader.number: " + Components.interfaces.nsIStreamLoader.number, reminderfox.consts.LOG_LEVEL_INFO);
 
 

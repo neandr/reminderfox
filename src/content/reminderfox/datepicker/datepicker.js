@@ -17,11 +17,8 @@ reminderfox.datePicker.isDatePicker = false;
  *   if not set in prefs, set to default
  */
 reminderfox.datePicker.StartingDayOfWeek = function () { // 0 for Sunday, 1 for Monday, etcwee
-	try {
-		reminderfox.datePicker.gStartingDayOfWeek = reminderfox._prefsBranch.getIntPref(reminderfox.consts.CALENDAR_START_DAY);
-	} catch (e) {
-		reminderfox.datePicker.gStartingDayOfWeek = reminderfox.consts.CALENDAR_START_DAY_DEFAULT;
-	}
+	reminderfox.datePicker.gStartingDayOfWeek = 
+	reminderfox.core.getPreferenceValue(reminderfox.consts.CALENDAR_START_DAY, reminderfox.consts.CALENDAR_START_DAY_DEFAULT);
 	return reminderfox.datePicker.gStartingDayOfWeek;
 };
 

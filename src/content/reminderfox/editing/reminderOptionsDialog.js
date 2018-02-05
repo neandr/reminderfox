@@ -7,10 +7,7 @@ function reminderfox_loadReminders(reminderEvent, editing ) {
 	var remindUntilComplete = document.getElementById("remindUntilComplete");
 	var remindUntilCompleteDefault = false;
 	if ( !editing ) {
-		try {
-			remindUntilCompleteDefault = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.DEFAULT_REMIND_UNTIL_COMPLETED);
-		} catch(e) {
-		}
+		remindUntilCompleteDefault = reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_REMIND_UNTIL_COMPLETED, false);
 		remindUntilComplete.setAttribute( "checked", remindUntilCompleteDefault );
 	}
 	else {
@@ -38,8 +35,7 @@ function reminderfox_loadReminders(reminderEvent, editing ) {
 	try {
 		var numLines = 4;
 		var maxLines = 8;
-		var lines = "";
-		var lines = reminderfox._prefsBranch.getCharPref("notesLines");
+		var lines = reminderfox.core.getPreferenceValue("notesLines", numLines);
 		numLines = lines.split(',')[0];
 		maxLines = lines.split(',')[1];
 

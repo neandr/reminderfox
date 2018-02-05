@@ -117,7 +117,7 @@ reminderfox.search.textSearchBoxClear= function(){
 	document.getElementById('rmFx-searchText-box').style.color = "gray";
 
 	var spyglass = document.getElementById("rmFx-search-spyglass");
-	spyglass.setAttribute('tooltiptext', reminderfox.string('rf.calendar.menu.toggleSearchFilter'));
+	spyglass.setAttribute('tooltiptext', reminderfox.string("rf.calendar.menu.toggleSearchFilter"));
 	spyglass.setAttribute('search', 'false');
 
 	reminderfox.search.textSearchString = "";
@@ -353,10 +353,10 @@ reminderfox.search.filtersTypeChanged= function (){		//gWMainMenu
 		}
 
 		if (reminderfox_isReminderTabSelected() == true ){		// index to access the right Filters/Views menulabel
-			reminderfox.search.filtersType = reminderfox.core.setPreferenceValue(reminderfox.consts.CURRENT_FILTER_EVENTS, fItem);
+			reminderfox.search.filtersType = reminderfox.core.setPreferenceValue(reminderfox.consts.FILTER_EVENTS_CURRENT, fItem);
 			document.documentElement.attributes["viewsFilterEvents"].value = +fItem
 		} else {
-			reminderfox.search.filtersType = reminderfox.core.setPreferenceValue(reminderfox.consts.CURRENT_FILTER_LISTS, fItem);
+			reminderfox.search.filtersType = reminderfox.core.setPreferenceValue(reminderfox.consts.FILTER_LISTS_CURRENT, fItem);
 			document.documentElement.attributes["viewsFilterLists"].value = +fItem
 		}
 
@@ -373,10 +373,10 @@ reminderfox.search.filtersTypeChanged= function (){		//gWMainMenu
 	selectedFilter.selectedIndex = +fItem;
 
 	if (reminderfox_isReminderTabSelected() == true ){		// index to access the right Filters/Views menulabel
-		reminderfox.search.filtersType = reminderfox.core.setPreferenceValue(reminderfox.consts.CURRENT_FILTER_EVENTS, fItem);
+		reminderfox.search.filtersType = reminderfox.core.setPreferenceValue(reminderfox.consts.FILTER_EVENTS_CURRENT, fItem);
 		document.documentElement.attributes["viewsFilterEvents"].value = +fItem
 	} else {
-		reminderfox.search.filtersType = reminderfox.core.setPreferenceValue(reminderfox.consts.CURRENT_FILTER_LISTS, fItem);
+		reminderfox.search.filtersType = reminderfox.core.setPreferenceValue(reminderfox.consts.FILTER_LISTS_CURRENT, fItem);
 		document.documentElement.attributes["viewsFilterLists"].value = +fItem
 	}
 
@@ -400,8 +400,8 @@ reminderfox.search.filtersTypeGet= function (){		//gWMainMenu
 
 reminderfox.search.filtersTypeReset= function (){		//gWMainMenu
 //------------------------------------------------------------------------------
-	reminderfox.core.setPreferenceValue(reminderfox.consts.CURRENT_FILTER_EVENTS, 0);
-	reminderfox.core.setPreferenceValue(reminderfox.consts.CURRENT_FILTER_LISTS, 0);
+	reminderfox.core.setPreferenceValue(reminderfox.consts.FILTER_EVENTS_CURRENT, 0);
+	reminderfox.core.setPreferenceValue(reminderfox.consts.FILTER_LISTS_CURRENT, 0);
 }
 
 // --------------------- filtering  & searching --------------------  end --
@@ -555,26 +555,21 @@ function rmFx_mainDialogLoad(restartSkip){
 	var addContext = document.getElementById("todo-treechildren-contextmenu");
 	if (addContext != null) addContext.addEventListener("popupshowing", reminderfox.util.popupCheckMenus, false);
 
-	// get Flag for showing Legacy design
-	reminderfox.core.isLegacy = reminderfox.core.getPreferenceValue (reminderfox.consts.ISLEGACY, false);
+	// get prefs for showing Legacy design
+	var isLegacy = reminderfox.core.getPreferenceValue (reminderfox.consts.ISLEGACY, false);
 
-	document.getElementById("bottomButtonBox").setAttribute('hidden', reminderfox.core.isLegacy);
-	document.getElementById("reminderfox-calendar-add-event").setAttribute('hidden', !reminderfox.core.isLegacy);
+	document.getElementById("bottomButtonBox").setAttribute('hidden', isLegacy);
+	document.getElementById("reminderfox-calendar-add-event").setAttribute('hidden', !isLegacy);
 
-	var defaultfilterEvents = reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_FILTER_EVENTS, 0);
-	var defaultfilterLists = reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_FILTER_LISTS, 0);
+	var defaultfilterEvents = reminderfox.core.getPreferenceValue(reminderfox.consts.FILTER_EVENTS_DEFAULT, 0);
+	var defaultfilterLists = reminderfox.core.getPreferenceValue(reminderfox.consts.FILTER_LISTS_DEFAULT, 0);
 
-	if (defaultfilterEvents != 8) reminderfox.core.setPreferenceValue(reminderfox.consts.CURRENT_FILTER_EVENTS, defaultfilterEvents);
-	if (defaultfilterLists != 8) reminderfox.core.setPreferenceValue(reminderfox.consts.CURRENT_FILTER_LISTS, defaultfilterLists);
+	if (defaultfilterEvents != 8) reminderfox.core.setPreferenceValue(reminderfox.consts.FILTER_EVENTS_CURRENT, defaultfilterEvents);
+	if (defaultfilterLists != 8) reminderfox.core.setPreferenceValue(reminderfox.consts.FILTER_LISTS_CURRENT, defaultfilterLists);
 
-	try {
-		dateVariableString = reminderfox.core.getUnicodePref(reminderfox.consts.LIST_DATE_LABEL);
-		if (dateVariableString != reminderfox.consts.LIST_DATE_LABEL_DEFAULT) {
-			useDefaultDate = false;
-		}
-	}
-	catch (e) {
-		dateVariableString = reminderfox.consts.LIST_DATE_LABEL_DEFAULT;
+	var dateVariableString = reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT);
+	if (dateVariableString != reminderfox.consts.LIST_DATE_LABEL_DEFAULT) {
+		useDefaultDate = false;
 	}
 
 	// get/set calendar/list default values (layout, width, height, etc ...)
@@ -582,20 +577,20 @@ function rmFx_mainDialogLoad(restartSkip){
 
 	reminderFox_highlightTodayPreference = reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS_DEFAULT;
 	try {
-		reminderFox_highlightTodayPreference = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS);
+		reminderFox_highlightTodayPreference = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS);
 	}
 	catch (e) {
 		}
 
 	try {
-		REPEAT_PREVIOUS_OCCURRENCES = reminderfox._prefsBranch.getIntPref(reminderfox.consts.REPEAT_PREVIOUS_OCCURRENCES);
+		REPEAT_PREVIOUS_OCCURRENCES = reminderfox._prefsBRANCH.getIntPref(reminderfox.consts.REPEAT_PREVIOUS_OCCURRENCES);
 	}
 	catch (e) {
 		REPEAT_PREVIOUS_OCCURRENCES = -1;
 	}
 
 	try {
-		REPEAT_UPCOMING_OCCURRENCES = reminderfox._prefsBranch.getIntPref(reminderfox.consts.REPEAT_UPCOMING_OCCURRENCES);
+		REPEAT_UPCOMING_OCCURRENCES = reminderfox._prefsBRANCH.getIntPref(reminderfox.consts.REPEAT_UPCOMING_OCCURRENCES);
 	}
 	catch (e) {
 		REPEAT_UPCOMING_OCCURRENCES = -1;
@@ -617,11 +612,7 @@ function rmFx_mainDialogLoad(restartSkip){
 	}
 
 	// create todo lists
-	var todoLists = reminderfox.core.getPreferenceValue(reminderfox.consts.TODO_LISTS);
-	if (todoLists == null) {
-		todoLists = "";
-	}
-
+	var todoLists = reminderfox.core.getPreferenceValue(reminderfox.consts.TODO_LISTS, "");
 
 	// check to see if we need to update the todoLists....
 	var update = false;
@@ -648,7 +639,7 @@ function rmFx_mainDialogLoad(restartSkip){
 		}
 	}
 	if (update) {
-		reminderfox.core.setUnicodePref(reminderfox.consts.TODO_LISTS, todoLists);
+		reminderfox.core.setPreferenceValue(reminderfox.consts.TODO_LISTS, todoLists);
 	}
 
 
@@ -703,7 +694,7 @@ function rmFx_mainDialogLoad(restartSkip){
 	//  reminders  : dateColLabel,descColLabel,timeColLabel,dateCompleted,repeatColLabel,completeColLabel,remindUntilCompletedColLabel,notesColLabel,alarmColLabel,catColLabel,endDateColLabel,mailColLabel,calDAVcolLabel,
 	//  todo/list  : todoDateColLabel,todoDescColLabel,todoTimeColLabel,todoDateCompleted,todoCompleteColLabel,todoShowInTooltip,todoNotesColLabel,todoAlarmColLabel,todoCatColLabel,todoEndDateColLabel,todoMailColLabel,
 	listSortMap = new Array();
-	var sortColumnsStr = reminderfox.core.getPreferenceValue(reminderfox.consts.SORT_COLUMNS_PREF);
+	var sortColumnsStr = reminderfox.core.getPreferenceValue(reminderfox.consts.SORT_COLUMNS_PREF, "");
 	if (sortColumnsStr != null && sortColumnsStr != "") {
 		var sortColumnsStrArray = sortColumnsStr.split(",");
 		for (var i = 0; i < sortColumnsStrArray.length; i++) {
@@ -740,12 +731,12 @@ function rmFx_mainDialogLoad(restartSkip){
 	reminderfox.calendar.ui.tabListChange (tIndex);
 
 	// set Filter display based on preference
-	reminderfox.search.showFilters = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.SHOW_FILTERS);
+	reminderfox.search.showFilters = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.SHOW_FILTERS);
 
 	if (restartSkip == null) reminderfox.calendar.filter.toggle (reminderfox.search.showFilters);
 
 	//get Sync settings 
-	var networkSync = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK_SYNCHRONIZE, reminderfox.consts.NETWORK_SYNCHRONIZE_DEFAULT);
+	var networkSync = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK.SYNCHRONIZE, reminderfox.consts.NETWORK.SYNCHRONIZE_DEFAULT);
 
 	var calDAVstatus = reminderfox.calDAV.accountsStatus ()
 	reminderfox.util.Logger('network',"Sync settings  ..   networkSync: " + networkSync + "   CalDAV  accounts: " + calDAVstatus.count)
@@ -799,7 +790,7 @@ function reminderFox_updateFoxyBadge(){
 
 function reminderFox_ensureRemoteRemindersSynchronizedInEditWindow(){
 	// sync 'em up
-	var networkSync = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK_SYNCHRONIZE, reminderfox.consts.NETWORK_SYNCHRONIZE_DEFAULT); 
+	var networkSync = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK.SYNCHRONIZE, reminderfox.consts.NETWORK.SYNCHRONIZE_DEFAULT); 
 
 	if (networkSync) {
 		reminderfox.core.statusSet(reminderfox.string("rf.add.network.status.label"));
@@ -1562,7 +1553,7 @@ function reminderFox_getAddTimeString(reminder){
 			var AMorPM = REMINDER_FOX_PM;
 			var use24HourTime;
 			try {
-				use24HourTime = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.USE_24_HOUR_TIME);
+				use24HourTime = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.USE_24_HOUR_TIME);
 			}
 			catch (e) {
 						}
@@ -1661,20 +1652,20 @@ function getTimeMinutesFromString(time){
 
 
 function reminderFox_getDateVariableString(reminder, date){
-	return reminderfox.date.getDateVariable(reminder, date, dateVariableString);  //use the 'global' value !!
-}
-
+	var dateVariableString = reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT);
+	return reminderfox.date.getDateVariable(reminder, date, dateVariableString);
+};
 
 
 /**
  * 'View'
- *	'reminderFox_getStartAndEndDates' has been modified to use also with 'View'.
- *	calling parameters:
- *	@param filtersTypeIndex {integer} set with reminderfox.search.filtersTypeGet()
- *	@param useToday  {boolean} true == use 'TODAY' for start day of selected periode
- * @param showAll {boolean}
- *	Note: rearranging/adding the XUL items and a re-numbering has to be changed
- *			also with 'VIEW'  (rmFxViews.js)
+ *  'reminderFox_getStartAndEndDates' has been modified to use also with 'View'.
+ *  calling parameters:
+ *  @param filtersTypeIndex {integer} set with reminderfox.search.filtersTypeGet()
+ *  @param useToday  {boolean} true == use 'TODAY' for start day of selected periode
+ *  @param showAll {boolean}
+ *  Note: rearranging/adding the XUL items and a re-numbering has to be changed
+ *     also with 'VIEW'  (rmFxViews.js)
  */
 function reminderFox_getStartAndEndDates(filtersTypeIndex, useToday, showAll) {
 	var startAndEnd = {
@@ -1686,8 +1677,6 @@ function reminderFox_getStartAndEndDates(filtersTypeIndex, useToday, showAll) {
 	if (reminderfox.view.views.cDateSpan.start != null) {
 		startAndEnd.start = reminderfox.view.views.cDateSpan.start;
 		startAndEnd.end = reminderfox.view.views.cDateSpan.end;
-
-	//		reminderfox.util.Logger('dateSpan', "StartAndEnd Dates set by 'VIEW' :" + startAndEnd.start + " " + startAndEnd.end);
 		return startAndEnd;
 	}
 
@@ -2209,10 +2198,8 @@ function createUIListItemReminder(baseReminder){
 						treeSelection.select(i);
 					}
 					catch (e) {
-						reminderfox.core.logMessageLevel("Error in selectReminderById1: " +
+						reminderfox.core.logMessageLevel("  Error in selectReminderById1: " +
 						e.message, reminderfox.consts.LOG_LEVEL_INFO); //TODO
-		//				reminderfox.core.logMessageLevel("Error in selectReminderById1: " +
-		//				e.message, reminderfox.consts.LOG_LEVEL_DEBUG); //TODO
 					}
 					findHighLight("reminderTree", i, treeitems.length)
 				}
@@ -2906,10 +2893,8 @@ function createUIListItemTodo(todo, sort, todaysDate, addToArray){
 							treeSelection.select(i);
 						}
 						catch (e) {
-							reminderfox.core.logMessageLevel("Error in selectReminderById1: " +
+							reminderfox.core.logMessageLevel("  Error in selectReminderById1: " +
 							e.message, reminderfox.consts.LOG_LEVEL_INFO); //TODO
-							reminderfox.core.logMessageLevel("Error in selectReminderById1: " +
-							e.message, reminderfox.consts.LOG_LEVEL_DEBUG); //TODO
 						}
 
 						boxobject = tree.boxObject;
@@ -2926,10 +2911,8 @@ function createUIListItemTodo(todo, sort, todaysDate, addToArray){
 								treeSelection.select(i);
 							}
 							catch (e) {
-								reminderfox.core.logMessageLevel("Error in selectReminderById1: " +
+								reminderfox.core.logMessageLevel("  Error in selectReminderById1: " +
 								e.message, reminderfox.consts.LOG_LEVEL_INFO); //TODO
-								reminderfox.core.logMessageLevel("Error in selectReminderById1: " +
-								e.message, reminderfox.consts.LOG_LEVEL_DEBUG); //TODO
 							}
 
 							boxobject = tree.boxObject;
@@ -3322,7 +3305,7 @@ function highlightReminderForDate(currentMonth, currentDay){
 						treeSelection.select(i);
 					}
 					catch (e) {
-						reminderfox.core.logMessageLevel("Error in highlightReminderForDate: " +
+						reminderfox.core.logMessageLevel("  Error in highlightReminderForDate: " +
 						e.message, reminderfox.consts.LOG_LEVEL_INFO); //TODO
 					}
 				}
@@ -3464,7 +3447,7 @@ function removeAllListItems(removeReminders, removeTodos){
 
 
 /**
- * Saves modified/new events/todos and some seettings ..
+ * Saves modified/new events/todos and some settings ..
  *  ... and closes the 'Main Dialog' (showing List and Calendar)
  * sync with remote server if necessary
  */
@@ -3497,7 +3480,7 @@ function rmFx_mainDialogSaveAndClose(isCloseDemanded){
 			;
 		}
 	}
-	reminderfox.core.setUnicodePref(reminderfox.consts.SORT_COLUMNS_PREF, listSortStr);
+	reminderfox.core.setPreferenceValue(reminderfox.consts.SORT_COLUMNS_PREF, listSortStr);
 	reminderfox.core.setPreferenceValue(reminderfox.consts.SHOW_FILTERS, reminderfox.search.showFilters);
 
 	// if any events were modified or the day has changed, we want to update the tooltip and status text
@@ -3524,7 +3507,7 @@ function rmFx_mainDialogSaveAndClose(isCloseDemanded){
 				syncCallback = window.arguments[1].callback;
 			}
 			if (syncCallback != null) {
-				var networkSync = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK_SYNCHRONIZE, reminderfox.consts.NETWORK_SYNCHRONIZE_DEFAULT)
+				var networkSync = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK.SYNCHRONIZE, reminderfox.consts.NETWORK.SYNCHRONIZE_DEFAULT)
 
 				if (networkSync) {
 					syncCallback();
@@ -3532,7 +3515,7 @@ function rmFx_mainDialogSaveAndClose(isCloseDemanded){
 			}
 		}
 		catch (e) {
-				}
+		}
 
 	}
 	else {
@@ -3909,9 +3892,9 @@ function reminderFox_onListCalDAV(xthis){
 				menuItem.setAttribute("class", "menuitem-iconic");
 
 				menuItem.setAttribute("image", reminderfox.consts.SHAREW);
-				menuItem.setAttribute("label", '[ ' + account + " ] " + calDAVaccounts[account].Name);
+				menuItem.setAttribute("label", "[ " + account + " ] " + calDAVaccounts[account].Name);
 				menuItem.setAttribute("value", account);
-				menuItem.setAttribute("tooltiptext", reminderfox.string('rf.caldav.event2remote'));
+				menuItem.setAttribute("tooltiptext", reminderfox.string("rf.caldav.event2remote"));
 
 				menuItem.addEventListener("command", function() {rmFx_CalDAV_UpdateReminderMultiple(this.value);},false);
 
@@ -5367,10 +5350,8 @@ function selectReminderById(reminderID, list){
 					treeSelection.select(i);
 				}
 				catch (e) {
-					reminderfox.core.logMessageLevel("Error in selectReminderById1: " +
+					reminderfox.core.logMessageLevel("  Error in selectReminderById1: " +
 					e.message, reminderfox.consts.LOG_LEVEL_INFO); //TODO
-					reminderfox.core.logMessageLevel("Error in selectReminderById1: " +
-					e.message, reminderfox.consts.LOG_LEVEL_DEBUG); //TODO
 				}
 				// make sure that newly selected row is shown in scroll pane
 				findHighLight(treeName /*"reminderTree"*/, i, treeitems.length)
@@ -5403,10 +5384,8 @@ function selectTodoById(todoListName, reminderID){
 						treeSelection.select(i);
 					}
 					catch (e) {
-						reminderfox.core.logMessageLevel("Error in selectReminderById1: " +
+						reminderfox.core.logMessageLevel("  Error in selectReminderById1: " +
 						e.message, reminderfox.consts.LOG_LEVEL_INFO); //TODO
-						reminderfox.core.logMessageLevel("Error in selectReminderById1: " +
-						e.message, reminderfox.consts.LOG_LEVEL_DEBUG); //TODO
 					}
 
 					// make sure that newly selected row is shown in scroll pane
@@ -5521,7 +5500,7 @@ function getAllSelectedTodos(){
 		document.getElementById("todoTree").view.selection.getRangeAt(t, start, end);
 		for (var v = start.value; v <= end.value; v++) {
 			if (v < 0 || v > treeChildren.childNodes.length - 1) {
-				reminderfox.core.logMessageLevel("getAllSelectedTodos outside range: " + v + " > nodes: " +
+				reminderfox.core.logMessageLevel("  getAllSelectedTodos outside range: " + v + " > nodes: " +
 				treeChildren.childNodes.length +
 				reminderfox.tabInfo.tabName , reminderfox.consts.LOG_LEVEL_DEBUG);		//??? tabName isn't defined ???
 			}

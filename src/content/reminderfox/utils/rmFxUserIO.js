@@ -247,7 +247,7 @@ reminderfox.userIO.addReminder4Email = function (xthis) {
 
 	var contextMenusEnabled = true;
 	try {
-		contextMenusEnabled = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.ENABLE_CONTEXT_MENUS);
+		contextMenusEnabled = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.ENABLE_CONTEXT_MENUS);
 	}
 	catch (e) {}
 
@@ -285,7 +285,7 @@ reminderfox.userIO.addReminder4WebPage = function(){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var contextMenusEnabled = true;
 	try {
-		contextMenusEnabled = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.ENABLE_CONTEXT_MENUS);
+		contextMenusEnabled = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.ENABLE_CONTEXT_MENUS);
 	}
 	catch (e) {}
 
@@ -506,8 +506,6 @@ reminderfox.userIO.subscribedICS = function (status, xml, text, headers, statusT
 			reminderTodos = new Array();
 			var originalExtraInfos = reminderfox.core.reminderFox_reminderFoxExtraInfo;
 
-			var timeStamp = reminderfox.core.getICSXLastmodifiedFromString(text)
-
 			reminderfox.core.readInRemindersAndTodosICSFromString(reminderEvents, reminderTodos, text, originalExtraInfos);
 
 			//reminderfox.util.Logger('TEST', ' dnLoaded  status:' + statustxtString + " timeStamp " + timeStamp
@@ -561,9 +559,9 @@ reminderfox.userIO.getRemoteCalendar = function (mode) {
 	}
 
 	var details = {}
-	var proto = reminderfox._prefsBranch.getCharPref(reminderfox.consts.PROTO);
-	details.url = proto + "://" + reminderfox._prefsBranch.getCharPref(reminderfox.consts.ADDRESS);
-	details.user = reminderfox._prefsBranch.getCharPref(reminderfox.consts.USERNAME);
+	var proto = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.NETWORK.PROTOCOL);
+	details.url = proto + "://" + reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.NETWORK.ADDRESS);
+	details.user = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.NETWORK.USERNAME);
 	details.password = ""
 
 	reminderfox.util.Logger('ALERT', "userIO.getRemoteCalendar   url >>" + details.url + "<<     uname >>" + details.user + "<<")
@@ -595,13 +593,6 @@ reminderfox.userIO.replaceICSdata = function (text, call) {
 			break;
 		}
 	}
-	var localFileStamp = +reminderfox.core.getICSXLastmodifiedFromFile()
-
-		//reminderfox.util.Logger('TEST', '  .userIO.replaceICSdata    '
-		//	+ '\n  timeStamp Local : ' + localFileStamp + "  " + new Date(localFileStamp)
-		//	+ '\n  timeStamp Remote: ' + call.details.timeStamp + "  " + new Date(call.details.timeStamp)
-		//	+ "  reminders/events: " + reminderEvents.length + "  todos:" + reminderFoxTodos.length
-		//	+ "  text.len:" + text.length)
 
 	// safety check: if there are no events and no todo's in the remote file, 
 	// we will assume that this an error condition and will 
@@ -647,13 +638,13 @@ reminderfox.userIO.putRemoteCalendar = function () {
 	this.callback     = 'putRemoteCal';
 	this.onError      = 'putRemoteCal';
 
-	var proto = reminderfox._prefsBranch.getCharPref(reminderfox.consts.PROTO);
-	this.urlstr = proto + "://" + reminderfox._prefsBranch.getCharPref(reminderfox.consts.ADDRESS);
+	var proto = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.NETWORK.PROTOCOL);
+	this.urlstr = proto + "://" + reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.NETWORK.ADDRESS);
 
 	this.contentType  = 'text/xml';
 	this.headers      = null;
 
-	this.username     = reminderfox._prefsBranch.getCharPref(reminderfox.consts.USERNAME);
+	this.username     = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.NETWORK.USERNAME);
 	this.password     = ""
 
 	this.timeout      = 30;

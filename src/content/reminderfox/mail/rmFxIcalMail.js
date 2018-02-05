@@ -47,6 +47,13 @@ reminderfox.iCal.messageId = null;
 reminderfox.iCal.lastEvent = null;
 reminderfox.iCal.selectedReminders = null;
 
+//Components.utils.import("resource:///modules/Services.jsm");
+try{
+    Components.utils.import("resource://gre/modules/Services.jsm");
+}catch(e){}
+try{
+    Components.utils.import("resource:///modules/mailServices.js")
+}catch(e){}
 
 
 /**
@@ -97,7 +104,7 @@ reminderfox.iCal.addReminder4Message= function (event) {
 	var msgDetails =reminderfox.util.selectionDetails(msgHdr, "");
 
 
-Components.utils.import("resource://app/modules/gloda/mimemsg.js"); 
+Components.utils.import("resource:///modules/gloda/mimemsg.js"); 
 
 	reminderfox.core.method = "";
 	try {
@@ -140,8 +147,13 @@ Components.utils.import("resource://app/modules/gloda/mimemsg.js");
 				var iOService = Components.classes["@mozilla.org/network/io-service;1"]
 									.getService(Components.interfaces.nsIIOService);
 
-				url = iOService.newURI(aAttachments[aNum].url, null, null);
-				var channel = iOService.newChannelFromURI(url);
+				var uri = iOService.newURI(aAttachments[aNum].url, null, null);
+				var channel = iOService.newChannelFromURI2(uri,
+                                                             null,
+                                                             Services.scriptSecurityManager.getSystemPrincipal(),
+                                                             null,
+                                                             Components.interfaces.nsILoadInfo.SEC_ALLOW_CROSS_ORIGIN_DATA_IS_NULL,
+                                                             Components.interfaces.nsIContentPolicy.TYPE_OTHER);
 
 				var chunks = [];
 				var data = "";
@@ -302,8 +314,9 @@ reminderfox.iCal.getiCalFromString= function (_content, mInvitation, info) {
  */
 reminderfox.iCal.tagging= function (rv, tag, info) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	reminderfox.util.JS.dispatch('tagging');
+
 	if (reminderfox.util.messenger()) {
-	
 		if ((tag == null) && (rv == true)){
 			reminderfox.tagging.msg('Reminderfox', true, '#3333FF');
 			return;
@@ -592,12 +605,12 @@ reminderfox.iCal.getEvents= function(mInvitation, _reminderEventsArg, _todosArra
 				//	alert (info1  + statusMessage +  info2) ;
 					} else {
 						if (nDTSTAMPz  <= rDTSTAMPz  ) {
-							statusMessage = 'SEQUENCE / DTSTAMP ' + reminderfox.string("rf.schedule.notValid");
+							statusMessage = "SEQUENCE / DTSTAMP " + reminderfox.string("rf.schedule.notValid");
 							reminderfox.util.PromptAlert(info1  + statusMessage +  info2) ;
 							return false;
 
 						} else {
-							statusMessage = reminderfox.string('rf.schedule.newDate') + '  [' + nDTSTAMP + ']';
+							statusMessage = reminderfox.string("rf.schedule.newDate") + "  [" + nDTSTAMP + "]";
 							//				  alert (info1  + statusMessage +  info2) ;
 						}
 					}

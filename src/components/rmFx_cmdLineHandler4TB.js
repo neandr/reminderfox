@@ -7,7 +7,8 @@
  * @see https://developer.mozilla.org/en/XPCOM/XPCOM_changes_in_Gecko_2.0
  */
 
-Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
+Components.utils.import("resource://gre/modules/XPCOMUtils.jsm", this);
+//Components.utils.import("resource:///modules/XPCOMUtils.jsm");
 
 /**
  * The XPCOM component that implements nsICommandLineHandler. It also implements
@@ -142,9 +143,6 @@ function reminderFoxHandler (){
 	};
 
 
-//try {
-//Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
-//} catch (ex) {};
 /*
  * The NSGetModule function is the magic entry point that XPCOM uses to find
  * what XPCOM objects this component provides

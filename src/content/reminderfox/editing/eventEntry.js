@@ -694,11 +694,7 @@ function loadEventRepeat(calendarEvent, editing) {
 	var repeat = document.getElementById("reminderFox-repeat");
 	var repeatList = document.getElementById("reminderFox-repeatList");
 	if(!editing) {
-		var defaultRepeat;
-		try {
-			defaultRepeat = reminderfox._prefsBranch.getIntPref(reminderfox.consts.DEFAULT_REPEAT);
-		} catch(e) {
-		}
+		var defaultRepeat= reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_REPEAT);
 		if(defaultRepeat < 0) {
 			repeat.removeAttribute("checked");
 		} else {
@@ -817,11 +813,7 @@ function addLeadingZeroTo24HourTime(timeList) {
 function loadEvent(reminderFoxEvent, editing) {
 	loadMoreOptions(reminderFoxEvent);
 
-	var use24HourTime;
-	try {
-		use24HourTime = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.USE_24_HOUR_TIME);
-	} catch(e) {
-	}
+	var use24HourTime = reminderfox.core.getPreferenceValue(reminderfox.consts.USE_24_HOUR_TIME, false);
 	if(use24HourTime) {
 		addLeadingZeroTo24HourTime(document.getElementById("reminderFox-timeList"));
 		addLeadingZeroTo24HourTime(document.getElementById("reminderFox-endTimeList"));
@@ -939,11 +931,7 @@ function loadEvent(reminderFoxEvent, editing) {
 
 //ALARM
 	if(!editing) {
-		var alarmMinutes;
-		try {
-			alarmMinutes = reminderfox._prefsBranch.getIntPref(reminderfox.consts.DEFAULT_ALARM_TIME);
-		} catch(e) {
-		}
+		var alarmMinutes = reminderfox.core.getPreferenceValue(reminderfox.consts.ALARM_TIME_DEFAULT, 0);
 		if(alarmMinutes < 0) {
 			showAlert.setAttribute("checked", false);
 		} else {
@@ -951,11 +939,7 @@ function loadEvent(reminderFoxEvent, editing) {
 			var alertTime = document.getElementById("reminderFox-alertTime");
 			alertTime.label = alarmMinutes;
 			var timeUnitsList = document.getElementById('reminderFox-alertTimeUnits');
-			var alarmUnitsIndex;
-			try {
-				alarmUnitsIndex = reminderfox._prefsBranch.getIntPref(reminderfox.consts.DEFAULT_ALARM_UNITS);
-			} catch(e) {
-			}
+			var alarmUnitsIndex = reminderfox.core.getPreferenceValue(reminderfox.consts.ALARM_UNITS_DEFAULT, 0);
 			timeUnitsList.selectedIndex = alarmUnitsIndex;
 		}
 	} else {
@@ -1046,11 +1030,7 @@ function reminderFox_updateTime(date, isEndDate) {
 	var hours = date.getHours();
 	var AMorPM = REMINDER_FOX_PM;
 
-	var use24HourTime;
-	try {
-		use24HourTime = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.USE_24_HOUR_TIME);
-	} catch(e) {
-	}
+	var use24HourTime = reminderfox.core.getPreferenceValue(reminderfox.consts.USE_24_HOUR_TIME, false);
 	if(use24HourTime) {
 		AMorPM = "";
 		if(hours < 10) {
@@ -1827,11 +1807,7 @@ function dateToolTip(tooltipItem, isEnd) {
 		tooltipItem.removeChild(tooltipItem.firstChild);
 	}
 
-	var _dateVariableString;
-	try {
-		_dateVariableString = reminderfox.core.getUnicodePref(reminderfox.consts.LIST_DATE_LABEL);
-	} catch(e) {
-	}
+	var _dateVariableString = reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT);
 	if(_dateVariableString.indexOf("longDay" == -1 && _dateVariableString.indexOf("shortDay") == -1)) {
 		_dateVariableString = "[longDay], " + _dateVariableString;
 	}
@@ -1869,11 +1845,7 @@ function updateDateDescriptionLabel() {
 			}
 		}
 
-		var _dateVariableString;
-		try {
-			_dateVariableString = reminderfox.core.getUnicodePref(reminderfox.consts.LIST_DATE_LABEL);
-		} catch(e) {
-		}
+		var _dateVariableString = reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT);
 		if(_dateVariableString.indexOf("longDay") == -1 && _dateVariableString.indexOf("shortDay") == -1) {
 			_dateVariableString = "[longDay], " + _dateVariableString;
 		}

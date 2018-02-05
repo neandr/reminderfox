@@ -6,12 +6,14 @@
 ]>
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/content/bindings.css" type="text/css"?>
+
 <?xml-stylesheet href="chrome://reminderfox/skin/datepicker/datepicker.css"  type="text/css" ?>
 <?xml-stylesheet href="chrome://reminderfox/skin/reminder.css"  type="text/css"?>
 <?xml-stylesheet href="chrome://reminderfox/skin/rmSearchBox.css"  type="text/css"?>
 
-<?xul-overlay href="chrome://reminderfox/content/calendar/calendarWidget.xul"?>
 
+<?xul-overlay href="chrome://reminderfox/content/calendar/calendarWidget.xul"?>
 
 <window xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"

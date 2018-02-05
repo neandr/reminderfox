@@ -358,7 +358,7 @@ function rmFx_CalDAV_AccountSelect () {
 
 			newAccount.setAttribute("label", '[ ' + accountID + " ] " + accounts[accountID].Name);
 			newAccount.setAttribute("value", accountID);
-	//		newAccount.setAttribute("tooltiptext", reminderfox.string('rf.caldav.syncAccount'));
+	//		newAccount.setAttribute("tooltiptext", reminderfox.string("rf.caldav.syncAccount"));
 			newAccount.setAttribute("tooltiptext", "Sync Account; use 'Cntrl' to Force Sync");
 
 			newAccount.addEventListener("command", function(event) {rmFx_CalDAV_SyncAccount(this.value, event);},false);
@@ -380,7 +380,7 @@ function rmFx_CalDAV_AccountSelect () {
 
 			newAccount.setAttribute("label", '[ ' + accountID + " ] " + accounts[accountID].Name);
 			newAccount.setAttribute("value", accountID);
-	//		newAccount.setAttribute("tooltiptext", reminderfox.string('rf.caldav.syncAccount'));
+	//		newAccount.setAttribute("tooltiptext", reminderfox.string("rf.caldav.syncAccount"));
 			newAccount.setAttribute("tooltiptext", "Sync Account; use 'Cntrl' to Force Sync");
 
 			newAccount.addEventListener("command", function(event) {rmFx_CalDAV_SyncAccount(this.value, event);},false);
@@ -1438,7 +1438,7 @@ reminderfoxX.calDAVrequest = function () {}
 			call.etag = reminderfox.HTTP.XMLobject (etag, "response");
 
 			if (!call.etag) {
-	//			nEvents = reminderfox.string('rf.caldav.noevents'); //"No Events!";
+	//			nEvents = reminderfox.string("rf.caldav.noevents"); //"No Events!";
 				nEvents = "0" ; //"No Events!";
 			} else {
 				nEvents = call.etag.length;
@@ -1451,8 +1451,8 @@ reminderfoxX.calDAVrequest = function () {}
 			else
 				document.getElementById('rmFxOK').disabled = false;
 
-			msg = reminderfox.string('rf.caldav.validated') + "    Remote ";
-			msg += call.Typ == "VEVENT" ? reminderfox.string('rf.general.events') : reminderfox.string('rf.html.heading.todos');
+			msg = reminderfox.string("rf.caldav.validated") + "    Remote ";
+			msg += call.Typ == "VEVENT" ? reminderfox.string("rf.general.events") : reminderfox.string("rf.html.heading.todos");
 			msg += " (" + nEvents + ")";
 			document.getElementById('accountStatus').value = msg;
 
@@ -2362,7 +2362,7 @@ reminderfoxX.calDAVrequest = function () {}
 
 		} else {  // ERROR Handling
 
-			reminderfox.util.Logger("Alert", " ------- .havegcal2Token ERROR Handling ------- status: " + status);    //XXXgW
+			reminderfox.util.Logger('Alert', " ------- .havegcal2Token ERROR Handling ------- status: " + status);    //XXXgW
 
 			if ((status == 404) && (call.url.search("https://www.googleapis.com/caldav/v2/") === 0)) {
 				msg = "  Refresh gcal2 access_token  (404)  "  + call.username;

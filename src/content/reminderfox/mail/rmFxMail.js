@@ -322,7 +322,7 @@ reminderfox.mail.sendAsItIs = function (selcReminders, organizer, mode, reminder
 				var iCalString = reminderfox.core.constructReminderOutput( selcReminders, "", true, true, "PUBLISH" );
 				var nReminders = selcReminders.length;
 		}
-		var exportFile = reminderfox._prefsBranch.getCharPref("exportEventsFile");
+		var exportFile = reminderfox._prefsBRANCH.getCharPref("exportEventsFile");
 
 		var iCalToEmailFile = reminderfox.util.makeMsgFile (reminderfox.util.encodeUTF8(iCalString), exportFile);
 		if (iCalToEmailFile == null) {
@@ -1498,7 +1498,7 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 
 		} else { // 'NON messenger' .. eg.FX etc ...
 			try {
-				var mailIds = reminderfox._prefsBranch.getCharPref(reminderfox.consts.MAIL_SENDER);
+				var mailIds = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.MAIL_SENDER);
 			} catch (ex) {}
 		}
 		return mailIds;
@@ -1514,9 +1514,9 @@ reminderfox.msgnr.mailIdentities = "";
 	// =========================================================================
 		const Cu = Components.utils;
 		const Ci = Components.interfaces;
-		Cu.import("resource://app/modules/iteratorUtils.jsm");
-		Cu.import("resource://app/modules/mailServices.js"); // needed for MailServices.compose etc.
-		Cu.import("resource://app/modules/Services.jsm"); // needed for Services.io etc.
+		Cu.import("resource:///modules/iteratorUtils.jsm");
+		Cu.import("resource:///modules/mailServices.js"); // needed for MailServices.compose etc.
+	//	Cu.import("resource://gre/modules/Services.jsm");
 
 		reminderfox.msgnr.mailIdentities = "";
 

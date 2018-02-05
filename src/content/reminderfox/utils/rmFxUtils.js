@@ -97,7 +97,7 @@ reminderfox.date.getTimeString= function (date){
 
 		var use24HourTime;
 		try {
-			use24HourTime = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.USE_24_HOUR_TIME);
+			use24HourTime = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.USE_24_HOUR_TIME);
 		} 
 		catch (e) {
 		}
@@ -433,10 +433,7 @@ reminderfox.date.parseDateTimes= function (pDate, noTime) {
 	var timeString = "";
 	if (!noTime) timeString =  "  " + reminderfox.date.getTimeString(thisDate);
 
-	var _dateVariableString;
-	try {
-		_dateVariableString = reminderfox.core.getUnicodePref(reminderfox.consts.LIST_DATE_LABEL);
-	} catch(e) {}
+	var _dateVariableString = reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT);
 	return reminderfox.date.getDateVariable( null, thisDate, _dateVariableString)
 			+ timeString;
 };
@@ -444,24 +441,9 @@ reminderfox.date.parseDateTimes= function (pDate, noTime) {
 
 reminderfox.date.getDateVariableString= function(reminder, date) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	return reminderfox.date.getDateVariable(reminder, date, reminderfox.date.dateVariableString());
+	return reminderfox.date.getDateVariable(reminder, date,
+		reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT));
 };
-
-
-reminderfox.date.dateVariableString= function (){
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	try {
-		dateVariableString = reminderfox.core.getUnicodePref(reminderfox.consts.LIST_DATE_LABEL);
-		if (dateVariableString != reminderfox.consts.LIST_DATE_LABEL_DEFAULT) {
-			useDefaultDate = false;
-		}
-	}
-	catch (e) {
-		dateVariableString = reminderfox.consts.LIST_DATE_LABEL_DEFAULT;
-	}
-	return dateVariableString;
-};
-
 
 reminderfox.date.getDateVariable= function(reminder, date, variableDateString){
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -586,7 +568,7 @@ reminderfox.date.recurrenceString= function (reminder, currentDate) {
 
 		val += startingParens + getWeekName(weekNumber) 
 			+ " " + getDayNames(reminder.recurrence.byDay, reminderDay) + " " + reminderfox.string("rf.options.weekof.name") 
-			+ " " + reminderfox.string('rf.options.month.'+ reminder.date.getMonth() + '.name') + closingParens;
+			+ " " + reminderfox.string("rf.options.month."+ reminder.date.getMonth() + ".name") + closingParens;
 	}
 
 
@@ -652,11 +634,11 @@ reminderfox.date.recurrenceString= function (reminder, currentDate) {
 			var sDay = "";
 			var rfcWeekdays   = "SUMOTUWETHFRSA";
 
-			var aByDay = byday.split(',');
+			var aByDay = byday.split(",");
 			for (var n=0; n < aByDay.length; n++){
 				var pos = rfcWeekdays.indexOf(aByDay[n]);
 				if (pos === 0) {
-					sDay = reminderfox.string('rf.options.day.0.name.Mmm');
+					sDay = reminderfox.string("rf.options.day.0.name.Mmm");
 				} else {
 					sDay = reminderfox.string("rf.options.day." + (pos/2) + ".name.Mmm");
 				}
@@ -977,7 +959,7 @@ reminderfox.util.messenger= function(){
  **/
 reminderfox.util.mailAppStringBrowse= function(){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	reminderfox._prefsBranch.setCharPref(reminderfox.consts.MAIL_PATH, "");
+	reminderfox._prefsBRANCH.setCharPref(reminderfox.consts.MAIL_PATH, "");
 	document.getElementById('mailApp.location.input').value = reminderfox.util.messengerApp().path;
 };
 
@@ -995,7 +977,7 @@ reminderfox.util.messengerApp= function(){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var fileValid = true;
 	var mFile = null;
-	var mailApp = reminderfox._prefsBranch.getCharPref(reminderfox.consts.MAIL_PATH);
+	var mailApp = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.MAIL_PATH);
 
 	var mFileServ = Components.classes["@mozilla.org/file/directory_service;1"]
 		.getService(Components.interfaces.nsIProperties);
@@ -1041,12 +1023,12 @@ reminderfox.util.messengerApp= function(){
 			var handlerApp = reminderfox.util.getLocalHandlerApp(fp.file);
 		}
 		else {
-			reminderfox._prefsBranch.setCharPref(reminderfox.consts.MAIL_PATH, "");
+			reminderfox._prefsBRANCH.setCharPref(reminderfox.consts.MAIL_PATH, "");
 			return ""; // return file object
 		}
 
 		mailApp = fp.file.path;
-		reminderfox._prefsBranch.setCharPref(reminderfox.consts.MAIL_PATH, mailApp);
+		reminderfox._prefsBRANCH.setCharPref(reminderfox.consts.MAIL_PATH, mailApp);
 		file.initWithPath(mailApp);
 	}
 
@@ -1066,7 +1048,7 @@ reminderfox.util.messengerApp= function(){
 		}
 	}
 
-	reminderfox._prefsBranch.setCharPref(reminderfox.consts.MAIL_PATH, mailApp);
+	reminderfox._prefsBRANCH.setCharPref(reminderfox.consts.MAIL_PATH, mailApp);
 	return file; // return file object
 };
 
@@ -1088,7 +1070,7 @@ reminderfox.util.mailAppSetup= function(){
 	if (results.mode == 'CANCEL') {
 		return 'CANCEL';
 	} // user pressed 'CANCEL'
-	return reminderfox._prefsBranch.getCharPref(reminderfox.consts.MAIL_SENDER);
+	return reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.MAIL_SENDER);
 };
 
 
@@ -1333,7 +1315,7 @@ reminderfox.util.getExportFile= function () {
 		function(file, details) {
 			if (file != null) {
 				var rmFx_exportFile   = "exportEventsFile"	 // set as prefs 'extensions.reminderFox.exportEventsFile'
-				reminderfox._prefsBranch.setCharPref(rmFx_exportFile, file.path);
+				reminderfox._prefsBRANCH.setCharPref(rmFx_exportFile, file.path);
 				document.getElementById("exportFile").setAttribute("value", file.path);
 	 		}
 		});
@@ -1461,7 +1443,7 @@ console.log("pickFileICSfile  File location selected", file.path, "mode ", detai
 				var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 					.getService(Components.interfaces.nsIPromptService);
 		
-				reminderfox.core.logMessageLevel("filebrowse1: ", reminderfox.consts.LOG_LEVEL_INFO);
+				reminderfox.core.logMessageLevel("  filebrowse1: ", reminderfox.consts.LOG_LEVEL_INFO);
 				// make sure they REAAAAALY want to overwrite
 				var msg = reminderfox.string("rf.options.import.overwrite.description") 
 					+ "\n\n File to restore: " + file.path;		//$$$_locale
@@ -1585,7 +1567,7 @@ reminderfox.util.readInFileContents= function(tmpFile){
 		is.init(sfile, 0x01, 00004, null);
 	}
 	catch (e) {
-		reminderfox.util.PromptAlert("Could not read reminder file: " + e.name + " -- " + e.message);
+		reminderfox.util.PromptAlert("Could not read reminder file: "+ tmpFile +"\n" + e.name + " -- " + e.message);
 		return null;
 	}
 
@@ -1704,16 +1686,16 @@ reminderfox.util.STACK= function (aDepth) {
 	var depth = aDepth || 10;
 
 	var frame = Components.stack.caller.caller;
-	var stack = frame.filename + " # " + frame.lineNumber + "\n";
+	var stack = "\n  0: " + frame.filename + "#" + frame.lineNumber + "\n";
 	var frame = Components.stack.caller.caller.caller;
 	if (aDepth === 0) return stack;
 
 	for (var i = 1; i <= depth && frame; i++) {
 
 		var x = (frame.filename != null) ? frame.filename : ""
-		if (x.search("reminderfox") == -1) break		//gW2015 to clean the log from not relevant lines
-		stack += (i + ": [" + frame.filename + " # " +
-			frame.lineNumber + "] " + frame.name + "\n");
+		if (x.search("reminderfox") == -1) break;
+		stack += ("  " + i + ": " + frame.filename + "#" +
+			frame.lineNumber + " [" + frame.name + "]\n");
 		if (!frame.filename) break;
 		frame = frame.caller;
 	}
@@ -1729,27 +1711,27 @@ reminderfox.util.STACK= function (aDepth) {
  * it's a JSON string with  {"Reminderfox": level, SubLogger : level},
  * multiple Subloggers can be defined.
  *
- * 'Reminderfox' is the root name with a user selected level.
- * SubLoggers are defined also with name/level:
+ * 'Reminderfox' is the root name with a user selected "level".
+ * SubLoggers are defined also with pair of  "name":"level":
  *   Examples:
- *     {"Reminderfox":"Error","calDAV":"Info"}
- *     {"Reminderfox":"Trace","calDAV":"Info"}
+ *    {"Reminderfox":"Error","calDAV":"Info"}
+ *    {"Reminderfox":"Trace","calDAV":"Info"}
  *
  * "level" values can be any of
- * 'Fatal', 'Error', 'Warn', 'Info', 'Config', 'Debug', 'Trace', 'All'.
- * (Fatal is highest, All is lowest level).
+ *    'Fatal', 'Error', 'Warn', 'Info', 'Config', 'Debug', 'Trace', 'All'.
+ *    (Fatal is highest, All is lowest level).
  *
  * Logger will send to console if 'SubLogger' has same or higher "level" than
  * 'Reminderfox'.
- *   ad Examples above:  first   will NOT send the message,
- *                       second  will send.
+ *     ad Examples above:  first   will NOT send the message,
+ *                         second  will send.
  *
  * To use the Logger a function call has to be added to the JS code:
  *   reminderfox.util.Logger('calDAV', msg);
 
  * Call to Logger will not send anything to the console with
- *  -- prefs string not defined
- *  -- prefs string without 'Reminderfox' and 'level'
+ *  -- prefs string 'loggers' not defined
+ *  -- prefs string  'loggers' without 'Reminderfox' and 'level'
  *  -- call with unknown 'level' for 'subLogger'
  *
  * Using a call for the Logger with 'Alert' will write to console indepened 
@@ -1757,7 +1739,7 @@ reminderfox.util.STACK= function (aDepth) {
  * 
  * Additional console output
  *   -- for 'Fatal', 'Error', 'Warn': the calling STACK will be appended to the normal log message
- *   -- with 'Info' or higher: the calling filename and line number is appended. 
+ *   -- with 'Info' or lower: the calling filename and line number is appended. 
  *
  * @param {string}  'Log' name
  * @param {string}  'msg' message 
@@ -1779,14 +1761,10 @@ reminderfox.util.Logger = function (Log, msg) {
 
 	if (Log.toLowerCase().search('alert') > -1){
 		var date = new Date();
-		logMsg = "\nReminderfox  ** Alert **    "
-			+ date + " >" + +(new Date()) + "<" 
+		logMsg = "Reminderfox  ** Alert **    " + date + " >" + +(new Date()) + "<"
 			+ "\n" + msg;
 
-		if (Log == 'ALERT') logMsg += "\n" + reminderfox.util.STACK();
-		if (Log == 'Alert') logMsg += "\n" + reminderfox.util.STACK(1);
-		if (Log == 'alert') logMsg += "\n";
-		console.info(logMsg);
+		console.error (logMsg);
 		return;
 	}
 
@@ -1802,23 +1780,21 @@ reminderfox.util.Logger = function (Log, msg) {
 	var rootID = prefLoggers['REMINDERFOX'];
 	var rootNum = _LogLevel[rootID];
 	var logId   = prefLoggers[Log.toUpperCase()];
-	var logNum  = _LogLevel[logId];
+	var logNum  = _LogLevel[logId] || 0;
 
 	// if the requested 'Log' is unknown or rootLog is higher than 'Log' just return; 
 	if ((!rootNum) || (!logNum)) return;
 	if (logNum < rootNum) return;
 
-
 	var date = new Date();
-	logMsg = "\nReminderfox Logger : "+ rootID + "  [" + Log + " : " + logId + "]      "
-		+ date + (" >"+ +date + "<")
+	logMsg = "Reminderfox Logger: "+ rootID + "  [" + Log + ": " + logId + "]   "+ date + (" >"+ +date + "<")
 		+ "\n" + msg;
 
-	if (logNum >= 50 /* 'Warn', 'Error', 'Fatal' */) {
+	if (logNum >= 50 /*  'Fatal' =70, 'Error'=60, 'Warn'=50 */) {
 		console.error(logMsg, "   ")
-	} else {
-		console.info(logMsg + "\n  ==> " + reminderfox.util.STACK(1));
-	}
+	} else { // below 50 ... 0 
+		console.info(logMsg, reminderfox.util.STACK(1));
+	} 
 };
 
 //  console.log(), console.info(), console.warn(), console.error() 
@@ -2444,7 +2420,6 @@ reminderfox.date.getWeekOfYear= function(aDate, dowOffset) {
 		if (!useISO || day < 4) { // if using ISO standard, first week w/ day starting after Wed are 0-week; 
 			weeknum = weeknum + 1; // otherwise, weeks start at 1
 		}
-	//	reminderfox.util.Logger('ISOtimeDate',"   ISO:" + useISO + "  " + aDate.toString() +  "  week#:" + weeknum);
 		return weeknum;
 	};
 
@@ -2502,12 +2477,6 @@ reminderfox.promiseRequest = {
 			req.send();
 		});
 	}
-}
-
-
-function rmFxTDate(i) {
-   if (i == null) return new Date().toLocaleString()
-	return new Date(+i).toLocaleString()
 }
 
 
@@ -2689,7 +2658,7 @@ reminderfox.colorMap.cssFileWrite= function () {
 	reminderfox.util.makeFile8(out, cssFile.path)
 
 		function hsl(colorHue) {
-			var saturation = reminderfox.core.getPreferenceValue(reminderfox.consts.CALDAV_SATURATION, 40);
+			var saturation = reminderfox.core.getPreferenceValue(reminderfox.consts.CALDAV_SATURATION, reminderfox.consts.CALDAV_SATURATION_DEFAULT);
 			return reminderfox.colorUtil.getRgbCodeByHsv(colorHue, saturation, 98 /*B*/);
 		}
 };
@@ -2735,8 +2704,6 @@ reminderfox.calDAV.getAccounts = function () {
 
 	// no calDAV accounts? Or a file is given? --> read file
 	if ((reminderfox.calDAV.accounts != null) && (Object.keys(reminderfox.calDAV.accounts ).length === 0)){
-
-//reminderfox.util.Logger('calDAV', " .calDAV.getAccounts   dir/file check: " + icsFile)
 
 		calDAVfile = reminderfox.calDAV.accountsFile(icsFile);
 		try {
@@ -3216,7 +3183,7 @@ if (!reminderfox.go4news)    reminderfox.go4news = {};
 
 // in /defaults/preferences/reminderfox.js
 //pref("extensions.reminderFox.news", true);   // last news status, set after reading to false
-//pref("extensions.reminderFox.newsStamp", <2015-10-01);   // last news date
+//pref("extensions.reminderFox.newsStamp", "[2015-10-01]" );   // last news date
 //pref("extensions.reminderFox.newsLink", "https://neandr.github.io/reminderfox/rmFXnews");
 
 // in reminderFoxCore.js
@@ -3245,20 +3212,20 @@ reminderfox.go4news = {
 		var newsStamp = reminderfox.core.getPreferenceValue(reminderfox.consts.NEWSSTAMP, "");
 		var newsLink = reminderfox.core.getPreferenceValue(reminderfox.consts.NEWSLINK, this.urlNews);
 
-		var msg = " Reminderfox News    "
+		var msg = "  RmFX News    "
 			+ " \n" + newsStatus + "  >"  + newsLink + "<  " 
 			+ this.currentNewsDate + "::" + newsStamp + (this.currentNewsDate > newsStamp);
 		reminderfox.util.Logger('Alert', msg);
 
 		if ((newsLink != "") && (this.currentNewsDate > newsStamp)){ 
-			msg = " Reminderfox NEWS available!" // update items to let button shown with MainDialog
+			msg = "  RmFX NEWS available!"; // update items to let button shown with MainDialog
 			reminderfox.util.Logger('alert', msg);
 			reminderfox.core.setPreferenceValue(reminderfox.consts.NEWSSTAMP, this.currentNewsDate);
 			reminderfox.core.setPreferenceValue(reminderfox.consts.NEWS, true);
 		}
 
 		else {
-			msg = " Reminderfox News    *** NO news *** " // disable the button/icon on RmFX Main List
+			msg = " Reminderfox News    *** NO news *** "; // disable the button/icon on RmFX Main List
 		//	reminderfox.util.Logger('alert',msg);
 			reminderfox.core.getPreferenceValue(reminderfox.consts.NEWS, false);
 		}

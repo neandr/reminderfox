@@ -38,7 +38,7 @@ function reminderFox_updateSnoozeTimeDate() {
 			var snoozeString = "";
 			if ( snoozeDate2.getMonth() != currentTimeDate.getMonth() ||
 				snoozeDate2.getDate() != currentTimeDate.getDate() ) {
-				var _dateVariableString = reminderfox.core.getUnicodePref(reminderfox.consts.LIST_DATE_LABEL);
+				var _dateVariableString = reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT);
 				snoozeString=  reminderfox.date.getDateVariable( null , snoozeDate2, _dateVariableString ) + ", ";
 			}
 			snoozeString += reminderfox.date.getTimeString(snoozeDate2);
@@ -63,23 +63,23 @@ function reminderFox_alertChanged() {
 function setAlarm() {
 	//	var alertType;
 	try {
-		alertType = reminderfox._prefsBranch.getCharPref(reminderfox.consts.ENABLE_ALERT_PREF);
+		alertType = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.ALERT_ENABLE);
 	} 
 	catch (e) {
-		alertType = reminderfox.consts.ENABLE_ALERT_PREF_ALL;
+		alertType = reminderfox.consts.ALERT_ENABLE_ALL;
 	}
 	
 	// if it's marked as suspended, change to original value
-	var suspendedIndex = alertType.indexOf(reminderfox.consts.SUSPEND_ALERT_PREF);
+	var suspendedIndex = alertType.indexOf(reminderfox.consts.ALERT_SUSPEND);
 	if (suspendedIndex != -1) {
-		alertType = alertType.substring(suspendedIndex + reminderfox.consts.SUSPEND_ALERT_PREF.length);
+		alertType = alertType.substring(suspendedIndex + reminderfox.consts.ALERT_SUSPEND.length);
 	}
 	// otherwise, suspend the alert
 	else {
-		alertType = reminderfox.consts.SUSPEND_ALERT_PREF + alertType;
+		alertType = reminderfox.consts.ALERT_SUSPEND + alertType;
 	}
 	
-	reminderfox._prefsBranch.setCharPref(reminderfox.consts.ENABLE_ALERT_PREF, alertType);
+	reminderfox._prefsBRANCH.setCharPref(reminderfox.consts.ALERT_ENABLE, alertType);
 	
 	
 	// if user chose to automatically resume alerts at some time, process that

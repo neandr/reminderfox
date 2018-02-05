@@ -72,7 +72,8 @@ function loadAlarm() {
 	// see if any notes...
 	var hasNotes = false;
 	for(var i = 0; i < reminderAlarmArray.length; i++) {
-		if((reminderAlarmArray[i].alarmRecentReminder != null && reminderAlarmArray[i].alarmRecentReminder.notes != null ) || (reminderAlarmArray[i].quickAlarmNotes != null && reminderAlarmArray[i].quickAlarmNotes.length > 0 && reminderAlarmArray[i].quickAlarmNotes != "null" )) {
+		if( (reminderAlarmArray[i].alarmRecentReminder != null && reminderAlarmArray[i].alarmRecentReminder.notes != null )
+		 || reminderFox_nullCheck(reminderAlarmArray[i].quickAlarmNotes)) {
 			hasNotes = true;
 		}
 	}
@@ -213,11 +214,11 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 		var snoozeUnitsIndex = 0;
 		var defaultActionIndex = 0;
 		try {
-			snoozeTime = reminderfox._prefsBranch.getIntPref(reminderfox.consts.DEFAULTS_ALARM_SNOOZE_TIME);
+			snoozeTime = reminderfox._prefsBRANCH.getIntPref(reminderfox.consts.ALARM_SNOOZE_TIME_DEFAULT);
 			if(snoozeTime != null && reminderfox.util.isInteger(snoozeTime)) {
 				snoozeTimeList.label = snoozeTime;
 			}
-			snoozeUnitsIndex = reminderfox._prefsBranch.getIntPref(reminderfox.consts.DEFAULTS_ALARM_SNOOZE_UNITS);
+			snoozeUnitsIndex = reminderfox._prefsBRANCH.getIntPref(reminderfox.consts.ALARM_DEFAULTS_SNOOZE_UNITS);
 			if(snoozeUnitsIndex != null && reminderfox.util.isInteger(snoozeUnitsIndex)) {
 				timeUnitsList.selectedIndex = snoozeUnitsIndex;
 			}
@@ -225,34 +226,25 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 		} catch ( e) {
 		}
 	}
-	defaultActionIndex = reminderfox._prefsBranch.getIntPref(reminderfox.consts.DEFAULTS_ALARM_SNOOZE_ACTION);
+	defaultActionIndex = reminderfox._prefsBRANCH.getIntPref(reminderfox.consts.ALARM_SNOOZE_ACTION_DEFAULT);
 	if(defaultActionIndex != null && reminderfox.util.isInteger(defaultActionIndex)) {
 		actionList.selectedIndex = defaultActionIndex;
 	}
 
-	var info;  //XXX
 
 	if(quickAlarmText != null) {
 		getChildElementById(tabPanel, "reminderDescriptionText").setAttribute("value", quickAlarmText);
-		recentReminder = null;			//XXX  don't process for recent reminder now
-		info = quickAlarmText;   //XXX
+		recentReminder = null;  // don't process for recent reminder now
 	} else {
 		recentReminder = reminderfox.core.processReminderDescription(recentReminder, new Date().getFullYear(), isTodo);
-
 		var reminderString = recentReminder.summary;
-		info = reminderString;  //XXX
 
 		getChildElementById(tabPanel, "reminderDescriptionText").setAttribute("value", reminderString);
 
-		var _dateVariableString;
-		try {
-			_dateVariableString = reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL);
-		} catch(e) {
-		}
+		var _dateVariableString = reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT);
 		var dateString = reminderfox.date.getDateVariable(null, recentReminder.date, _dateVariableString);
 
-		document.title = reminderFox_alarmListNameCheck(alarmListName)
-		document.title += " " + reminderfox.string("rf.alarm.title");		// 'Reminderfox'
+		document.title = reminderFox_alarmListNameCheck(alarmListName) + " " + reminderfox.string("rf.alarm.title");  // 'Reminderfox'
 
 		// if this is a past reminder, indicate that in the title
 		if(alarmMissed == "true") {
@@ -270,13 +262,11 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 			if(compare == 1) {
 				// compare Dates: recentReminder.date, currentDate.
 				// if current date is after reminder date, show 'missed'
-				document.title = " (" + reminderfox.string("rf.alarm.missedalarm.title") + ") " + document.title;  //XXXalarmTitle
+				document.title = " (" + reminderfox.string("rf.alarm.missedalarm.title") + ") " + document.title;
 			}
 		}
 
-	//XXXalarmTitle	document.title = document.title + ": " + reminderString;
 		document.title = reminderString + " " + document.title;
-
 		getChildElementById(tabPanel, "reminderDateText").setAttribute("value", dateString);
 
 		var timeString = reminderfox.overlay.getTimeString(recentReminder, recentReminder.date);
@@ -322,10 +312,6 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 	var tabbox = document.getElementById("tabbox");
 	var selectedPanel = tabbox.selectedPanel;
 
-	var msg = "Alarm  TEST ::   prio, completed, showTTT  >>"
-	//console.log("SOUND ", new Date(), msg);
-
-
 	// *** for attributeIcons  check current reminder for some attributes ***
 	var icons = {};
 	icons.Important = false;
@@ -340,7 +326,7 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 	icons.showTTT = false;
 
 
-	if (recentReminder != null){ 
+	if (recentReminder != null){ // process Alarm (not QuickAlarm)
 		// icons.Important = (recentReminder.priority == reminderfox.consts.PRIORITY_IMPORTANT);
 		if(recentReminder.priority == reminderfox.consts.PRIORITY_IMPORTANT) {
 			icons.Important = true;
@@ -373,23 +359,17 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 		attributeIcons.removeChild(attributeIcons.lastChild);
 	}
 
-
 	var spacer1 = document.createElement("spacer");
 	attributeIcons.appendChild(spacer1);
 		spacer1.setAttribute("width", "10px");
 		spacer1.setAttribute("height", "18px");
-
-
-	var msg = "Alarm  TEST ::   calDAV, mail, category icons  >>"
-	//console.log("SOUND ", new Date(), msg);
-
 
 	//gWCalDAV
 	if (icons.CalDAV == true) { // isCalDAV 
 		var calDAVTTT = "";
 		var account = reminderfox.calDAV.getAccounts()[recentReminder.calDAVid];
 		if (account != null) {
-			calDAVTTT = reminderfox.string('rf.caldav.calendar.account') + ' [' +recentReminder.calDAVid + '] ' + account.Name;
+			calDAVTTT = reminderfox.string("rf.caldav.calendar.account") + ' [' +recentReminder.calDAVid + '] ' + account.Name;
 			var icon = document.createElement("toolbarbutton");
 			icon.setAttribute("class", "rmFx-calDAV-share");
 	//		icon.setAttribute("idValue", n);
@@ -404,7 +384,7 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 		icon.setAttribute("class", "displayMail");
 		icon.setAttribute("type", "checkbox");
 		icon.addEventListener("click", function() {rmFXshowMailInAlarm(recentReminder);},false);
-		icon.setAttribute("tooltiptext", reminderfox.string('rf.add.mail.message.open'));
+		icon.setAttribute("tooltiptext", reminderfox.string("rf.add.mail.message.open"));
 		attributeIcons.appendChild(icon);
 	};
 
@@ -412,14 +392,9 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 		var icon = document.createElement("toolbarbutton");
 		icon.setAttribute("class", "displayCategory");
 	//	icon.setAttribute("type", "checkbox");
-		icon.setAttribute("tooltiptext", reminderfox.string('rf.add.reminders.tooltip.categories')+ ': ' +recentReminder.categories);
+		icon.setAttribute("tooltiptext", reminderfox.string("rf.add.reminders.tooltip.categories")+ ': ' +recentReminder.categories);
 		attributeIcons.appendChild(icon);
 	};
-
-
-	var msg = "Alarm  TEST ::   ruc >>"
-	//console.log("SOUND ", new Date(), msg);
-
 
 	if (recentReminder != null && recentReminder.remindUntilCompleted != null) { // reminder
 		var icon = document.createElement("toolbarbutton");
@@ -427,8 +402,8 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 		if (recentReminder.remindUntilCompleted == "2") icon.setAttribute("class", "remindUntilCompleted2");
 	//	icon.setAttribute("type", "checkbox");
 		var statusText = (recentReminder.remindUntilCompleted == 2)
-			? reminderfox.string('rf.calendar.overdue.isoverdue')
-			: reminderfox.string('rf.calendar.overdue.remindoverdue');		//§§§§  missing string    //$$$_locale 
+			? reminderfox.string("rf.calendar.overdue.isoverdue")
+			: reminderfox.string("rf.calendar.overdue.remindoverdue");		//§§§§  missing string    //$$$_locale 
 		icon.setAttribute("tooltiptext", statusText);
 
 		attributeIcons.appendChild(icon);
@@ -455,17 +430,20 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 	}
 
 
-	var msg = "Alarm  TEST ::  notesText "
-	//console.log("SOUND", new Date(), msg);
 
-	if((recentReminder != null && recentReminder.notes != null ) 
+//reminderFox_nullCheck
+/*-----
+	if(  (recentReminder != null && recentReminder.notes != null ) 
 	  || (reminderAlarmOptions.quickAlarmNotes != null 
-			&& reminderAlarmOptions.quickAlarmNotes.length > 0 
-			&& reminderAlarmOptions.quickAlarmNotes != "null")) {
+	        && reminderAlarmOptions.quickAlarmNotes.length > 0 
+	        && reminderAlarmOptions.quickAlarmNotes != "null")) {
 
-		if(reminderAlarmOptions.quickAlarmNotes != null 
-		   && reminderAlarmOptions.quickAlarmNotes.length > 0 
-		   && reminderAlarmOptions.quickAlarmNotes != "null") {
+		if(reminderAlarmOptions.quickAlarmNotes != null
+			&& reminderAlarmOptions.quickAlarmNotes.length > 0
+			&& reminderAlarmOptions.quickAlarmNotes != "null") {
+---------*/
+	if( (recentReminder != null && recentReminder.notes != null ) || reminderFox_nullCheck(reminderAlarmOptions.quickAlarmNotes)) {
+		if (reminderFox_nullCheck(reminderAlarmOptions.quickAlarmNotes)) {
 
 			// to replace \n char with actual newlines:
 			reminderAlarmOptions.quickAlarmNotes = reminderAlarmOptions.quickAlarmNotes.replace(new RegExp(/\\n/g), "\n");
@@ -480,7 +458,7 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 
 		if(hasNotes && firstTab) {
 			// if this is the first tab and one of the tabs has notes on it, then
-			// make sure the notes is visible (for sizing) since this tab is the onw
+			// make sure the notes is visible (for sizing) since this tab is the one
 			// that will be cloned
 			getChildElementById(tabPanel, "notesHbox").removeAttribute("hidden");
 			getChildElementById(tabPanel, "notesText").removeAttribute("hidden");
@@ -489,10 +467,6 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 			getChildElementById(tabPanel, "notesText").setAttribute("hidden", true);
 		}
 	}
-
-	var msg = "Alarm  TEST ::   location/url  >>"
-	//console.log("SOUND ", new Date(), msg);
-
 
 	if(recentReminder != null && recentReminder.location != null && recentReminder.location.length > 0) {
 		getChildElementById(tabPanel, "locationText").setAttribute("value", recentReminder.location);
@@ -516,15 +490,11 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 	}
 
 	// get preference for how many minutes to re-sound the alarm
-	var soundInterval = -1;
-	try {
-		soundInterval = reminderfox._prefsBranch.getIntPref(reminderfox.consts.ALARM_SOUND_INTERVAL);
-	} catch ( e) {
-	}
-
+	var soundInterval = reminderfox.core.getPreferenceValue(reminderfox.consts.ALARM_SOUND_INTERVAL, -1);
 	if(soundInterval > 0) {
 		setInterval(playAlarmSound, (soundInterval * 1000 * 60));
 	}
+
 	//XXX   sizeToContent();
 }
 
@@ -544,16 +514,17 @@ function selectAlarmTab(xThis) {
 		alarmListName = reminderfox.string("rf.alarm.quickalarms.label").replace(":","")  // "Quick Alarm"
 	}
 
-
 	var alarmMissed = reminderAlarmArray[index].alarmAlarmMissed;
 	var recentReminder = reminderAlarmArray[index].alarmRecentReminder;
 
 	var tabbox = document.getElementById("tabbox");
 	var tabPanel = tabbox.selectedPanel;
 
-	if((recentReminder != null && recentReminder.notes != null) || (reminderAlarmArray[index].quickAlarmNotes != null && reminderAlarmArray[index].quickAlarmNotes.length > 0 && reminderAlarmArray[index].quickAlarmNotes != "null")) {
-		if(reminderAlarmArray[index].quickAlarmNotes != null && reminderAlarmArray[index].quickAlarmNotes.length > 0 && reminderAlarmArray[index].quickAlarmNotes != "null") {
+	if((recentReminder != null && recentReminder.notes != null)
+	 || reminderFox_nullCheck(reminderAlarmArray[index].quickAlarmNotes)) {
+		if(reminderFox_nullCheck(reminderAlarmArray[index].quickAlarmNotes)) {
 			getChildElementById(tabPanel, "notesText").setAttribute("value", reminderAlarmArray[index].quickAlarmNotes);
+
 		} else {
 			getChildElementById(tabPanel, "notesText").setAttribute("value", recentReminder.notes);
 		}
@@ -565,9 +536,7 @@ function selectAlarmTab(xThis) {
 		getChildElementById(tabPanel, "notesText").setAttribute("hidden", true);
 	}
 
-	document.title = reminderFox_alarmListNameCheck(alarmListName)
-	document.title += " - " + reminderfox.string("rf.alarm.title");		//XXXalarmTitle
-
+	document.title = reminderFox_alarmListNameCheck(alarmListName) + " - " + reminderfox.string("rf.alarm.title");
 
 	// if this is a past reminder, indicate that in the title
 	if(alarmMissed != null && alarmMissed == "true") {
@@ -585,25 +554,31 @@ function selectAlarmTab(xThis) {
 		if(compare == 1) {
 			// compare Dates: recentReminder.date, currentDate.
 			// if current date is after reminder date, show 'missed'
-	//XXXalarmTile		document.title = document.title + " (" + reminderfox.string("rf.alarm.missedalarm.title") + ")";
 			document.title = " (" + reminderfox.string("rf.alarm.missedalarm.title") + ") " + document.title;
 		}
 	}
 
-	var info;
+	var title;
 	if(recentReminder != null) {
-		info = recentReminder.summary;
+		title = recentReminder.summary;
 	} else {
-		info = reminderAlarmArray[index].quickAlarmText;
+		title = reminderAlarmArray[index].quickAlarmText;
 	}
-	//XXXalarmTitle  document.title = document.title + ": " + info;
-	document.title = info + " " + document.title;
+
+	document.title += (reminderfox.util.appId() == "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}")? " [FX]":"";
+	document.title += (reminderfox.util.appId() == "{3550f703-e582-4d05-9a08-453d09bdfdc6}")? " [TB]":"";
+	document.title += (reminderfox.util.appId() == "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}")? " [SM]":"";
+
+	document.title = title + " " + document.title;
 }
 
+function reminderFox_nullCheck (elem) {
+	return (elem != null && elem.length > 0 && elem != "null") 
+};
 
 function reminderFox_alarmListNameCheck (alarmListName) {
 
-	if(alarmListName != null && alarmListName.length > 0 && alarmListName != "null") {
+	if(reminderFox_nullCheck(alarmListName)) {
 		var localEvents= reminderfox.string("rf.html.heading.reminders");
 		var localToDos = reminderfox.string("rf.html.heading.todos");
 		if (alarmListName == reminderfox.consts.DEFAULT_REMINDERS_CATEGORY) alarmListName =  localEvents
@@ -654,7 +629,7 @@ function reminderFox_updateSnoozeTimeDate() {
 }
 
 function reminderFox_getDateVariableStringAlarm(reminder, date) {
-	var _dateVariableString = reminderfox.core.getUnicodePref(reminderfox.consts.LIST_DATE_LABEL);
+	var _dateVariableString = reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT);
 	return reminderfox.date.getDateVariable(reminder, date, _dateVariableString);
 }
 
@@ -676,12 +651,10 @@ function reminderFox_compareAlarmTimes(dateOne, dateTwo) {
 			} else if(dateOne.getMinutes() > dateTwo.getMinutes()) {
 				return 1
 			} else {
-				return 0;
-				// identical times
+				return 0; // identical times
 			}
 		}
 	}
-
 	return compare;
 }
 
@@ -702,21 +675,12 @@ function rmFXshowMailInAlarm(recentReminder) {
 	reminderfox.mail.openByMessageID(recentReminder);
 }
 
-function calDavInAlarm () {
-	//gW TODO XXX
-}
-
-
 function playAlarmSound() {
 	// play a sound for notification (if the user elects to)
-
-	var msg = "playAlarmSound  "
-	//console.log("SOUND ", new Date(), msg);
-
 	try {
 		var playSound = true;
 		try {
-			playSound = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.ALARM_SOUND);
+			playSound = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.ALARM_SOUND);
 		} catch ( e) {
 			//console.log("SOUND Reminderfox playAlarmSound pref failed: ", playSound, e);
 		}
@@ -753,8 +717,7 @@ function reminderFox_editReminderFromAlarm() {
 		document.getElementById('reminderDescriptionText').value = returnedSummary
 
 		document.title = returnedSummary;
-		document.title += " - " + reminderfox.string("rf.alarm.title");	//XXXalarmTitle
-
+		document.title += " - " + reminderfox.string("rf.alarm.title");
 	}
 }
 
@@ -900,13 +863,16 @@ function reminderFox_performAlarmAction(actionIndex, snoozeTime, alarmTime, keep
 			reminder.snoozeTime = alarmTime + ";PT" + snoozeTime + "M";
 		} else {
 			reminder.alarmLastAcknowledge = new Date().getTime();
-			reminderfox.core.logMessageLevel("Setting acknowledge for alarm: " + reminder.alarmLastAcknowledge, reminderfox.consts.LOG_LEVEL_SUPER_FINE);
+			reminderfox.core.logMessageLevel("  Setting acknowledge for alarm: " + reminder.alarmLastAcknowledge, reminderfox.consts.LOG_LEVEL_SUPER_FINE);
 			//TODO //dump()
 
 			reminder.snoozeTime = null;
 			// clear snooze time
 		}
-		reminderfox.core.reminderFox_lastModifiedTime = reminderfox._prefsBranch.getCharPref(reminderfox.consts.LAST_MODIFIED) + "";
+		reminderfox.core.reminderFox_lastModifiedTime = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.LAST_MODIFIED) + "";
+
+console.log("RmFX  reminderFox_performAlarmAction : ", reminderfox.core.reminderFox_lastModifiedTime);
+console.trace();
 
 		if(actionIndex == REMINDERFOX_ACTION_TYPE.COMPLETE) {
 			reminder.completedDate = new Date();
@@ -1039,7 +1005,7 @@ function reminderFox_performAlarmAction(actionIndex, snoozeTime, alarmTime, keep
 			var index = tabList.selectedIndex;
 			var syncCallback = reminderAlarmArray[index].synccallback;
 			if(syncCallback != null) {
-				var networkSync = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK_SYNCHRONIZE, reminderfox.consts.NETWORK_SYNCHRONIZE_DEFAULT); 
+				var networkSync = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK_SYNCHRONIZE, reminderfox.consts.NETWORK.SYNCHRONIZE_DEFAULT); 
 
 				if(networkSync) {
 					reminderfox.util.JS.dispatch('network');
@@ -1052,7 +1018,7 @@ function reminderFox_performAlarmAction(actionIndex, snoozeTime, alarmTime, keep
 			reminderfox.core.writeOutRemindersAndTodos(false);		// if we just acknowledged the reminder, don't do anything.   ??
 		}
 
-		//reminderfox.core.logMessageLevel("Alarm action'd; looking to remove from alarm list: " + myAlarmId   , reminderfox.consts.LOG_LEVEL_DEBUG);  //TODO //dump()
+		//reminderfox.core.logMessageLevel("  Alarm action'd; looking to remove from alarm list: " + myAlarmId   , reminderfox.consts.LOG_LEVEL_DEBUG);  //TODO //dump()
 		// if snoozing for more than 60 minutes, can just remove this from list of
 		// alarms, since the hourly processing thread will pick this up
 		if(((actionIndex == REMINDERFOX_ACTION_TYPE.SNOOZE && (snoozeTime != null && snoozeTime > 60 )) || actionIndex != REMINDERFOX_ACTION_TYPE.SNOOZE) && !reminderFox_reopeningWindow) {
@@ -1062,11 +1028,11 @@ function reminderFox_performAlarmAction(actionIndex, snoozeTime, alarmTime, keep
 				for(var i = 0; i < oldestWindow.reminderfox.overlay.alarmList.length; i++) {
 					var currentAlarmId = oldestWindow.reminderfox.overlay.alarmList[i].alarmId;
 					if(currentAlarmId == myAlarmId) {
-						reminderfox.core.logMessageLevel("Removing....", reminderfox.consts.LOG_LEVEL_DEBUG);
+						reminderfox.core.logMessageLevel("  Removing....", reminderfox.consts.LOG_LEVEL_DEBUG);
 						//TODO //dump()
 
 						reminderfox.core.removeFromArray(oldestWindow.reminderfox.overlay.alarmList, i);
-						reminderfox.core.logMessageLevel("Removed....", reminderfox.consts.LOG_LEVEL_DEBUG);
+						reminderfox.core.logMessageLevel("  Removed....", reminderfox.consts.LOG_LEVEL_DEBUG);
 						//TODO //dump()
 					}
 				}
@@ -1318,16 +1284,16 @@ function reminderFox_snooze() {
 
 				if(setSnoozeTime <= 3600000) {// if snooze greater than an hour, ignore this; just let hourly process handle it
 					var notes = null;
-					if(reminderAlarmArray[index].quickAlarmNotes != null && reminderAlarmArray[index].quickAlarmNotes.length > 0 && reminderAlarmArray[index].quickAlarmNotes != "null") {
+					if(reminderFox_nullCheck(reminderAlarmArray[index].quickAlarmNotes)) {
 						notes = reminderAlarmArray[index].quickAlarmNotes.replace(new RegExp(/\n/g), "\\n");
 
-						reminderfox.core.logMessageLevel("  alarm: Setting showAlarm timeout1: " + quickAlarmText + "--" + snoozeTime + " --> " + (snoozeTime * 60000) + "--" + setSnoozeTime, reminderfox.consts.LOG_LEVEL_SUPER_FINE);
+						reminderfox.core.logMessageLevel("    alarm: Setting showAlarm timeout1: " + quickAlarmText + "--" + snoozeTime + " --> " + (snoozeTime * 60000) + "--" + setSnoozeTime, reminderfox.consts.LOG_LEVEL_SUPER_FINE);
 						//TODO
 						oldestWindow.setTimeout(function() {
 							oldestWindow.reminderfox.overlay.showQuickAlarm(quickAlarmText, snoozeTime, notes)
 						}, setSnoozeTime);
 					} else {
-						reminderfox.core.logMessageLevel("  alarm: Setting showAlarm timeout2: " + quickAlarmText + "--" + snoozeTime + " --> " + (snoozeTime * 60000) + "--" + setSnoozeTime, reminderfox.consts.LOG_LEVEL_SUPER_FINE);
+						reminderfox.core.logMessageLevel("    alarm: Setting showAlarm timeout2: " + quickAlarmText + "--" + snoozeTime + " --> " + (snoozeTime * 60000) + "--" + setSnoozeTime, reminderfox.consts.LOG_LEVEL_SUPER_FINE);
 						//TODO
 						oldestWindow.setTimeout(function() {
 							oldestWindow.reminderfox.overlay.showQuickAlarm(quickAlarmText, snoozeTime)
@@ -1355,7 +1321,7 @@ function reminderFox_snooze() {
 
 				reminderFox_performAlarmAction(REMINDERFOX_ACTION_TYPE.SNOOZE, snoozeTime, alarmTime, true);
 
-				reminderfox.core.logMessageLevel("alarm: Setting showAlarm timeout: " + snoozeTime + " --> " + (snoozeTime * 60000), reminderfox.consts.LOG_LEVEL_SUPER_FINE);
+				reminderfox.core.logMessageLevel("  alarm: Setting showAlarm timeout: " + snoozeTime + " --> " + (snoozeTime * 60000), reminderfox.consts.LOG_LEVEL_SUPER_FINE);
 				//TODO
 				var alarmArray = new Array();
 				alarmArray[alarmArray.length] = reminderAlarmArray[index];

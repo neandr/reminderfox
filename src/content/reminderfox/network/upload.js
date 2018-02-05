@@ -20,23 +20,23 @@ reminderfox.network.upload.reminderFox_upload_Startup_headless = function(headle
 }
 
 reminderfox.network.upload.reminderFox_upload_closeWindow = function() {
- 	if ( window.arguments != null && window.arguments[0] != null && window.arguments[0].closeOnNoErrors == 1) {
-  		close();
-  	}
-  	else {
-  		var reminderFox_upload_button= document.getElementById("reminderFox_upload_button");
-  		reminderFox_upload_button.setAttribute("label",reminderfox.string("rf.net.done") ); 	
-  	}
+   if ( window.arguments != null && window.arguments[0] != null && window.arguments[0].closeOnNoErrors == 1) {
+      close();
+   }
+   else {
+      var reminderFox_upload_button= document.getElementById("reminderFox_upload_button");
+      reminderFox_upload_button.setAttribute("label",reminderfox.string("rf.net.done") ); 	
+   }
 }
-reminderfox.network.upload.reminderFox_upload_senddata = function()
-{
+
+reminderfox.network.upload.reminderFox_upload_senddata = function() {
   var _uploadURL = "";
   var _ioService = Components.classes["@mozilla.org/network/io-service;1"]
-               	   .getService(Components.interfaces.nsIIOService);
+                  .getService(Components.interfaces.nsIIOService);
 
-  var proto = reminderfox._prefsBranch.getCharPref(reminderfox.consts.PROTO);
-  var address = reminderfox._prefsBranch.getCharPref(reminderfox.consts.ADDRESS);
-  var _username = reminderfox._prefsBranch.getCharPref(reminderfox.consts.USERNAME);
+  var proto = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK.PROTOCOL, "");
+  var address = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK.ADDRESS, "");
+  var _username = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK.USERNAME, "");
   
     if ( address == null || address.length == 0 ) {
   	  reminderfox.network.upload.reminderFox_uploadCallback(reminderfox.string("rf.net.done"),-1);
@@ -176,7 +176,7 @@ reminderfox.network.upload.reminderFox_upload_statusTxt = function(aStatus,aErro
   		}
   		else {
   			var value = (aError)?	reminderfox.network.upload.reminderFox_upload_getErrorMsg(aError):aStatus;
-			reminderfox.core.logMessageLevel("Upload (headless): " + new Date() + " " + value, reminderfox.consts.LOG_LEVEL_FINE);
+			reminderfox.core.logMessageLevel("RmFX  Upload (headless): " + new Date() + " " + value, reminderfox.consts.LOG_LEVEL_FINE);
   		}	
 }
 

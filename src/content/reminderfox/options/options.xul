@@ -44,6 +44,11 @@
 		<key keycode="VK_ESCAPE" oncommand="window.close();" />
 		<key keycode="VK_ENTER" oncommand="reminderFox_saveOptionsAndClose();" />
 		<key keycode="VK_RETURN" oncommand="reminderFox_saveOptionsAndClose();" />
+
+		<key id="editPref" key="p" modifiers="accel"
+			oncommand="prefsService.prefsEdit('edit');" />
+		<key id="prefsPanelClose" key="q" modifiers="accel"
+			oncommand="prefsService.prefsPanelClose();" />
 	</keyset>
 
 	<grid>
@@ -76,13 +81,10 @@
 			<tab id="alarms" label="&rf.options.tab.alarms;" docu="#alarms"/>
 			<tab id="todoLists" label="&rf.options.todoLists;" docu="#lists"/>
 			<tab id="network" label="&rf.options.tab.Sync;"  docu="#sync"/>
-
-
-			<!--  tab removed, manage Categories is called also from popup menu -->
-			<!--tab id="categories" label="&rf.options.categories.label;" /-->
+			<tab id="prefsTab" label="Prefs"  docu="#prefs" hidden="true"/>
 		</tabs>
 
-		<tabpanels flex="1">
+		<tabpanels id="optionsTabs" flex="1">
 
 			<tabpanel flex="1" id="generalPanel" orient="vertical">		<!--was: general -->
 
@@ -217,7 +219,6 @@
 			
 			</tabpanel>
 
-
 			<tabpanel flex="1" id="applicationPanel" orient="vertical">			<!--was : mainList -->
 
 				<groupbox id="Foxy-on-bar">
@@ -268,7 +269,8 @@
 								</vbox>
 
 								<hbox>
-									<menulist id="reminderFox-list-bars" oncommand="reminderFox_populatePositions();" width="280px">
+									<menulist id="reminderFox-list-bars" 
+										oncommand="reminderFox_populatePositions();" width="280px">
 										<menupopup id="reminderFox-popup-bars" />
 									</menulist>
 								</hbox>
@@ -330,8 +332,22 @@
 						<checkbox id="reminderFox-enableContextMenu"
 							label="&rf.options.display.enableContextMenus.label;" />
 					</hbox>
+
+					<hbox align="center" id="reminderFox-abCardFormat-box">
+						<radiogroup id="reminderFox-abCardFormat">
+							<hbox align="center">
+								<label value="Select Format for Adressbook reminder"
+									class="valid-label" />
+								<radio group="abFormatUS" label="US/other"
+									value="-1" />
+								<radio group="abFormatEU" label="EU"
+									value="1" />
+							</hbox>
+						</radiogroup>
+					</hbox>
+
 				</groupbox>
-				
+
 				<spacer height="15px" />
 
 				<groupbox width="300px;">
@@ -804,7 +820,6 @@
 				</groupbox>
 			</tabpanel>
 
-
 			<tabpanel flex="1" id="alarmsPanel" orient="vertical">		<!-- alarms -->
 				<groupbox id="reminderFox-alarmGroup">
 					<caption label="&rf.options.alarm.dialogs;" />
@@ -906,7 +921,6 @@
 
 			</tabpanel>
 
-
 			<tabpanel flex="1" id="todoListsPanel" orient="vertical">			<!-- todoLists -->
 				<groupbox flex="1" style="width: 400px;">
 					<caption label="&rf.options.list.reminder.lists.manage.label;" />
@@ -945,23 +959,85 @@
 				<vbox id="reminderFoxNetworkTab" flex="1" />
 			</tabpanel>
 
-			<!-- categories - - >
-			<tabpanel flex="1" id="categoriesPanel" orient="vertical">		
+
+			<!-- prefs panel -->  
+			<!--  see comment in reminderFoxOptions.js  .....................  -->
+			<tabpanel flex="1" id="prefsPanel" orient="vertical"  hidden="true">
 				<groupbox flex="1" style="width: 400px;">
-					<caption label="&rf.options.categories.label;" />
-					<description>&rf.options.categories.description1;
-					</description>
+					<caption label="Reminderfox Preferences">
+						<button id="prefsLoad" label="Load Preferences"
+							flex="3" 
+							oncommand="prefsService.init(true);" />
+						<textbox id="prefsService.length" width="50px" margin-left="10px" value="0"/>
+
+						<hbox id="rmFxPrefVbox" >
+							<textbox id="prefsService.filter" width="220px" margin-left="20px" value=""/>
+							<button id="prefsService.filter.go"
+								label="Filter"
+								oncommand="prefsService.setFilter();" />
+						</hbox> 
+
+						<button id="prefsExport" label="Export Preferences"
+							flex="3" 
+							oncommand="prefsService.exportTable();" />
+					</caption>
+
 					<spacer height="10px" />
 
-					<vbox id="reminderFoxCategoryVbox" />  <! - - brought in from overlay - - >
+					<tree id="prefTree" flex="1" 
+						persist="sortDirection sortResource"
+						onselect="prefsService.treeOp(this)"
+						context="prefs-contextmenu"
+						sortDirection="ascending"
+						sortResource="description">
+						<treecols>
+							<treecol id="prefName" label="Preference" 
+								flex="5" 
+								persist="width ordinal hidden" 
+								onclick="prefsService.sort(this)" 
+								class="sortDirectionIndicator" 
+								sortDirection="ascending"/>
+							<splitter class="tree-splitter"/>
+							<treecol id="prefType" label="Type" 
+								flex="1" 
+								persist="width ordinal hidden" 
+								onclick="prefsService.sort(this)" 
+								class="sortDirectionIndicator"/>
+							<splitter class="tree-splitter"/>
+							<treecol id="prefValue" label="Value" 
+								flex="5" 
+								persist="width ordinal hidden" 
+								onclick="prefsService.sort(this)" 
+								class="sortDirectionIndicator"/>
+							<splitter class="tree-splitter"/>
+							<treecol id="prefUserValue" label="Status" 
+								flex="5" 
+								persist="width ordinal hidden" 
+								onclick="prefsService.sort(this)" 
+								class="sortDirectionIndicator"/>
+						</treecols>
+						<treechildren id="tree-children"/>
+					</tree>
+
 				</groupbox>
 			</tabpanel>
-			< ! - - categories -->
+			<!--  see comment in reminderFoxOptions.js  .................... -->
+			<!-- prefs -->
 
 		</tabpanels>
 
 	</tabbox>
 
+	<menupopup id="prefs-contextmenu">
+		<menuitem id="prefs-copy" label="Copy Preference Item"
+			oncommand="prefsService.treeRow('all')" />
+
+		<menuseparator />
+		<menuitem id="prefs-copy" label="Copy Preference Name"
+			oncommand="prefsService.treeRow('name')" />
+		<menuitem id="prefs-copy" label="Copy Preference Value"
+			oncommand="prefsService.treeRow('value')" />
+	</menupopup>
 
 
 	<vbox id="reminderFox-options-footer">
@@ -1020,6 +1096,34 @@
 			panel.openPopup(anchor, 'bottomleft topright', -1, -1);
 			}
 		</script>
+	</panel>
+
+
+
+	<panel id="editPrefsPanel" hidden="true">
+
+		<groupbox orient="horizontal">
+			<caption id="prefsEditLabel" label="Edit Preference item" />
+			<vbox>
+				<vbox>
+					<hbox id="prefsEditBool" hidden="true">
+						<button id="prefsBoolToggle" label="Toggle" oncommand="prefsService.editBool(this);" />
+					</hbox>
+
+					<hbox id="prefsEditString" hidden="true">
+						<textbox id="prefsEditStringBox" value=""></textbox>
+					</hbox>
+				</vbox>
+
+				<vbox class="reminderFox-footer">
+					<hbox>
+						<button label="&rf.cancel;" oncommand="prefsService.panelClose();" />
+						<button label="&rf.apply;" id="reminderFox-apply"
+							oncommand="prefsService.editApply();" />
+					</hbox>
+				</vbox>
+			</vbox>
+		</groupbox>
 	</panel>
 
 </window>

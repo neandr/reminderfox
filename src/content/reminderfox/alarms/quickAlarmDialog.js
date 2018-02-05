@@ -227,7 +227,7 @@ function playAlarmSound() {
 	try {
 		var playSound = true;
 		try {
-			playSound = reminderfox._prefsBranch.getBoolPref(reminderfox.consts.ALARM_SOUND);
+			playSound = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.ALARM_SOUND);
 		} catch ( e) {
 		}
 		if(playSound) {
@@ -270,7 +270,7 @@ function reminderFox_updateSnoozeTimeDate() {
 
 		var snoozeString = "";
 		if(snoozeDate2.getMonth() != currentTimeDate.getMonth() || snoozeDate2.getDate() != currentTimeDate.getDate()) {
-			var _dateVariableString = reminderfox.core.getUnicodePref(reminderfox.consts.LIST_DATE_LABEL);
+			var _dateVariableString = reminderfox.core.getPreferenceValue(reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT);
 			snoozeString = reminderfox.date.getDateVariable(null, snoozeDate2, _dateVariableString) + ", ";
 		}
 		snoozeString += reminderfox.date.getTimeString(snoozeDate2);
@@ -279,7 +279,7 @@ function reminderFox_updateSnoozeTimeDate() {
 }
 
 function reminderFox_getDateVariableString(reminder, date) {
-	var _dateVariableString = reminderfox.core.getUnicodePref( reminderfox.consts.LIST_DATE_LABEL);
+	var _dateVariableString = reminderfox.core.getPreferenceValue( reminderfox.consts.LIST_DATE_LABEL, reminderfox.consts.LIST_DATE_LABEL_DEFAULT);
 	return reminderfox.date.getDateVariable(reminder, date, _dateVariableString);
 }
 

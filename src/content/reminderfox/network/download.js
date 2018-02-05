@@ -25,13 +25,13 @@ reminderfox.network.download.reminderFox_download_statustxt = function(aStatus, 
 		} else {
 			value = (aError) ? reminderfox.network.download.reminderFox_download_getErrorMsg(aError) : aStatus;
 		}
-		reminderfox.core.logMessageLevel("Download (headless): "  + value, reminderfox.consts.LOG_LEVEL_FINE);
+		reminderfox.core.logMessageLevel("  Download (headless): "  + value, reminderfox.consts.LOG_LEVEL_FINE);
 	}
 }
 
 reminderfox.network.download.reminderFox_download_Startup = function() {
 
-    reminderfox.core.logMessageLevel(" [.network.download.reminderFox_download_Startup ] ",        reminderfox.consts.LOG_LEVEL_INFO);
+    reminderfox.core.logMessageLevel("   [.network.download.reminderFox_download_Startup ] ",        reminderfox.consts.LOG_LEVEL_INFO);
 	reminderfox.network.download.reminderFox_download_headless = reminderfox.consts.UI_MODE_HEADLESS_SHOW_ALL_UI;
 	reminderfox.network.download.reminderFox_download_statustxt(reminderfox.string("rf.upload.ready.label"), 0);
 	reminderfox.network.download.reminderFox_editWindowCallback = null;
@@ -81,7 +81,7 @@ reminderfox.network.download.reminderFox_downloadCallbackURL = function(aStatus,
 			break;
 		case 0:
 
-			reminderfox.core.logMessageLevel("Downloading subscribed reminders...", reminderfox.consts.LOG_LEVEL_FINE);
+			reminderfox.core.logMessageLevel("  Downloading subscribed reminders...", reminderfox.consts.LOG_LEVEL_FINE);
 
 			if(reminderfox.network.download.reminderFox_subscriptionCallback != null) {
 				reminderfox.network.download.reminderFox_subscriptionCallback(reminderfox.string("rf.add.network.status.download.label"), 0);
@@ -154,9 +154,9 @@ reminderfox.network.download.reminderFox_downloadDelayedStartup = function() {
 	var _downloadURL = "";
 	var _ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
-	var proto = reminderfox._prefsBranch.getCharPref(reminderfox.consts.PROTO);
-	var address = reminderfox._prefsBranch.getCharPref(reminderfox.consts.ADDRESS);
-	var _username = reminderfox._prefsBranch.getCharPref(reminderfox.consts.USERNAME);
+	var proto = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK.PROTOCOL, "");
+	var address = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK.ADDRESS, "");
+	var _username = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK.USERNAME, "");
 
 	if(address == null || address.length == 0) {
 		reminderfox.network.download.reminderFox_downloadCallback(reminderfox.string("rf.net.done"), -1);
@@ -193,14 +193,14 @@ reminderfox.network.download.reminderFox_downloadDelayedStartup = function() {
 
 	if(gDownloadService.start(downloadURI, reminderfox.network.download.reminderFox_downloadCallback)){
 	
-		reminderfox.core.logMessageLevel(" [reminderFox_downloadDelayedStartup]   "  + reminderfox.string("rf.upload.request.label"));
+		reminderfox.core.logMessageLevel("   [reminderFox_downloadDelayedStartup]   "  + reminderfox.string("rf.upload.request.label"));
 
 		reminderfox.network.download.reminderFox_download_statustxt(reminderfox.string("rf.upload.request.label"), 0);
 	}
 	else {
 		//statustxt(reminderfox.string("rf.net.done"),0);
 
-		reminderfox.core.logMessageLevel(" [reminderFox_downloadDelayedStartup]   "  + reminderfox.string("rf.net.done"));
+		reminderfox.core.logMessageLevel("   [reminderFox_downloadDelayedStartup]   "  + reminderfox.string("rf.net.done"));
 
 		reminderfox.network.download.reminderFox_downloadCallback(reminderfox.string("rf.net.done"), -1);
 	}
@@ -223,7 +223,7 @@ reminderfox.network.download.reminderFox_downloadCallback = function(aStatus, aE
 			break;
 		case 0:
 			var remotetimestamp = reminderfox.core.getICSXLastmodifiedFromString(gDownloadService.data);
-			var lastRecordedLocalTimeStamp = reminderfox._prefsBranch.getCharPref(reminderfox.consts.LAST_MODIFIED) + "";
+			var lastRecordedLocalTimeStamp = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.LAST_MODIFIED) + "";
 
 			if(remotetimestamp == -1) {
 				// when syncing with a remote calendaring service (such as memotoo.com) and not just with other ReminderFox
@@ -232,7 +232,7 @@ reminderfox.network.download.reminderFox_downloadCallback = function(aStatus, aE
 				// This means on download, the remote always wins, so on upload you want to make sure that your local reminders
 				// are uploaded and current; otherwise the remote reminders will overwrite local changes the next download attempt.
 				remotetimestamp = new Date().getTime();
-				reminderfox.core.logMessageLevel("Remote reminders have no timestamp; assume they are newer... ", reminderfox.consts.LOG_LEVEL_FINE);
+				reminderfox.core.logMessageLevel("  Remote reminders have no timestamp; assume they are newer... ", reminderfox.consts.LOG_LEVEL_FINE);
 			}
 
 			// if we are calling Download from the options, force it to download whether the remote reminders are newer or not...
@@ -244,7 +244,7 @@ reminderfox.network.download.reminderFox_downloadCallback = function(aStatus, aE
 
 			var done = false;
 			if(remotetimestamp == lastRecordedLocalTimeStamp) {
-				reminderfox.core.logMessageLevel("Remote and Local reminders are identical: " + remotetimestamp, reminderfox.consts.LOG_LEVEL_FINE);
+				reminderfox.core.logMessageLevel("  Remote and Local reminders are identical: " + remotetimestamp, reminderfox.consts.LOG_LEVEL_FINE);
 
 				if(reminderfox.network.download.reminderFox_editWindowCallback != null) {
 					reminderfox.network.download.reminderFox_editWindowCallback(null, 1);
@@ -255,8 +255,8 @@ reminderfox.network.download.reminderFox_downloadCallback = function(aStatus, aE
 				}
 				return;
 			} else if(remotetimestamp < lastRecordedLocalTimeStamp) {
-				reminderfox.core.logMessageLevel("Local  reminders are newer than remote --  uploading local reminders... (local: " + lastRecordedLocalTimeStamp + ", remote: " + remotetimestamp + ")", reminderfox.consts.LOG_LEVEL_FINE);
-				reminderfox.core.logMessageLevel("Read timestamp from file (should be == to local): " + reminderfox.core.getICSXLastmodifiedFromFile(), reminderfox.consts.LOG_LEVEL_FINE);
+				reminderfox.core.logMessageLevel("  Local  reminders are newer than remote --  uploading local reminders... (local: " + lastRecordedLocalTimeStamp + ", remote: " + remotetimestamp + ")", reminderfox.consts.LOG_LEVEL_FINE);
+				reminderfox.core.logMessageLevel("  Read timestamp from file (should be == to local): " + reminderfox.core.getICSfileTimeStamp(), reminderfox.consts.LOG_LEVEL_FINE);
 				if(reminderfox.network.download.reminderFox_editWindowCallback != null) {
 					reminderfox.network.download.reminderFox_editWindowCallback(reminderfox.string("rf.add.network.status.upload.label"), 0);
 				}
@@ -278,8 +278,8 @@ reminderfox.network.download.reminderFox_downloadCallback = function(aStatus, aE
 
 				return;
 			} else if(remotetimestamp > lastRecordedLocalTimeStamp) {
-				reminderfox.core.logMessageLevel("Remote reminders newer than local -- downloading remote reminders... (local: " + lastRecordedLocalTimeStamp + ", remote: " + remotetimestamp + ")", reminderfox.consts.LOG_LEVEL_FINE);
-				reminderfox.core.logMessageLevel("Read timestamp from file (should be == to local): " + reminderfox.core.getICSXLastmodifiedFromFile(), reminderfox.consts.LOG_LEVEL_FINE);
+				reminderfox.core.logMessageLevel("  Remote reminders newer than local -- downloading remote reminders... (local: " + lastRecordedLocalTimeStamp + ", remote: " + remotetimestamp + ")", reminderfox.consts.LOG_LEVEL_FINE);
+				reminderfox.core.logMessageLevel("  Read timestamp from file (should be == to local): " + reminderfox.core.getICSfileTimeStamp(), reminderfox.consts.LOG_LEVEL_FINE);
 
 				if(reminderfox.network.download.reminderFox_editWindowCallback != null) {
 					reminderfox.network.download.reminderFox_editWindowCallback(reminderfox.string("rf.add.network.status.download.label"), 0);
@@ -318,7 +318,7 @@ reminderfox.network.download.reminderFox_downloadCallback = function(aStatus, aE
 					// safety check: if there are no events and no todo's in the remote file, we will assume that this an error condition
 					// (this happens frequently with icalx.com where the remote file gets cleared) and will not overwrite the local reminders
 					if(reminderEvents.length == 0 && !hasTodos) {
-						reminderfox.core.logMessageLevel("Failed: remote file with timestamp " + remotetimestamp + " has no events or todo's...", reminderfox.consts.LOG_LEVEL_FINE);
+						reminderfox.core.logMessageLevel("  Failed: remote file with timestamp " + remotetimestamp + " has no events or todo's...", reminderfox.consts.LOG_LEVEL_FINE);
 						reminderfox.core.reminderFox_reminderFoxExtraInfo = originalExtraInfos;
 						// switch back to original extra info
 						// WE DON'T WANT TO OVERWRITE LOCAL IF NO REMOTE...
@@ -355,7 +355,7 @@ reminderfox.network.download.reminderFox_downloadCallback = function(aStatus, aE
 		default:
 			var status = aError % 0x804b0000;
 			if(status == 22) {
-				reminderfox.core.logMessageLevel("No remote file -- uploading local reminders...", reminderfox.consts.LOG_LEVEL_FINE);
+				reminderfox.core.logMessageLevel("  No remote file -- uploading local reminders...", reminderfox.consts.LOG_LEVEL_FINE);
 
 				// don't upload if this was called from the options window...
 				if(window.arguments != null && window.arguments[0] != null && window.arguments[0].closeOnNoErrors == 1) {

@@ -427,7 +427,7 @@
 
 				var added = false;
 
-				var todoLists = reminderfox.core.getPreferenceValue(reminderfox.consts.TODO_LISTS);
+				var todoLists = reminderfox.core.getPreferenceValue(reminderfox.consts.TODO_LISTS, "");
 
 				if ((todoLists + ",").search(newListName + ",") != -1){
 					document.getElementById('subscribeError').value  = reminderfox.string("rf.import.listName3")
@@ -442,7 +442,7 @@
 				else {
 					todoLists = newListName;
 				}
-				reminderfox.core.setUnicodePref(reminderfox.consts.TODO_LISTS, todoLists);
+				reminderfox.core.setPreferenceValue(reminderfox.consts.TODO_LISTS, todoLists);
 	
 				// add subscription
 				var subscriptions = reminderfox.core.getSubscriptions();

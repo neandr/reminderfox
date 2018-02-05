@@ -14,10 +14,12 @@ component {a52fd100-4b89-11dd-ae16-0800200c9a66} components/rmFx_cmdLineHandler4
 contract @reminderfox/rmFx_clh;1 {a52fd100-4b89-11dd-ae16-0800200c9a66}
 category command-line-handler m-reminderfox @reminderfox/rmFx_clh;1
 
+#style   chrome://global/content/customizeToolbar.xul chrome://reminderfox/skin/toolbar.css
+style    chrome://global/content/customizeToolbar.xul chrome://reminderfox/skin/toolbar.css    appversion<59.0a1
+style    chrome://messenger/content/customizeToolbar.xul chrome://reminderfox/skin/toolbar.css    appversion>=59.0a1
 
-skin		reminderfox	classic/1.0		chrome/skin/reminderfox/
+skin	reminderfox	classic/1.0		chrome/skin/reminderfox/
 
-style		chrome://global/content/customizeToolbar.xul	chrome://reminderfox/skin/toolbar.css
 
 locale	reminderfox	en-US	chrome/locale/en-US/reminderfox/
 

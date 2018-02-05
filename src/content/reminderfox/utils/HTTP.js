@@ -8,7 +8,7 @@ reminderfox.HTTP = {
 
 	reminderfox.HTTP.request = function (caller) {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		reminderfox.util.Logger('ALERT', " HTTP.js   .HTTP.request .... "
+		reminderfox.util.Logger('http', " HTTP.js   .HTTP.request .... "
 		    + " username >>" + caller.username + "<<   url >>" + caller.urlstr + "<<")
 
 		var request      = caller.callback
@@ -25,7 +25,7 @@ reminderfox.HTTP = {
 			return
 		}
 
-		reminderfox.util.Logger('ALERT', "HTTP.js    reminderfox.HTTP.call .... ")
+		reminderfox.util.Logger('http', "HTTP.js    reminderfox.HTTP.call .... ")
 
 		reminderfox.HTTP.call(caller.method, caller.urlstr, { /* options */
 				username      : encodeURIComponent(caller.username ),   // ; caller.username,

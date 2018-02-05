@@ -143,7 +143,7 @@ reminderfox.calendar.layout.Save= function (layout) {
 	//	docu.attributes["lxY"].value = window.mozInnerScreenY - window.screenY;
 	}
 ----*/
-//reminderfox.util.Logger('layout', '.calendar.layout.SAVE   ' + '\n    layout : '+ layout);
+//reminderfox.util.Logger('calndrLayout', '.calendar.layout.SAVE   ' + '\n    layout : '+ layout);
 };
 
 
@@ -205,11 +205,11 @@ reminderfox.calendar.layout.menuChange= function (layout) {
 		saveIcon.setAttribute('label', '');
 	} else {
 		addIcon.setAttribute('icon', 'false');
-		addIcon.setAttribute('label', reminderfox.string('rf.button.add'));
+		addIcon.setAttribute('label', reminderfox.string("rf.button.add"));
 		revertIcon.setAttribute('icon', 'false');
-		revertIcon.setAttribute('label', reminderfox.string('rf.add.revert.button.revert.title'));
+		revertIcon.setAttribute('label', reminderfox.string("rf.add.revert.button.revert.title"));
 		saveIcon.setAttribute('icon', 'false');
-		saveIcon.setAttribute('label',  reminderfox.string('rf.button.save'));
+		saveIcon.setAttribute('label',  reminderfox.string("rf.button.save"));
 	}
 
 	reminderfox.calendar.filter.close();
@@ -248,7 +248,7 @@ reminderfox.calendar.layout.updateFoxy = function(layout) {
 	else { 
 		document.getElementById('reminderfox-y-spacer').removeAttribute("hidden");
 		document.getElementById('reminderfox-y-box').removeAttribute("hidden");
-		var hideFoxy = reminderfox.core.getPreferenceValue(reminderfox.consts.HIDE_FOX_PAW);
+		var hideFoxy = reminderfox.core.getPreferenceValue(reminderfox.consts.HIDE_FOX_PAW, false);
 		if (hideFoxy) {
 			document.getElementById('reminderfox-y-calendar').setAttribute("hidden", "true");
 		}
@@ -269,7 +269,7 @@ reminderfox.calendar.ui.firstDayOfWeek= function (xThis) {
 	reminderfox.core.statusSet ("firstDayOfWeek: " + selectedDay);
 
 	reminderfox.datePicker.gStartingDayOfWeek = selectedDay;
-	reminderfox._prefsBranch.setIntPref(reminderfox.consts.CALENDAR_START_DAY, selectedDay);
+	reminderfox.core.setPreferenceValue(reminderfox.consts.CALENDAR_START_DAY, selectedDay);
 	reminderfox.calendar.ui.selectDay(); // hold grid
 };
 
@@ -284,12 +284,13 @@ reminderfox.calendar.ui.exportOrSend= function (event) {
  * 'onclick' on an event/reminder for the "selected" day --> "Edit" it
  *  Context menu on  dayEvent using the TTT/panel
  */
-reminderfox.calendar.ui.eventMenus= function(xThis, xEvent){
+reminderfox.calendar.ui.eventMenus= function(xThis, xEvent, numDate){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var _reminder = reminderfox.calendar.ui.event4Day(xThis);
+	var _reminder = reminderfox.calendar.ui.event4Day(xThis, numDate);
 	if (_reminder == null) return;
 
-	var instanceDate = reminderfox.date.getDateObject(xThis.getAttribute('numDate'));
+//	var instanceDate = reminderfox.date.getDateObject(xThis.getAttribute('numDate'));
+	var instanceDate = reminderfox.date.getDateObject(numDate);
 
 	var layout = reminderfox.calendar.layout.status;
 
@@ -355,7 +356,8 @@ reminderfox.calendar.ui.eventMenus= function(xThis, xEvent){
 
 	// open _reminder for edit
 //reminderfox.util.Logger('calndr', " open _reminder for edit ", xThis.getAttribute('numDate'), xThis.getAttribute('idValue'));		//XXX
-	reminderfox.calendar.ui.eventContext ('Edit', null, xThis.getAttribute('numDate'));
+//	reminderfox.calendar.ui.eventContext ('Edit', null, xThis.getAttribute('numDate'));
+	reminderfox.calendar.ui.eventContext ('Edit', null, instanceDate);
 };
 
 
@@ -368,7 +370,7 @@ reminderfox.calendar.ui.event4Day= function (xThis, dayBoxNum) {
 	var event = null;
 
 	if (xThis) {
-		var dayBoxNum = xThis.getAttribute('numDate');
+		// var dayBoxNum = xThis.getAttribute('numDate');
 
 		if (dayBoxNum != "undefined") {
 			var n = xThis.getAttribute('idValue');
@@ -1001,7 +1003,7 @@ reminderfox.calendar.filter.build= function () {
 	sBox.addEventListener("keyup", function(event) {reminderfox.search.onSearchKeyUp(event);}, false);
 	sBox.addEventListener("focus", function(event) {reminderfox.search.onSearchFocus(event);}, false);
 
-	sBox.setAttribute("tooltiptext", reminderfox.string('rf.search.textitems.title'));
+	sBox.setAttribute("tooltiptext", reminderfox.string("rf.search.textitems.title"));
 
 	var sText = document.createElement("text");
 	sText.setAttribute("id", "rmFx-searchText");
@@ -1017,7 +1019,7 @@ reminderfox.calendar.filter.build= function () {
 	var elem = document.createElement("menulist");
 		elem.setAttribute("id", "rmFx-filters-type");
 		elem.addEventListener("command", function () {reminderfox.search.filtersTypeChanged();}, false);
-		elem.setAttribute("tooltiptext", reminderfox.string('rf.calendar.filter.select'));
+		elem.setAttribute("tooltiptext", reminderfox.string("rf.calendar.filter.select"));
 	fBox.appendChild(elem);
 
 	var elem1 = document.createElement("menupopup");
@@ -1132,7 +1134,6 @@ reminderfox.calendar.ui.panelClose= function () {
 
 reminderfox.calendar.ui.panelLeave= function (xThis) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//	reminderfox.util.Logger('dayPanel', 'ui.panelLeave ' + xThis.id + "  popupDay:" + reminderfox.calendar.popupDay);
 	if (xThis.id == "reminderfox-calendar-dayPanel") {
 		var thisPanel = document.getElementById("reminderfox-calendar-dayPanel");
 		if (thisPanel != null) thisPanel.hidePopup();
@@ -1352,8 +1353,6 @@ reminderfox.calendar.dateArray.Events= function() {
 	var calendarBeginDate = reminderfox.date.convertDate(reminderfox.calendar.numDateStart);
 	var calendarEndDate = reminderfox.date.convertDate(reminderfox.calendar.numDateEnd);
 
-//reminderfox.util.Logger('perf', '.dateArray.Events    calendarBeginDate: ' + calendarBeginDate + '  calendarEndDate: ' + calendarEndDate);
-
 	var todaysDate = new Date();
 
 	var isReminder = reminderfox_isReminderTabSelected() ? true : false;
@@ -1361,10 +1360,7 @@ reminderfox.calendar.dateArray.Events= function() {
 
 	// test the array; if empty recheck to be sure (eg. for Calendar Widget on app toolbar
 	reminderfox.core.getReminderEvents();
-	for(var day in reminderfox.core[numDays]) {				//??perf
-
-//reminderfox.util.Logger('perf', '.dateArray.Events    day in reminderfox.core[numDays]: ' + day);
-
+	for(var day in reminderfox.core[numDays]) {
 		var len = reminderfox.core[numDays][day].length;
 		for(var j = 0; j < len; j++) {
 
@@ -1568,7 +1564,7 @@ reminderfox.calendar.grid.monthCalendar= function (weekHeaderBox, monthsGrid) {
 			alabel.setAttribute("value",
 				reminderfox.string("rf.options.day."+ x + ".name.MMM"));
 
-			//alabel.setAttribute("tooltiptext", reminderfox.string('rf.calendar.firstdayofweek')); // + ' ' +x);
+			//alabel.setAttribute("tooltiptext", reminderfox.string("rf.calendar.firstdayofweek")); // + ' ' +x);
 			hbox.appendChild(alabel);
 
 			weekHeaderBox.appendChild(hbox);
@@ -1661,7 +1657,7 @@ reminderfox.calendar.grid.Month= function(calndrGrid, currentDate, nMonth, numMo
 			monthTitleImageL.setAttribute("class", "reminderfox-calendar-button-up");
 			monthTitleImageL.addEventListener("click", function (event) {reminderfox.calendar.ui.selectMonth(event, -1)}, false);
 
-			monthTitleImageL.setAttribute("tooltiptext",reminderfox.string('rf.calendar.selectmonth.previous'));
+			monthTitleImageL.setAttribute("tooltiptext",reminderfox.string("rf.calendar.selectmonth.previous"));
 		monthTitleBox0.appendChild(monthTitleImageL);
 	}
 			var spacer0 = document.createElement("spacer");
@@ -1689,7 +1685,7 @@ reminderfox.calendar.grid.Month= function(calndrGrid, currentDate, nMonth, numMo
 			var monthTitleImageL = document.createElement("image");
 			monthTitleImageL.setAttribute("class", "reminderfox-calendar-button-up");
 			monthTitleImageL.addEventListener("click", function (event) {reminderfox.calendar.ui.selectMonth(event, -1)},false);
-			monthTitleImageL.setAttribute("tooltiptext",reminderfox.string('rf.calendar.selectmonth.previous'));
+			monthTitleImageL.setAttribute("tooltiptext",reminderfox.string("rf.calendar.selectmonth.previous"));
 		monthTitleBox0.appendChild(monthTitleImageL);
 	}
 
@@ -1697,7 +1693,7 @@ reminderfox.calendar.grid.Month= function(calndrGrid, currentDate, nMonth, numMo
 			var monthTitleImageR = document.createElement("image");
 			monthTitleImageR.setAttribute("class", "reminderfox-calendar-button-down");
 			monthTitleImageR.addEventListener("click", function (event) {reminderfox.calendar.ui.selectMonth(event, 1)}, false);
-			monthTitleImageR.setAttribute("tooltiptext",reminderfox.string('rf.calendar.selectmonth.next'));
+			monthTitleImageR.setAttribute("tooltiptext",reminderfox.string("rf.calendar.selectmonth.next"));
 		monthTitleBox0.appendChild(monthTitleImageR);
 	}
 	calndrGrid.appendChild(monthTitleBox0);
@@ -2002,9 +1998,8 @@ reminderfox.calendar.dayPanel= function(anchor, mode, xEvent){
 			reminderfox.calendar.popupDay = null;
 		}
 		reminderfox.calendar.popupDay = numDate;
-		
-		var popupDelayInMS=reminderfox.core.getPreferenceValue(
-			reminderfox.consts.CALENDAR_DAYPOPUP_DELAY);
+
+		var popupDelayInMS=reminderfox.core.CALENDAR_DAYPOPUP_DELAY;
 		reminderfox.calendar.popupID = setTimeout(function () {
 			reminderfox.calendar.dayPanel2 (anchor, numDate, xEvent)}, popupDelayInMS)
 	};
@@ -2053,7 +2048,7 @@ reminderfox.calendar.dayPanel2= function(anchor, numDate, xEvent){
 		+ "\n   editWindow.boxObject.screenY w: " + w
 		+ "\n screen  X:" + xEvent.screenX + " | " + xEvent.screenY
 		+ "\n box     X:" + anchor.boxObject.x + " | " + anchor.boxObject.y  + " boxheight : " +  anchor.boxObject.height;
- reminderfox.util.Logger('dayPanel', msg);
+ reminderfox.util.Logger('calndrDayPanel', msg);
 ----*/
 		reminderfox.calendar.dayPanelStatus = dayPanel;
 		reminderfox.calendar.dayPanelStatus.removeAttribute('hidden');
@@ -2147,27 +2142,31 @@ reminderfox.calendar.ttt.addDay= function(dayPanel, numDate) {
 };
 
 
-reminderfox.calendar.ttt.addReminder= function(dayPanel, reminder, nEvent, mode, add2Date) {
+reminderfox.calendar.ttt.addReminder= function(dayPanel, reminder, nEvent, mode, numDate) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	add2Date = reminderfox.date.getDate(add2Date);
+	var _add2Date = reminderfox.date.getDate(numDate);
 
 	var eventDrawer = document.createElement("vbox");
 		eventDrawer.setAttribute("class", "rmFx_dayPanelEvent");
 		eventDrawer.setAttribute("flex", "0");
 
+
 	// eventBox
 	var eventBox = document.createElement("vbox");
-		eventBox.addEventListener("click", function(event) {reminderfox.calendar.ui.eventMenus(this, event); });
-		eventBox.setAttribute("idValue", nEvent);
+		eventBox.addEventListener("click", function(event) {reminderfox.calendar.ui.eventMenus(this, event, numDate);},false);
 
-	eventDrawer.appendChild(eventBox);
+//XXX	dayBox.addEventListener("click", function(event) {reminderfox.calendar.ui.eventAdd(this, event);},false)
+
+		eventBox.setAttribute("idValue", nEvent);
+		eventDrawer.appendChild(eventBox);
+
 
 	// *** check current reminder for some attributes ***
 	var icons = {};
 	icons.Important = (reminder.priority == reminderfox.consts.PRIORITY_IMPORTANT);
 
 	// needs to check against to current addressed numDate
-	icons.Completed = reminderfox.core.isCompletedForDate(reminder, add2Date);  // reminder.date));
+	icons.Completed = reminderfox.core.isCompletedForDate(reminder, _add2Date);  // reminder.date));
 
 	icons.Location = (reminder.location !== null) ? true: false;
 	icons.Url = (reminder.url !== null) ? true: false;
@@ -2204,10 +2203,10 @@ reminderfox.calendar.ttt.addReminder= function(dayPanel, reminder, nEvent, mode,
 		var end1Date = reminderfox.date.convertDate(reminderEndDateNum -1);
 		var endDate1Str = reminderfox.date.getDateVariableString(reminder, end1Date);
 
-		var logMsg =  '.ttt.addReminder   summary:' + reminder.summary + '  allDay:' + reminder.allDayEvent 
+		var logMsg =  'XXXX    .ttt.addReminder   summary:' + reminder.summary + '  allDay:' + reminder.allDayEvent 
 		   + '\n    reminder.date   :' + reminderfox.date.convertDate(reminder.date) + "  " + reminder.date 
 		   + '\n    reminder.endDate:' + reminderfox.date.convertDate(reminder.endDate) + "  " + reminder.endDate
-//reminderfox.util.Logger('calndrGrid', logMsg)
+reminderfox.util.Logger('Alert', logMsg)
 
 		if (reminder.allDayEvent) {	// all Day event
 			if (reminderDateNum == (reminderEndDateNum -1)) { // not for oneDay event
@@ -2243,7 +2242,7 @@ reminderfox.calendar.ttt.addReminder= function(dayPanel, reminder, nEvent, mode,
 		var completedDate = reminderfox.date.getDateVariableString(
 				reminder, reminder.completedDate);
 		reminderfox.calendar.ttt.addLabel(eventBox, null,
-			completedDate, "", reminderfox.string('rf.add.reminders.tooltip.dateCompleted'), nEvent, reminderDateNum, mode);
+			completedDate, "", reminderfox.string("rf.add.reminders.tooltip.dateCompleted"), nEvent, reminderDateNum, mode);
 	}
 
 	if (icons.Location) {
@@ -2306,7 +2305,8 @@ reminderfox.calendar.ttt.addLabel= function(dayPanel,
 	tooltipValue.setAttribute("crop", "end");
 	tooltipValue.setAttribute("flex", "1");
 
-	tooltipValue.setAttribute("tooltiptext", ((rmID != null)? (value + "  " + rmID) : value));				//XXXshowRmFXID
+//	tooltipValue.setAttribute("tooltiptext", ((rmID != null)? (value + "  " + rmID) : value));				//XXXshowRmFXID
+	tooltipValue.setAttribute("tooltiptext", value);
 
 	tooltipValue.setAttribute("numDate", numDate);
 	tooltipValue.setAttribute("idValue", idValue);
@@ -2355,7 +2355,7 @@ reminderfox.calendar.ttt.addIconLine= function (eventDrawer, icons, summaryStyle
 		var calDAVTTT = "";
 		var account = reminderfox.calDAV.getAccounts()[reminder.calDAVid];
 		if (account != null) {
-			calDAVTTT = reminderfox.string('rf.caldav.calendar.account') + ' [ ' +reminder.calDAVid + ' ] ' + account.Name;
+			calDAVTTT = reminderfox.string("rf.caldav.calendar.account") + " [ " +reminder.calDAVid + " ] " + account.Name;
 			var icon = document.createElement("toolbarbutton");
 			icon.setAttribute("class", "rmFx-calDAV-share");
 			icon.setAttribute("numDate", numDate);
@@ -2371,14 +2371,14 @@ reminderfox.calendar.ttt.addIconLine= function (eventDrawer, icons, summaryStyle
 		icon.setAttribute("idValue", nEvent);
 		icon.setAttribute("numDate", numDate);
 		icon.addEventListener("click", function() {reminderfox.calendar.ui.openByMessageID(this);},false);
-		icon.setAttribute("tooltiptext", reminderfox.string('rf.add.mail.message.open'));
+		icon.setAttribute("tooltiptext", reminderfox.string("rf.add.mail.message.open"));
 		iconbox.appendChild(icon);
 	};
 
 	if (icons.Categories == true) { // isCategories
 		var icon = document.createElement("toolbarbutton");
 		icon.setAttribute("class", "displayCategory");
-		icon.setAttribute("tooltiptext", reminderfox.string('rf.add.reminders.tooltip.categories')+ ': ' +reminder.categories);
+		icon.setAttribute("tooltiptext", reminderfox.string("rf.add.reminders.tooltip.categories")+ ": " +reminder.categories);
 		iconbox.appendChild(icon);
 	};
 
@@ -2394,8 +2394,8 @@ reminderfox.calendar.ttt.addIconLine= function (eventDrawer, icons, summaryStyle
 		if (reminder.remindUntilCompleted == "1") icon.setAttribute("class", "remindUntilCompleted1");
 		if (reminder.remindUntilCompleted == "2") icon.setAttribute("class", "remindUntilCompleted2");
 		var statusText = (reminder.remindUntilCompleted == 2)
-			? reminderfox.string('rf.calendar.overdue.isoverdue')
-			: reminderfox.string('rf.calendar.overdue.remindoverdue');		//§§§§  missing string    //$$$_locale 
+			? reminderfox.string("rf.calendar.overdue.isoverdue")
+			: reminderfox.string("rf.calendar.overdue.remindoverdue");		//§§§§  missing string    //$$$_locale 
 		icon.setAttribute("tooltiptext", statusText);
 
 		iconbox.appendChild(icon);
@@ -2425,7 +2425,7 @@ reminderfox.calendar.ttt.addIconLine= function (eventDrawer, icons, summaryStyle
 	if (icons.showInTooltip && (icons.showInTooltip == true)) { //
 		var icon = document.createElement("toolbarbutton");
 		icon.setAttribute("class", "displayShowInTooltip");
-		icon.setAttribute("tooltiptext", reminderfox.string('rf.calendar.tooltip.showInTooltip'));
+		icon.setAttribute("tooltiptext", reminderfox.string("rf.calendar.tooltip.showInTooltip"));
 		iconbox.appendChild(icon);
 	};
 
@@ -2438,7 +2438,7 @@ reminderfox.calendar.ttt.addIconLine= function (eventDrawer, icons, summaryStyle
  */
 reminderfox.calendar.activateCalendarFoxyContext = function(event){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var hideFoxy = reminderfox.core.getPreferenceValue(reminderfox.consts.HIDE_FOX_PAW);
+	var hideFoxy = reminderfox.core.getPreferenceValue(reminderfox.consts.HIDE_FOX_PAW, false);
 	if (hideFoxy) {
 		document.getElementById('reminderfox-y-hide-menu').setAttribute("hidden", "true");
 		document.getElementById('reminderfox-y-show-menu').removeAttribute("hidden");
@@ -2452,7 +2452,7 @@ reminderfox.calendar.activateCalendarFoxyContext = function(event){
 
 reminderfox.calendar.toggleFoxy = function(){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var hideFoxy = reminderfox.core.getPreferenceValue(reminderfox.consts.HIDE_FOX_PAW);
+	var hideFoxy = reminderfox.core.getPreferenceValue(reminderfox.consts.HIDE_FOX_PAW, false);
 
 	hideFoxy = !hideFoxy; // toggle the pref
 	reminderfox.core.setPreferenceValue(reminderfox.consts.HIDE_FOX_PAW, hideFoxy);

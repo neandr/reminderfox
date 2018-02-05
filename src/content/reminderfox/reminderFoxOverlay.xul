@@ -97,7 +97,8 @@
 
 
 	<popupset id="mainPopupSet">
-		<tooltip id="reminderFox_tip" noautohide="true" orient="horizontal" onpopupshowing="reminderfox.core.initiliazeTooltip()" onpopuphidden="reminderfox.core.hideTooltip()">
+		<tooltip id="reminderFox_tip" noautohide="true" orient="horizontal" 
+			onpopupshowing="reminderfox.core.initiliazeTooltip()">
 			<hbox>
 				<hbox id="reminderfox-foxpaw">
 					<image src="chrome://reminderfox/skin/images/foxy-small.png" class="small-fox-icon" />

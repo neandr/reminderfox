@@ -16,7 +16,7 @@ function reminderFox_getPasswordManager() {
 			gReminderFox_PasswordManager = Components.classes[REMINDERFOX_PASSWORD_CID].getService();
 			gReminderFox_PasswordManager = gReminderFox_PasswordManager.QueryInterface(Components.interfaces.nsIPasswordManager);
 		} catch (e) {
-			reminderfox.core.logMessageLevel("reminderFox_getPasswordManager() failed: " + e.name + " -- " + e.message, reminderfox.consts.LOG_LEVEL_INFO);
+			reminderfox.core.logMessageLevel("RmFX   getPasswordManager() failed: " + e.name + " -- " + e.message, reminderfox.consts.LOG_LEVEL_INFO);
 
 		}
 	}
@@ -28,7 +28,7 @@ function reminderFox_getPasswordManagerInternal() {
 		gReminderFox_PasswordManagerInternal = Components.classes[REMINDERFOX_PASSWORD_CID].getService();
 		gReminderFox_PasswordManagerInternal = gReminderFox_PasswordManagerInternal.QueryInterface(Components.interfaces.nsIPasswordManagerInternal);
 	} catch (e) {
-		reminderfox.core.logMessageLevel("reminderFox_getPasswordManagerInternal() failed: " + e.name + " -- " + e.message, reminderfox.consts.LOG_LEVEL_INFO);
+		reminderfox.core.logMessageLevel("RmFX   getPasswordManagerInternal() failed: " + e.name + " -- " + e.message, reminderfox.consts.LOG_LEVEL_INFO);
 	}
 
 	return gReminderFox_PasswordManagerInternal;
@@ -61,7 +61,7 @@ function reminderFox_getPassword(loginData) {
 			loginData.password = password.value;
 			return loginData;
 		} catch(e) {
-			reminderfox.core.logMessageLevel("findPasswordEntry() failed: " + e.name + " -- " + e.message, reminderfox.consts.LOG_LEVEL_INFO);
+			reminderfox.core.logMessageLevel("RmFX  findPasswordEntry() failed: " + e.name + " -- " + e.message, reminderfox.consts.LOG_LEVEL_INFO);
 		}
 
 
@@ -112,14 +112,14 @@ function reminderFox_savePassword(loginData) {
 		try {
 			pm.removeUser(loginData.ljURL, loginData.username);
 		} catch(e) {
-			reminderfox.core.logMessageLevel("removeUser() failed: " + e.name + " -- " + e.message, reminderfox.consts.LOG_LEVEL_INFO);
+			reminderfox.core.logMessageLevel("RmFX  removeUser() failed: " + e.name + " -- " + e.message, reminderfox.consts.LOG_LEVEL_INFO);
 		}
 
 		if(loginData.savePassword) {
 			try {
 				pm.addUser(loginData.ljURL, loginData.username, loginData.password);
 			} catch(e) {
-				reminderfox.core.logMessageLevel("addUser failed: " + e.name + " -- " + e.message, reminderfox.consts.LOG_LEVEL_INFO);
+				reminderfox.core.logMessageLevel("RmFX  addUser failed: " + e.name + " -- " + e.message, reminderfox.consts.LOG_LEVEL_INFO);
 			}
 			return true;
 		}
