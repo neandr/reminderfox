@@ -1,8 +1,11 @@
 
-   Reminderfox  [2.1.6] wip
-      as of:    Wed, 7 Feb 2018 20:28:01 +0100 (CET)
-   'reminderfox_2.1.6_wip_20180207_2028.xpi'   <'20180207_2028'>
+   Reminderfox  [2.1.6] release
+      as of:    Wed, 7 Feb 2018 20:55:12 +0100 (CET)
+   'reminderfox_2.1.6_release_20180207_2055.xpi'   <'20180207_2055'>
    
+
+2018-02-07
+  release version (update for some log strings)
 
 2018-02-05
   update for mozilla 58/60

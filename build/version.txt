@@ -3,7 +3,10 @@
 ##  version.txt
 ##
 
-2018-04-05
+2018-02-07
+  release version (update for some log strings)
+
+2018-02-05
   update for mozilla 58/60
 
 2017-12-09
