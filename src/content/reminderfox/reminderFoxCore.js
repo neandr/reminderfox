@@ -535,7 +535,7 @@ reminderfox.core.getPreferenceValue= function(prefName, defaultValue){
         prefType = reminderfox._prefsUser[prefName];
     } catch(e){
     }
- console.log("XXX .core.getPreferenceValue   prefName:", prefName, "  defaultValue >>"+defaultValue+"<<");
+// console.log("XXX .core.getPreferenceValue   prefName:", prefName, "  defaultValue >>"+defaultValue+"<<");
 
     try {
         if (prefType == reminderfox._prefsTYPE.CHAR) {
@@ -553,14 +553,14 @@ reminderfox.core.getPreferenceValue= function(prefName, defaultValue){
     }
     if (prefValue == null) {
         prefValue = defaultValue;
-console.error("RmFX  getPreferenceValue   prefValue was 'null', using DEFAULT: " + prefName + " >>" + defaultValue + "<<");
+console.error("RmFX  getPreferenceValue   For " + prefName + " the value is set to defaultValue:   >>" + defaultValue + "<<");
     }
     return prefValue;
 };
 
 
 reminderfox.core.setPreferenceValue= function(prefName, prefValue){
- console.log("XXX .core.setPreferenceValue   prefName:", prefName, " prefValue >>"+prefValue+"<<")
+// console.log("XXX .core.setPreferenceValue   prefName:", prefName, " prefValue >>"+prefValue+"<<")
 
     if (!reminderfox._prefsUser) {
         reminderfox.core.initUserPrefsArray();
@@ -622,11 +622,11 @@ reminderfox.core.setUnicodePref= function(prefName, prefValue){
 
     try { //56,58 
         r= reminderfox._prefsBRANCH.setStringPref(prefName, prefValue);
-console.log("XXXX  .core.setUnicodePref   .setStringPref: ", prefName, ">>"+prefValue+"<<");
+//console.log("XXX  .core.setUnicodePref   .setStringPref: ", prefName, ">>"+prefValue+"<<");
 
     }
     catch (ex) { //54
-console.log("XXXX  .core.setUnicodePref   .setComplexValue: ", prefName, ">>"+prefValue+"<<");
+//console.log("XXX  .core.setUnicodePref   .setComplexValue: ", prefName, ">>"+prefValue+"<<");
 
         var sString = Components.classes["@mozilla.org/supports-string;1"]
          .createInstance(reminderfox.consts.nsISupportsString);
@@ -1082,9 +1082,7 @@ reminderfox.core.migrate_defaultView= function(mode){
         // to the 'views' set; for checking use name only,
         // don't change any exsisting 'view' definition
 
-//XX            views = reminderfox.core.getUnicodePref("views");
         var views = reminderfox.core.getPreferenceValue(reminderfox.consts.VIEWS, "");
-
 
         var defaultViews = "";
         var i = 0;
@@ -2645,8 +2643,8 @@ reminderfox.core.getICSXLastmodifiedFromString= function(chunk){
     }
     if (typeof(ret) != 'number') ret = null; 
 
-console.log("XXX  get Lastmodified FromString ", (new Date()).toLocaleString(),"  chunk:\n", chunk.substring(0,500), "\n time, return value:", ret);
-console.trace();
+//console.log("XXX  get Lastmodified FromString ", (new Date()).toLocaleString(),"  chunk:\n", chunk.substring(0,500), "\n time, return value:", ret);
+//console.trace();
 
     return ret;
 };

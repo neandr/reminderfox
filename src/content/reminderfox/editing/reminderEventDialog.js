@@ -199,20 +199,19 @@ function loadEventOptions() {
 /**
  * Select or change the [Add/Edit] dialog index (Reminder, Reminder CalDAV, Todo, etc)
  * @param {Integer} listIndex
+ *    listIndex will be null with using the pulldown menu
+ *    listIndex can be '0' from loadEventOptions()
  * @param {boolean} editThis - flag to set title (Add/Edit)
  * @param {boolean} firstRun - flag to not erase dialog when ListChooser is used
  */
 function reminderFox_ListChooserChanged(listIndex, editThis, firstRun) {
 //------------------------------------------------------------------------------
+// console.error("XXX  reminderFox_ListChooserChanged:" ,listIndex, editThis, firstRun); 
 	var reminderListChooser = document.getElementById("reminderListChooser");
 
-console.error("XXXX  reminderFox_ListChooserChanged:" ,listIndex, editThis, firstRun); 
-
-	if(listIndex == null)	// compare to null 
-									// .. listIndex will be null with using the pulldown menu
-									// .. listIndex can be '0' from loadEventOptions()
+	if(listIndex == null){
 		listIndex = reminderListChooser.selectedIndex;
-
+	}
 	reminderListChooser.selectedIndex = listIndex;
 
 	var listType = document.getElementById("reminderAllLists").children[listIndex].attributes['Typ'].value;

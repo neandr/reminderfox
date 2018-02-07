@@ -2206,7 +2206,7 @@ reminderfox.calendar.ttt.addReminder= function(dayPanel, reminder, nEvent, mode,
 		var logMsg =  'XXXX    .ttt.addReminder   summary:' + reminder.summary + '  allDay:' + reminder.allDayEvent 
 		   + '\n    reminder.date   :' + reminderfox.date.convertDate(reminder.date) + "  " + reminder.date 
 		   + '\n    reminder.endDate:' + reminderfox.date.convertDate(reminder.endDate) + "  " + reminder.endDate
-reminderfox.util.Logger('Alert', logMsg)
+// reminderfox.util.Logger('Alert', logMsg)
 
 		if (reminder.allDayEvent) {	// all Day event
 			if (reminderDateNum == (reminderEndDateNum -1)) { // not for oneDay event

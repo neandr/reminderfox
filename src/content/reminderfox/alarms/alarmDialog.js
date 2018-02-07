@@ -494,8 +494,6 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 	if(soundInterval > 0) {
 		setInterval(playAlarmSound, (soundInterval * 1000 * 60));
 	}
-
-	//XXX   sizeToContent();
 }
 
 
@@ -871,8 +869,8 @@ function reminderFox_performAlarmAction(actionIndex, snoozeTime, alarmTime, keep
 		}
 		reminderfox.core.reminderFox_lastModifiedTime = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.LAST_MODIFIED) + "";
 
-console.log("RmFX  reminderFox_performAlarmAction : ", reminderfox.core.reminderFox_lastModifiedTime);
-console.trace();
+//console.log("RmFX  reminderFox_performAlarmAction : ", reminderfox.core.reminderFox_lastModifiedTime);
+//console.trace();
 
 		if(actionIndex == REMINDERFOX_ACTION_TYPE.COMPLETE) {
 			reminder.completedDate = new Date();
@@ -1364,6 +1362,7 @@ function reminderFox_updateQuickAlarms(quickAlarmText, snoozeTime, notesText) {
 	reminderfox.core.updateQuickAlarm(newQuickAlarm);
 }
 
+/*---------
 function reminderFox_cloneAlarmInfo(originalAlarm) {			//XXX not used ???
 
 	var clonedAlarm = {
@@ -1383,6 +1382,8 @@ function reminderFox_cloneAlarmInfo(originalAlarm) {			//XXX not used ???
 
 	return clonedAlarm;
 }
+----------*/
+
 
 function reminderFox_actionChanged() {
 	var actionList = getChildElementByIdForCurrentTab("reminderFox-alarm-action");

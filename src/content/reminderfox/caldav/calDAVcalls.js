@@ -813,8 +813,8 @@ function rmFx_CalDAV_UpdateReminderMultiple (accountID) {
  */
 function rmFx_CalDAV_ReminderMoved (reminder){
 //------------------------------------------------------------------------------
-	var msg = "Reminder moved from  [" + reminder.calDAVidOriginal + "]  to  [" + reminder.calDAVid + "]";
-//	reminderfox.util.Logger('ALERT', msg);		//XXX  better dialog!
+	var msg = "Reminder move from  [" + reminder.calDAVidOriginal + "]  to  [" + reminder.calDAVid + "]";
+	reminderfox.util.Logger('calDAV',msg);
 
 	var call = [];
 	// if .calDAVid is given add the reminder as ".eventToAdd" for processing 

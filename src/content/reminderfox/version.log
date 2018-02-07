@@ -1,13 +1,17 @@
 
-   Reminderfox  [2.1.6] release
-      as of:    Sat, 9 Dec 2017 11:01:44 +0100 (CET)
-   'reminderfox_2.1.6_release_20171209_1101.xpi'   <'20171209_1101'>
+   Reminderfox  [2.1.6] wip
+      as of:    Wed, 7 Feb 2018 20:28:01 +0100 (CET)
+   'reminderfox_2.1.6_wip_20180207_2028.xpi'   <'20180207_2028'>
    
+
+2018-04-05
+  update for mozilla 58/60
+
 2017-12-09
   -- changed to check if set/getStringPref works,
      if not use old {get,set}ComplexValue
 	 (compatible TB52.5 .. TB58.0b1/20171124151037
-    
+
 2017-12-03
   update for mozilla57 and 58  
   -- fp.show (has been removed), use fp.open (async)
