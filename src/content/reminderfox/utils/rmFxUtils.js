@@ -2489,13 +2489,12 @@ reminderfox.promiseRequest = {
 
 
 /**
- * Query a remote system (Dropbox) to get a file with version details
- * If available, calls dialog for updating
+ * Query file with version details
  * 
  * Typical File content:
- *   Reminderfox  [2.0.2] CalDAV
- *     as of:    Di, 15 Jan 2013 19:11:36 +0100 (MEZ)
- *     'reminderfox2.0.2.CalDAV_20130115_1911.xpi'   <'20130115_1911'>
+ *    Reminderfox  [2.1.6] release
+ *       as of:    Tue, 20 Feb 2018 13:47:42 +0100 (CET)
+ *    'reminderfox_2.1.6_release_20180220_1347.xpi'   <'20180220_1347'>
  */
 reminderfox.aboutXPI= function () {
 //--------------------------------------------------------------------------
