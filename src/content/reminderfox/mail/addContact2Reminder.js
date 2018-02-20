@@ -413,7 +413,7 @@ reminderfox.abCard.abookOpen = function(){
 			reminderfox.util.PromptAlert("Messenger not found!"); // reminderfox.string("rf.schedule. $$string$$ "));
 			return;
 		}
-		var go4Process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess);
+		var go4Process = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
 		
 		try {
 			go4Process.init(mailApp);
@@ -507,18 +507,18 @@ reminderfox.abCard.itemName = function(namItem){
 reminderfox.abCard.getCustomLabel = function(iName){
 	// ---------- work with Custom 1..4 individual entries  -------------
 	var cLabel = "";
-	var moreColsPrefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+	var moreColsPrefs = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefBranch);
 	
 	var cLabelid = "morecols." +
 	iName.substring(0, 1).toLowerCase() +
 	iName.substring(1) + ".label";
 	try {
-	//	cLabel = moreColsPrefs.getComplexValue(cLabelid, Components.interfaces.nsISupportsString).data;
+	//	cLabel = moreColsPrefs.getComplexValue(cLabelid, Ci.nsISupportsString).data;
 		try {
 			cLabel = moreColsPrefs.getStringPref(cLabelid);
 		} catch (ex) {
 			cLabel = moreColsPrefs.getComplexValue(cLabelid, 
-				Components.interfaces.nsISupportsString).data;
+				Ci.nsISupportsString).data;
 		}
 	} 
 	catch (e) {
@@ -574,7 +574,7 @@ reminderfox.abCard.openABcard = function(event){
 	 var allAddressBooks = abManager.directories;
 	 while (allAddressBooks.hasMoreElements()) {
 	 var addressBook = allAddressBooks.getNext();
-	 if (addressBook instanceof Components.interfaces.nsIAbDirectory) {
+	 if (addressBook instanceof Ci.nsIAbDirectory) {
 //	 reminderfox.util.Logger('AB', "AB : " + abManager.getDirectory(addressBook.URI).URI
 //	 + " " + abManager.getDirectory(addressBook.URI).dirName);
 	 //reminderFox: AB : moz-abmdbdirectory://abook.mab
@@ -585,7 +585,7 @@ reminderfox.abCard.openABcard = function(event){
 	 --------- */
 	// X-REMINDERFOX-CONTACT:moz-abmdbdirectory://abook.mab::Personal Address Book::Wern Nigg\\nDTSTAMP:20090722T114039
 
-	var abManager = Components.classes["@mozilla.org/abmanager;1"].getService(Components.interfaces.nsIAbManager);
+	var abManager = Cc["@mozilla.org/abmanager;1"].getService(Ci.nsIAbManager);
 	var exPos = selectedEvents[0].extraInfo.indexOf("X-REMINDERFOX-CONTACT:");
 
 	if (exPos != -1) {

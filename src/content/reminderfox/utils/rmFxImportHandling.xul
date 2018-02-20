@@ -311,7 +311,7 @@
 		var newlength = newFilePath0.lastIndexOf('/')
 		var newFileName = newFilePath0.substring(newlength)
 
-		var oldFilePath0 = reminderfox.core.getReminderStoreFile().path;
+		var oldFilePath0 = reminderfox.core.getICSfile().path;
 		var oldlength = oldFilePath0.lastIndexOf('/')
 
 		var newFilePath = oldFilePath0.substring(0, oldlength) 

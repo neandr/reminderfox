@@ -1,3 +1,8 @@
+if (Cu === undefined)  var Cu = Components.utils;
+if (Ci === undefined)  var Ci = Components.interfaces;
+if (Cc === undefined)  var Cc = Components.classes;
+
+
 if (!reminderfox)     var reminderfox = {};
 if (!reminderfox.core)    reminderfox.core = {};
 if (!reminderfox.consts)  reminderfox.consts = {};
@@ -7,7 +12,9 @@ if (!reminderfox.consts.NETWORK) reminderfox.consts.NETWORK = {};
 if (!reminderfox.calDAV)   reminderfox.calDAV = {};
 if (!reminderfox.calDAV.accounts)   reminderfox.calDAV.accounts = {};  //calDAV  main definition of accounts
 
-// constants
+// constants / prefs
+// see also: https://dxr.mozilla.org/comm-central/source/common/src/extensionSupport.jsm
+//
 reminderfox.consts.MIGRATED_PREF_VERSION                = "2.1.6";  // update also install.rdf and build.properties
 
 reminderfox.consts.SUPPORT                              = "reminderfox@googlegroups.com";
@@ -64,59 +71,58 @@ reminderfox.consts.REMINDER_FOX_EXTENDED = "X-REMINDERFOX-";
 reminderfox.consts.REMINDERFOX_FILE_LAST_MODIFIED = reminderfox.consts.REMINDER_FOX_EXTENDED + "LAST-MODIFIED";
 
 // prefs user configurable 
-reminderfox.consts.ABCARD = "abCardVersion"; // CHAR  default="US"
+reminderfox.consts.ABCARD = "abCardVersion"; // CHAR  (def="US")
 
 reminderfox.consts.ALARM_DELAY = "alarmPopupWindowDelay"; // make sure 500ms between each alarm, or mozilla creates a blank window
 reminderfox.consts.ALARM_DELAY_DEFAULT = 4000;
-reminderfox.consts.ALARMS_QUICK = "quickAlarms";
-
 reminderfox.consts.ALARM_SNOOZE_ACTION_DEFAULT = "defaults.alarm.snooze.action"; // INT
 reminderfox.consts.ALARM_SNOOZE_TIME_DEFAULT = "defaults.alarm.snooze.time"; // INT
 reminderfox.consts.ALARM_SNOOZE_UNITS_DEFAULT = "defaults.alarm.snooze.units"; // INT
 
+reminderfox.consts.ALARM_SOUND = "alarmSound"; // BOOL  (def=true)
 reminderfox.consts.ALARM_SOUND_CUSTOM = "alarmSoundCustom"; // BOOL;
 reminderfox.consts.ALARM_SOUND_CUSTOM_DEFAULT = true;
-reminderfox.consts.ALARM_SOUND_DEFAULT = true;
-reminderfox.consts.ALARM_SOUND_INTERVAL = "alarmSoundInterval"; // INT
-reminderfox.consts.ALARM_SOUND_PATH = "alarmSoundPath"; // CHAR
-reminderfox.consts.ALARM_SOUND = "alarmSound"; // BOOL
+reminderfox.consts.ALARM_SOUND_INTERVAL = "alarmSoundInterval"; // INT  (def=-1)
+reminderfox.consts.ALARM_SOUND_PATH = "alarmSoundPath"; // CHAR  (def="")
 
-reminderfox.consts.ALARM_SOUND_PATH_DEFAULT = "";
 reminderfox.consts.ALARM_TIME_DEFAULT = "reminderDefaultAlarmTime"; // INT
 reminderfox.consts.ALARM_UNITS_DEFAULT = "reminderDefaultAlarmUnits";
 
-reminderfox.consts.ALARMS_SHOW_IN_TABS = "alarms.showInTabs";
-//reminderfox.consts.ALARMS_ENABLED = "alarmsEnabled";
-reminderfox.consts.ALARMS_ENABLED_DEFAULT = true;
+reminderfox.consts.ALARMS_QUICK = "quickAlarms";
+reminderfox.consts.ALARMS_SHOW_IN_TABS = "alarms.showInTabs";  // (def=true)
+
 
 reminderfox.consts.ALERT_ENABLE_ALL = "all";
 reminderfox.consts.ALERT_ENABLE = "enableAlertFor";
 reminderfox.consts.ALERT_ENABLE_NONE = "none";
 reminderfox.consts.ALERT_ENABLE_TODAY = "today";
 reminderfox.consts.ALERT_ENABLE_UPCOMING = "upcoming";
+
 reminderfox.consts.ALERT_SOUND = "alertSound"; // BOOL
 reminderfox.consts.ALERT_SOUND_CUSTOM = "alertSoundCustom"; // BOOL
 reminderfox.consts.ALERT_SOUND_CUSTOM_DEFAULT = true;
 reminderfox.consts.ALERT_SOUND_DEFAULT = true;
-reminderfox.consts.ALERT_SOUND_PATH = "alertSoundPath"; // CHAR
-reminderfox.consts.ALERT_SOUND_PATH_DEFAULT = "";
-reminderfox.consts.ALERT_SUSPEND = "SUSPENDED:";
-reminderfox.consts.ALERT_TIMEOUT_DEFAULT = 120; // number of minutes between alerts
-reminderfox.consts.ALERT_TIMEOUT_PREF = "alertTimeout"; // INT
+reminderfox.consts.ALERT_SOUND_PATH = "alertSoundPath"; // CHAR   (def="")
 
-reminderfox.consts.ALERTSLIDER_LEFT = "alert.notification.left"; // BOOL
-reminderfox.consts.ALERTSLIDER_MAX_HEIGHT = "alertSliderMaxHeight"; // INT
-reminderfox.consts.ALERTSLIDER_OPEN_TIME = "alertOpenTime"; // INT
-reminderfox.consts.ALERTSLIDER_TOP = "alert.notification.top"; // BOOL
+reminderfox.consts.ALERT_SUSPEND = "SUSPENDED:";
+reminderfox.consts.ALERT_TIMEOUT = "alertTimeout"; // INT
+reminderfox.consts.ALERT_TIMEOUT_DEFAULT = 120; // number of minutes between alerts
+
+reminderfox.consts.ALERTSLIDER_MAX_HEIGHT = "alertSliderMaxHeight"; // INT  (def=150)
+reminderfox.consts.ALERTSLIDER_MAX_HEIGHT_DEFAULT = 150;
+reminderfox.consts.ALERTSLIDER_OPEN_TIME = "alertOpenTime"; // INT  (def=5)
+
+reminderfox.consts.ALERTSLIDER_LEFT = "alert.notification.left"; // BOOL   (def=false)
+reminderfox.consts.ALERTSLIDER_TOP = "alert.notification.top"; // BOOL   (def=false)
+
 
 reminderfox.consts.CALDAV_DEFAULT_ACCOUNT = "defaultSyncAccount"; // CHAR
 reminderfox.consts.CALDAV_SATURATION = "calDAVcolorSaturation"; // INT
 reminderfox.consts.CALDAV_SATURATION_DEFAULT =35;
 
-//reminderfox.consts.CALENDAR_DAYPOPUP_DELAY = "calendar.daypopup.delay"; // INT     ??
 reminderfox.consts.CALENDAR_MONTHS = "calendarMonths"; // INT
 reminderfox.consts.CALENDAR_MONTHS_DEFAULT = "1";
-reminderfox.consts.CALENDAR_SIZE = "calendarSize"; // INT
+
 reminderfox.consts.CALENDAR_START_DAY = "calendarStartDay"; // INT
 reminderfox.consts.CALENDAR_START_DAY_DEFAULT = 0;
 
@@ -130,10 +136,11 @@ reminderfox.consts.DEFAULT_ALL_DAY = "reminderDefaultAllDay"; // ???
 reminderfox.consts.DEFAULT_CATEGORY = "reminderDefaultCategory"; // CHAR
 
 reminderfox.consts.DEFAULT_EDIT = "defaultEdit"; // CHAR
-reminderfox.consts.DEFAULT_EDIT_DEFAULT = "reminders"; // ???
+reminderfox.consts.DEFAULT_EDIT_DEFAULT = "reminders";
 
 reminderfox.consts.FILTER_EVENTS_DEFAULT = "reminderDefaultFilter"; // INT
 reminderfox.consts.FILTER_LISTS_DEFAULT = "reminderDefaultFilterLists"; // INT
+
 reminderfox.consts.DEFAULT_MORE = "reminderDefaultMore"; // CHAR
 reminderfox.consts.DEFAULT_MORE_DEFAULT_VALUE = "location,url";
 
@@ -142,13 +149,14 @@ reminderfox.consts.DEFAULT_REMIND_UNTIL_COMPLETED = "reminderDefaultRemindUntilC
 reminderfox.consts.DEFAULT_REPEAT = "reminderDefaultRepeat"; // INT
 
 reminderfox.consts.DEFAULT_SHOW_IN_TOOLTIP = "reminderDefaultShowInTooltip"; // BOOL
+
 reminderfox.consts.DEFAULT_TEXTSIZE = "default_TextSize"; // INT
 reminderfox.consts.DEFAULT_TEXTSIZE_DEFAULT = 14;
 
 reminderfox.consts.ENABLE_CONTEXT_MENUS = "enableContextMenus"; // BOOL
 
 reminderfox.consts.HIDE_COMPLETED_ITEMS = "hideCompletedItems"; // BOOL
-reminderfox.consts.HIDE_FOX_PAW = "hideThatRidiculousFox"; // BOOL
+reminderfox.consts.HIDE_FOX_PAW = "hideThatRidiculousFox"; // BOOL  (def=false)
 
 reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS = "highlightTodaysReminders"; // BOOL
 reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS_DEFAULT = true;
@@ -174,21 +182,20 @@ reminderfox.consts.NEWSSTAMP = 'newsStamp';
 reminderfox.consts.NEWSLINK = 'newsLink';
 
 
-reminderfox.consts.MAIL_PATH = "mail.app.location";   //???
-reminderfox.consts.MAIL_SENDER = "mail.sender";   //????
+reminderfox.consts.MAIL_PATH = "mail.app.location"; // CHAR
+reminderfox.consts.MAIL_SENDER = "mail.sender"; // CHAR
 
 reminderfox.consts.MIGRATED_PREF = "migrated"; // CHAR
 
-reminderfox.consts.ONHOVER = "calendar.popup.onhover"; // BOOL
+reminderfox.consts.ONHOVER = "calendar.popup.onhover"; // BOOL  (def=false)
 
-reminderfox.consts.PREFSPANEL = 'prefsPanel'; // BOOL
-reminderfox.consts.PREFSPANEL_HIDDEN = false;
+reminderfox.consts.PREFSPANEL = 'prefsPanel'; // BOOL  (def=false)
 
 
 reminderfox.consts.REPEAT_PREVIOUS_OCCURRENCES = "repeatPreviousOccurrences"; // INT
 reminderfox.consts.REPEAT_UPCOMING_OCCURRENCES = "repeatUpcomingOccurrences"; // INT
 
-reminderfox.consts.SHOW_FILTERS = "defaults.showFilters"; // BOOL
+reminderfox.consts.SHOW_FILTERS = "defaults.showFilters"; // BOOL  (def=false)
 
 reminderfox.consts.SHOW_REMINDERS_IN_TOOLTIP = "showRemindersInTooltip"; // BOOL
 reminderfox.consts.SHOW_REMINDERS_IN_TOOLTIP_DEFAULT = true;
@@ -257,13 +264,12 @@ reminderfox.consts.UI_MODE_HEADLESS_SHOW_ERRORS = 2;
 // network ---
 
 //=======================
-reminderfox.consts.nsISupportsString = Components.interfaces.nsISupportsString;
-reminderfox.consts.consoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
+reminderfox.consts.nsISupportsString = Ci.nsISupportsString;
+reminderfox.consts.consoleService = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
 
 // --- debugging / logging 
-reminderfox.consts.DEBUG = "debug";
-reminderfox.consts.LOG = reminderfox.consts.DEBUG + "." + "loglevel";
-reminderfox.consts.LOG_FILE = reminderfox.consts.DEBUG + "." + "file";
+reminderfox.consts.LOG = "debug.loglevel";
+reminderfox.consts.LOG_FILE = "debug.file";
 reminderfox.consts.LOG_LEVEL_NONE = 0;
 reminderfox.consts.LOG_LEVEL_INFO = 1;
 reminderfox.consts.LOG_LEVEL_FINE = 2;
@@ -313,8 +319,8 @@ const REMINDERFOX_ACTION_TYPE = {
 
 
 // prefs setup
-reminderfox._prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-reminderfox._prefsBRANCH = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch(reminderfox.consts.REMINDER_FOX_PREF + ".");
+reminderfox._prefs = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefBranch);
+reminderfox._prefsBRANCH = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService).getBranch(reminderfox.consts.REMINDER_FOX_PREF + ".");
 
 reminderfox._prefsTYPE = {
     BOOL: 128,
@@ -376,11 +382,11 @@ reminderfox.core.checkModified= function (){
 
 
 
-reminderfox.string= function(bString){
+reminderfox.string= function(bString, nolog){
     try {
         return document.getElementById("reminderFox-bundle").getString(bString);
     } catch (e) {
-        reminderfox.util.Logger('Alert', "String bundle error : " + bString + "\n" + e);
+        if (nolog != true) reminderfox.util.Logger('Alert', "String bundle error : " + bString + "\n" + e);
         return bString;
     }
 };
@@ -414,7 +420,7 @@ reminderfox.core.initUserPrefsArray= function(){
     reminderfox._prefsUser[reminderfox.consts.ALERT_SOUND_CUSTOM] = reminderfox._prefsTYPE.BOOL;
     reminderfox._prefsUser[reminderfox.consts.ALERT_SOUND_PATH] = reminderfox._prefsTYPE.CHAR;
     reminderfox._prefsUser[reminderfox.consts.ALERT_SOUND] = reminderfox._prefsTYPE.BOOL;
-    reminderfox._prefsUser[reminderfox.consts.ALERT_TIMEOUT_PREF] = reminderfox._prefsTYPE.INT;
+    reminderfox._prefsUser[reminderfox.consts.ALERT_TIMEOUT] = reminderfox._prefsTYPE.INT;
 
     reminderfox._prefsUser[reminderfox.consts.ALERTSLIDER_LEFT] = reminderfox._prefsTYPE.BOOL;
     reminderfox._prefsUser[reminderfox.consts.ALERTSLIDER_MAX_HEIGHT] = reminderfox._prefsTYPE.INT;
@@ -427,7 +433,6 @@ reminderfox.core.initUserPrefsArray= function(){
   //  reminderfox._prefsUser[reminderfox.consts.CALENDAR_DAYPOPUP_DELAY] = reminderfox._prefsTYPE.INT; see .core.
 
     reminderfox._prefsUser[reminderfox.consts.CALENDAR_MONTHS] = reminderfox._prefsTYPE.INT;
-    reminderfox._prefsUser[reminderfox.consts.CALENDAR_SIZE] = reminderfox._prefsTYPE.INT;
     reminderfox._prefsUser[reminderfox.consts.CALENDAR_START_DAY] = reminderfox._prefsTYPE.INT;
 
   //  reminderfox._prefsUser[reminderfox.consts.CATEGORIES] = reminderfox._prefsTYPE.COMPLEX;   OK
@@ -465,7 +470,12 @@ reminderfox.core.initUserPrefsArray= function(){
     reminderfox._prefsUser[reminderfox.consts.LAST_MODIFIED] = reminderfox._prefsTYPE.CHAR;
 
     reminderfox._prefsUser[reminderfox.consts.LIST_DATE_LABEL] = reminderfox._prefsTYPE.CHAR;
+
+    reminderfox._prefsUser[reminderfox.consts.LOG] = reminderfox._prefsTYPE.INT;
     reminderfox._prefsUser[reminderfox.consts.LOG_FILE] = reminderfox._prefsTYPE.CHAR;
+
+    reminderfox._prefsUser[reminderfox.consts.MAIL_PATH] = reminderfox._prefsTYPE.CHAR;
+    reminderfox._prefsUser[reminderfox.consts.MAIL_SENDER] = reminderfox._prefsTYPE.CHAR;
 
     reminderfox._prefsUser[reminderfox.consts.MIGRATED_PREF] = reminderfox._prefsTYPE.CHAR;
 
@@ -511,11 +521,10 @@ reminderfox.core.initUserPrefsArray= function(){
   //  reminderfox._prefsUser[reminderfox.consts.TODO_LISTS] = reminderfox._prefsTYPE.COMPLEX;    OK
     reminderfox._prefsUser[reminderfox.consts.TODO_LISTS] = reminderfox._prefsTYPE.CHAR;
 
-  //  reminderfox._prefsUser[reminderfox.consts.TOOLBAR1] = reminderfox._prefsTYPE.BOOL;
-    reminderfox._prefsUser[reminderfox.consts.TOOLBAR_POSITION] = reminderfox._prefsTYPE.INT;
     reminderfox._prefsUser[reminderfox.consts.TOOLBAR] = reminderfox._prefsTYPE.CHAR;
-    reminderfox._prefsUser[reminderfox.consts.UPCOMING_REMINDER_DAYS_PREF] = reminderfox._prefsTYPE.INT;
+    reminderfox._prefsUser[reminderfox.consts.TOOLBAR_POSITION] = reminderfox._prefsTYPE.INT;
 
+    reminderfox._prefsUser[reminderfox.consts.UPCOMING_REMINDER_DAYS_PREF] = reminderfox._prefsTYPE.INT;
   //  reminderfox._prefsUser[reminderfox.consts.UPCOMING_REMINDERS_LABEL] = reminderfox._prefsTYPE.COMPLEX;  OK
     reminderfox._prefsUser[reminderfox.consts.UPCOMING_REMINDERS_LABEL] = reminderfox._prefsTYPE.CHAR;
 
@@ -535,8 +544,6 @@ reminderfox.core.getPreferenceValue= function(prefName, defaultValue){
         prefType = reminderfox._prefsUser[prefName];
     } catch(e){
     }
-// console.log("XXX .core.getPreferenceValue   prefName:", prefName, "  defaultValue >>"+defaultValue+"<<");
-
     try {
         if (prefType == reminderfox._prefsTYPE.CHAR) {
             prefValue = reminderfox._prefsBRANCH.getCharPref(prefName);
@@ -553,14 +560,17 @@ reminderfox.core.getPreferenceValue= function(prefName, defaultValue){
     }
     if (prefValue == null) {
         prefValue = defaultValue;
-console.error("RmFX  getPreferenceValue   For " + prefName + " the value is set to defaultValue:   >>" + defaultValue + "<<");
+
+        reminderfox.util.Logger('prefs', " .getPreferenceValue   Value of '" + prefName + "'  is set to defaultValue:   >>" + defaultValue + "<<");
+    } else {
+        reminderfox.util.Logger('prefs', " .getPreferenceValue   Name '" + prefName + "'  value >>" + prefValue + "<<  default >>"+defaultValue+"<<");
     }
     return prefValue;
 };
 
 
 reminderfox.core.setPreferenceValue= function(prefName, prefValue){
-// console.log("XXX .core.setPreferenceValue   prefName:", prefName, " prefValue >>"+prefValue+"<<")
+    reminderfox.util.Logger('prefs', " .setPreferenceValue   Name '" + prefName + "'  value >>" + prefValue + "<<");
 
     if (!reminderfox._prefsUser) {
         reminderfox.core.initUserPrefsArray();
@@ -569,7 +579,7 @@ reminderfox.core.setPreferenceValue= function(prefName, prefValue){
     try {
         var prefType = reminderfox._prefsUser[prefName];
     } catch(ex){
-        console.error("RmFX  setPreferenceValue -- TRY prefType"
+        console.error("RmFX  setPreferenceValue -- Missing prefType for "
           + prefName + ">>" + prefValue +"<<");
         return;
     }
@@ -602,7 +612,7 @@ reminderfox.core.setPreferenceValue= function(prefName, prefValue){
  * Get unicode string value from preference store
  *   {get,set}ComplexValue use of nsISupportsString -- Removed in mozilla58
  * @param {string} preference name
- **/
+ * * /
 reminderfox.core.getUnicodePref= function(prefName){
     var r;
     try
@@ -613,33 +623,32 @@ reminderfox.core.getUnicodePref= function(prefName){
     return r;
 };
 
-/**
+/* *
  * set unicode string value
  *   {get,set}ComplexValue use of nsISupportsString -- Removed in mozilla58
  * 
- */
+ * /
 reminderfox.core.setUnicodePref= function(prefName, prefValue){
 
     try { //56,58 
         r= reminderfox._prefsBRANCH.setStringPref(prefName, prefValue);
-//console.log("XXX  .core.setUnicodePref   .setStringPref: ", prefName, ">>"+prefValue+"<<");
-
+        reminderfox.util.Logger('prefs', " .setUnicodePref   StringPref: " +prefName, "  >>"+prefValue+"<<");
     }
     catch (ex) { //54
-//console.log("XXX  .core.setUnicodePref   .setComplexValue: ", prefName, ">>"+prefValue+"<<");
+        reminderfox.util.Logger('prefs', " .setUnicodePref   ComplexValue: " + prefName + ">>"+prefValue+"<<");
 
-        var sString = Components.classes["@mozilla.org/supports-string;1"]
+        var sString = Cc["@mozilla.org/supports-string;1"]
          .createInstance(reminderfox.consts.nsISupportsString);
            sString.data = prefValue;
         reminderfox._prefsBRANCH.setComplexValue(prefName, 
            reminderfox.consts.nsISupportsString, sString);
     }
 };
-
+* -------------*/
 
 
 reminderfox.core.logMessageLevel= function(logString, level){
-    var logLevel = reminderfox._prefsBRANCH.getIntPref(reminderfox.consts.LOG);
+    var logLevel = reminderfox.core.getPreferenceValue(reminderfox.consts.LOG, 0);
     var date = new Date()
     if ((level <= logLevel) || (logLevel >= 4) ){
         if (reminderfox.consts.consoleService) {
@@ -650,18 +659,13 @@ reminderfox.core.logMessageLevel= function(logString, level){
 
             var caller1 = Components.stack.caller.filename + "#" + Components.stack.caller.lineNumber
 
-        //    console.info("Reminderfox: [Debug " + level +" |" + logLevel +"]  "+ new Date()+ (" >"+ +(new Date()) + "<"));
             var msg =("Reminderfox: [Debug " + level +" |" + logLevel +"]  "+ new Date()+ (" >"+ +(new Date()) + "<\n"));
-     //            "\n    ", logString,
-     //            "\n  0: ", caller0, 
-     //            "\n  1: ", caller1
-     //            );
-           console.error(msg + logString)
+            console.error(msg + logString)
         }
     }
 
     // if the user has specified a log file, then write out log messages to file
-    var logFile = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.LOG_FILE);
+    var logFile = reminderfox.core.getPreferenceValue(reminderfox.consts.LOG_FILE,"");
     if (logFile && logFile.length > 0) {
 
         // uncomment this if you want to only output DEBUG messages only; useful if sending a direct
@@ -678,12 +682,12 @@ reminderfox.core.logMessageLevel= function(logString, level){
 
         // log it to file
         try {
-            var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
+            var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
             file.initWithPath(logFile);
 
             if (file) {
                 if (!file.exists()) {
-                    file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420);
+                    file.create(Ci.nsIFile.NORMAL_FILE_TYPE, 420);
                 }
                 reminderfox.core.appendStringToFile("LogLevel " + level + ": " + logString + "\n---------------\n", file, true);
             }
@@ -951,14 +955,14 @@ reminderfox.core.isGMailEvent= function(event){
 
 
 reminderfox.core.focusBrowser= function(){
-    if ("@mozilla.org/messenger;1" in Components.classes) {
+    if ("@mozilla.org/messenger;1" in Cc) {
     }
     else {
         var navWindow;
 
         // Try to get the most recently used browser window
         try {
-            var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+            var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
             navWindow = wm.getMostRecentWindow("navigator:browser");
         }
         catch (ex) {
@@ -968,7 +972,7 @@ reminderfox.core.focusBrowser= function(){
             navWindow.focus();
         }
         else { // If there is no recently used browser window open new browser window with the URL
-            var ass = Components.classes["@mozilla.org/appshell/appShellService;1"].getService(Components.interfaces.nsIAppShellService);
+            var ass = Cc["@mozilla.org/appshell/appShellService;1"].getService(Ci.nsIAppShellService);
             var win = ass.hiddenDOMWindow;
             win.focus();
         }
@@ -996,9 +1000,11 @@ reminderfox.core.launchWelcomePage= function(isNew){
             catch (e) {
             }
         }
+
         var showWelcomePage = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_WELCOME_PAGE, true);
         if (showWelcomePage) {
-            setTimeout(welcome, 100, reminderfox.consts.MIGRATED_PREF_VERSION, isNew);
+         //   setTimeout(welcome, 100, reminderfox.consts.MIGRATED_PREF_VERSION, isNew);
+            setTimeout(function() {welcome(reminderfox.consts.MIGRATED_PREF_VERSION, isNew)},100);
         }
     }
     catch (e) {
@@ -1036,6 +1042,33 @@ reminderfox.core.loadDefaultPreferences= function(){
         reminderfox.core.handleMigration("0.0");
     }
 
+	//check for storeICS, migrate old format to JSON   //gW  2018-02
+	var storeICS= {};
+	try{
+		storeICS = reminderfox._prefsBRANCH.getCharPref('storeICS');
+	} catch(ex){
+
+		try{
+			var osTyp = reminderfox.core.opSystemInfo();
+			var storeString = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.STORE_FILE);
+			var osArray = storeString.split(",");
+			for (var nOS = 0; nOS < osArray.length; nOS++) {
+				var cString = osArray[nOS];
+				if (cString.indexOf("OS=Linux:") == 0) storeICS.Linux= cString.substring(9,cString.length);
+				if (cString.indexOf("OS=WINNT:") == 0) storeICS.WINNT=  cString.substring(9,cString.length);
+				if (cString.indexOf("OS=Darwin:") == 0) storeICS.Darwin = cString.substring(10,cString.length);
+			}
+			if (storeICS[osTyp] == null) {
+				storeICS[osTyp] = reminderfox.util.getICSdefaultFilePath();
+			}
+			var storeICSjson = JSON.stringify(storeICS);
+			reminderfox._prefsBRANCH.setCharPref('storeICS', storeICSjson);
+			reminderfox._prefsBRANCH.clearUserPref(reminderfox.consts.STORE_FILE);
+		} catch(ex){
+			reminderfox.core.setICSfile();
+		}
+	}
+
   // 2018-01   ??   reminderfox.consts.TOOLBAR   vs   reminderfox.consts.TOOLBAR1   ??
   //  var statusbarDisplay = reminderfox.core.getPreferenceValue(reminderfox.consts.TOOLBAR1, reminderfox.consts.TOOLBAR1_DEFAULT);
   //  document.getElementById("reminderFox-statusLabel").setAttribute("hidden", statusbarDisplay);
@@ -1050,7 +1083,7 @@ reminderfox.core.loadDefaultPreferences= function(){
 
     if (logFile && logFile.length > 0) {
         // log it to file
-        var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
+        var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
         file.initWithPath(logFile);
         if (file) {
             var msg = reminderfox.aboutXPI()
@@ -1058,12 +1091,11 @@ reminderfox.core.loadDefaultPreferences= function(){
             reminderfox.core.writeStringToFile(msg, file, false);
         }
     } else {
-       console.log("RmFX debug file is not configured.")
+       console.log("RmFX  Debug file is not configured.")
     }
 
     reminderfox.core.utc = reminderfox.core.getPreferenceValue(reminderfox.consts.UTC_FORMAT, 
         reminderfox.consts.UTC_FORMAT_DEFAULT)
-    //console.log("  rmFX  loaded prefs .utc :", reminderfox.core.utc)
 };
 
 
@@ -1086,19 +1118,19 @@ reminderfox.core.migrate_defaultView= function(mode){
 
         var defaultViews = "";
         var i = 0;
-//XXX        try {
-            while (reminderfox.string("rf.views.default.label." + i) != ("rf.views.default.label." + i)) {
+        try {
+            while (reminderfox.string(("rf.views.default.label." + i), true) != ("rf.views.default.label." + i)) {
                 defaultViews += reminderfox.string("rf.views.default.label." + i) +
                     "=<" +
                     reminderfox.string("rf.views.default.value." + i) +
                     ">,";
                 i++;
             }
-/*----    } catch (ex) {
+        } catch (ex) {
              defaultViews = "Upcoming Birthdays=<Summary:Birthday;DATE:1M;>,Holidays=<CATEGORIES:Holiday;>,Mailed reminders=<SUMMARY:Mail,Send;DATE:-6M,4W;>,All Reminders (all years)=<DATE:-99Y,99Y;>,";
-             console.error("RmFX 'Views' failed to read from local .properties! Using:\n", defaultViews);
+             //console.log("RmFX  'Views' failed to read from 'locale' strings! Using:\n", defaultViews);
         }
----*/
+
         if ((!views) || (views === "")) {
             views = defaultViews;
         }
@@ -1195,8 +1227,7 @@ reminderfox.core.handleMigration= function(oldVersion){
     }
     else if (oldVersion < "2.0.1") {
         // set number of months back to just 1 month display for 2.0 users
-        var numMonths = reminderfox.core.getPreferenceValue (reminderfox.consts.CALENDAR_MONTHS,
-            reminderfox.calendar.numMonth);
+        var numMonths = reminderfox.core.getPreferenceValue (reminderfox.consts.CALENDAR_MONTHS, reminderfox.calendar.numMonth);
         if ( numMonths == 3 ) {
             reminderfox.core.setPreferenceValue (reminderfox.consts.CALENDAR_MONTHS, 1);
         }
@@ -1955,8 +1986,8 @@ reminderfox.core.computeNumberOfDaysDifference= function(origStartDate, origEndD
 
 
 reminderfox.core.getWindowEnumerator= function(){
-    var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
-    var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+    var windowManager = Cc["@mozilla.org/appshell/window-mediator;1"].getService();
+    var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
 
     var windowEnumerator = windowManagerInterface.getEnumerator("navigator:browser");
     if (windowEnumerator.hasMoreElements()) {
@@ -1983,9 +2014,7 @@ reminderfox.core.getWindowEnumerator= function(){
 
 
 reminderfox.core.playSound= function(mode, savefilePath){
-//console.trace()
-
-	var gSound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
+	var gSound = Cc["@mozilla.org/sound;1"].createInstance(Ci.nsISound);
 	//  var savefilePath;
 	var soundCustom = false;
 
@@ -2012,13 +2041,13 @@ reminderfox.core.playSound= function(mode, savefilePath){
 		gSound.beep();
 	}
 	else {
-		var _ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-		var _soundService = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
+		var _ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+		var _soundService = Cc["@mozilla.org/sound;1"].createInstance(Ci.nsISound);
 		_soundService.init();
 
 		var uri = null;
 		try {
-			var localFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
+			var localFile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 			localFile.initWithPath(savefilePath);
 
 			if (localFile.exists())
@@ -2643,7 +2672,7 @@ reminderfox.core.getICSXLastmodifiedFromString= function(chunk){
     }
     if (typeof(ret) != 'number') ret = null; 
 
-//console.log("XXX  get Lastmodified FromString ", (new Date()).toLocaleString(),"  chunk:\n", chunk.substring(0,500), "\n time, return value:", ret);
+//console.log("//XXXgW  get Lastmodified FromString ", (new Date()).toLocaleString(),"  chunk:\n", chunk.substring(0,500), "\n time, return value:", ret);
 //console.trace();
 
     return ret;
@@ -2699,7 +2728,7 @@ reminderfox.core.getReminderEvents= function(clear){
             reminderfox.core.numDaysEvents = [];
             reminderfox.core.numDaysTodos = [];
 
-            var file = reminderfox.core.getReminderStoreFile();
+            var file = reminderfox.core.getICSfile();
             // bail if the file doesn't yet exist; no reminders to read
             if (!file.exists()) {
                 reminderfox_getNumDaysModel(reminderfox.core.reminderFoxEvents);
@@ -2735,7 +2764,7 @@ reminderfox.core.getReminderTodos= function(){
     if (!reminderfox.core.reminderFoxTodosArray) {
         reminderfox.core.reminderFoxEvents = new Array();
         reminderfox.core.reminderFoxTodosArray = {};
-        var file = reminderfox.core.getReminderStoreFile();
+        var file = reminderfox.core.getICSfile();
 
         // bail if the file doesn't yet exist; no reminders to read
         if (!file.exists()) {
@@ -3038,9 +3067,6 @@ reminderfox.core.constructReminderOutput= function(reminderEvents, _todosArray, 
             if (isExport && (!reminder.extraInfo || reminder.extraInfo.indexOf("CLASS" + separator) == -1)) {
                 outputStr += "CLASS" + separator + "PUBLIC" + newline;
             }
-
-            // set date
-//console.log("XXXutc  constructReminderOutput  reminder.date  in:", "_"+reminder.date+"_", reminder.summary)
 
             currentDate = new Date(reminder.date.getFullYear(), reminder.date.getMonth(), reminder.date.getDate(), reminder.date.getHours(), reminder.date.getMinutes());
             outputStr += reminderfox.core.createStringForDate(reminder, currentDate, isExport, separator, newline, isCalDAV);
@@ -3540,10 +3566,10 @@ reminderfox.core.writeOutRemindersAndTodos= function(isExport){
         reminderfox.core.getReminderTodos(), isExport); //  ALL  todos
 
     // now write file out to filesystem
-    var file = reminderfox.core.getReminderStoreFile();
+    var file = reminderfox.core.getICSfile();
 
     if (file.exists() === false) {
-        file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420);
+        file.create(Ci.nsIFile.NORMAL_FILE_TYPE, 420);
     }
 
     reminderfox.core.writeStringToFile(outputStr, file, false);
@@ -3580,12 +3606,12 @@ reminderfox.core.downloadReminders= function(){		//XUL dialog for cancel
 
 
 reminderfox.core.writeStringToFile= function(outputStr, file, isExport){
-    var outputStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
-        .createInstance(Components.interfaces.nsIFileOutputStream);
+    var outputStream = Cc["@mozilla.org/network/file-output-stream;1"]
+        .createInstance(Ci.nsIFileOutputStream);
     outputStream.init(file, 0x04 | 0x08 | 0x20, 420, 0);
 
-    var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-        .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+    var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"]
+        .createInstance(Ci.nsIScriptableUnicodeConverter);
     converter.charset = "UTF-8";
 
     var chunk = null;
@@ -3612,10 +3638,10 @@ reminderfox.core.writeStringToFile= function(outputStr, file, isExport){
 
 
 reminderfox.core.appendStringToFile= function(outputStr, file, isExport){
-    var outputStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+    var outputStream = Cc["@mozilla.org/network/file-output-stream;1"].createInstance(Ci.nsIFileOutputStream);
     outputStream.init(file, 0x02 | 0x10, 420, 0);
 
-    var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+    var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Ci.nsIScriptableUnicodeConverter);
     converter.charset = "UTF-8";
 
     var chunk = null;
@@ -3653,19 +3679,14 @@ reminderfox.core.timeStampHasChanged= function(){
 
     var lastPrefTimeStamp = reminderfox.core.getPreferenceValue(reminderfox.consts.LAST_MODIFIED, "")
     var lastFileTime = reminderfox.core.getICSfileTimeStamp();
-    var fileChanged = (lastPrefTimeStamp != lastFileTime);
 
-    var msg=
-        "RmFX  ICSfile: " + reminderfox.core.getReminderStoreFile().path
-        + "\n     Modified/Changed >" + fileChanged + "<"
-        + "; last recorded (pref) >" + lastPrefTimeStamp + "<"
-        + "; current file timeStamp >" + new Date(lastFileTime) + "<  "
-        + reminderfox.util.STACK(1);
-
-    if (fileChanged) {
-  //      reminderfox.utils.Logger('icsFile', msg);
-        console.log(msg);
-        return lastFileTime;
+    if (lastPrefTimeStamp != lastFileTime) {
+       var msg=
+         "RmFX  [.timeStampHasChanged]  ICSfile: " + reminderfox.core.getICSfile().path
+         + "\n       last recorded (pref) >" + lastPrefTimeStamp + "<"
+         + "; current file timeStamp >" + new Date(lastFileTime) + "<  ";
+       console.log(msg);
+       return lastFileTime;
     }
     else {
         return -1;
@@ -3673,7 +3694,7 @@ reminderfox.core.timeStampHasChanged= function(){
 };
 
 reminderfox.core.getICSfileTimeStamp= function(){
-    var file = reminderfox.core.getReminderStoreFile();
+    var file = reminderfox.core.getICSfile();
     var timestamp = -1;
 
     if (file.exists()) {
@@ -3698,7 +3719,7 @@ reminderfox.core.getQuickAlarms= function(){
             }
         }
         else {
-            var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
+            var nativeJSON = Cc["@mozilla.org/dom/json;1"].createInstance(Ci.nsIJSON);
             quickAlarmArray = nativeJSON.decode(quickAlarms);
         }
 
@@ -3716,7 +3737,7 @@ reminderfox.core.updateQuickAlarmPref= function(quickAlarmArray){
         quickAlarms = JSON.stringify(quickAlarmArray);
     }
     else {
-        var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
+        var nativeJSON = Cc["@mozilla.org/dom/json;1"].createInstance(Ci.nsIJSON);
         quickAlarms = nativeJSON.encode(quickAlarmArray);
     }
 
@@ -4984,11 +5005,6 @@ reminderfox.core.readInReminderTodo= function(reminderTodo, index, readIn, remin
                 // event with specific hourly time
                 reminderTodo.date = new Date(eventDate.substring(0, 4), monthInt, eventDate.substring(6, 8));
                 reminderTodo.date.setHours(eventDate.substring(9, 11), eventDate.substring(11, 13));
-
-//console.log("utc   readin DTSTART  in  eventDate:", "_"+eventDate+"_", "   _"+reminderTodo.date+"_")
-//                reminderfox.date.adjustTimeZones(eventDate, readIn, reminderTodo.date);
-//console.log("utc   readin DTSTART  out eventDate:", "_"+eventDate+"_", "   _"+reminderTodo.date+"_")
-
                 reminderTodo.allDayEvent = false;
             }
         }
@@ -5195,7 +5211,7 @@ reminderfox.core.isCompletedForDate= function(reminder, reminderInstanceDate){
 }
 
 reminderfox.core.readInRemindersAndTodosICSFromFile= function(reminderEvents, reminderTodos, file, ignoreExtraInfo){
-    var is = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+    var is = Cc["@mozilla.org/network/file-input-stream;1"].createInstance(Ci.nsIFileInputStream);
     try {
         is.init(file, 0x01, 00004, null);
     }
@@ -5210,11 +5226,11 @@ reminderfox.core.readInRemindersAndTodosICSFromFile= function(reminderEvents, re
 
 /* Called also from download.js */
 reminderfox.core.readInRemindersAndTodosICSFromStream= function(reminderEvents, reminderTodosArr, is, ignoreExtraInfo){
-    var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+    var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Ci.nsIScriptableUnicodeConverter);
     converter.charset = /* The character encoding you want, using UTF-8 here */ "UTF-8";
 
     // Now, read from the stream
-    var scriptableStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
+    var scriptableStream = Cc["@mozilla.org/scriptableinputstream;1"].createInstance(Ci.nsIScriptableInputStream);
     scriptableStream.init(is);
     var chunk = scriptableStream.read(scriptableStream.available());
     var input = null;
@@ -5390,8 +5406,8 @@ reminderfox.core.numDaysModelDelete= function(reminder, namType){
  * Read in a file using UTF8 encoding
  */
 reminderfox.core.readInFileContents= function(file){
-    var is = Components.classes["@mozilla.org/network/file-input-stream;1"]
-        .createInstance(Components.interfaces.nsIFileInputStream);
+    var is = Cc["@mozilla.org/network/file-input-stream;1"]
+        .createInstance(Ci.nsIFileInputStream);
     try {
         is.init(file, 0x01, 00004, null);
     }
@@ -5401,13 +5417,13 @@ reminderfox.core.readInFileContents= function(file){
         return null;
     }
 
-    var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-        .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+    var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"]
+        .createInstance(Ci.nsIScriptableUnicodeConverter);
     converter.charset = /* The character encoding you want, using UTF-8 here */ "UTF-8";
 
     // Now, read from the stream
-    var scriptableStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
-        .createInstance(Components.interfaces.nsIScriptableInputStream);
+    var scriptableStream = Cc["@mozilla.org/scriptableinputstream;1"]
+        .createInstance(Ci.nsIScriptableInputStream);
     scriptableStream.init(is);
     var chunk = scriptableStream.read(scriptableStream.available());
     var input = null;
@@ -5605,16 +5621,16 @@ reminderfox.core.importRemindersUpdateAll= function(isNetworkImport, lastModifie
         +" \nPlease check your reminder store file and restore from backup if necessary!")
         reminderfox.util.Logger('calDAV', "\n" + logMsg + "\n\n");
 
-    //    var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+    //    var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
     //    promptService.alert(window, "Reminderfox Warning", logMsg)
         return;
     }
 
 
     // now write file out to filesystem
-    var file = reminderfox.core.getReminderStoreFile();
+    var file = reminderfox.core.getICSfile();
     if (file.exists() === false) {
-        file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420);
+        file.create(Ci.nsIFile.NORMAL_FILE_TYPE, 420);
     }
 
     reminderfox.core.writeStringToFile(outputStr, file, false);
@@ -6337,7 +6353,7 @@ reminderfox.core.addTodo= function (newTodo, thisDate){
         newTodo.date = selectedDate;
 
         if (tab.indexOf(':') == -1) {
-            var showInTooltipDefault = reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_SHOW_IN_TOOLTIP);
+            var showInTooltipDefault = reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_SHOW_IN_TOOLTIP); //XXX NON DEFAULT defined!
             if (showInTooltipDefault || newTodo.showInTooltip == true) {
                 newTodo.showInTooltip = true;
             }
@@ -6630,7 +6646,7 @@ reminderfox.core.storeOrUpdate= function(lastEvent){
 reminderfox.core.firstStart= function(){
     //  If this is the very first ReminderFox start (no existing 'reminder.ics' file available),
     //  we construct a 'Welcome ReminderFox' reminder.
-    var rmStoreFile = reminderfox.core.getReminderStoreFile();
+    var rmStoreFile = reminderfox.core.getICSfile();
     if (!rmStoreFile || !rmStoreFile.exists()) {
         var todaysDate = new Date();
         var reminderId = reminderfox.core.generateUniqueReminderId(todaysDate);
@@ -6645,7 +6661,7 @@ reminderfox.core.firstStart= function(){
         reminderfox.core.reminderFoxEvents[0] = newReminderToBeAdded;
 
         // load the foxy icon
-        var defaultToolBar = ("@mozilla.org/messenger;1" in Components.classes)
+        var defaultToolBar = ("@mozilla.org/messenger;1" in Cc)
             ? "tabbar-toolbar" : "nav-bar";
         reminderfox.core.installButton(defaultToolBar, "reminderFox_openButton");
 
@@ -6882,176 +6898,78 @@ reminderfox.core.Send2List= function(address){
 }
 
 
-reminderfox.core.OSinfo = null;
-
 /**
- * Store the prefs 'reminderfox.consts.STORE_FILE' with osTyp
+ * Store the prefs 'storeICS' with osTyp    2018-02 
  *
- * new storeFile concept:
- * OS={ostype}:{osstring},OS={ostype}:{osstring},
- * ex:   OS=WINNT:D:\..\reminder.ics,OS=LINUX:/opt/../reminder.ics,OS=DARWIN:/home/user/.../reminder.ics,
+ * JSON storeICS concept:
+ * {'Linux':'osstring','WINNT':'osstring'}
+ * ex:   "{\"Linux\":\"/media/DATA/_Mozilla/reminderfoxTEST.ics\"}");
  *
- @param   filePath2store:	the 'local' file path
- @return  storeString4thisOS
+ @param   filePath2store:  the 'local' file path
+ @return  filePath2store
  */
-reminderfox.core.storeFile4OS= function(filePath2store){
-    var osTyp = reminderfox.core.opSystemInfo();
-    var storeFile;
-    var osString = "";
-
-    var storeString4thisOS = reminderfox.core.getStoreFile4OS();
-    var storeString = reminderfox.core.getPreferenceValue(reminderfox.consts.STORE_FILE, "")
-
-    if (storeString !== "") {
-        //  replace the 'storeString4thisOS' with 'filePath2store' if not ''
-        var osArray = storeString.split("OS=");
-
-        if (osArray.length > 0) {
-            for (var nOS = 0; nOS < osArray.length; nOS++) {
-                var cString = osArray[nOS];
-
-                if (cString.indexOf(osTyp + ":") === 0) {
-                    // current OS found !! skip it
-
-                }
-                else {
-                    // replace entry with leading "OS="
-                    if (cString !== "") {
-                        if (cString.substring(cString.length - 1) != ",") {
-                            cString += ",";
-                        }
-                        osString += "OS=" + cString;
-                    }
-                }
-            }
-        }
-    }
-
-    if (filePath2store !== "") {
-        osString += "OS=" + osTyp + ":" + filePath2store + ",";
-    }
-    reminderfox.core.setPreferenceValue(reminderfox.consts.STORE_FILE, osString);
-
-    return storeString4thisOS;
-};
-
-
-reminderfox.core.saveICSfile= function (sFile) {
+reminderfox.core.setICSfile= function(filePath2store){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //OSswitching    support OS switching	>>> check if directory!!!
-    var fs = reminderfox.util.fileCheck (sFile);
-    if (fs == -1) {
-        alert("&rf.options.isfilelocation.valid;");
-        return;
-    };
-    reminderfox.core.storeFile4OS(document.getElementById("reminderFox-file-location").value);
-};
+	if (filePath2store == null) filePath2store = reminderfox.util.getICSdefaultFilePath();
 
+	var osTyp = reminderfox.core.opSystemInfo();
+	var storeICSjson;
+	try {
+		storeICSjson = reminderfox._prefsBRANCH.getCharPref('storeICS');
+		storeICS = JSON.parse(storeICSjson);
+	} catch(ex) {
+		storeICS = {};
+	}
+	storeICS[osTyp] = filePath2store;
+	var storeICSjson = JSON.stringify(storeICS);
+	reminderfox._prefsBRANCH.setCharPref('storeICS', storeICSjson);
 
-// get the reminderfox.consts.STORE_FILE for current OS
-reminderfox.core.getStoreFile4OS= function(){
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    var osTyp = reminderfox.core.opSystemInfo();
-    var storeString = "";
+console.log ("RmFX  [.setICSfile]  "+ (new Date()) 
+	+ "\n      New ICSfile >>" + storeICSjson + "<<");
 
-    try {
-        storeString = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.STORE_FILE);
-    }
-    catch (ex) {
-        storeString = reminderfox.core.getReminderStoreFile();
-    }
-
-    var fnd = storeString.indexOf("OS=" + osTyp + ":");
-    if (fnd > -1) {
-        //for the current osTyp we have a 'storeFile', search it
-        var osArray = storeString.split("OS=");
-        for (var nOS = 0; nOS < osArray.length; nOS++) {
-            var cString = osArray[nOS];
-            if (cString.substring(cString.length - 1) == ",") {
-                cString = cString.substring(0, cString.length - 1);
-            }
-            fnd = cString.indexOf(osTyp + ":");
-            if (fnd === 0) {
-                var len = (osTyp + ":").length;
-                storeString = cString.substring(len);
-            }
-        }
-    }
-    else {
-        storeString = "";
-    }
-    return storeString;
+    return filePath2store;
 };
 
 /**
  * //OSswitching
- *  for each OS a sting is remembered, so OSswitching will bring back
- *  last *.ics file (or just the default)
- *  reminderfox.consts.STORE_FILE  used to store all OS infos
- *  @return {file/path string} if no "user" selected file is set, return 'default/profile' path
- *          else return user defined path, but only if valid, if not valid return default
  */
-reminderfox.core.getReminderStoreFile= function(){
-    var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
+reminderfox.core.getICSfile= function(){
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 
-    // 1) setup the default location for "reminderfox.ics"
-    var defaultFile = reminderfox.util.ProfD_extend("reminderfox");
-    defaultFile.append("reminderfox.ics");
-    var defaultFilePath = defaultFile.path;
-
-    // 2) get prefs storeFile.OS   -- saved file from different OSs
-    var osTyp = reminderfox.core.opSystemInfo(); // for new
-    var osInfo = reminderfox.core.opSystemInfo(); // for old
-    var osFilePath = "";
-    var storeString = "";
-
-    try {
-        storeString = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.STORE_FILE);
-
-        var fnd = storeString.indexOf("OS=" + osTyp + ":");
-        if (fnd > -1) {
-            //for the current osTyp we have a 'storeFile', search it
-            var osArray = storeString.split("OS=");
-            for (var nOS = 0; nOS < osArray.length; nOS++) {
-                var cString = osArray[nOS];
-                if (cString.substring(cString.length - 1) == ",") {
-                    cString = cString.substring(0, cString.length - 1);
-                }
-                fnd = cString.indexOf(osTyp + ":");
-                if (fnd === 0) {
-                    var len = (osTyp + ":").length;
-                    storeString = cString.substring(len);
-                }
-            }
-        }
-    }
-    catch (e) {
-    }
+	var osTyp = reminderfox.core.opSystemInfo();
+	var storeICSjson;
+	try {
+		storeICSjson = reminderfox._prefsBRANCH.getCharPref('storeICS');
+		storeICS = JSON.parse(storeICSjson);
+	} catch(ex) {
+		storeICS = {};
+	}
+	var filePath = storeICS[osTyp]
+	var defaultFilePath = reminderfox.util.getICSdefaultFilePath()
 
     // check which file can be used
     //   1:  if fileinfo is valid, use it
     //   2:  else use OS setting, if not valid, use 'default'
     //   3:  if failed, go with 'defaultFilePath'
 
-    var savefilePathGO = "";
-    // 1: check if 'osFilePath' is empty, use 'default'
-    if (storeString === "") {
+    // 1: check if 'osFilePath' is empty, use 'defaultFilePath'
+    if (filePath === "") {
         file.initWithPath(defaultFilePath);
     }
     else {
         try { // 2: use fileinfo is valid
-            savefilePathGO = storeString;
-            file.initWithPath(savefilePathGO);
+            file.initWithPath(filePath);
             file.exists();
         }
         catch (e) { // 3: if failed, go with 'defaultFilePath'
-            savefilePathGO = "";
             file.initWithPath(defaultFilePath);
         }
     }
     return file;
 };
 
+reminderfox.core.OSinfo = null;
 
 //OSswitching   support OS switching -------------
 reminderfox.core.opSystemInfo= function(){
@@ -7060,13 +6978,13 @@ reminderfox.core.opSystemInfo= function(){
         return reminderfox.core.OSinfo;
     }
 
-    if ("nsIXULRuntime" in Components.interfaces) {
-        var osInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime);
+    if ("nsIXULRuntime" in Ci) {
+        var osInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime);
         reminderfox.core.OSinfo = osInfo.OS;
         var platform = osInfo.XPCOMABI
     }
     else {
-        var osInfo = Components.classes["@mozilla.org/network/protocol;1?name=http"].getService(Components.interfaces.nsIHttpProtocolHandler);
+        var osInfo = Cc["@mozilla.org/network/protocol;1?name=http"].getService(Ci.nsIHttpProtocolHandler);
         reminderfox.core.OSinfo = (osInfo.oscpu == "Windows NT 5.1") ? "WINNT" : osInfo.oscpu;
         var platform = osInfo.platform;
     }
@@ -7354,7 +7272,7 @@ reminderfox.core.smartFoxySwitch= function(mode) {
      0001: rmFXbutton.parentElement.id	$[0] = [string] "toolbar-menubar"
      -----------*/
 
-    var defaultToolBar = ("@mozilla.org/messenger;1" in Components.classes)
+    var defaultToolBar = ("@mozilla.org/messenger;1" in Cc)
         ? "tabbar-toolbar" : "nav-bar";
 
     var smartFoxyBAR = reminderfox.core.getPreferenceValue(reminderfox.consts.SMARTFOXY_BAR, defaultToolBar)
@@ -7428,14 +7346,4 @@ reminderfox.core.CalDAVaction = function(recentReminder, actionCode) {
             }
         }
     }
-}
-
-
-function rmFXimportPrefs(){
-	var tmpFile = reminderfox.util.ProfD_extend("reminderfox");
-	tmpFile.append("preferences");
-	tmpFile.append("rmFXprefs.json");
-
-	var jPrefsJSON= reminderfox.util.readInFileContents(tmpFile.path);	
-	return JSON.parse(jPrefsJSON);	
 }

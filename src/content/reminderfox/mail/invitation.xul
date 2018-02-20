@@ -322,7 +322,9 @@ function invitationSwitch () {
 		document.getElementById('reminderFox-attendeeGroup')
 			.setAttribute( "hidden", true );
 	}
-
+	//  check the messenger to be used
+	reminderfox.util.messengerApp();
+	document.getElementById('mailApp.location.input').value = reminderfox.core.getPreferenceValue(reminderfox.consts.MAIL_PATH, "");
 	sizeToContent();
 };
 
@@ -360,12 +362,8 @@ function invitationCloseDialog (mode) {
 		}else {
 			window.arguments[0].schComment  = "";
 		}
-
-		var mailApp = document.getElementById('mailApp.location.input').value
-		reminderfox.core.setPreferenceValue(reminderfox.consts.MAIL_PATH, mailApp);
-
 		window.close();
-		}
+	}
 
 	// --- Export section -----------------
 	 if (document.getElementById('exportSection').checked) {
@@ -429,8 +427,6 @@ function sendExportChange (mode) {
 		  document.getElementById('commentText').removeAttribute( "disabled");
 		  document.getElementById("mailAppButton").removeAttribute("disabled");
 
-	 //  check the messenger to be used
-		  document.getElementById('mailApp.location.input').value = reminderfox.util.messengerApp().path;
 	 } else {
 		/* --- 'Export' -->	  enabled */
 		  document.getElementById("exportSection").setAttribute("checked", "true");

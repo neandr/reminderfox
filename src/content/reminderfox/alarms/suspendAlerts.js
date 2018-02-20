@@ -61,14 +61,8 @@ function reminderFox_alertChanged() {
 }
 
 function setAlarm() {
-	//	var alertType;
-	try {
-		alertType = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.ALERT_ENABLE);
-	} 
-	catch (e) {
-		alertType = reminderfox.consts.ALERT_ENABLE_ALL;
-	}
-	
+	var alertType = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_ENABLE, reminderfox.consts.ALERT_ENABLE_ALL);
+
 	// if it's marked as suspended, change to original value
 	var suspendedIndex = alertType.indexOf(reminderfox.consts.ALERT_SUSPEND);
 	if (suspendedIndex != -1) {
@@ -78,10 +72,8 @@ function setAlarm() {
 	else {
 		alertType = reminderfox.consts.ALERT_SUSPEND + alertType;
 	}
-	
-	reminderfox._prefsBRANCH.setCharPref(reminderfox.consts.ALERT_ENABLE, alertType);
-	
-	
+	reminderfox.core.setPreferenceValue(reminderfox.consts.ALERT_ENABLE, alertType);
+
 	// if user chose to automatically resume alerts at some time, process that
 	var showAlert = document.getElementById("reminderFox-alert");
 	var alertVal =  showAlert.getAttribute("checked" );

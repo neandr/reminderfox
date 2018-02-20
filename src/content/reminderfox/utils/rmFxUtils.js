@@ -1,4 +1,6 @@
-if (Cu === undefined)		var Cu = Components.utils;
+if (Cu === undefined)  var Cu = Components.utils;
+if (Ci === undefined)  var Ci = Components.interfaces;
+if (Cc === undefined)  var Cc = Components.classes;
 
 if (!reminderfox)     var reminderfox = {};
 if (!reminderfox.date)    reminderfox.date = {};
@@ -94,13 +96,8 @@ reminderfox.date.getTimeString= function (date){
 	try {
 		var hours = date.getHours();
 		var AMorPM;
+		var use24HourTime= reminderfox.core.getPreferenceValue(reminderfox.consts.USE_24_HOUR_TIME, false);
 
-		var use24HourTime;
-		try {
-			use24HourTime = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.USE_24_HOUR_TIME);
-		} 
-		catch (e) {
-		}
 		if (use24HourTime) {
 			AMorPM = "";
 			if (hours < 10) {
@@ -841,8 +838,8 @@ reminderfox.util.urlToPath= function (aPath) {
 	var rv = null;
 	if (!aPath || !/^file:/.test(aPath))
 		return rv;
-	var ph = Components.classes["@mozilla.org/network/protocol;1?name=file"]
-		.createInstance(Components.interfaces.nsIFileProtocolHandler);
+	var ph = Cc["@mozilla.org/network/protocol;1?name=file"]
+		.createInstance(Ci.nsIFileProtocolHandler);
 	rv = ph.getFileFromURLSpec(aPath).path;
 	return rv;
 };
@@ -880,8 +877,8 @@ reminderfox.util.unEscapeHtml= function(s) {
  *  @return {object} the window
  */
 reminderfox.util.getWindow= function(getThisWindow){
-	var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
-	var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+	var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
+	var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
 	return windowManagerInterface.getMostRecentWindow(getThisWindow);
 };
 
@@ -927,15 +924,15 @@ reminderfox.util.LIGHTNING_ID   = "{e2fda1a4-762b-4020-b5ad-a41df1933103}";
  */
 reminderfox.util.appId= function(){
 	var aID;
-	if ("@mozilla.org/xre/app-info;1" in Components.classes) {
+	if ("@mozilla.org/xre/app-info;1" in Cc) {
 		// running under Mozilla 1.8 or later
-		aID = Components.classes["@mozilla.org/xre/app-info;1"]
-				.getService(Components.interfaces.nsIXULAppInfo).ID;
+		aID = Cc["@mozilla.org/xre/app-info;1"]
+				.getService(Ci.nsIXULAppInfo).ID;
 	}
 	else {
 		try {
-			aID = Components.classes["@mozilla.org/preferences-service;1"]
-					.getService(Components.interfaces.nsIPrefBranch).getCharPref("app.id");
+			aID = Cc["@mozilla.org/preferences-service;1"]
+					.getService(Ci.nsIPrefBranch).getCharPref("app.id");
 		} 
 		catch (e) {
 		}
@@ -949,7 +946,7 @@ reminderfox.util.appId= function(){
  *   @return {Boolean} 
  */
 reminderfox.util.messenger= function(){
-	return (Components.classes["@mozilla.org/messenger/account-manager;1"]);
+	return (Cc["@mozilla.org/messenger/account-manager;1"]);
 };
 
 
@@ -959,8 +956,10 @@ reminderfox.util.messenger= function(){
  **/
 reminderfox.util.mailAppStringBrowse= function(){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	reminderfox._prefsBRANCH.setCharPref(reminderfox.consts.MAIL_PATH, "");
-	document.getElementById('mailApp.location.input').value = reminderfox.util.messengerApp().path;
+//	reminderfox.core.setPreferenceValue(reminderfox.consts.MAIL_PATH, "");
+//	document.getElementById('mailApp.location.input').value = reminderfox.util.messengerApp().path;
+	reminderfox.util.messengerApp();
+	document.getElementById('mailApp.location.input').value = reminderfox.core.getPreferenceValue(reminderfox.consts.MAIL_PATH, "");
 };
 
 
@@ -977,21 +976,22 @@ reminderfox.util.messengerApp= function(){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var fileValid = true;
 	var mFile = null;
-	var mailApp = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.MAIL_PATH);
 
-	var mFileServ = Components.classes["@mozilla.org/file/directory_service;1"]
-		.getService(Components.interfaces.nsIProperties);
+	reminderfox.core.setPreferenceValue(reminderfox.consts.MAIL_PATH, "");
 
-	var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
+	var mFileServ = Cc["@mozilla.org/file/directory_service;1"]
+		.getService(Ci.nsIProperties);
+
+	var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 	// sets the default location for messenger app
-	var appNameX = Components.classes["@mozilla.org/xre/app-info;1"];
-	var appName = appNameX.getService(Components.interfaces.nsIXULAppInfo).name;
-	var appID = appNameX.getService(Components.interfaces.nsIXULAppInfo).ID;
+	var appNameX = Cc["@mozilla.org/xre/app-info;1"];
+	var appName = appNameX.getService(Ci.nsIXULAppInfo).name;
+	var appID = appNameX.getService(Ci.nsIXULAppInfo).ID;
 
 	var osInfo = reminderfox.core.opSystemInfo();
 
-	if (reminderfox.util.messenger()) {
-		mFile = mFileServ.get("CurProcD", Components.interfaces.nsIFile);
+	if (reminderfox.util.messenger().valid) {
+		mFile = mFileServ.get("CurProcD", Ci.nsIFile);
 		
 		if (osInfo.indexOf("WINNT") != -1) {
 			mFile.append(appName + ".exe");
@@ -1000,9 +1000,10 @@ reminderfox.util.messengerApp= function(){
 			mFile.append(appName.toLowerCase());
 		}
 		if (osInfo.indexOf("Darwin") != -1) {
-			mFile = mFileServ.get("LocApp", Components.interfaces.nsIFile);
+			mFile = mFileServ.get("LocApp", Ci.nsIFile);
 			mFile.append(appName + ".app");
 		}
+		mailApp= mFile.path;
 	}
 
 	fileValid= reminderfox.util.fileCheck(mailApp)
@@ -1010,25 +1011,25 @@ reminderfox.util.messengerApp= function(){
 	if (fileValid != 1) { //1 = valid fileName  // mailApp / OS not valid, ask user
 		//gW appPicker	2009-10-03  +++2do  change for application menu (see FX --> Options --> Applications)
 
-		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(Components.interfaces.nsIFilePicker);
+		var fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
 		var winTitle = "Select Mail/Messenger Application"; // this._prefsBundle.getString("fpTitleChooseApp");
-		fp.init(window, winTitle, Components.interfaces.nsIFilePicker.modeOpen);
-		fp.appendFilters(Components.interfaces.nsIFilePicker.filterApps);
+		fp.init(window, winTitle, Ci.nsIFilePicker.modeOpen);
+		fp.appendFilters(Ci.nsIFilePicker.filterApps);
 
 		// Prompt the user to pick an app.  If picked a valid selection, 
 		// then set it for 'mailto' / 'messenger'
 
-		if (fp.show() == Components.interfaces.nsIFilePicker.returnOK &&
+		if (fp.show() == Ci.nsIFilePicker.returnOK &&
 			fp.file && reminderfox.util.isValidHandlerExecutable(fp.file)) {
 			var handlerApp = reminderfox.util.getLocalHandlerApp(fp.file);
 		}
 		else {
-			reminderfox._prefsBRANCH.setCharPref(reminderfox.consts.MAIL_PATH, "");
+			reminderfox.core.setPreferenceValue(reminderfox.consts.MAIL_PATH, "");
 			return ""; // return file object
 		}
 
 		mailApp = fp.file.path;
-		reminderfox._prefsBRANCH.setCharPref(reminderfox.consts.MAIL_PATH, mailApp);
+		reminderfox.core.setPreferenceValue(reminderfox.consts.MAIL_PATH, mailApp);
 		file.initWithPath(mailApp);
 	}
 
@@ -1048,7 +1049,7 @@ reminderfox.util.messengerApp= function(){
 		}
 	}
 
-	reminderfox._prefsBRANCH.setCharPref(reminderfox.consts.MAIL_PATH, mailApp);
+	reminderfox.core.setPreferenceValue(reminderfox.consts.MAIL_PATH, mailApp);
 	return file; // return file object
 };
 
@@ -1070,7 +1071,7 @@ reminderfox.util.mailAppSetup= function(){
 	if (results.mode == 'CANCEL') {
 		return 'CANCEL';
 	} // user pressed 'CANCEL'
-	return reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.MAIL_SENDER);
+	return reminderfox.core.getPreferenceValue(reminderfox.consts.MAIL_SENDER, "");
 };
 
 
@@ -1205,8 +1206,8 @@ reminderfox.util.encodeUTF8= function(aSource){
  */
 reminderfox.util.convertFromUnicode= function(aCharset, aSource){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var unicodeConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-		.createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+	var unicodeConverter = Cc["@mozilla.org/intl/scriptableunicodeconverter"]
+		.createInstance(Ci.nsIScriptableUnicodeConverter);
 	unicodeConverter.charset = aCharset;
 	return unicodeConverter.ConvertFromUnicode(aSource);
 };
@@ -1215,8 +1216,7 @@ reminderfox.util.convertFromUnicode= function(aCharset, aSource){
 reminderfox.util.getIOService= function(){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	if (reminderfox.util.getIOService.mObject === undefined) {
-		reminderfox.util.getIOService.mObject = Components.classes["@mozilla.org/network/io-service;1"]
-		.getService(Components.interfaces.nsIIOService2);
+		reminderfox.util.getIOService.mObject = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService2);
 	}
 	return reminderfox.util.getIOService.mObject;
 };
@@ -1233,8 +1233,8 @@ reminderfox.util.fileCheck= function (filepath) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var sfile;
 	if (typeof(filepath) == "string") {
-		sfile = Components.classes["@mozilla.org/file/local;1"]
-			.createInstance(Components.interfaces.nsIFile);
+		sfile = Cc["@mozilla.org/file/local;1"]
+			.createInstance(Ci.nsIFile);
 	}
 	try {
 		sfile.initWithPath(filepath);
@@ -1244,7 +1244,7 @@ reminderfox.util.fileCheck= function (filepath) {
 
 	if (sfile.exists() === false) {
 		// check if parent directory exists
-		var sdir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
+		var sdir = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 		sdir.initWithPath(sfile.parent.path);
 		try {
 			sdir.isDirectory()
@@ -1266,8 +1266,8 @@ reminderfox.util.fileCheck= function (filepath) {
  */
 reminderfox.util.filePick = function (aWindow, details, callback) {
 //--------------------------------------------------------------------------
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;
-	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	var nsIFilePicker = Ci.nsIFilePicker;
+	var fp = Cc["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
 	fp.init(aWindow, details.title, nsIFilePicker[details.fileMode]);
 	fp.appendFilters(nsIFilePicker.filterAll);
@@ -1282,7 +1282,7 @@ reminderfox.util.filePick = function (aWindow, details, callback) {
       fp.open(rv => {
         if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
 
-  //      console.log("filePick resolve ", fp.file, " mode --> ", details.mode );
+//console.log("filePick resolve ", fp.file, " mode --> ", details.mode );
         callback(fp.file, details);
       };
     });
@@ -1300,8 +1300,8 @@ reminderfox.util.getExportFile= function () {
 	var details= {};
 	details.currentFileName   = document.getElementById("exportFile").value;
 
-	details.cDir = Components.classes["@mozilla.org/file/local;1"]
-		.createInstance(Components.interfaces.nsIFile);
+	details.cDir = Cc["@mozilla.org/file/local;1"]
+		.createInstance(Ci.nsIFile);
 	details.cDir.initWithPath(details.currentFileName);
 
 	details.filterName   = "Event File (ICS)";
@@ -1314,8 +1314,7 @@ reminderfox.util.getExportFile= function () {
 	reminderfox.util.filePick(window, details, 
 		function(file, details) {
 			if (file != null) {
-				var rmFx_exportFile   = "exportEventsFile"	 // set as prefs 'extensions.reminderFox.exportEventsFile'
-				reminderfox._prefsBRANCH.setCharPref(rmFx_exportFile, file.path);
+				reminderfox.core.setPreferenceValue("exportEventsFile", file.path);
 				document.getElementById("exportFile").setAttribute("value", file.path);
 	 		}
 		});
@@ -1330,9 +1329,9 @@ reminderfox.util.exportReminders= function (backup) {
 	var details = {};
 
     // get current store file name  
-	var fName = reminderfox.core.getReminderStoreFile();
-	details.cDir = Components.classes["@mozilla.org/file/local;1"]
-		.createInstance(Components.interfaces.nsIFile);
+	var fName = reminderfox.core.getICSfile();
+	details.cDir = Cc["@mozilla.org/file/local;1"]
+		.createInstance(Ci.nsIFile);
 	details.cDir.initWithPath(fName.path);
 
 	// set store file name for ics 
@@ -1365,13 +1364,13 @@ reminderfox.util.exportReminders= function (backup) {
 				return;
 		
 			if(file.exists() == false) {
-				file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420);
+				file.create(Ci.nsIFile.NORMAL_FILE_TYPE, 420);
 			}
 		
 			reminderfox.core.writeStringToFile(details.outputStr, file, true);
 		
 			// show success message
-			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+			var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 			promptService.alert(window, reminderfox.string("rf.options.export.success.title"), reminderfox.string("rf.options.export.success.description"));
 		});
 };
@@ -1418,55 +1417,55 @@ reminderfox.util.importICSreminders= function () {
 reminderfox.util.pickFileICSfile= function (details) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //?????	if(xthis && xthis.disabled) return;
-
-	details.filterName= "Reminder Data (" + details.extensions + ")"
+	details.filterName= "Reminder Data (" + details.extensions + ")";
 	
 	// if we're in options dialog, get current file value
-	var fName = reminderfox.core.getReminderStoreFile().path || document.getElementById("reminderFox-file-location").value;
-	details.cDir = Components.classes["@mozilla.org/file/local;1"]
-		.createInstance(Components.interfaces.nsIFile);
+	var fName = reminderfox.core.getICSfile().path || document.getElementById("reminderFox-file-location").value;
+	details.cDir = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 	details.cDir.initWithPath(fName);
 
-	details.fileMode = 'modeOpen'
-	
+	details.fileMode = 'modeOpen';
+
 	reminderfox.util.filePick(window, details, 
 		function (file, details) {
 
-console.log("pickFileICSfile  File location selected", file.path, "mode ", details.mode)
+//console.log("RmFX  [.util.pickFileICSfile]  File location selected", file.path, "mode ", details.mode);
 
 			if (details.mode == 'browse_file_location') {
 				document.getElementById("reminderFox-file-location").value = file.path;
 				document.getElementById("reminderFox-apply").removeAttribute("disabled");
 			}
-		
+
 			if (details.mode == "recover_reminders") {
-				var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-					.getService(Components.interfaces.nsIPromptService);
-		
+				var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
+					.getService(Ci.nsIPromptService);
+
 				reminderfox.core.logMessageLevel("  filebrowse1: ", reminderfox.consts.LOG_LEVEL_INFO);
 				// make sure they REAAAAALY want to overwrite
 				var msg = reminderfox.string("rf.options.import.overwrite.description") 
 					+ "\n\n File to restore: " + file.path;		//$$$_locale
-		
+
 				var flags = promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 
 					+ promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_1
 					+ promptService.BUTTON_POS_1_DEFAULT;	//  set default button;
-		
+
 				var buttonPressed = promptService.confirmEx(window, reminderfox.string("rf.options.import.overwrite.title"), 
 					msg, flags, 
 					reminderfox.string("rf.options.import.overwritebutton.title"), 
 					reminderfox.string("rf.button.cancel"), null, null, {});
-		
+
 				if(buttonPressed == 1) return;	// cancel pressed
-		
+
+				reminderfox.core.setICSfile(file.path);
+
 				var reminderEvents = new Array();
 				var reminderTodos = new Array();
 				reminderfox.core.readInRemindersAndTodosICSFromFile(reminderEvents, reminderTodos, file, false /*ignoreExtraInfo IfImportingAdditionalEvents*/);
-		
+
 				// With CalDAV enabled, each event/todo connected to a CalDAV account will 
 				// be traced in  'reminderfox.calDAV.accounts' 
 				reminderfox.calDAV.getAccounts();
-		
+
 				// check if we've successfully imported any reminders or todo events
 				var importedSuccess = reminderEvents.length !== 0;
 				var numTodos = 0;
@@ -1479,24 +1478,25 @@ console.log("pickFileICSfile  File location selected", file.path, "mode ", detai
 					}
 				}
 				var numEvents = reminderEvents.length/*numEvents*/;
-		
+
 				reminderfox.util.PromptAlert("Imported  Reminders: " + numEvents  +  "  ToDo's:" + numTodos);
-		
+
 				reminderfox.core.reminderFoxEvents = reminderEvents;
 				reminderfox.core.reminderFoxTodosArray = reminderTodos;
 				reminderfox.core.importRemindersUpdateAll(false, null);
 			}
-			
+
 			if (details.mode == 'userIO.readICSfile') {
 				if(!file) return  // // cancel pressed -- no file selected
 				var localFile = file.path;
-		
+				reminderfox.core.setICSfile(file.path);
+
 				var call = {}
 				call.details = {}
 				call.details.url         = localFile
 				call.details.summary     = 'Import from iCal/ICS file : ' + localFile
 				call.details.noSubscribe = true
-		
+
 				var icsData = reminderfox.util.readInFileContents(localFile)
 				reminderfox.userIO.readICSdata (icsData, call);
 			}
@@ -1512,8 +1512,8 @@ console.log("pickFileICSfile  File location selected", file.path, "mode ", detai
  */
 reminderfox.util.buildUIDFile= function(rmFx_UID){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var tempDir = Components.classes["@mozilla.org/file/directory_service;1"]
-		.getService(Components.interfaces.nsIProperties).get("TmpD", Components.interfaces.nsIFile);
+	var tempDir = Cc["@mozilla.org/file/directory_service;1"]
+		.getService(Ci.nsIProperties).get("TmpD", Ci.nsIFile);
 
 	tempDir.append("tempMsg" + rmFx_UID);
 
@@ -1530,10 +1530,10 @@ reminderfox.util.buildUIDFile= function(rmFx_UID){
 reminderfox.util.filePath4storePath= function(fileName){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// set 'path' to same dir as 'reminderfox.ics' file      
-	var sfile = Components.classes["@mozilla.org/file/local;1"]
-		.createInstance(Components.interfaces.nsIFile);
+	var sfile = Cc["@mozilla.org/file/local;1"]
+		.createInstance(Ci.nsIFile);
 	
-	sfile.initWithPath(reminderfox.core.getReminderStoreFile().parent.path);
+	sfile.initWithPath(reminderfox.core.getICSfile().parent.path);
 	sfile.append(fileName);
 
 	return sfile.path;
@@ -1542,12 +1542,19 @@ reminderfox.util.filePath4storePath= function(fileName){
 
 reminderfox.util.ProfD_extend= function(dirName){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		var xFile = Components.classes["@mozilla.org/file/directory_service;1"]
-			.getService(Components.interfaces.nsIProperties)
-			.get("ProfD", Components.interfaces.nsIFile);
+		var xFile = Cc["@mozilla.org/file/directory_service;1"]
+			.getService(Ci.nsIProperties)
+			.get("ProfD", Ci.nsIFile);
 		xFile.append(dirName);
 		return xFile;
 };
+
+reminderfox.util.getICSdefaultFilePath= function() {
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    var defaultFile = reminderfox.util.ProfD_extend("reminderfox");
+    defaultFile.append("reminderfox.ics");
+    return defaultFile.path;
+}
 
 
 /**
@@ -1557,12 +1564,12 @@ reminderfox.util.ProfD_extend= function(dirName){
  */
 reminderfox.util.readInFileContents= function(tmpFile){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var sfile = Components.classes["@mozilla.org/file/local;1"]
-		.createInstance(Components.interfaces.nsIFile);
+	var sfile = Cc["@mozilla.org/file/local;1"]
+		.createInstance(Ci.nsIFile);
 	sfile.initWithPath(tmpFile);
 
-	var is = Components.classes["@mozilla.org/network/file-input-stream;1"]
-		.createInstance(Components.interfaces.nsIFileInputStream);
+	var is = Cc["@mozilla.org/network/file-input-stream;1"]
+		.createInstance(Ci.nsIFileInputStream);
 	try {
 		is.init(sfile, 0x01, 00004, null);
 	}
@@ -1572,12 +1579,12 @@ reminderfox.util.readInFileContents= function(tmpFile){
 	}
 
 	// Now, read from the stream
-	var scriptableStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
-		.createInstance(Components.interfaces.nsIScriptableInputStream);
+	var scriptableStream = Cc["@mozilla.org/scriptableinputstream;1"]
+		.createInstance(Ci.nsIScriptableInputStream);
 	scriptableStream.init(is);
 
-	var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+	var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"]
+			.createInstance(Ci.nsIScriptableUnicodeConverter);
 	converter.charset = "UTF-8"; // The character encoding you want, using UTF-8 here
 	var chunk = scriptableStream.read(scriptableStream.available());
 	scriptableStream.close();
@@ -1594,8 +1601,8 @@ reminderfox.util.readInFileContents= function(tmpFile){
 
 reminderfox.util.makeMsgFile= function(xcontent, tempFile){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var sfile = Components.classes["@mozilla.org/file/local;1"]
-		.createInstance(Components.interfaces.nsIFile);
+	var sfile = Cc["@mozilla.org/file/local;1"]
+		.createInstance(Ci.nsIFile);
 	try {
 		sfile.initWithPath(tempFile);
 	}
@@ -1606,8 +1613,8 @@ reminderfox.util.makeMsgFile= function(xcontent, tempFile){
 		sfile.remove(true);
 	}
 	sfile.create(sfile.NORMAL_FILE_TYPE, 0600);
-	var outputStream = Components.classes['@mozilla.org/network/file-output-stream;1']
-		.createInstance(Components.interfaces.nsIFileOutputStream);
+	var outputStream = Cc['@mozilla.org/network/file-output-stream;1']
+		.createInstance(Ci.nsIFileOutputStream);
 	outputStream.init(sfile, 2, 0x200, false); // open as "write only"
 	outputStream.write(xcontent, xcontent.length);
 	outputStream.close();
@@ -1617,16 +1624,16 @@ reminderfox.util.makeMsgFile= function(xcontent, tempFile){
 
 reminderfox.util.makeFile8= function(outputStr, file){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var sfile = Components.classes["@mozilla.org/file/local;1"]
-		.createInstance(Components.interfaces.nsIFile);
+	var sfile = Cc["@mozilla.org/file/local;1"]
+		.createInstance(Ci.nsIFile);
 	sfile.initWithPath(file);
 
-	var outputStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
-		.createInstance(Components.interfaces.nsIFileOutputStream);
+	var outputStream = Cc["@mozilla.org/network/file-output-stream;1"]
+		.createInstance(Ci.nsIFileOutputStream);
 	outputStream.init(sfile, 0x04 | 0x08 | 0x20, 420, 0);
 
-	var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-		.createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+	var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"]
+		.createInstance(Ci.nsIScriptableUnicodeConverter);
 	converter.charset = "UTF-8";
 
 	var chunk = null;
@@ -1651,8 +1658,8 @@ reminderfox.util.makeFile8= function(outputStr, file){
  */
 reminderfox.util.PromptAlert= function(msgErr, noAlert){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-		.getService(Components.interfaces.nsIPromptService);
+	var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
+		.getService(Ci.nsIPromptService);
 
 	promptService.alert(window, "ReminderFox Alert : \n\n", msgErr);
 	if (!noAlert) {
@@ -1665,8 +1672,8 @@ reminderfox.util.PromptAlert= function(msgErr, noAlert){
 
 reminderfox.util.PromptUser= function (msg, title, button0, button1, defaultButton){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-		.getService(Components.interfaces.nsIPromptService);
+	var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
+		.getService(Ci.nsIPromptService);
 
 	var flags = promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 +
 		promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_1 + defaultButton;
@@ -1770,8 +1777,8 @@ reminderfox.util.Logger = function (Log, msg) {
 
 	var prefLoggers ;
 	try {
-		var _prefs = Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefBranch);
+		var _prefs = Cc["@mozilla.org/preferences-service;1"]
+			.getService(Ci.nsIPrefBranch);
 		prefLoggers = JSON.parse(_prefs.getCharPref("extensions.reminderFox.loggers").toUpperCase());
 	} catch (ex) {}
 	if (!prefLoggers) return;
@@ -1806,8 +1813,8 @@ reminderfox.util.Logger = function (Log, msg) {
 reminderfox.util.copytoClipboard= function(data){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Generic function to copy the data to Clipboard 
-	var clipboard = Components.classes["@mozilla.org/widget/clipboardhelper;1"];
-	clipboard = clipboard.getService(Components.interfaces.nsIClipboardHelper);
+	var clipboard = Cc["@mozilla.org/widget/clipboardhelper;1"];
+	clipboard = clipboard.getService(Ci.nsIClipboardHelper);
 	clipboard.copyString("");	// make it's empty !
 	clipboard.copyString(data);
 };
@@ -1818,21 +1825,21 @@ reminderfox.util.copytoClipboard= function(data){
  */
 reminderfox.util.copyTextfromClipboard= function(){ //gW_AddEvent
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var clip = Components.classes["@mozilla.org/widget/clipboard;1"]
-		.getService(Components.interfaces.nsIClipboard);
+	var clip = Cc["@mozilla.org/widget/clipboard;1"]
+		.getService(Ci.nsIClipboard);
 	if (!clip) return null;
 
-	var trans = Components.classes["@mozilla.org/widget/transferable;1"]
-		.createInstance(Components.interfaces.nsITransferable);
+	var trans = Cc["@mozilla.org/widget/transferable;1"]
+		.createInstance(Ci.nsITransferable);
 	if (!trans) return null;
 
 	// init() was added to nsITransferable in FF16 for Private Browsing Mode
 	// see https://bugzilla.mozilla.org/show_bug.cgi?id=722872 for more info
 	if ('init' in trans) {
 		var privacyContext = document.commandDispatcher.focusedWindow.
-			QueryInterface(Components.interfaces.nsIInterfaceRequestor).
-			getInterface(Components.interfaces.nsIWebNavigation).
-			QueryInterface(Components.interfaces.nsILoadContext);
+			QueryInterface(Ci.nsIInterfaceRequestor).
+			getInterface(Ci.nsIWebNavigation).
+			QueryInterface(Ci.nsILoadContext);
 		trans.init(privacyContext);
 	}
 
@@ -1847,7 +1854,7 @@ reminderfox.util.copyTextfromClipboard= function(){ //gW_AddEvent
 	try { // 'try' to prevent error with empty or non-text clipboard content
 		trans.getTransferData("text/unicode", str, strLength);
 		if (str)
-			str = str.value.QueryInterface(Components.interfaces.nsISupportsString);
+			str = str.value.QueryInterface(Ci.nsISupportsString);
 		if (str)
 			pastetext = str.data.substring(0, strLength.value / 2);
 
@@ -1875,7 +1882,7 @@ reminderfox.util.copyTextfromClipboard= function(){ //gW_AddEvent
  */
 reminderfox.util.ConfirmEx= function(title, msg, key0, key1, key2){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+	var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 
 	var flags = promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 +
 	promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_1; // flags = [integer] 32639
@@ -1893,7 +1900,7 @@ reminderfox.util.ConfirmEx= function(title, msg, key0, key1, key2){
 reminderfox.util.getDisplayNameForFile= function(aFile){ // +++2do gW_OSspecfic ???
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//@line 85 "e:\buildbot\win32_build\build\mail\components\preferences\applications.js"
-	if (aFile instanceof Components.interfaces.nsILocalFileWin) {
+	if (aFile instanceof Ci.nsILocalFileWin) {
 		try {
 			return aFile.getVersionInfoField("FileDescription");
 		}
@@ -1906,7 +1913,7 @@ reminderfox.util.getDisplayNameForFile= function(aFile){ // +++2do gW_OSspecfic 
 
 reminderfox.util.getLocalHandlerApp= function(aFile){ // +++2do gW_OSspecfic ???
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var localHandlerApp = Components.classes["@mozilla.org/uriloader/local-handler-app;1"].createInstance(Components.interfaces.nsILocalHandlerApp);
+	var localHandlerApp = Cc["@mozilla.org/uriloader/local-handler-app;1"].createInstance(Ci.nsILocalHandlerApp);
 	localHandlerApp.name = reminderfox.util.getDisplayNameForFile(aFile);
 	localHandlerApp.executable = aFile;
 	return localHandlerApp;
@@ -1979,9 +1986,9 @@ reminderfox.util.addMultipleEvents= function (newEvents, newTodos) {
 // *****************************************************************************
 reminderfox.util.openURL= function(UrlToGoTo, pageIdentifier){
 //------------------------------------------------------------------------------
-	if ("@mozilla.org/messenger;1" in Components.classes) {
-		var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance()
-			.QueryInterface(Components.interfaces.nsIMessenger);
+	if ("@mozilla.org/messenger;1" in Cc) {
+		var messenger = Cc["@mozilla.org/messenger;1"].createInstance()
+			.QueryInterface(Ci.nsIMessenger);
 		var url = reminderfox.util.encodeUTF8 (UrlToGoTo);
 
 //gWXXX //gWTEST throws error !??		url = url.replace("\x","%");
@@ -2040,7 +2047,7 @@ reminderfox.util.docRmFX= function(UrlToGoTo){
 		UrlToGoTo = reminderfox.consts.REMINDER_FOX_PAGE_URL +"/" + UrlToGoTo;
 	}
 
-	if ("@mozilla.org/messenger;1" in Components.classes) { 
+	if ("@mozilla.org/messenger;1" in Cc) { 
 
 	//	var url = reminderfox.util.encodeUTF8 (UrlToGoTo);
 		var url = (UrlToGoTo);
@@ -2048,8 +2055,8 @@ reminderfox.util.docRmFX= function(UrlToGoTo){
 		var tabmail = document.getElementById("tabmail");
 		if (!tabmail) {
 			// Try opening new tabs in an existing 3pane window
-			var mail3PaneWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-					.getService(Components.interfaces.nsIWindowMediator)
+			var mail3PaneWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+					.getService(Ci.nsIWindowMediator)
 					.getMostRecentWindow("mail:3pane");
 			if (mail3PaneWindow) {
 				tabmail = mail3PaneWindow.document.getElementById("tabmail");
@@ -2088,8 +2095,8 @@ reminderfox.util.openAndReuseOneTabPerAttribute= function(attrName, url) {
 //------------------------------------------------------------------------------
 	var tabbrowser;
 
-	var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-					.getService(Components.interfaces.nsIWindowMediator);
+	var wm = Cc["@mozilla.org/appshell/window-mediator;1"]
+					.getService(Ci.nsIWindowMediator);
 	for (var found = false, index = 0, tabbrowser = wm.getEnumerator('navigator:browser').getNext().gBrowser;
 		index < tabbrowser.tabContainer.childNodes.length && !found;
 		index++) {
@@ -2178,13 +2185,13 @@ reminderfox.util.JS = {
 			status = typeof reminderfox[object] == 'undefined';
 		}
 		if (status) {
-			Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
-			.getService(Components.interfaces.mozIJSSubScriptLoader)
+			Cc["@mozilla.org/moz/jssubscript-loader;1"]
+			.getService(Ci.mozIJSSubScriptLoader)
 			.loadSubScript(this[object]);
 		}
 
-		var consoleService = Components.classes["@mozilla.org/consoleservice;1"]
-			.getService(Components.interfaces.nsIConsoleService);
+		var consoleService = Cc["@mozilla.org/consoleservice;1"]
+			.getService(Ci.nsIConsoleService);
 
 	//%%	consoleService.logStringMessage("ReminderFox     {dispatch: " +
 	//%%	object + "=" + status + "}\n" + this.loggedAt);
@@ -2220,15 +2227,15 @@ reminderfox.util.JS = {
 
 	loader : function (object, status) {
 		
-		var consoleService = Components.classes["@mozilla.org/consoleservice;1"]
-			.getService(Components.interfaces.nsIConsoleService);
+		var consoleService = Cc["@mozilla.org/consoleservice;1"]
+			.getService(Ci.nsIConsoleService);
 
 		consoleService.logStringMessage("ReminderFox     {dispatch: " +
 		object + "=" + status + "}\n" + this.loggedAt);
 
 		if (status == true) {
-			Components.classes["@mozilla.org/moz/jssubscript-loader;1"]
-			.getService(Components.interfaces.mozIJSSubScriptLoader)
+			Cc["@mozilla.org/moz/jssubscript-loader;1"]
+			.getService(Ci.mozIJSSubScriptLoader)
 			.loadSubScript(this[object]);
 		}
 	},
@@ -2402,8 +2409,7 @@ reminderfox.date.getWeekOfYear= function(aDate, dowOffset) {
 	if (typeof(aDate) != "object") {
 		aDate = this.getDate(aDate);
 	}
-	var weekNumShow = reminderfox.core
-			.getPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF);
+	var weekNumShow = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF, 0); //XXX NO DEFAULT defined!
 			// Week Numbering:
 			// 0 (none),
 			// 1 (default),
@@ -2459,11 +2465,13 @@ reminderfox.promiseRequest = {
 	get : function (url) {
 		return new Promise(function(resolve, reject) {
 			var req = new XMLHttpRequest();
+
 			req.open('GET', url);
-			req.onload = function() {
+
+			req.onloadend = function() {
 				if (req.status == 200) {
 				// Resolve the promise with the response text
-					resolve(req.response);
+					resolve(req.responseText);
 				}
 				else {
 					reject(Error(req.statusText));
@@ -2489,13 +2497,11 @@ reminderfox.promiseRequest = {
  *     as of:    Di, 15 Jan 2013 19:11:36 +0100 (MEZ)
  *     'reminderfox2.0.2.CalDAV_20130115_1911.xpi'   <'20130115_1911'>
  */
-reminderfox.aboutXPI= function (mode) {
+reminderfox.aboutXPI= function () {
 //--------------------------------------------------------------------------
-	var xmode = mode;
-
 	var pathString = ("chrome://reminderfox/content/version.log");
-	reminderfox.promiseRequest.get(pathString).then(function(logFile) {
 
+	reminderfox.promiseRequest.get(pathString).then(function(logFile) {
 		var logLines = logFile.split("\n");
 		logFile = "";
 		for (var a=0; a <5;a++){
@@ -2503,7 +2509,6 @@ reminderfox.aboutXPI= function (mode) {
 			var p = logLines[a].search("<'");
 			if (p > -1) stamp = logLines[a].substring(p-2,99);
 		}
-
 		var xFile = reminderfox.util.ProfD_extend('extensions');
 		var profD = xFile.parent.path;
 
@@ -2512,13 +2517,16 @@ reminderfox.aboutXPI= function (mode) {
 				+ "\n  Profile directory: " + profD
 				+ "\n  " + navigator.userAgent + " (" + navigator.language + ")";
 
+		console.log("RmFX  [.aboutXPI] " + (new Date()) + "\n" + msg);
+
 		reminderfox.util.copytoClipboard(msg);
 
-		if (document.getElementById('logoText')) 
+		if (document.getElementById('logoText')) {
 			document.getElementById('logoText').setAttribute( "tooltiptext", msg);
 
-		document.getElementById('supportPage').setAttribute('value', reminderfox.consts.SUPPORT);
-		sizeToContent();
+			document.getElementById('supportPage').setAttribute('value', reminderfox.consts.SUPPORT);
+			sizeToContent();
+		}
 		return msg;
 
 	}, function(error) {
@@ -2543,7 +2551,7 @@ reminderfox.colorMap.cssFileGet= function(){
 	cssFile.append("preferences");
 	cssFile.append("calDAVmap.css");
 
-//console.info("//XXX  .colorMap.cssFileGet  cssFile ", cssFile.path)
+//console.info("//XXXgW  .colorMap.cssFileGet  cssFile ", cssFile.path)
 //console.trace()
 
 	if (cssFile.exists() === false) {
@@ -2677,15 +2685,15 @@ reminderfox.colorMap.setup= function () {
 		return
 	}
 
-	var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
-						.getService(Components.interfaces.nsIStyleSheetService);
-	var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+	var sss = Cc["@mozilla.org/content/style-sheet-service;1"]
+						.getService(Ci.nsIStyleSheetService);
+	var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
 
 	var uri = ios.newURI("file:" + cssFile.path, null, null);
 	try {
 		sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
 	} catch (ex) {
-		Components.utils.reportError(ex);
+		Cu.reportError(ex);
 	}
 };
 
@@ -2698,7 +2706,7 @@ reminderfox.colorMap.setup= function () {
 reminderfox.calDAV.getAccounts = function () {
 //-----------------------------------------------------
 	var calDAVfile;
-	var icsFile = reminderfox.core.getReminderStoreFile().path;
+	var icsFile = reminderfox.core.getICSfile().path;
 
 	var msg = "  ....  calDAV.getAccounts  "
 
@@ -2779,8 +2787,8 @@ reminderfox.calDAV.accountsWrite= function (calDAVaccounts) {
 		//+ ",calendarMainWindow"
 	var xWin = xulWin.split(",")
 
-	var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
-	var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+	var windowManager = Cc["@mozilla.org/appshell/window-mediator;1"].getService();
+	var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
 
 	msg = " ....  enum xulWindows"
 
@@ -2818,9 +2826,9 @@ reminderfox.calDAV.accountsWrite= function (calDAVaccounts) {
 reminderfox.calDAV.accountsFile= function (currentFilePath) {
 //-------------------------------------------------------------
 	if (!currentFilePath) {
-		currentFilePath = reminderfox.core.getReminderStoreFile().path;
+		currentFilePath = reminderfox.core.getICSfile().path;
 	}
-	var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
+	var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 	file.initWithPath(currentFilePath + ".dav");
 	return file;
 };
@@ -3147,31 +3155,27 @@ function reminderfox_isSubscribedCalendarTabSelected(){
 reminderfox.online = {
 //--------------------------------------------------------------------------
 	status : function () {
+		var foxy = document.getElementById("rmFx-foxy-icon-small");
+		var msg = "  System status"
 
-//console.log("-------reminderfox.online ----------XXXgW ")
-//console.trace();
+		if (navigator.onLine) {
+			if (foxy != null) 
+				foxy.setAttribute('mode', 'online');
 
-			var foxy = document.getElementById("rmFx-foxy-icon-small");
-			var msg = "  System status"
+			msg += " +++ ONLINE +++"
+			reminderfox.util.Logger('calDAV',msg)
 
-			if (navigator.onLine) {
-				if (foxy != null) 
-					foxy.setAttribute('mode', 'online');
+			rmFx_CalDAV_updatePending();
 
-				msg += " +++ ONLINE +++"
-				reminderfox.util.Logger('calDAV',msg)
+		} else {
+			if (foxy != null) 
+				foxy.setAttribute('mode', 'offline');
 
-				rmFx_CalDAV_updatePending();
+			msg += " --- OFFINE ---"
+			reminderfox.util.Logger('calDAV',msg)
+			reminderfox.core.statusSet(msg, true)
 
-			} else {
-				if (foxy != null) 
-					foxy.setAttribute('mode', 'offline');
-
-				msg += " --- OFFINE ---"
-				reminderfox.util.Logger('calDAV',msg)
-				reminderfox.core.statusSet(msg, true)
-
-			}
+		}
 	}
 };
 
@@ -3211,25 +3215,19 @@ reminderfox.go4news = {
 		var newsStatus = reminderfox.core.getPreferenceValue(reminderfox.consts.NEWS, false);
 		var newsStamp = reminderfox.core.getPreferenceValue(reminderfox.consts.NEWSSTAMP, "");
 		var newsLink = reminderfox.core.getPreferenceValue(reminderfox.consts.NEWSLINK, this.urlNews);
+		var msg;
 
-		var msg = "  RmFX News    "
-			+ " \n" + newsStatus + "  >"  + newsLink + "<  " 
-			+ this.currentNewsDate + "::" + newsStamp + (this.currentNewsDate > newsStamp);
-		reminderfox.util.Logger('Alert', msg);
-
+		// update items to show button [Reminderfox News] on MainDialog
 		if ((newsLink != "") && (this.currentNewsDate > newsStamp)){ 
-			msg = "  RmFX NEWS available!"; // update items to let button shown with MainDialog
-			reminderfox.util.Logger('alert', msg);
+			msg = "Reminderfox NEWS   available: " + this.currentNewsDate;
 			reminderfox.core.setPreferenceValue(reminderfox.consts.NEWSSTAMP, this.currentNewsDate);
 			reminderfox.core.setPreferenceValue(reminderfox.consts.NEWS, true);
 		}
-
 		else {
-			msg = " Reminderfox News    *** NO news *** "; // disable the button/icon on RmFX Main List
-		//	reminderfox.util.Logger('alert',msg);
+			msg = " Reminderfox NEWS    *** NO news *** ";
 			reminderfox.core.getPreferenceValue(reminderfox.consts.NEWS, false);
 		}
-
+		console.log(msg);
 		return
 	},
 
@@ -3288,13 +3286,11 @@ reminderfox.go4news = {
 			this.currentNewsDate = nLines.substring(n1,n2);
 
 			if (call.callnext != null) {
-	//			console.log("go4_new    go 4 callnext  ???? >>"+ call.callnext+"<<")
 				call[call.callnext]()
 			}
 
 		} else {  // ERROR Handling
-			reminderfox.util.Logger (" *** Reminderfox News missing! ***" 
-				+ "\nCheck News address.");
+			console.log("Reminderfox  News missing! *** \nCheck News address.");
 		}
 	},
 
@@ -3312,3 +3308,332 @@ reminderfox.go4news = {
 		}
 	}
 };
+
+
+
+//===== Supporting prefs    gW: 2017-12-20 ==========
+/*
+ * Supporting prefs
+ * This may not be necessary, but added in the case m-c or c-c would disable supporting
+ * prefs for 'classic' addon types.
+ *
+ * Table Support is using
+ *    https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/Sorting_and_filtering_a_custom_tree_view
+ * 
+ * A tab:Prefs is shown with prefs:prefsPanel == true
+ * Use about:config to change status
+ * Key functions (with tab:Prefs enabled):
+ *   Cntrl p    Editing of a specific, selected prefs
+ *   Cntrl q    Disable tab.Prefs (see below)
+ * 
+ */
+
+if (!prefsService) var prefsService = {};
+
+prefsService.table = null;
+prefsService.data = null;
+prefsService.prefTree;
+prefsService.filterText = "";
+prefsService.selectedRow;
+prefsService.itemEdited = null;
+
+// Check it tab:Prefs is selected
+prefsService.isPrefsPanel= function(){
+    var tabs = document.getElementById("optionsTabs");
+    return (tabs._selectedPanel.id == "prefsPanel");
+}
+
+/*
+ * Disable the tab:Prefs 
+ * After closing Options, the tab:Prefs not be shown,
+ * reenable with using about:config for 'prefsPanel' set to true
+ */
+prefsService.prefsPanelClose= function(){
+    if (prefsService.isPrefsPanel()) {
+        reminderfox.core.setPreferenceValue('prefsPanel' , false);
+    }
+};
+
+// get all 'reminderFox' prefs
+prefsService.getPrefs= function(){
+    var prefBranch = Services.prefs.getBranch(reminderfox.consts.REMINDER_FOX_PREF + ".");
+    var jPrefs = prefBranch.getChildList("");
+
+    var pValue, uValue, pType, ptype;
+    prefsService.data = [];
+    for (var aPrefs in jPrefs) {
+
+        ptype = prefBranch.getPrefType(jPrefs[aPrefs]);
+        if (ptype == 128) {
+            pType = 'bool';
+            pValue = prefBranch.getBoolPref(jPrefs[aPrefs]);
+        } else if  (ptype == 64){ 
+            pType = 'integer';            
+            pValue = prefBranch.getIntPref(jPrefs[aPrefs]);
+        } else if  (ptype == 32){
+            pType = 'string';
+            pValue = prefBranch.getCharPref(jPrefs[aPrefs]);
+        }
+
+        uValue = (prefBranch.prefHasUserValue(jPrefs[aPrefs]) == false) ? 'default' : 'user set'
+
+        prefsService.data.push({
+            prefName: jPrefs[aPrefs],
+            prefValue: pValue,
+            prefType: pType,
+            prefUserValue: uValue
+        });
+    }
+};
+
+prefsService.init= function (filterClear) {
+    if (filterClear == true){
+        prefsService.filterText = "";
+        document.getElementById("prefsService.filter").value ="";
+    }
+    prefsService.prefTree = document.getElementById("prefTree");
+    prefsService.loadTable(filterClear);
+}
+
+//this function is called every time the tree is sorted, filtered, or reloaded
+prefsService.loadTable= function(filterClear) {
+    //remember scroll position. this is useful if this is an editable table
+    //to prevent the user from losing the row they edited
+    var topVisibleRow = null;
+    if (prefsService.table) {
+        topVisibleRow = prefsService.getTopVisibleRow();
+    }
+    prefsService.getPrefs();
+
+    if (prefsService.filterText == "" && (filterClear == true)) {
+        //show all of them
+        prefsService.table = prefsService.data;
+    } else {
+        //filter out the ones we want to display
+        prefsService.table = [];
+        prefsService.data.forEach(function(element) {
+            //we'll match on every property which is a 'string'
+            for (var i in element) {
+                if (typeof element[i] == "string") {
+                    if (prefsService.prepareForComparison(element[i])
+                        .indexOf(prefsService.filterText.toLowerCase()) != -1) {
+                        prefsService.table.push(element);
+                        break;
+                    }
+                }
+                if (typeof element[i] == "number") {
+                    if (element[i] == +prefsService.filterText) {
+                        prefsService.table.push(element);
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    prefsService.sort();
+    //restore scroll position
+    if (topVisibleRow) {
+        prefsService.setTopVisibleRow(topVisibleRow);
+    }
+    prefsService.selectedRow= null;
+}
+
+//   Enable table row selection to get access of selected row details
+prefsService.treeOp= function(xtable) {
+    prefsService.selectedRow = prefsService.table[xtable.currentIndex]
+}
+
+prefsService.treeRow= function(mode){
+    var d= "";
+    if (!prefsService.selectedRow) return;
+    if (mode == 'all') {
+        d = prefsService.selectedRow.prefName 
+            +"; " + prefsService.selectedRow.prefValue
+            +"; " + prefsService.selectedRow.prefType
+            +"; " + prefsService.selectedRow.prefUserValue;
+    }
+    if (mode == 'name'){
+        d= prefsService.selectedRow.prefName;
+    }
+    if (mode == 'value'){
+        d= prefsService.selectedRow.prefValue;
+    }
+    if (mode == 'edit'){
+        d = {"name":prefsService.selectedRow.prefName, 
+             "type": prefsService.selectedRow.prefType,
+             "value":prefsService.selectedRow.prefValue,
+             "user":prefsService.selectedRow.prefUserValue}
+    }
+
+    var fileChanged = reminderfox.core.timeStampHasChanged();
+    reminderfox.util.copytoClipboard(d)
+    return d;
+};
+
+
+// Edit prefs item via options.xul 
+prefsService.prefsEdit= function(mode){
+    if (prefsService.isPrefsPanel() == false) return;
+
+    prefsService.itemEdited = prefsService.treeRow(mode);
+
+    document.getElementById("prefsEditLabel").label = "Edit Preference item '" + prefsService.itemEdited.name + "'";
+    document.getElementById("prefsEditBool").setAttribute("hidden","true");
+    document.getElementById("prefsEditString").setAttribute("hidden","true");
+
+    switch (prefsService.itemEdited.type) {
+        case "bool" :
+            document.getElementById("prefsEditBool").removeAttribute("hidden");
+            document.getElementById("prefsBoolToggle").label = prefsService.itemEdited.value;
+            break;
+        case "string" :
+        case "integer" :
+            document.getElementById("prefsEditString").removeAttribute("hidden");
+            document.getElementById("prefsEditStringBox").value = prefsService.itemEdited.value;
+            break;
+    }
+
+    var anchor = document.getElementById("prefsLoad");
+    var panel  = document.getElementById("editPrefsPanel");
+    panel.removeAttribute('hidden');
+    panel.openPopup(anchor, 'bottomleft topright', -1, -1);
+}
+
+prefsService.editBool= function(xthis){
+    xthis.label = (xthis.label == "true") ? false : true;
+    prefsService.itemEdited.value = xthis.label;
+    prefsService.editSetItem();
+};
+
+prefsService.editApply= function(){
+    if(prefsService.itemEdited.type == "bool"){
+        prefsService.itemEdited.value= (document.getElementById("prefsBoolToggle").label =='false') ? false : true;
+    } else {
+        prefsService.itemEdited.value= document.getElementById("prefsEditStringBox").value;
+    }
+    prefsService.editSetItem ();
+    prefsService.loadTable(false);
+    prefsService.panelClose();
+}
+
+prefsService.editSetItem= function(){
+    var type = prefsService.itemEdited.type;
+    type = (type == "bool"? ('setBoolPref') : ((type=="integer") ? ('setIntPref') : 'setCharPref'));
+    reminderfox._prefsBRANCH[type](prefsService.itemEdited.name,  prefsService.itemEdited.value);
+};
+
+prefsService.panelClose= function(){
+    document.getElementById("editPrefsPanel").setAttribute("hidden", "true");
+    prefsService.itemEdited = null;
+};
+
+
+prefsService.exportTable= function() {
+    reminderFox_exportPrefs(prefsService.table, true);
+}
+
+
+//generic custom prefTree view stuff
+prefsTreeView= function(table) {
+    this.rowCount = table.length;
+    this.getCellText = function(row, col) {
+        return table[row][col.id];
+    };
+    this.getCellValue = function(row, col) {
+        return table[row][col.id];
+    };
+    this.setTree = function(treebox) {
+        this.treebox = treebox;
+    };
+    this.isEditable = function(row, col) {
+        return col.editable;
+    };
+    this.isContainer = function(row){ return false; };
+    this.isSeparator = function(row){ return false; };
+    this.isSorted = function(){ return false; };
+    this.getLevel = function(row){ return 0; };
+    this.getImageSrc = function(row,col){ return null; };
+    this.getRowProperties = function(row,props){};
+    this.getCellProperties = function(row,col,props){};
+    this.getColumnProperties = function(colid,col,props){};
+    this.cycleHeader = function(col, elem) {};
+}
+
+prefsService.sort= function(column) {
+    document.getElementById("prefsService.length").value = prefsService.table.length;
+
+    var columnName;
+    var order = prefsService.prefTree.getAttribute("sortDirection") == "ascending" ? 1 : -1;
+    //if the column is passed and it's already sorted by that column, reverse sort
+    if (column) {
+        columnName = column.id;
+        if (prefsService.prefTree.getAttribute("sortResource") == columnName) {
+            order *= -1;
+        }
+    } else {
+        columnName = prefsService.prefTree.getAttribute("sortResource");
+    }
+
+    function columnSort(a, b) {
+        if (prefsService.prepareForComparison(a[columnName]) > prefsService.prepareForComparison(b[columnName])) return 1 * order;
+        if (prefsService.prepareForComparison(a[columnName]) < prefsService.prepareForComparison(b[columnName])) return -1 * order;
+        //tie breaker: name ascending is the second level sort
+        if (columnName != "name") {
+            if (prefsService.prepareForComparison(a["name"]) > prefsService.prepareForComparison(b["name"])) return 1;
+            if (prefsService.prepareForComparison(a["name"]) < prefsService.prepareForComparison(b["name"])) return -1;
+        }
+        return 0;
+    }
+    prefsService.table.sort(columnSort);
+    //setting these will make the sort option persist
+    prefsService.prefTree.setAttribute("sortDirection", order == 1 ? "ascending" : "descending");
+    prefsService.prefTree.setAttribute("sortResource", columnName);
+    prefsService.prefTree.view = new prefsTreeView(prefsService.table);
+    //set the appropriate attributes to show to indicator
+    var cols = prefsService.prefTree.getElementsByTagName("treecol");
+    for (var i = 0; i < cols.length; i++) {
+        cols[i].removeAttribute("sortDirection");
+    }
+    if (document.getElementById(columnName) != null) {
+       document.getElementById(columnName).setAttribute("sortDirection", order == 1 ? "ascending" : "descending");
+    }
+}
+
+//prepares an object for easy comparison against another. for strings, lowercases them
+prefsService.prepareForComparison= function(o) {
+    if (typeof o == "string") {
+        return o.toLowerCase();
+    }
+    return o;
+}
+
+prefsService.getTopVisibleRow= function() {
+    return prefsService.prefTree.treeBoxObject.getFirstVisibleRow();
+}
+
+prefsService.setTopVisibleRow= function(topVisibleRow) {
+    return prefsService.prefTree.treeBoxObject.scrollToRow(topVisibleRow);
+}
+
+
+prefsService.inputFilter= function(event) {
+    //do this now rather than doing it at every comparison
+    var value = prefsService.prepareForComparison(event.target.value);
+    prefsService.setFilter(value);
+    document.getElementById("clearFilter").disabled = value.length == 0;
+}
+
+prefsService.clearFilter= function() {
+    document.getElementById("clearFilter").disabled = true;
+    var filterElement = document.getElementById("prefsService.filter");
+    filterElement.focus();
+    filterElement.value = "";
+    prefsService.setFilter("");
+}
+
+prefsService.setFilter= function () {
+    prefsService.filterText = document.getElementById("prefsService.filter").value;
+    prefsService.loadTable();
+}
+

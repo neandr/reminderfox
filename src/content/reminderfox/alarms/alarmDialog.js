@@ -61,8 +61,6 @@ function loadAlarm() {
 	reminderAlarmArray = window.arguments[0].alarmInfos;
 
 	var msg = "loadAlarm    no of alarms: " + reminderAlarmArray.length;
-	//console.log("SOUND ", new Date(), msg);
-
 
 	calDAVaccounts = window.arguments[0].calDAVaccounts;
 
@@ -87,13 +85,9 @@ function loadAlarm() {
 			tabTitle = reminderAlarmArray[i].quickAlarmText;
 		}
 
-		var msg = "loadAlarm   reminder: " + tabTitle
-		//console.log("SOUND ", new Date(), msg);
-
 		if(tabTitle != null && tabTitle.length > MAX_TAB_TITLE_LENGTH) {
 			tabTitle = tabTitle.substring(0, MAX_TAB_TITLE_LENGTH);
 		}
-
 
 		var tabPanel = null;
 		if(i == 0) {
@@ -676,20 +670,13 @@ function rmFXshowMailInAlarm(recentReminder) {
 function playAlarmSound() {
 	// play a sound for notification (if the user elects to)
 	try {
-		var playSound = true;
-		try {
-			playSound = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.ALARM_SOUND);
-		} catch ( e) {
-			//console.log("SOUND Reminderfox playAlarmSound pref failed: ", playSound, e);
-		}
+		var playSound = reminderfox.core.getPreferenceValue(reminderfox.consts.ALARM_SOUND, true);
 		if(playSound) {
 			reminderfox.core.playSound();
 			window.focus();
 			// TODO: could select the appropriate tab ?  Or that might be annoying
-
-		} // end if
+		}
 	} catch ( e ) {
-		//console.log("SOUND Reminderfox playAlarmSound failed: ", e);
 	}
 }
 
@@ -867,10 +854,7 @@ function reminderFox_performAlarmAction(actionIndex, snoozeTime, alarmTime, keep
 			reminder.snoozeTime = null;
 			// clear snooze time
 		}
-		reminderfox.core.reminderFox_lastModifiedTime = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.LAST_MODIFIED) + "";
-
-//console.log("RmFX  reminderFox_performAlarmAction : ", reminderfox.core.reminderFox_lastModifiedTime);
-//console.trace();
+		reminderfox.core.reminderFox_lastModifiedTime = reminderfox.core.getPreferenceValue(reminderfox.consts.LAST_MODIFIED) + "";
 
 		if(actionIndex == REMINDERFOX_ACTION_TYPE.COMPLETE) {
 			reminder.completedDate = new Date();
@@ -904,7 +888,7 @@ function reminderFox_performAlarmAction(actionIndex, snoozeTime, alarmTime, keep
 					var deleteDate = new Date(currentReminder.date.getFullYear(), currentReminder.date.getMonth(), currentReminder.date.getDate(), currentReminder.date.getHours(), currentReminder.date.getMinutes());
 					var dateLabel = reminderFox_getDateVariableString(currentReminder, deleteDate);
 
-					var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+					var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 					var deleteDescription = reminderfox.string("rf.add.deleteReminderInstance.description") + "\n";
 					deleteDescription += dateLabel + ": " + currentReminder.summary + "\n";
 					var flags = promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 

@@ -144,16 +144,16 @@ Components.utils.import("resource:///modules/gloda/mimemsg.js");
 				|| (_contentType == "application/ics")                /*  Google Calendar */
 				|| (_contentType == "application/octet-stream")) {    /* some calendars do not identify as calendar type */
 
-				var iOService = Components.classes["@mozilla.org/network/io-service;1"]
-									.getService(Components.interfaces.nsIIOService);
+				var iOService = Cc["@mozilla.org/network/io-service;1"]
+                                    .getService(Ci.nsIIOService);
 
 				var uri = iOService.newURI(aAttachments[aNum].url, null, null);
 				var channel = iOService.newChannelFromURI2(uri,
-                                                             null,
-                                                             Services.scriptSecurityManager.getSystemPrincipal(),
-                                                             null,
-                                                             Components.interfaces.nsILoadInfo.SEC_ALLOW_CROSS_ORIGIN_DATA_IS_NULL,
-                                                             Components.interfaces.nsIContentPolicy.TYPE_OTHER);
+                                     null,
+                                     Services.scriptSecurityManager.getSystemPrincipal(),
+                                     null,
+                                     Ci.nsILoadInfo.SEC_ALLOW_CROSS_ORIGIN_DATA_IS_NULL,
+                                     Ci.nsIContentPolicy.TYPE_OTHER);
 
 				var chunks = [];
 				var data = "";
@@ -180,8 +180,8 @@ Components.utils.import("resource:///modules/gloda/mimemsg.js");
 
 					onDataAvailable: function (/* nsIRequest */ aRequest, /* nsISupports */ aContext,
 						/* nsIInputStream */ aStream, /* int */ aOffset, /* int */ aCount) {
-						var scriptableStream = Components.classes["@mozilla.org/scriptableinputstream;1"]
-								.createInstance(Components.interfaces.nsIScriptableInputStream);
+						var scriptableStream = Cc["@mozilla.org/scriptableinputstream;1"]
+								.createInstance(Ci.nsIScriptableInputStream);
 						scriptableStream.init(aStream);
 						data = scriptableStream.read(scriptableStream.available());
 
@@ -257,10 +257,10 @@ reminderfox.iCal.getICS= function (_content, msgDetails, _attachmentName) {  // 
  */
 reminderfox.iCal.getMessageBody= function (aMessageHeader){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var messenger = Components.classes["@mozilla.org/messenger;1"]
-		.createInstance(Components.interfaces.nsIMessenger);
-	var listener = Components.classes["@mozilla.org/network/sync-stream-listener;1"]
-		.createInstance(Components.interfaces.nsISyncStreamListener);
+	var messenger = Cc["@mozilla.org/messenger;1"]
+		.createInstance(Ci.nsIMessenger);
+	var listener = Cc["@mozilla.org/network/sync-stream-listener;1"]
+		.createInstance(Ci.nsISyncStreamListener);
 	var uri = aMessageHeader.folder.getUriForMsg(aMessageHeader);
 
 	messenger.messageServiceFromURI(uri)
@@ -1368,12 +1368,12 @@ reminderfox.iCal.inviteStatus= function (currentReminder) {
  */
 reminderfox.iCal.test= function (){
 // ------------- --------------------- --------------------- ---------------- -
-	var clip = Components.classes["@mozilla.org/widget/clipboard;1"].
-	getService(Components.interfaces.nsIClipboard);
+	var clip = Cc["@mozilla.org/widget/clipboard;1"].
+	getService(Ci.nsIClipboard);
 	if (!clip) return false;
 
-	var trans = Components.classes["@mozilla.org/widget/transferable;1"].
-		createInstance(Components.interfaces.nsITransferable);
+	var trans = Cc["@mozilla.org/widget/transferable;1"].
+		createInstance(Ci.nsITransferable);
 	if (!trans) return false;
 	trans.addDataFlavor("text/unicode");
 
@@ -1382,7 +1382,7 @@ reminderfox.iCal.test= function (){
 	var strLength = new Object();
 	trans.getTransferData("text/unicode",str,strLength);
 
-	if (str) str = str.value.QueryInterface(Components.interfaces.nsISupportsString);
+	if (str) str = str.value.QueryInterface(Ci.nsISupportsString);
 	if (str) pastetext = str.data.substring(0,strLength.value / 2);
 
 	var mInvitation = "[iCal] Schedule copied from Clipboard";

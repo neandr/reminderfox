@@ -1,3 +1,8 @@
+if (Cu === undefined)  var Cu = Components.utils;
+if (Ci === undefined)  var Ci = Components.interfaces;
+if (Cc === undefined)  var Cc = Components.classes;
+
+
 /**
  *  Control the different menu-popups for Thunderbird/Mailapp
  *  for References, Reminders and ICS-attachements
@@ -25,12 +30,7 @@ reminderfox.util.popupCheck = function (thisId){
 
 
 	var mailRm_backDocu = document.getElementById("reminderfox-mail-backDocu");
-
-	var contextMenusEnabled = true;
-	try {
-		contextMenusEnabled = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.ENABLE_CONTEXT_MENUS);
-	}
-	catch (e) {}
+	var contextMenusEnabled = reminderfox.core.getPreferenceValue(reminderfox.consts.ENABLE_CONTEXT_MENUS, true);
 
 	// user doesn't want context menus; hide them
 	if (!contextMenusEnabled) {
@@ -67,7 +67,7 @@ reminderfox.util.popupCheck = function (thisId){
 	
 	if (thisId.originalTarget.id == "threadPaneContext") 		xulId = "Thread";
 	
-	if (thisId.originalTarget.id == "messagePaneContext") 	xulId = "Msg";
+	if (thisId.originalTarget.id == "messagePaneContext") 		xulId = "Msg";
 	if (thisId.originalTarget.id == "mailContext") 				xulId = "Msg";		// for TB3/SM2
 
 	if (thisId.originalTarget.id == "attachmentListContext")	xulId = "List";
@@ -101,7 +101,7 @@ reminderfox.util.popupCheck = function (thisId){
 			}
 
 			reminderfox.util.JS.dispatch('iCalMail');
-			Components.utils.import("resource:///modules/gloda/mimemsg.js"); 
+			Cu.import("resource:///modules/gloda/mimemsg.js"); 
 
 			if (gDBView.numSelected > 0) {
 				var msgHdr = gDBView.hdrForFirstSelectedMessage;
@@ -191,7 +191,7 @@ reminderfox.util.popupCheckMenus = function (event){
 			if (selectedEvents.length == 1 && selectedEvents[0] != null) {
 				if (selectedEvents[0].extraInfo != null) {
 					if (selectedEvents[0].extraInfo.indexOf("X-REMINDERFOX-CONTACT:") != -1) pMode = true;
-					if ((pMode == true) && (typeof Components.interfaces.nsIAbItem == "object")) {
+					if ((pMode == true) && (typeof Ci.nsIAbItem == "object")) {
 						document.getElementById("treechildren-contextmenu-reminder-openABcard").removeAttribute("hidden");
 						document.getElementById("treechildren-contextmenu-todo-openABcard").removeAttribute("hidden");
 					}

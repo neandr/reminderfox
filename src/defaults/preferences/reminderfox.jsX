@@ -1,4 +1,4 @@
-// ReminderFox Preferences
+// ReminderFox Preferences  2018-02  defaults set in js files
 pref("extensions.reminderFox.alarmPopupWindowDelay", 4000);
 pref("extensions.reminderFox.alarms.showInTabs", false);
 //pref("extensions.reminderFox.alarmsEnabled", true);

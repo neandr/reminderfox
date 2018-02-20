@@ -345,7 +345,7 @@
 		
 	<toolbarbutton id="reminderfox-sendPlus"  label="&mail.send.withreminder; ++"
 		tooltiptext="&mail.send.withreminder.tooltip;"
-		class="toolbarbutton-1 chromeclass-toolbar-additional reminderfox-sendPlus" 
+		class="toolbarbutton-1 chromeclass-toolbar-additional reminderfox-sendPlus"
 		oncommand="reminderfox.util.JS.dispatch('msgSendwReminder','');"/>
 
 	<toolbarbutton id="reminderfox-personsMailCopy"

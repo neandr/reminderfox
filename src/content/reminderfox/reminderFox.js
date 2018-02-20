@@ -25,7 +25,6 @@ reminderfox.overlay._lastStatusBarClick = null;
 reminderfox.overlay.reminderFox_initialized = false;
 //reminderfox.consts.LAST_PROCESSED = "";
 reminderfox.overlay.lastProcessed = "";
-//reminderfox.consts.LAST_ALERT
 reminderfox.overlay.lastAlert = 0;
 
 
@@ -38,6 +37,108 @@ reminderfox.overlay.lastSuspendAlertTimeoutId = null;
 
 reminderfox.overlay.timerObject = Components.classes['@mozilla.org/timer;1'].createInstance(Components.interfaces.nsITimer);
 reminderfox.overlay.alertTimerObject = Components.classes['@mozilla.org/timer;1'].createInstance(Components.interfaces.nsITimer);
+
+
+
+reminderfox.overlay.start= function(){
+//=====================================================
+    // run this later and let the window load.
+    window.setTimeout(function() { reminderfox.overlay.start_postInit(); }, 100);
+	rmFx_extractXPI("chrome/content/reminderfox/defaults/");	//unpack
+}
+
+
+/**
+ * Extracts dirs/files from xpi 'chrome' directory  
+ *   to ../Profile/{profile.default}/reminderfox
+ * If a file already exsists it will be skipped/no overwrite
+ *
+ * @param  aZipDir     The source ZIP dir in xpi/add-on.
+ */
+function rmFx_extractXPI(aZipDir) {
+//---------------------------------------------------------
+	// aZipDir = "chrome/content/reminderfox/defaults/"
+
+	var aZipDirLen = aZipDir.length;
+
+		function getTargetFile(aDir, entry) {
+			var target =reminderfox.util.ProfD_extend('reminderfox');
+			entry.split("/").forEach(function(aPart) {
+				target.append(aPart);
+			});
+			return target;
+		}
+
+	var aDir =reminderfox.util.ProfD_extend('reminderfox');
+
+	var pathToXpiToRead = OS.Path.join(OS.Constants.Path.profileDir, 
+		'extensions', '{ada4b710-8346-4b82-8199-5de2b400a6ae}.xpi');
+	var aZipFile = new FileUtils.File(pathToXpiToRead);
+
+	var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"]
+		.createInstance(Ci.nsIZipReader);
+	zipReader.open(aZipFile);
+
+	try {
+		// create directories first
+		var entries = zipReader.findEntries(aZipDir + "*/");
+		while (entries.hasMore()) {
+			var entryName = entries.getNext();
+			var target = getTargetFile(aDir, entryName.substring(aZipDirLen));
+			if (!target.exists()) {
+				try {
+					target.create(Ci.nsIFile.DIRECTORY_TYPE,
+					FileUtils.PERMS_DIRECTORY);
+				}
+				catch (e) {
+					console.error("rmFx_extractXPI: failed to create target directory for extraction file = " 
+						+ target.path + "\n");
+				}
+			}
+		}
+
+		// extract/copy files 
+		entries = zipReader.findEntries(aZipDir + "*");
+		while (entries.hasMore()) {
+			var entryName = entries.getNext();
+			var target = getTargetFile(aDir, entryName.substring(aZipDirLen));
+			if (target.exists())
+				continue;
+
+			zipReader.extract(entryName, target);
+			try {
+				target.permissions |= FileUtils.PERMS_FILE;
+			}
+			catch (e) {
+				console.error("rmFx_extractXPI: Failed to set permissions " 
+					+ FileUtils.PERMS_FILE.toString(8) + " on " + target.path + " " + e + "\n");
+			}
+		}
+	} catch (ex) {
+		reminderfox.util.Logger('Alert', ex)
+	}
+	finally {
+		zipReader.close();
+	}
+
+	/*-----------------
+	// write all prefs to console/file
+	var prefName, prefType, refValue, prefUserValue;
+	prefsService.getPrefs();
+	var prefsList = prefsService.data;
+	var prefString = "//  " + reminderfox.string("rf.options.prefs.file.header") +"\n";
+	for (var aPrefs in prefsList) {
+		prefName = prefsList[aPrefs].prefName;
+		prefType = prefsList[aPrefs].prefType;
+		prefValue = prefsList[aPrefs].prefValue;
+		prefUserValue = prefsList[aPrefs].prefUserValue;
+		prefString += prefName + ', ' + prefType + ', ' + 
+			(((prefType == 'string') || (prefType == 32))? ("'" + prefValue + "'"): prefValue) + ', ' + prefUserValue + "\n";
+	}
+    reminderfox.util.Logger('prefs', "//---   Current prefs:  Name, Type, Value, UserValue \n" + prefString);
+    -------------*/
+};
+
 
 
 reminderfox.overlay.consts.ALARM_DELAY = null; // make sure at least 500ms between each alarm, or mozilla creates a blank window
@@ -1071,8 +1172,8 @@ reminderfox.overlay.createToolTip= function(todayRemindersArr, upcomingReminders
     if (tooltipChildrenReminders == null) {
         reminderfox.util.Logger('ALERT', 'tooltipChildrenReminders == null');		//XXX  trace to understand the err
     }
-    var showReminders = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_REMINDERS_IN_TOOLTIP, true);
-    var showTooltips = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_TODOS_IN_TOOLTIP, true);
+    var showReminders = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_REMINDERS_IN_TOOLTIP, reminderfox.consts.SHOW_REMINDERS_IN_TOOLTIP_DEFAULT);
+    var showTooltips = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_TODOS_IN_TOOLTIP, reminderfox.consts.SHOW_TODOS_IN_TOOLTIP_DEFAULT);
 
     var tooltipWrapLength;
 
@@ -1818,7 +1919,6 @@ reminderfox.overlay.initializeReminderFox= function(clearReminders){
             // verify that the correct amount of time has elapsed since last update.   Sometimes due to
             // what appears to be a FireFox bug, sometimes a large number of  timeouts are called.  This
             // ensures that we only process once after the proper amount of time
-   //XXX         var lastTime = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.LAST_PROCESSED);
             var lastTime = reminderfox.overlay.lastProcessed;
             if (!reminderfox.overlay.reminderFox_initialized) {
                 // the very first time, clear out the last time so that we always run when you start Firefox
@@ -1882,10 +1982,10 @@ reminderfox.overlay.initializeReminderFox= function(clearReminders){
             }
 
             reminderfox.core.logMessageLevel("  [.initializeReminderFox] " + updateWindows 
-                + ";  Change of  icsFile: " + (fileChanged == true)
+                + ";  icsFile change: " + (fileChanged == true)
                 + ",  reminders: " + changed 
                 + ",  day: " + (reminderfox.overlay.lastDay != day)
-                + ";  Network: waitForResponse:  " + waitForResponse,
+                + "\n  Network: waitForResponse:  " + waitForResponse,
                 reminderfox.consts.LOG_LEVEL_INFO);
 
             if (updateWindows) {
@@ -1971,7 +2071,7 @@ reminderfox.overlay.updateRemindersInWindow= function(){
                 text.setAttribute("style", "color: grey;  text-decoration: line-through;");
             }
 
-            var showStatusText = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_STATUS_TEXT, true);
+            var showStatusText = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_STATUS_TEXT, reminderfox.consts.SHOW_STATUS_TEXT_DEFAULT);
 
             if (showStatusText) {
                 text.setAttribute("class", "statusbarpanel-iconic-text");
@@ -2186,7 +2286,7 @@ reminderfox.overlay.showAlertSlider= function(){
             var showReminders = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_REMINDERS_IN_TOOLTIP, true);
 
             // Reshow alert after ALERT_TIMEOUT minutes.  -- (note: options dialog - needs to clear out lastAlert pref when changed)
-            var alert_timeout = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_TIMEOUT_PREF, 0);
+            var alert_timeout = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_TIMEOUT, 0);
 
             if (showReminders && alert_timeout > 0) {
                 // convert from minutes to milliseconds
@@ -2304,24 +2404,7 @@ reminderfox.overlay.saveReminders= function(){
     try {
         // initialize backup files
         var file;
-        var savefilePath;
-        // check if user has specified a specific file path in their preferences
-        try { //gWOSswitching
-            savefilePath = reminderfox.core.getStoreFile4OS();
-        }
-        catch (e) {
-        }
-
-        var baseFilePath;
-        // if not, then use default location in profile
-        if (savefilePath == null || savefilePath == "") {
-            file = reminderfox.util.ProfD_extend("reminderfox");
-            file.append("reminderfox.ics");
-            baseFilePath = file.path;
-        }
-        else {
-            baseFilePath = savefilePath;
-        }
+        var baseFilePath= reminderfox.core.getICSfile().path;
 
         var filePath1 = baseFilePath + ".bak1";
         var filePath2 = baseFilePath + ".bak2";
@@ -2567,100 +2650,6 @@ reminderfox.overlay.runDebug= function() {
 }
 
 
-reminderfox.overlay.start= function(){
-    // run this later and let the window load.
-    window.setTimeout(function() { reminderfox.overlay.start_postInit(); }, 100);
-	rmFx_extractXPI("chrome/content/reminderfox/defaults/");	//unpack
-	
-	// load rmFXprefs
-	// rmFXprefs = rmFXimportPrefs();
-}
-
-
-/**
- * Extracts dirs/files from xpi 'chrome' directory  
- *   to ../Profile/{profile.default}/reminderfox
- * If a file already exsists it will be skipped/no overwrite
- *
- * @param  aZipDir     The source ZIP dir in xpi/add-on.
- */
-function rmFx_extractXPI(aZipDir) {
-//---------------------------------------------------------
-	// aZipDir = "chrome/content/reminderfox/defaults/"
-
-	var aZipDirLen = aZipDir.length;
-
-		function getTargetFile(aDir, entry) {
-			var target =reminderfox.util.ProfD_extend('reminderfox');
-			entry.split("/").forEach(function(aPart) {
-				target.append(aPart);
-			});
-			return target;
-		}
-
-	var aDir =reminderfox.util.ProfD_extend('reminderfox');
-
-	var pathToXpiToRead = OS.Path.join(OS.Constants.Path.profileDir, 
-		'extensions', '{ada4b710-8346-4b82-8199-5de2b400a6ae}.xpi');
-	var aZipFile = new FileUtils.File(pathToXpiToRead);
-
-	var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"]
-		.createInstance(Ci.nsIZipReader);
-	zipReader.open(aZipFile);
-
-	try {
-		// create directories first
-		var entries = zipReader.findEntries(aZipDir + "*/");
-		while (entries.hasMore()) {
-			var entryName = entries.getNext();
-
-// console.log("### rmFx_extractXPI   create directories: ", entryName)
-
-			var target = getTargetFile(aDir, entryName.substring(aZipDirLen));
-
-			if (!target.exists()) {
-				try {
-					target.create(Ci.nsIFile.DIRECTORY_TYPE,
-					FileUtils.PERMS_DIRECTORY);
-				}
-				catch (e) {
-					console.log("rmFx_extractXPI: failed to create target directory for extraction file = " 
-						+ target.path + "\n");
-				}
-			}
-		}
-
-		// extract/copy files 
-		entries = zipReader.findEntries(aZipDir + "*");
-		while (entries.hasMore()) {
-			var entryName = entries.getNext();
-
-// console.log("### rmFx_extractXPI   extract/copy files: ", entryName)
-
-			var target = getTargetFile(aDir, entryName.substring(aZipDirLen));
-
-			if (target.exists())
-				continue;
-
-			zipReader.extract(entryName, target);
-			try {
-				target.permissions |= FileUtils.PERMS_FILE;
-			}
-			catch (e) {
-				console.log("rmFx_extractXPI: Failed to set permissions " 
-					+ FileUtils.PERMS_FILE.toString(8) + " on " + target.path + " " + e + "\n");
-			}
-		}
-	} catch (ex) {
-		reminderfox.util.Logger('Alert', ex)
-	}
-	finally {
-		zipReader.close();
-	}
-};
-
-
-
 reminderfox.overlay.start_postInit= function() {
 //===================================================================
     // the very first time we install reminderfox, we do not need to show the alert slider.
@@ -2761,7 +2750,7 @@ reminderfox.overlay.showAlertSliderTimingFunction = {
     notify: function (timer) {
         reminderfox.overlay.showAlertSlider();
 
-        var alert_timeout = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_TIMEOUT_PREF, 0);
+        var alert_timeout = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_TIMEOUT, 0);
         if ( alert_timeout > 0) {
             // convert from minutes to milliseconds
             alert_timeout = alert_timeout * 60000;
@@ -3688,7 +3677,7 @@ reminderfox.overlay.insertAtIndex= function(aParent, aChild, aIndex){
 
 
 reminderfox.overlay.moveBox= function(){
-    var toolbarPref = reminderfox.core.getPreferenceValue(reminderfox.consts.TOOLBAR, 'none');
+    var toolbarPref = reminderfox.core.getPreferenceValue(reminderfox.consts.TOOLBAR, reminderfox.consts.TOOLBAR_DEFAULT);
 
     //check if box is in the right location
     var toolbar = document.getElementById(toolbarPref);

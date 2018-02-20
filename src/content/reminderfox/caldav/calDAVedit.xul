@@ -630,7 +630,6 @@
 		// ------------------------------------------------
 			var grant ='authorization_code';
 			var token = reminderfox.util.copyTextfromClipboard();
-			console.log("gcal2Save   Token >>" + token + "<<");
 			var myRequest = new reminderfoxX.calDAVrequest();
 			myRequest.gcal2Token(this, grant, token);
 		},
@@ -793,8 +792,8 @@
 
 			try {
 				// Get Login Manager 
-				var loginManager = Components.classes["@mozilla.org/login-manager;1"].
-					getService(Components.interfaces.nsILoginManager);
+				var loginManager = Cc["@mozilla.org/login-manager;1"].
+					getService(Ci.nsILoginManager);
 
 				// Find users for this extension 
 				var logins = loginManager.getAllLogins({});

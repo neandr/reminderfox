@@ -244,13 +244,7 @@ reminderfox.userIO.addReminder4Email = function (xthis) {
 		document.getElementById('messagePaneContext').hidePopup();
 	} catch (e) {}
 
-
-	var contextMenusEnabled = true;
-	try {
-		contextMenusEnabled = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.ENABLE_CONTEXT_MENUS);
-	}
-	catch (e) {}
-
+	var contextMenusEnabled = reminderfox.core.getPreferenceValue(reminderfox.consts.ENABLE_CONTEXT_MENUS, true);
 	if (contextMenusEnabled == false) {
 		var details = {};
 		details.infos = {};
@@ -283,12 +277,7 @@ reminderfox.userIO.addReminder4Email = function (xthis) {
  */
 reminderfox.userIO.addReminder4WebPage = function(){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var contextMenusEnabled = true;
-	try {
-		contextMenusEnabled = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.ENABLE_CONTEXT_MENUS);
-	}
-	catch (e) {}
-
+	var contextMenusEnabled = reminderfox.core.getPreferenceValue(reminderfox.consts.ENABLE_CONTEXT_MENUS, true);
 	if (contextMenusEnabled == false) {
 		var details = {};
 		details.infos = {};
@@ -378,29 +367,28 @@ reminderfox.userIO.downloadICSdata = function (details, logInfo) {
  */
 reminderfox.userIO.getICS = function (status, xml, text, headers, statusText, call) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	window.setCursor('auto')
-	var statustxtString = statusText + "  (" + status + ")"
+	window.setCursor('auto');
+	var statustxtString = statusText + "  (" + status + ")";
 
 	if (status>=200 && status<300) {
-		var timeStamp = +reminderfox.core.getICSXLastmodifiedFromString(text)
-		call.details.timeStamp = ((timeStamp > 1) ? timeStamp : "--")
+		var timeStamp = +reminderfox.core.getICSXLastmodifiedFromString(text);
+		call.details.timeStamp = ((timeStamp > 1) ? timeStamp : "--");
 
 		var logInfo = ("[.userIO.getICS]   callback  status:" + statustxtString 
-			+ "\n  getICSXLastmodified  >" + (timeStamp) + "<  text.length   >" + text.length + "<")
-		reminderfox.util.Logger('userIO', logInfo)
+			+ "\n  getICSXLastmodified  >" + (timeStamp) + "<  text.length   >" + text.length + "<");
+		reminderfox.util.Logger('userIO', logInfo);
 
 		if (call.callnext != null) {
-			call[call.callnext](text, call)
-			return
+			call[call.callnext](text, call);
+			return;
 		}
 
-		reminderfox.userIO.readICSdata (text, call)
+		reminderfox.userIO.readICSdata (text, call);
 
 	} else {  // ERROR Handling
-	
 		if (status == 0) {
-			var msg = "url >>" + call.urlstr + "<<   user >>" + call.username + "<<"
-			var statusText = "No answer from requested page, check login details. "
+			var msg = "url >>" + call.urlstr + "<<   user >>" + call.username + "<<";
+			var statusText = "No answer from requested page, check login details. ";
 
 		} else {
 			// do some formatting with 'text' .. expected 'text' could be http type 
@@ -411,7 +399,7 @@ reminderfox.userIO.getICS = function (status, xml, text, headers, statusText, ca
 
 		reminderfox.util.PromptAlert (statusText + "  (" + status + ")"
 		 /* + "\n user  >>" + call.user + "<<   pw >>" + call.password + "<<"  */
-			+ "\n\n" + msg + "\n\nHTTP callback error [.userIO.getICS]")
+			+ "\n\n" + msg + "\n\nHTTP callback error [.userIO.getICS]");
 	}
 }
 
@@ -559,7 +547,7 @@ reminderfox.userIO.getRemoteCalendar = function (mode) {
 	}
 
 	var details = {}
-	var proto = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.NETWORK.PROTOCOL);
+	var proto = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK.PROTOCOL, reminderfox.consts.NETWORK.PROTOCOL_DEFAULT);
 	details.url = proto + "://" + reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.NETWORK.ADDRESS);
 	details.user = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.NETWORK.USERNAME);
 	details.password = ""
@@ -638,7 +626,7 @@ reminderfox.userIO.putRemoteCalendar = function () {
 	this.callback     = 'putRemoteCal';
 	this.onError      = 'putRemoteCal';
 
-	var proto = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.NETWORK.PROTOCOL);
+	var proto = reminderfox.core.getPreferenceValue(reminderfox.consts.NETWORK.PROTOCOL, reminderfox.consts.NETWORK.PROTOCOL_DEFAULT);
 	this.urlstr = proto + "://" + reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.NETWORK.ADDRESS);
 
 	this.contentType  = 'text/xml';

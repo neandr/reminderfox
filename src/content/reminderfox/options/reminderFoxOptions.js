@@ -1,7 +1,9 @@
+if (Cu === undefined)  var Cu = Components .utils;
+if (Ci === undefined)  var Ci = Components .interfaces;
+if (Cc === undefined)  var Cc = Components .classes;
 
-Components.utils.import("resource://gre/modules/Services.jsm");
+Cu.import("resource://gre/modules/Services.jsm");
 
-const reminderFox_nsIFilePicker = Components.interfaces.nsIFilePicker;
 
 reminderfox.string= function(bString){
 	try {
@@ -18,8 +20,8 @@ const rmFXfilterPrefs = reminderfox.string("rf.options.filepicker.filter.prefs")
 var reminderFox_mPositionMax;
 
 var eventsModified = false;
-var rmFx_icsFileLocationCurrent ="";		// remember filename when open the 'Options..'
-var rmFx_icsFileLocationNew ="";				// and check after closing 'Options..'
+var rmFx_icsFileLocationCurrent= "";   // remember filename when open the 'Options..'
+var rmFx_icsFileLocationNew= "";       // and check after closing 'Options..'
 
 var rmFx_CalDAV_accounts = 0;
 var rmFx_networkSync = false;
@@ -88,7 +90,7 @@ function reminderFox_loadOptions() {
 		reminderFoxShowInTabs.selectedIndex = 1;
 	}
 
-	var alertHeight = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERTSLIDER_MAX_HEIGHT, 250);
+	var alertHeight = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERTSLIDER_MAX_HEIGHT, reminderfox.consts.ALERTSLIDER_MAX_HEIGHT_DEFAULT);
 	document.getElementById("reminderFox-alertHeight").setAttribute("value", alertHeight);
 
 	var use24HourTime = reminderfox.core.getPreferenceValue(reminderfox.consts.USE_24_HOUR_TIME, reminderfox.consts.USE_24_HOUR_TIME_DEFAULT);
@@ -166,7 +168,7 @@ function reminderFox_loadOptions() {
 		}
 	}
 
-	var alertTimeout = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_TIMEOUT_PREF, reminderfox.consts.ALERT_TIMEOUT_DEFAULT);
+	var alertTimeout = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_TIMEOUT, reminderfox.consts.ALERT_TIMEOUT_DEFAULT);
 	document.getElementById("reminderFox-alertTimeout").setAttribute("value", alertTimeout);
 
 	var upcomingLabel = reminderfox.core.getPreferenceValue(reminderfox.consts.UPCOMING_REMINDERS_LABEL, reminderfox.consts.UPCOMING_REMINDERS_LABEL_DEFAULT);
@@ -234,7 +236,7 @@ function reminderFox_loadOptions() {
 	var alertSoundPath = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_SOUND_PATH, "");
 	document.getElementById("reminderFox-alertSoundType-File").setAttribute("value", alertSoundPath);
 
-	var soundCustom = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_SOUND_CUSTOM, false);
+	var soundCustom = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_SOUND_CUSTOM, reminderfox.consts.ALERT_SOUND_CUSTOM_DEFAULT);
 	var group = document.getElementById("reminderFox-alertSound-Type");
 	if(soundCustom == true) {
 		group.setAttribute("checked", "true");
@@ -258,22 +260,17 @@ function reminderFox_loadOptions() {
 	} 
 
 	// check if user has specified a specific file path in their preferences
-	//OS_switching -----------
-	//    need to look for OStype info to get the path only
-	//    this should also migrate old prefs to new (including OStype)
-	var savefilePath = reminderfox.core.getStoreFile4OS();
+	var savefilePath = reminderfox.core.getICSfile().path;
+	var defaultFilePath = reminderfox.util.getICSdefaultFilePath()
 
 	// if not, then use default location in profile
-	if(savefilePath == null || savefilePath == "") {
+	if(savefilePath == null || savefilePath == "" || defaultFilePath==savefilePath) {
 		document.getElementById("reminderFox-use-default-file-location").setAttribute("checked", true);
 	} else {
 		document.getElementById("reminderFox-use-default-file-location").setAttribute("checked", false);
 	}
-
 	// get the 'current' file path for ICS data; that path is also used for .ics.dav file (CalDAV account details)
-	rmFx_icsFileLocationCurrent = reminderfox.core.getReminderStoreFile().path;
 	// write the file/path name to Options tab:File 
-	document.getElementById("reminderFox-file-location").setAttribute("value", rmFx_icsFileLocationCurrent);
 	reminderFox_icsFileLocationChanged();
 
 	var repeatUpcoming = reminderfox.core.getPreferenceValue(reminderfox.consts.REPEAT_UPCOMING_OCCURRENCES, -1);
@@ -500,7 +497,7 @@ function reminderFox_loadOptions() {
 	document.getElementById("reminderFox-smartfoxy-control").checked = smartFoxyInstalled;
 
 	// rmFX_setPrefsPanel() 
-	var prefsPanelStatus = reminderfox.core.getPreferenceValue(reminderfox.consts.PREFSPANEL, reminderfox.consts.PREFSPANEL_HIDDEN);
+	var prefsPanelStatus = reminderfox.core.getPreferenceValue(reminderfox.consts.PREFSPANEL, false);
 	if (prefsPanelStatus == false) {
 		document.getElementById("prefsTab").setAttribute("hidden", true);
 		document.getElementById("prefsPanel").setAttribute("hidden", true);
@@ -542,14 +539,14 @@ function reminderFox_defaultCatChanged() {
 /*
  * Export reminderFox prefs as JS data
  */
-function reminderFox_exportPrefs(prefsList) {
+function reminderFox_exportPrefs(prefsList, all) {
 	var NL = "\n";
 	var prefString = "// " + reminderfox.string("rf.options.prefs.file.header") + NL;
-	var prefName, prefType, prefValue
+	var prefName, prefType, prefValue;
 	var prefsAll = false;
 
-    var prefBranch = Services.prefs.getBranch(reminderfox.consts.REMINDER_FOX_PREF + ".");
-    if (prefsList == null) {
+	var prefBranch = Services.prefs.getBranch(reminderfox.consts.REMINDER_FOX_PREF + ".");
+	if (prefsList == null) {
 	// export all 'reminderFox' prefs
 		prefsList = prefBranch.getChildList("");
 		prefsAll = true;
@@ -559,23 +556,33 @@ function reminderFox_exportPrefs(prefsList) {
 			prefName = prefsList[aPrefs];
 			prefType = reminderfox._prefsBRANCH.getPrefType(prefName);
 			prefValue = reminderfox.core.getPreferenceValue(prefsList[aPrefs]);
+			prefUserValue = prefsList[aPrefs].prefUserValue;
 		} else {
 			prefName = prefsList[aPrefs].prefName;
 			prefType = prefsList[aPrefs].prefType;
 			prefValue = prefsList[aPrefs].prefValue;
+			prefUserValue = prefsList[aPrefs].prefUserValue;
 		}
 
-		prefString += 'pref("' + reminderfox.consts.REMINDER_FOX_PREF + "." + prefName;
-		if ((prefType == 'string') || (prefType == 32)){
-			prefString += '", "' + prefValue + '");' + NL;
+		if (all != null) {
+			prefString += prefName + ', ' + prefType + ', ' + 
+			(((prefType == 'string') || (prefType == 32))? ("'" + prefValue + "'"): prefValue) + ', ' + prefUserValue;
+		} else {
+			prefString += 'pref("' + reminderfox.consts.REMINDER_FOX_PREF + "." + prefName;
+
+			if ((prefType == 'string') || (prefType == 32)){
+				prefString += '", "' + prefValue + '");'
+			}
+			if ((prefType == 'bool') || (prefType == 128)){
+				prefString += '", ' + prefValue + ");"
+			}
+			if ((prefType == 'integer') || (prefType == 64)){
+				prefString += '", ' + prefValue + ");" 
+			}
 		}
-		if ((prefType == 'bool') || (prefType == 128)){
-			prefString += '", ' + prefValue + ");" + NL;
-		}
-		if ((prefType == 'integer') || (prefType == 64)){
-			prefString += '", ' + prefValue + ");" + NL;
-		}
+		prefString += NL;
 	}
+
 	// save current prefs to a file first, so we get all current settings
 	reminderFox_saveOptions();
 
@@ -600,14 +607,14 @@ function reminderFox_exportPrefs(prefsList) {
 				return;
 		
 			if(file.exists() == false) {
-				file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420);
+				file.create(Ci.nsIFile.NORMAL_FILE_TYPE, 420);
 			}
 		
 			reminderfox.core.writeStringToFile(prefString, file, true);
 		
 			// show success message
-			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-				.getService(Components.interfaces.nsIPromptService);
+			var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
+				.getService(Ci.nsIPromptService);
 			promptService.alert(window, reminderfox.string("rf.options.export.success.title"), 
 				reminderfox.string("rf.options.export.prefs.success.description"));
 		});
@@ -668,7 +675,7 @@ function reminderFox_importPrefs() {
 				}
 			}
 
-			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+			var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 			if(prefSet) {
 				// only show success msg if actually succeeded...  that is if ANY pref was set.
 				promptService.alert(window, reminderfox.string("rf.options.export.success.title"), reminderfox.string("rf.options.import.prefs.success.description"));
@@ -690,7 +697,7 @@ function reminderFox_todoListsRemove() {
 
 	// remove all reminders belonging to this list.  Ask for confirmation
 	var currentListName = child.getAttribute("label");
-	var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+	var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 
 	var flags = promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 + promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_1;
 	var msg = reminderfox.string("rf.options.customlist.delete.confirmation.text1") + " " + currentListName + "?" + "  " + reminderfox.string("rf.options.customlist.delete.confirmation.text2");
@@ -755,17 +762,34 @@ function reminderFox_icsFileLocationChanged() {
 	} catch(e) {
 	}
 
+	var currentfilePath;
 	if(icsFileNotDefault == false || icsFileNotDefault == "false") {
 		document.getElementById("reminderFox-file-location").removeAttribute("disabled");
 		document.getElementById("reminderFox_file_location_browse").removeAttribute("disabled");
+		currentfilePath = reminderfox.core.getICSfile().path;
 	} else {
 		document.getElementById("reminderFox-file-location").setAttribute("disabled", "true");
 		document.getElementById("reminderFox_file_location_browse").disabled = true;
+		currentfilePath = reminderfox.util.getICSdefaultFilePath();
 	}
+	document.getElementById("reminderFox-file-location").setAttribute("value", currentfilePath);
 }
 
 
 function reminderFox_updateOptions() {
+	var sFile;
+	var icsFileNotDefault = rmFXelementIsTrue("reminderFox-use-default-file-location");
+	if(icsFileNotDefault == false) {
+		sFile = document.getElementById("reminderFox-file-location").value;
+		var fs = reminderfox.util.fileCheck(sFile);
+		if(fs < 0) { // -1 for file -2 for dir
+			alert(reminderfox.string("rf.options.isfilelocation.valid"));
+			return;
+		};
+	}
+	reminderfox.core.setICSfile(sFile);
+
+
 	var showStatusText = true;
 	var calDAVaccounts = reminderfox.calDAV.getAccounts()
 
@@ -781,10 +805,10 @@ function reminderFox_updateOptions() {
 	}
 
 	var statusLength = document.getElementById("reminderFox-status-length").value;
-	reminderfox.core.setPreferenceValue(reminderfox.consts.STATUS_TEXT_MAX_LENGTH, +statusLength);	//XXX prefs
+	reminderfox.core.setPreferenceValue(reminderfox.consts.STATUS_TEXT_MAX_LENGTH, +statusLength);
 
 	var alertHeight = document.getElementById("reminderFox-alertHeight").value;
-	reminderfox.core.setPreferenceValue(reminderfox.consts.ALERTSLIDER_MAX_HEIGHT, +alertHeight); //XXX prefs
+	reminderfox.core.setPreferenceValue(reminderfox.consts.ALERTSLIDER_MAX_HEIGHT, +alertHeight);
 
 	reminderfox.core.setPreferenceValue(reminderfox.consts.USE_24_HOUR_TIME,
 		rmFXelementIsTrue("reminderFox-use24Hour"));
@@ -873,7 +897,8 @@ function reminderFox_updateOptions() {
 		/*defaultSnoozeTime*/ rmFXelementSet("reminderFox-snoozeTime", +0)); //XXX prefs
 
 	reminderfox.core.setPreferenceValue(reminderfox.consts.DEFAULT_TEXTSIZE, 
-		rmFXelementSet("reminderFox-defaultTextsize-value", reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_TEXTSIZE)));
+		rmFXelementSet("reminderFox-defaultTextsize-value", 
+		reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_TEXTSIZE, reminderfox.consts.DEFAULT_TEXTSIZE_DEFAULT)));
 
 	var defaultMonths = document.getElementById("reminderFox-default-month").value;
 	reminderfox.core.setPreferenceValue(reminderfox.consts.CALENDAR_MONTHS,
@@ -947,23 +972,6 @@ function reminderFox_updateOptions() {
 		reminderfox.core.setPreferenceValue(reminderfox.consts.DEFAULT_CATEGORY, cat);
 	}
 
-	var icsFileNotDefault = rmFXelementIsTrue("reminderFox-use-default-file-location");
-	if(icsFileNotDefault == false) {
-		//gWOSswitching    mods/adds  to support OS switching	>>> check if directory!!!
-
-		var sFile = document.getElementById("reminderFox-file-location").value;
-		var fs = reminderfox.util.fileCheck(sFile);
-		if(fs < 0) { // -1 for file -2 for dir
-			alert(reminderfox.string("rf.options.isfilelocation.valid"));
-			return;
-		};
-
-		reminderfox.core.storeFile4OS(document.getElementById("reminderFox-file-location").value);
-	} else {
-		reminderfox.core.storeFile4OS("");
-	}
-
-
 	if(showAlertValue == false || showAlertValue == "false") {
 		reminderfox.core.setPreferenceValue(reminderfox.consts.ALERT_ENABLE, reminderfox.consts.ALERT_ENABLE_NONE);
 	} else {
@@ -996,19 +1004,15 @@ function reminderFox_updateOptions() {
 	reminderfox.core.setPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF, selectedIndex);
 
 
-	var oldAlertTimeout;
-	try {
-		oldAlertTimeout = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_TIMEOUT_PREF);
-	} catch(e) {
-	}
+	var oldAlertTimeout= reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_TIMEOUT, "");
 
 	var alertTimeout = document.getElementById("reminderFox-alertTimeout").value;
-	reminderfox.core.setPreferenceValue(reminderfox.consts.ALERT_TIMEOUT_PREF, 
+	reminderfox.core.setPreferenceValue(reminderfox.consts.ALERT_TIMEOUT, 
 		alertTimeout || reminderfox.consts.ALERT_TIMEOUT_DEFAULT);
 
 	if(oldAlertTimeout != alertTimeout) {
 		// need to clear the last alert in the case where alert timeout preference was changed
-		reminderfox.core.setPreferenceValue(reminderfox.consts.LAST_ALERT, "");
+		reminderfox.overlay.lastAlert = 0;
 	}
 
 	var position = -1;
@@ -1038,7 +1042,7 @@ function reminderFox_updateOptions() {
 	if (toolbars.selectedItem && toolbars.selectedItem.value) {
 		toolbarValue = toolbars.selectedItem.value
 	} else {
-		toolbarValue= reminderfox.consts.TOOLBAR_DEFAULT
+		toolbarValue= reminderfox.consts.TOOLBAR_DEFAULT;
 	}
 	reminderfox.core.setPreferenceValue(reminderfox.consts.TOOLBAR, toolbarValue);
 
@@ -1275,8 +1279,7 @@ function reminderFox_saveNetworkOptions() {
 	reminderfox.core.setPreferenceValue(reminderfox.consts.NETWORK.ADDRESS, address);
 
 	var _username = document.getElementById("reminderFox-text-username").value;
-	reminderfox.core.setPreferenceValue(reminderfox.consts.NETWORK.USERNAME,
-		_username || "");
+	reminderfox.core.setPreferenceValue(reminderfox.consts.NETWORK.USERNAME, _username || "");
 
 	var _password = document.getElementById("reminderFox-text-password").value || "";
 
@@ -1457,7 +1460,7 @@ function rmFx_calDAVfileCheckAndSave() {
 				}
 			}
 		}
-		rmFx_icsFileLocationCurrent = rmFx_icsFileLocationNew 
+		rmFx_icsFileLocationCurrent = rmFx_icsFileLocationNew;
 		// if Options.xul is open, then build the Sync Remote Calendars from 'calDAVaccounts'
 		if (!document.getElementById("calDAV_calendars")) return
 
@@ -1583,7 +1586,7 @@ function rmFXtoggleGroup(control, elements) {
 				d.removeAttribute("disabled");
 			}
 		} catch(ex){
-			//console.log(" rmFXtoggleGroup   >>"+sx[i]+"<< NOT found!")
+			//console.log("RmFX   [rmFXtoggleGroup]   >>"+sx[i]+"<< NOT found!")
 		}
 	}
 }
@@ -1756,8 +1759,8 @@ function reminderFox_pickSoundFile(type) {
 	if (type == 'alert')
 		typeEl = document.getElementById("reminderFox-alertSoundType-File");
 
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;
-	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+	var nsIFilePicker = Ci.nsIFilePicker;
+	var fp = Cc["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
 	fp.init(window, reminderfox.string("rf.options.sound.filepicker.title"), 
 			nsIFilePicker.modeOpen);
@@ -1771,32 +1774,6 @@ function reminderFox_pickSoundFile(type) {
 	     }
 	  });
 };
-
-function reminderFox_filePickerPreferences(aOpen, aWindow) {
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;
-	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-	fp.defaultExtension = "js";
-	fp.appendFilter(rmFXfilterPrefs, "*.js"); 
-	fp.appendFilters(nsIFilePicker.filterAll);
-
-	switch (aOpen) {
-		case 0:
-			fp.init(aWindow, reminderfox.string("rf.options.prefs.filepicker.title"), 
-				nsIFilePicker.modeSave);
-			break;
-		case 1:
-			fp.init(aWindow,reminderfox.string("rf.options.prefs.filepicker.title"), 
-				nsIFilePicker.modeOpen);
-			break;
-	};
-
-	// get the file and its contents
-	var res = fp.show();
-	if(res == nsIFilePicker.returnCancel)
-		return null;
-	else
-		return fp.file;
-}
 //^^^ file picker ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -1854,8 +1831,8 @@ function reminderFox_ValidateSynchronization(disable) {
 
 
 function reminderFox_openCustomizeUpcomingLabelWindow() {
-	var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
-	var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+	var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
+	var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
 	var topWindow = windowManagerInterface.getMostRecentWindow("window:upcomingLabelOptions");
 
 	if(topWindow) {
@@ -1874,8 +1851,8 @@ function reminderFox_openCustomizeUpcomingLabelWindow() {
 }
 
 function reminderFox_openCustomizeTodayLabelWindow() {
-	var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
-	var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+	var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
+	var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
 	var topWindow = windowManagerInterface.getMostRecentWindow("window:upcomingLabelOptions");
 
 	if(topWindow) {
@@ -1904,8 +1881,8 @@ function reminderFox_saveCustomizeUpcomingLabel() {
 }
 
 function reminderFox_openCustomizeReminderListDateWindow() {
-	var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
-	var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+	var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
+	var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
 	var topWindow = windowManagerInterface.getMostRecentWindow("window:reminderListDateOptions");
 
 	if(topWindow) {
@@ -1934,8 +1911,8 @@ function reminderFox_saveDefaultMoreLabel() {
 }
 
 function reminderFox_openCustomizeDefaultMoreWindow() {
-	var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService();
-	var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+	var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
+	var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
 	var topWindow = windowManagerInterface.getMostRecentWindow("window:reminderListDefaultMoreOptions");
 
 	if(topWindow) {
@@ -2065,7 +2042,7 @@ function reminderFox_populatePositions() {
 
 	if(!bar) {
 		document.getElementById('reminderFox-bowText-control').checked = false;
-		reminderfox.core.setPreferenceValue(reminderfox.consts.TOOLBAR_POSITION, -1)
+		reminderfox.core.setPreferenceValue(reminderfox.consts.TOOLBAR_POSITION, reminderfox.consts.TOOLBAR_POSITION_DEFAULT);
 		reminderFox_mPositionMax = 0;
 	} else {
 		document.getElementById('reminderFox-bowText-control').checked = true;
@@ -2079,8 +2056,8 @@ function reminderFox_populatePositions() {
 		reminderFox_mPositionMax = len;
 	}
 
-	var val = reminderfox.core.getPreferenceValue(reminderfox.consts.TOOLBAR_POSITION, -1);
-	var val2 = reminderfox.core.getPreferenceValue(reminderfox.consts.TOOLBAR);
+	var val = reminderfox.core.getPreferenceValue(reminderfox.consts.TOOLBAR_POSITION, reminderfox.consts.TOOLBAR_POSITION_DEFAULT);
+	var val2 = reminderfox.core.getPreferenceValue(reminderfox.consts.TOOLBAR, reminderfox.consts.TOOLBAR_DEFAULT);
 
 	var text = document.getElementById("reminderFox-text-position");
 	var radio = document.getElementsByAttribute("group", "position");
@@ -2128,8 +2105,8 @@ function reminderFox_populatePositions() {
 
 function  reminderFox_getWindow()  {
 	//XXX may need to change this code if main window of a supported app is not "navigator:browser"
-	var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
-	var ww = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
+	var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
+	var ww = Cc["@mozilla.org/embedcomp/window-watcher;1"].getService(Ci.nsIWindowWatcher);
 	var top = wm.getMostRecentWindow("navigator:browser");
 
 
@@ -2146,7 +2123,7 @@ function  reminderFox_getWindow()  {
 	if (!top) {
 		var guid;
 		try {
-			var app = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
+			var app = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
 			guid = app.ID;
 		} catch(e) {
 			var appBranch = reminderfox._prefs.getBranch(null);
@@ -2254,351 +2231,3 @@ function reminderFox_bowTextChanged (xThis) {
 	}
 	reminderfox.overlay.switchStatusAddonBar();
 }
-
-
-//-----------------------------------------------------
-
-function rmFXgetPrefsJSON(){
-    // read all 'reminderfox' prefs from 'json' file
-    var tmpFile = reminderfox.util.ProfD_extend("reminderfox");
-    tmpFile.append("preferences");
-    tmpFile.append("rmFXprefs.json");
-
-    var jPrefsJSON= reminderfox.util.readInFileContents(tmpFile.path);
-    var jPrefs = JSON.parse(jPrefsJSON);
-
-    var data = [];
-    for (var aPrefs in jPrefs) {
-        data.push({
-            prefName: aPrefs,
-            prefType: jPrefs[aPrefs][0],
-            prefValue: jPrefs[aPrefs][1]
-        });
-    }
-    return data;
-}
-
-
-//===== Supporting prefs    gW: 2017-12-20 ==========
-/*
- * Supporting prefs
- * This may not be necessary, but added in the case m-c or c-c would disable supporting
- * prefs for 'classic' addon types.
- *
- * Table Support is using
- *    https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/Sorting_and_filtering_a_custom_tree_view
- * 
- * A tab:Prefs is shown with prefs:prefsPanel == true
- * Use about:config to change status
- * Key functions (with tab:Prefs enabled):
- *   Cntrl p    Editing of a specific, selected prefs
- *   Cntrl q    Disable tab.Prefs (see below)
- * 
- */
-
-if (!prefsService) var prefsService = {};
-
-prefsService.table = null;
-prefsService.data = null;
-prefsService.prefTree;
-prefsService.filterText = "";
-prefsService.selectedRow;
-prefsService.itemEdited = null;
-
-// Check it tab:Prefs is selected
-prefsService.isPrefsPanel= function(){
-    var tabs = document.getElementById("optionsTabs");
-    return (tabs._selectedPanel.id == "prefsPanel");
-}
-
-/*
- * Disable the tab:Prefs 
- * After closing Options, the tab:Prefs not be shown,
- * reenable with using about:config for 'prefsPanel' set to true
- */
-prefsService.prefsPanelClose= function(){
-    if (prefsService.isPrefsPanel()) {
-        reminderfox.core.setPreferenceValue('prefsPanel' , false);
-    }
-};
-
-// get all 'reminderFox' prefs
-prefsService.getPrefs= function(){
-    var prefBranch = Services.prefs.getBranch(reminderfox.consts.REMINDER_FOX_PREF + ".");
-    var jPrefs = prefBranch.getChildList("");
-
-    var pValue, uValue, pType, ptype;
-    prefsService.data = [];
-    for (var aPrefs in jPrefs) {
-
-        ptype = prefBranch.getPrefType(jPrefs[aPrefs]);
-        if (ptype == 128) {
-            pType = 'bool';
-            pValue = prefBranch.getBoolPref(jPrefs[aPrefs]);
-        } else if  (ptype == 64){ 
-            pType = 'integer';            
-            pValue = prefBranch.getIntPref(jPrefs[aPrefs]);
-        } else if  (ptype == 32){
-            pType = 'string';
-            pValue = prefBranch.getCharPref(jPrefs[aPrefs]);
-        }
-
-        uValue = (prefBranch.prefHasUserValue(jPrefs[aPrefs]) == false) ? 'default' : 'user set'
-
-        prefsService.data.push({
-            prefName: jPrefs[aPrefs],
-            prefValue: pValue,
-            prefType: pType,
-            prefUserValue: uValue
-        });
-    }
-};
-
-prefsService.init= function (filterClear) {
-    if (filterClear == true){
-        prefsService.filterText = "";
-        document.getElementById("prefsService.filter").value ="";
-    }
-    prefsService.prefTree = document.getElementById("prefTree");
-    prefsService.loadTable(filterClear);
-}
-
-//this function is called every time the tree is sorted, filtered, or reloaded
-prefsService.loadTable= function(filterClear) {
-    //remember scroll position. this is useful if this is an editable table
-    //to prevent the user from losing the row they edited
-    var topVisibleRow = null;
-    if (prefsService.table) {
-        topVisibleRow = prefsService.getTopVisibleRow();
-    }
-    prefsService.getPrefs();
-
-    if (prefsService.filterText == "" && (filterClear == true)) {
-        //show all of them
-        prefsService.table = prefsService.data;
-    } else {
-        //filter out the ones we want to display
-        prefsService.table = [];
-        prefsService.data.forEach(function(element) {
-            //we'll match on every property which is a 'string'
-            for (var i in element) {
-                if (typeof element[i] == "string") {
-                    if (prefsService.prepareForComparison(element[i])
-                        .indexOf(prefsService.filterText.toLowerCase()) != -1) {
-                        prefsService.table.push(element);
-                        break;
-                    }
-                }
-                if (typeof element[i] == "number") {
-                    if (element[i] == +prefsService.filterText) {
-                        prefsService.table.push(element);
-                        break;
-                    }
-                }
-            }
-        });
-    }
-
-    prefsService.sort();
-    //restore scroll position
-    if (topVisibleRow) {
-        prefsService.setTopVisibleRow(topVisibleRow);
-    }
-    prefsService.selectedRow= null;
-}
-
-//   Enable table row selection to get access of selected row details
-prefsService.treeOp= function(xtable) {
-    prefsService.selectedRow = prefsService.table[xtable.currentIndex]
-}
-
-prefsService.treeRow= function(mode){
-    var d= "";
-    if (!prefsService.selectedRow) return;
-    if (mode == 'all') {
-        d = prefsService.selectedRow.prefName 
-            +"; " + prefsService.selectedRow.prefValue
-            +"; " + prefsService.selectedRow.prefType
-            +"; " + prefsService.selectedRow.prefUserValue;
-    }
-    if (mode == 'name'){
-        d= prefsService.selectedRow.prefName;
-    }
-    if (mode == 'value'){
-        d= prefsService.selectedRow.prefValue;
-    }
-    if (mode == 'edit'){
-        d = {"name":prefsService.selectedRow.prefName, 
-             "type": prefsService.selectedRow.prefType,
-             "value":prefsService.selectedRow.prefValue,
-             "user":prefsService.selectedRow.prefUserValue}
-    }
-
-    var fileChanged = reminderfox.core.timeStampHasChanged();
-    reminderfox.util.copytoClipboard(d)
-    return d;
-};
-
-
-// Edit prefs item via options.xul 
-prefsService.prefsEdit= function(mode){
-    if (prefsService.isPrefsPanel() == false) return;
-
-    prefsService.itemEdited = prefsService.treeRow(mode);
-
-    document.getElementById("prefsEditLabel").label = "Edit Preference item '" + prefsService.itemEdited.name + "'";
-    document.getElementById("prefsEditBool").setAttribute("hidden","true");
-    document.getElementById("prefsEditString").setAttribute("hidden","true");
-
-    switch (prefsService.itemEdited.type) {
-        case "bool" :
-            document.getElementById("prefsEditBool").removeAttribute("hidden");
-            document.getElementById("prefsBoolToggle").label = prefsService.itemEdited.value;
-            break;
-        case "string" :
-        case "integer" :
-            document.getElementById("prefsEditString").removeAttribute("hidden");
-            document.getElementById("prefsEditStringBox").value = prefsService.itemEdited.value;
-            break;
-    }
-
-    var anchor = document.getElementById("prefsLoad");
-    var panel  = document.getElementById("editPrefsPanel");
-    panel.removeAttribute('hidden');
-    panel.openPopup(anchor, 'bottomleft topright', -1, -1);
-}
-
-prefsService.editBool= function(xthis){
-    xthis.label = (xthis.label == "true") ? false : true;
-    prefsService.itemEdited.value = xthis.label;
-    prefsService.editSetItem();
-};
-
-prefsService.editApply= function(){
-    if(prefsService.itemEdited.type == "bool"){
-        prefsService.itemEdited.value= document.getElementById("prefsBoolToggle").label;
-    } else {
-        prefsService.itemEdited.value= document.getElementById("prefsEditStringBox").value;
-    }
-    prefsService.editSetItem ();
-    prefsService.loadTable(false);
-    prefsService.panelClose();
-}
-
-prefsService.editSetItem= function(){
-    var item = prefsService.itemEdited.name;
-    var value = prefsService.itemEdited.value;
-    reminderfox.core.setPreferenceValue(item ,value);
-};
-
-prefsService.panelClose= function(){
-    document.getElementById("editPrefsPanel").setAttribute("hidden", "true");
-    prefsService.itemEdited = null;
-};
-
-
-prefsService.exportTable= function() {
-    reminderFox_exportPrefs(prefsService.table);
-}
-
-//generic custom prefTree view stuff
-prefsTreeView= function(table) {
-    this.rowCount = table.length;
-    this.getCellText = function(row, col) {
-        return table[row][col.id];
-    };
-    this.getCellValue = function(row, col) {
-        return table[row][col.id];
-    };
-    this.setTree = function(treebox) {
-        this.treebox = treebox;
-    };
-    this.isEditable = function(row, col) {
-        return col.editable;
-    };
-    this.isContainer = function(row){ return false; };
-    this.isSeparator = function(row){ return false; };
-    this.isSorted = function(){ return false; };
-    this.getLevel = function(row){ return 0; };
-    this.getImageSrc = function(row,col){ return null; };
-    this.getRowProperties = function(row,props){};
-    this.getCellProperties = function(row,col,props){};
-    this.getColumnProperties = function(colid,col,props){};
-    this.cycleHeader = function(col, elem) {};
-}
-
-prefsService.sort= function(column) {
-    document.getElementById("prefsService.length").value = prefsService.table.length;
-
-    var columnName;
-    var order = prefsService.prefTree.getAttribute("sortDirection") == "ascending" ? 1 : -1;
-    //if the column is passed and it's already sorted by that column, reverse sort
-    if (column) {
-        columnName = column.id;
-        if (prefsService.prefTree.getAttribute("sortResource") == columnName) {
-            order *= -1;
-        }
-    } else {
-        columnName = prefsService.prefTree.getAttribute("sortResource");
-    }
-
-    function columnSort(a, b) {
-        if (prefsService.prepareForComparison(a[columnName]) > prefsService.prepareForComparison(b[columnName])) return 1 * order;
-        if (prefsService.prepareForComparison(a[columnName]) < prefsService.prepareForComparison(b[columnName])) return -1 * order;
-        //tie breaker: name ascending is the second level sort
-        if (columnName != "name") {
-            if (prefsService.prepareForComparison(a["name"]) > prefsService.prepareForComparison(b["name"])) return 1;
-            if (prefsService.prepareForComparison(a["name"]) < prefsService.prepareForComparison(b["name"])) return -1;
-        }
-        return 0;
-    }
-    prefsService.table.sort(columnSort);
-    //setting these will make the sort option persist
-    prefsService.prefTree.setAttribute("sortDirection", order == 1 ? "ascending" : "descending");
-    prefsService.prefTree.setAttribute("sortResource", columnName);
-    prefsService.prefTree.view = new prefsTreeView(prefsService.table);
-    //set the appropriate attributes to show to indicator
-    var cols = prefsService.prefTree.getElementsByTagName("treecol");
-    for (var i = 0; i < cols.length; i++) {
-        cols[i].removeAttribute("sortDirection");
-    }
-    document.getElementById(columnName).setAttribute("sortDirection", order == 1 ? "ascending" : "descending");
-}
-
-//prepares an object for easy comparison against another. for strings, lowercases them
-prefsService.prepareForComparison= function(o) {
-    if (typeof o == "string") {
-        return o.toLowerCase();
-    }
-    return o;
-}
-
-prefsService.getTopVisibleRow= function() {
-    return prefsService.prefTree.treeBoxObject.getFirstVisibleRow();
-}
-
-prefsService.setTopVisibleRow= function(topVisibleRow) {
-    return prefsService.prefTree.treeBoxObject.scrollToRow(topVisibleRow);
-}
-
-
-prefsService.inputFilter= function(event) {
-    //do this now rather than doing it at every comparison
-    var value = prefsService.prepareForComparison(event.target.value);
-    prefsService.setFilter(value);
-    document.getElementById("clearFilter").disabled = value.length == 0;
-}
-
-prefsService.clearFilter= function() {
-    document.getElementById("clearFilter").disabled = true;
-    var filterElement = document.getElementById("prefsService.filter");
-    filterElement.focus();
-    filterElement.value = "";
-    prefsService.setFilter("");
-}
-
-prefsService.setFilter= function () {
-    prefsService.filterText = document.getElementById("prefsService.filter").value;
-    prefsService.loadTable();
-}
-

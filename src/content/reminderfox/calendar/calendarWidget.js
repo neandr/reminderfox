@@ -260,18 +260,6 @@ reminderfox.calendar.layout.updateFoxy = function(layout) {
 
 
 // **************** calendar.ui. ***********************************************
-/**
- *   Selecting a weekday on the widget will change first day of week
- */
-reminderfox.calendar.ui.firstDayOfWeek= function (xThis) {
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var selectedDay = +xThis.getAttribute('selectedDay');
-	reminderfox.core.statusSet ("firstDayOfWeek: " + selectedDay);
-
-	reminderfox.datePicker.gStartingDayOfWeek = selectedDay;
-	reminderfox.core.setPreferenceValue(reminderfox.consts.CALENDAR_START_DAY, selectedDay);
-	reminderfox.calendar.ui.selectDay(); // hold grid
-};
 
 
 reminderfox.calendar.ui.exportOrSend= function (event) {
@@ -955,9 +943,7 @@ reminderfox.calendar.filter.toggle= function(mode) {
 		reminderfox.search.searchTextSpyglass (reminderfox.search.textSearchType);
 		reminderfox.calendar.filter.close();
 	}
-	reminderfox.core.setPreferenceValue
-		(reminderfox.consts.SHOW_FILTERS, reminderfox.search.showFilters);
-
+	reminderfox.core.setPreferenceValue(reminderfox.consts.SHOW_FILTERS, reminderfox.search.showFilters);
 	reminderfox.view.setFilterTitel();
 };
 
@@ -1501,8 +1487,7 @@ reminderfox.calendar.dateArray.Events= function() {
 
 reminderfox.calendar.prefsGetShowWeeks= function () {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var weekNumShow = reminderfox.core
-			.getPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF);
+	var weekNumShow = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF, 0); //XXX NO DEFAULT defined!
 			// Week Numbering:
 			// 0 (none),
 			// 1 (default),
@@ -1564,7 +1549,6 @@ reminderfox.calendar.grid.monthCalendar= function (weekHeaderBox, monthsGrid) {
 			alabel.setAttribute("value",
 				reminderfox.string("rf.options.day."+ x + ".name.MMM"));
 
-			//alabel.setAttribute("tooltiptext", reminderfox.string("rf.calendar.firstdayofweek")); // + ' ' +x);
 			hbox.appendChild(alabel);
 
 			weekHeaderBox.appendChild(hbox);
@@ -1862,7 +1846,7 @@ reminderfox.calendar.dateArray.EventAdd= function(event, daysArray, setToDate) {
  */
 reminderfox.calendar.dateArray.EventUpdate= function(setToDate) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	reminderfox.calendar.numMonth = reminderfox.core.getPreferenceValue (reminderfox.consts.CALENDAR_MONTHS)
+	reminderfox.calendar.numMonth = reminderfox.core.getPreferenceValue (reminderfox.consts.CALENDAR_MONTHS, reminderfox.consts.CALENDAR_MONTHS_DEFAULT)
 	reminderfox.calendar.redrawDays (setToDate, reminderfox.calendar.numMonth)
 	reminderfox.calendar.dateArray.DayAttributes (setToDate,['selectedReminder'])
 };
@@ -1913,7 +1897,7 @@ reminderfox.calendar.dateArray.DayAttributes= function (numDay, attributes, even
  */
 reminderfox.calendar.aMonthFirstWeek= function() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var showWeekNum = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF, 0);
+	var showWeekNum = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF, 0); //XXX NO DEFAULT defined!
 	// Week Numbering:  0 (none), 1 (default), 2 (ISO 8601)
 
 	// get week number for .gSelectedDate

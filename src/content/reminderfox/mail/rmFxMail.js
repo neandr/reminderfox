@@ -1,3 +1,7 @@
+if (Cu === undefined)  var Cu = Components.utils;
+if (Ci === undefined)  var Ci = Components.interfaces;
+if (Cc === undefined)  var Cc = Components.classes;
+
 /**
  * rmFxMail.js
  *
@@ -70,8 +74,7 @@ reminderfox.mail.startupwMsgId = function() {
 	var loggedAt = "[[" + Components.stack.caller.filename + "  # " +
 		Components.stack.caller.lineNumber + "]]";
 
-	var consoleService = Components.classes["@mozilla.org/consoleservice;1"]
-		.getService(Components.interfaces.nsIConsoleService);
+	var consoleService = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
 	consoleService.logStringMessage("ReminderFox  clh  {startupwMsgId: " + logString + "}\n" + loggedAt);
 	//gWTEST   ------------>>> ----------------
 
@@ -196,7 +199,7 @@ reminderfox.mail.openByMessageID = function (currentReminder){
 	// if using Firefox, this starts (Thunderbird) Messenger App ...
 	// using a specific 'commandLine' Handler
 
-	if(!("@mozilla.org/messenger;1" in Components.classes)) {
+	if(!("@mozilla.org/messenger;1" in Cc)) {
 
 		var mailApp = reminderfox.util.messengerApp();
 		if ((mailApp == null) || (mailApp == ""))  {
@@ -210,8 +213,7 @@ reminderfox.mail.openByMessageID = function (currentReminder){
 		args [2] = "-msgString";
 		args [3] = escape(reminderfox.mail.currentSummary);			// currentReminder.summary;
 
-		var go4Process = Components.classes["@mozilla.org/process/util;1"]
-									.createInstance(Components.interfaces.nsIProcess);
+		var go4Process = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
 
 		try {
 			go4Process.init(mailApp);
@@ -322,7 +324,7 @@ reminderfox.mail.sendAsItIs = function (selcReminders, organizer, mode, reminder
 				var iCalString = reminderfox.core.constructReminderOutput( selcReminders, "", true, true, "PUBLISH" );
 				var nReminders = selcReminders.length;
 		}
-		var exportFile = reminderfox._prefsBRANCH.getCharPref("exportEventsFile");
+		var exportFile = reminderfox.core.getPreferenceValue("exportEventsFile", "reminderfoxEvents.ics");
 
 		var iCalToEmailFile = reminderfox.util.makeMsgFile (reminderfox.util.encodeUTF8(iCalString), exportFile);
 		if (iCalToEmailFile == null) {
@@ -523,7 +525,7 @@ reminderfox.mail.sendEventNow = function (reminderToBeSend, todosToBeSend, metho
 
 
 	// ---------- compose ------------------------------------------------
-	var iCalFile =	reminderfox.core.getReminderStoreFile();
+	var iCalFile =	reminderfox.core.getICSfile();
 	iCalFile.leafName = "reminderfoxEvents.ics";
 
 	var iCalToEmailFile = reminderfox.util.makeMsgFile (reminderfox.util.encodeUTF8(iCalString), iCalFile.path);
@@ -568,8 +570,7 @@ reminderfox.mail.folderListener = {
 
 				var msgUri = item.folder.getUriForMsg(item)
 
-				var messenger = Components.classes["@mozilla.org/messenger;1"]
-					.createInstance(Components.interfaces.nsIMessenger);
+				var messenger = Cc["@mozilla.org/messenger;1"].createInstance(Ci.nsIMessenger);
 
 				var messageService = messenger.messageServiceFromURI(msgUri);
 				var msgHeader = messageService.messageURIToMsgHdr(msgUri);
@@ -598,8 +599,8 @@ reminderfox.mail.folderListener = {
 						reminderfox.core.insertIntoArray(activeReminders, lastReminder, i);
 						reminderfox.core.writeOutRemindersAndTodos(false); // (isExport)
 
-						Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound)
-							.playEventSound(Components.interfaces.nsISound.EVENT_NEW_MAIL_RECEIVED);
+						Cc["@mozilla.org/sound;1"].createInstance(Ci.nsISound)
+							.playEventSound(Ci.nsISound.EVENT_NEW_MAIL_RECEIVED);
 					}
 				} // for activeReminders
 
@@ -620,9 +621,9 @@ reminderfox.mail.folderListener = {
 
 reminderfox.mail.setFolderListener = function (mode) {
 	const mailSessionContractID = "@mozilla.org/messenger/services/session;1";
-	const nsIMsgMailSession = Components.interfaces.nsIMsgMailSession;
-	var mailSession = Components.classes[mailSessionContractID].getService(nsIMsgMailSession);
-	var nsIFolderListener = Components.interfaces.nsIFolderListener;
+	const nsIMsgMailSession = Ci.nsIMsgMailSession;
+	var mailSession = Cc[mailSessionContractID].getService(nsIMsgMailSession);
+	var nsIFolderListener = Ci.nsIFolderListener;
 
 	if (mode == "add") {
 		mailSession.AddFolderListener(reminderfox.mail.folderListener, 
@@ -685,8 +686,7 @@ if(!reminderfox.messenger) reminderfox.messenger = {
 
 	getMsgWindow : function () {
 		if ( this.msgWindow == null ) {
-			this.msgWindow = Components.classes["@mozilla.org/messenger/msgwindow;1"].
-					createInstance(Components.interfaces.nsIMsgWindow);
+			this.msgWindow = Cc["@mozilla.org/messenger/msgwindow;1"].createInstance(Ci.nsIMsgWindow);
 		}
 		return this.msgWindow;
 	},
@@ -761,8 +761,7 @@ if(!reminderfox.messenger) reminderfox.messenger = {
 			var folderUri = folder.URI;
 			var messageUri = folder.getUriForMsg(msgHdr);
 
-			var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1']
-											.getService(Components.interfaces.nsIWindowMediator);
+			var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService(Ci.nsIWindowMediator);
 			var mail3pane = windowManager.getMostRecentWindow("mail:3pane");
 
 			if (reminderfox.msgnr.name == "SM") {
@@ -856,7 +855,7 @@ if(!reminderfox.messenger) reminderfox.messenger = {
 		if (sFolder.hasSubFolders) {
 			var subfolders = sFolder.subFolders;
 			while (subfolders.hasMoreElements()) {
-				var subfolder = subfolders.getNext().QueryInterface(Components.interfaces.nsIMsgFolder);
+				var subfolder = subfolders.getNext().QueryInterface(Ci.nsIMsgFolder);
 			//	if (currentFolderURI.substring(1,7) != "news://") {
 					msgHdr = this.searchInSubFolder(subfolder, messageId);
 			//	}
@@ -960,9 +959,8 @@ if(!reminderfox.messenger) reminderfox.messenger = {
 		* @return	pmpValue
 		*/
 	pmpReadPref : function (pmpName, pmpType) {
-		var nsIPrefBranch = Components.interfaces.nsIPrefBranch;
-		var pref = Components.classes["@mozilla.org/preferences-service;1"]
-									.getService(nsIPrefBranch);
+		var nsIPrefBranch = Ci.nsIPrefBranch;
+		var pref = Cc["@mozilla.org/preferences-service;1"].getService(nsIPrefBranch);
 		var pmpValue = null;
 
 		if (pref.prefHasUserValue(pmpName)) {
@@ -996,15 +994,14 @@ if(!reminderfox.messenger) reminderfox.messenger = {
 		//gW  replace nsIRDFService with MailUtils
 
 		if (reminderfox.msgnr.whichMessenger () != "" ) {
-			Components.utils.import("resource:///modules/MailUtils.js"); // for getFolderForURI
+			Cu.import("resource:///modules/MailUtils.js"); // for getFolderForURI
 		}
 		try {
 			var resource =MailUtils.getFolderForURI(uri);
 
-			if (resource instanceof Components.interfaces.nsIMsgFolder &&
-				(resource.parent || resource.isServer))
+			if (resource instanceof Ci.nsIMsgFolder && (resource.parent || resource.isServer)){
 				msgfolder = resource;
-
+			}
 		} catch (ex) {}
 	
 		return msgfolder;
@@ -1031,8 +1028,7 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 			var fromId = reminderfox.msgnr.getIdentity (fromAddress);
 
 			if (iCalToEmailFile != null) {
-				var msgAttachment					= Components.classes["@mozilla.org/messengercompose/attachment;1"]
-															.createInstance(Components.interfaces.nsIMsgAttachment);
+				var msgAttachment= Cc["@mozilla.org/messengercompose/attachment;1"].createInstance(Ci.nsIMsgAttachment);
 				msgAttachment.temporary = true;
 				msgAttachment.name = iCalToEmailFile.leafName;
 				msgAttachment.contentType = "text/calendar;"
@@ -1042,8 +1038,7 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 			}
 
 			// mail header
-			var composeFields = Components.classes["@mozilla.org/messengercompose/composefields;1"]
-					.createInstance(Components.interfaces.nsIMsgCompFields);
+			var composeFields = Cc["@mozilla.org/messengercompose/composefields;1"].createInstance(Ci.nsIMsgCompFields);
 			composeFields.useMultipartAlternative = true;
 
 			composeFields.characterSet = "UTF-8";
@@ -1060,16 +1055,14 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 				composeFields.addAttachment(msgAttachment);
 			}
 			// message compose paramaters
-			var msgComposeParams					= Components.classes["@mozilla.org/messengercompose/composeparams;1"]
-															.createInstance(Components.interfaces.nsIMsgComposeParams);
+			var msgComposeParams= Cc["@mozilla.org/messengercompose/composeparams;1"].createInstance(Ci.nsIMsgComposeParams);
 			msgComposeParams.composeFields 	= composeFields;
-			msgComposeParams.identity 			= fromId;
-			msgComposeParams.format 			= Components.interfaces.nsIMsgCompFormat.Default;
-			msgComposeParams.type 				= Components.interfaces.nsIMsgCompType.New;
+			msgComposeParams.identity= fromId;
+			msgComposeParams.format= Ci.nsIMsgCompFormat.Default;
+			msgComposeParams.type= Ci.nsIMsgCompType.New;
 
 			// open a composer window
-			var messengerCompose = Components.classes["@mozilla.org/messengercompose;1"]
-						.getService().QueryInterface(Components.interfaces.nsIMsgComposeService);
+			var messengerCompose = Cc["@mozilla.org/messengercompose;1"].getService().QueryInterface(Ci.nsIMsgComposeService);
 			messengerCompose.OpenComposeWindowWithParams(null, msgComposeParams);
 
 			try { // with Remote send this will fail, as we don't have dialog open to place the status info
@@ -1110,8 +1103,7 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 			args [2] = "-msgString";
 			args [3] = msgString;		// compose items to be passed
 
-			var go4Process = Components.classes["@mozilla.org/process/util;1"]
-					.createInstance(Components.interfaces.nsIProcess);
+			var go4Process = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
 
 			try {
 				go4Process.init(mailApp);
@@ -1143,17 +1135,18 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 
 			var fromId = reminderfox.msgnr.getIdentity (fromAddress);
 
-			var composeFields = Components.classes["@mozilla.org/messengercompose/composefields;1"]
-					.createInstance(Components.interfaces.nsIMsgCompFields);
+			var composeFields = Cc["@mozilla.org/messengercompose/composefields;1"].createInstance(Ci.nsIMsgCompFields);
 			composeFields.characterSet = "UTF-8";
-			composeFields.to				= toAddresses;
-			composeFields.from			= fromId.identityName;
-			composeFields.replyTo		= fromId.identityName;
+			composeFields.to     = toAddresses;
+			composeFields.from   = fromId.identityName;
+			composeFields.replyTo= fromId.identityName;
 
-			composeFields.priority		= reminderfox.msgnr.setPriorityString (priority);
+			composeFields.priority= reminderfox.msgnr.setPriorityString (priority);
 
-			var messengerSend = Components.classes["@mozilla.org/messengercompose/send;1"]
-							.createInstance(Components.interfaces.nsIMsgSend);
+			var sendLater = (Services.io.offline ? Components.interfaces.nsIMsgSend.nsMsgQueueForLater
+				: Components.interfaces.nsIMsgSend.nsMsgDeliverNow);
+
+			var messengerSend = Cc["@mozilla.org/messengercompose/send;1"].createInstance(Ci.nsIMsgSend);
 			messengerSend.sendMessageFile(
 						fromId,				/* nsIMsgIdentity */
 						fromId.key,			/* nsIMsgCompFields */
@@ -1161,10 +1154,8 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 						mailFile,			/* nsFileSpec */
 						reminderfox.mail.deleteSendFileOnCompletion,
 						false,				/* digest_p */
-												/* nsMsgDeliverMode */
-						reminderfox.util.getIOService().offline
-							?	Components.interfaces.nsIMsgSend.nsMsgQueueForLater	/* = 1 */
-							:	Components.interfaces.nsIMsgSend.nsMsgDeliverNow,	/* = 0 */
+											/* nsMsgDeliverMode */
+						sendLater,
 						null,		/* nsIMsgDBHdr msgToReplace */
 						null,		/* nsIMsgSendListener aListener */
 						null,		/* nsIMsgStatusFeedback aStatusFeedback */
@@ -1190,8 +1181,7 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 
 		// add app info  .. will be added to the 'footer'
 		var osInfo = reminderfox.core.opSystemInfo();
-		var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
-			.getService(Components.interfaces.nsIXULAppInfo);
+		var appInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
 		var appDetails = "\n  " + appInfo.name + " " + appInfo.version
 							+ " (" + appInfo.platformBuildID + ") -- " + osInfo;
 
@@ -1326,9 +1316,9 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 		args [1] = "UID:"+ (reminderID);
 		args [2] = "-msgString";
 
-		var tmpD = Components.classes["@mozilla.org/file/directory_service;1"]
-				.getService(Components.interfaces.nsIProperties)
-				.get("TmpD", Components.interfaces.nsIFile);
+		var tmpD = Cc["@mozilla.org/file/directory_service;1"]
+				.getService(Ci.nsIProperties)
+				.get("TmpD", Ci.nsIFile);
 				
 
 /*----------//§§		check with Windows/OSX 
@@ -1345,8 +1335,7 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 		reminderfox.core.statusSet(msgLog);
 		reminderfox.util.Logger('remote',msgLog)
 
-		var go4Process = Components.classes["@mozilla.org/process/util;1"]
-					.createInstance(Components.interfaces.nsIProcess);
+		var go4Process = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
 
 		try {
 			go4Process.init(mailApp);
@@ -1390,8 +1379,7 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 
 		reminderfox.util.makeMsgFile (msgLines.join("\n"), icsFile);
 
-		var mailFile = Components.classes["@mozilla.org/file/local;1"]
-					.createInstance(Components.interfaces.nsIFile);
+		var mailFile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 		mailFile.initWithPath(icsFile);
 
 		reminderfox.msgnr.FileSend(
@@ -1422,8 +1410,7 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 		args [2] = "-msgString";
 		args [3] = msgString;
 
-		var go4Process = Components.classes["@mozilla.org/process/util;1"]
-				.createInstance(Components.interfaces.nsIProcess);
+		var go4Process = Cc["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess);
 
 		try {
 			go4Process.init(mailApp);
@@ -1456,8 +1443,7 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 		var mailFile = null;
 		if (msgString[7] != null) {
 			var icsFile		= msgString[7].substring(9);
-			mailFile = Components.classes["@mozilla.org/file/local;1"]
-						.createInstance(Components.interfaces.nsIFile);
+			mailFile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 			mailFile.initWithPath(icsFile);
 		};
 
@@ -1473,16 +1459,16 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 
 	reminderfox.msgnr.getAccountMngr = function () {
 	// =========================================================================
-		return Components.classes["@mozilla.org/messenger/account-manager;1"]
-				.getService().QueryInterface(Components.interfaces.nsIMsgAccountManager);
+		return Cc["@mozilla.org/messenger/account-manager;1"]
+				.getService().QueryInterface(Ci.nsIMsgAccountManager);
 	}
 
 	reminderfox.msgnr.encodeMimeHeader = function (header) {
 	// =========================================================================
-		var mimeConverter = Components.classes["@mozilla.org/messenger/mimeconverter;1"]
-						.createInstance(Components.interfaces.nsIMimeConverter);
+		var mimeConverter = Cc["@mozilla.org/messenger/mimeconverter;1"]
+				.createInstance(Ci.nsIMimeConverter);
 		return mimeConverter.encodeMimePartIIStr_UTF8(header, false,
-						"UTF-8", header.indexOf(":") + 2, 72);
+				"UTF-8", header.indexOf(":") + 2, 72);
 	}
 
 	/**
@@ -1497,9 +1483,7 @@ if(!reminderfox.msgnr) reminderfox.msgnr={};
 			mailIds = reminderfox.msgnr.mailIdentities;
 
 		} else { // 'NON messenger' .. eg.FX etc ...
-			try {
-				var mailIds = reminderfox._prefsBRANCH.getCharPref(reminderfox.consts.MAIL_SENDER);
-			} catch (ex) {}
+			var mailIds = reminderfox.core.getPreferenceValue(reminderfox.consts.MAIL_SENDER, "");
 		}
 		return mailIds;
 	}
@@ -1512,8 +1496,6 @@ reminderfox.msgnr.mailIdentities = "";
 	*/
 	reminderfox.msgnr.getIdentity = function (address) {
 	// =========================================================================
-		const Cu = Components.utils;
-		const Ci = Components.interfaces;
 		Cu.import("resource:///modules/iteratorUtils.jsm");
 		Cu.import("resource:///modules/mailServices.js"); // needed for MailServices.compose etc.
 	//	Cu.import("resource://gre/modules/Services.jsm");
@@ -1561,27 +1543,24 @@ reminderfox.msgnr.mailIdentities = "";
 			
 			// https://developer.mozilla.org/en/Using_nsIXULAppInfo
 			var id;
-			if("@mozilla.org/xre/app-info;1" in Components.classes) {
+			if("@mozilla.org/xre/app-info;1" in Cc) {
 			// running under Mozilla 1.8 or later
-				id = Components.classes["@mozilla.org/xre/app-info;1"]
-					.getService(Components.interfaces.nsIXULAppInfo).ID;
+				id = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo).ID;
 			} else {
 				try {
-					id = Components.classes["@mozilla.org/preferences-service;1"]
-						.getService(Components.interfaces.nsIPrefBranch)
+					id = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefBranch)
 						.getCharPref("app.id");
 				} catch(e) {}
 			}
 	
-			var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-							.getService(Components.interfaces.nsIPrefBranch);
+			var prefs = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefBranch);
 			switch (id) {
 				case (reminderfox.util.SEAMONKEY_ID) : idName = "SM"; break;
 				case (reminderfox.util.THUNDERBIRD_ID) :  idName = "TB3"; break;
 			}
 			reminderfox.msgnr.name = idName;
 
-			var ab3 = (typeof Components.interfaces.nsIAbItem == "object") ? true :false;
+			var ab3 = (typeof Ci.nsIAbItem == "object") ? true :false;
 
 //var msg = "reminderfox.msgnr.name: " + reminderfox.msgnr.name + "  TB ab3: " + ab3;
 //reminderfox.util.Logger('OSinfo', msg);

@@ -1,8 +1,14 @@
 
    Reminderfox  [2.1.6] release
-      as of:    Wed, 7 Feb 2018 20:55:12 +0100 (CET)
-   'reminderfox_2.1.6_release_20180207_2055.xpi'   <'20180207_2055'>
+      as of:    Tue, 20 Feb 2018 11:47:10 +0100 (CET)
+   'reminderfox_2.1.6_release_20180220_1147.xpi'   <'20180220_1147'>
    
+
+2018-02-18
+  rel.version (update prefs system)
+  -- OSswitching with json
+  -- SendPlus icon changed
+  -- 
 
 2018-02-07
   release version (update for some log strings)

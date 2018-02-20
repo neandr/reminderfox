@@ -584,7 +584,7 @@ function  rmFx_CalDAV_SyncActiveAccounts() {
 function rmFx_CalDAV_SyncAccount (accountID, xEvent) {
 //------------------------------------------------------------------------------
 	if ((xEvent != null) && (xEvent.ctrlKey == true) || (xEvent == true)){
-		console.log("Reminderfox   CalDAV_SyncAccount  account [" + accountID + "]   Renew reminders from remote." + new Date())
+//console.log("RmFX   [rmFx_CalDAV_SyncAccount]   account >" + accountID + "<   Renew reminders from remote." + new Date())
 
 		rmFx_calDAV_Renew(accountID)
 	}

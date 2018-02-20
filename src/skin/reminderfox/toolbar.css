@@ -2,46 +2,9 @@
 
 
 toolbarbutton.reminderfox-sendPlus {
-    -moz-binding: url('chrome://reminderfox/content/mail/rmFxMailIcon.xml#changeSendPlusIcon');
+	list-style-image: url("chrome://messenger/skin/icons/send.svg");
 }
 
-		.reminderfox-sendPlusTBird {
-		  list-style-image: url("chrome://reminderfox/skin/images/sendPlus.png");
-		   -moz-image-region: rect(0px,24px, 24px,0px);
-		}
-		.reminderfox-sendPlusTBird:hover {
-		  list-style-image: url("chrome://reminderfox/skin/images/sendPlus.png");
-		   -moz-image-region: rect(24px,24px, 48px,0px);
-		}
-		.reminderfox-sendPlusTB3 {
-		  list-style-image: url("chrome://reminderfox/skin/images/sendPlus.png");
-		   -moz-image-region: rect(0px,72px, 24px,48px);
-		}
-		.reminderfox-sendPlusTB3:hover {
-		  list-style-image: url("chrome://reminderfox/skin/images/sendPlus.png");
-		   -moz-image-region: rect(24px,72px, 48px,48px);
-		}
-
-
-
-
-		toolbar[iconsize="small"] .reminderfox-sendPlusTBird {
-		  list-style-image: url("chrome://reminderfox/skin/images/sendPlusSmall.png");
-		   -moz-image-region: rect(0px,16px, 16px,0px);
-		}
-		toolbar[iconsize="small"] .reminderfox-sendPlusTBird:hover {
-		  list-style-image: url("chrome://reminderfox/skin/images/sendPlusSmall.png");
-		   -moz-image-region: rect(16px,16px, 32px,0px);
-		}
-
-		toolbar[iconsize="small"] .reminderfox-sendPlusTB3 {
-		  list-style-image: url("chrome://reminderfox/skin/images/sendPlusSmall.png");
-		   -moz-image-region: rect(0px,48px, 16px,32px);
-		}
-		toolbar[iconsize="small"] .reminderfox-sendPlusTB3:hover {
-		  list-style-image: url("chrome://reminderfox/skin/images/sendPlusSmall.png");
-		   -moz-image-region: rect(16px,48px, 32px,32px);
-		}
 
 	#reminderfox-personsMailCopy {
 			list-style-image: url("chrome://reminderfox/skin/schedule/personsCopy_24.png");

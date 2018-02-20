@@ -225,11 +225,7 @@ function reminderFox_updateQuickAlarms(quickAlarmText, snoozeTime, notesText) {
 function playAlarmSound() {
 	// play a sound for notification (if the user elects to)
 	try {
-		var playSound = true;
-		try {
-			playSound = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.ALARM_SOUND);
-		} catch ( e) {
-		}
+		var playSound = reminderfox.core.getPreferenceValue(reminderfox.consts.ALARM_SOUND, true);
 		if(playSound) {
 			reminderfox.core.playSound();
 		} // end if

@@ -5,7 +5,7 @@
 
 var ALERT_LEFT = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERTSLIDER_LEFT, false);
 var ALERT_TOP = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERTSLIDER_TOP, false);
-var ALERT_MAX_SIZE = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERTSLIDER_MAX_HEIGHT, 150);
+var ALERT_MAX_SIZE = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERTSLIDER_MAX_HEIGHT, reminderfox.consts.ALERTSLIDER_MAX_HEIGHT_DEFAULT);
 
 var gOpenTime = 4000; // total time the alert should stay up once we are done animating.
 

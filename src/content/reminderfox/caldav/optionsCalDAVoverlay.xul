@@ -382,11 +382,8 @@
 
 		function rmFx_calDAV_AddAccount (accounts, accountID, newAccount) {
 		//-------------------------------------------
-//console.log("//XXX    function rmFx_calDAV_AddAccount");
-//console.trace()
-
-		reminderfox.util.Logger('calDAV', "  rmFx_calDAV_AddAccount   accounts: " + accounts
-		 + "\n  accountID: " + accountID  +"  newAccount: " + newAccount );
+		reminderfox.util.Logger('calDAV', "  [rmFx_calDAV_AddAccount]   "
+		 + "\n  accountID: " + accountID);
 
 		var nextAccount, style, tboxName, button;
 

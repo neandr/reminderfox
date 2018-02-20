@@ -319,8 +319,7 @@ reminderfox.view.ManageLoad = function(sortMode) {
 	//  "DATE");
 	// ("--- load the 'View's from .prefs to 'view_List' ---");
 	try {// gW UnicodePref
-//XX		reminderfox.view.views.Pref = reminderfox.core.getUnicodePref("views");
-		reminderfox.view.views.Pref = reminderfox.core.getPreferenceValue(reminderfox.consts.VIEWS);
+		reminderfox.view.views.Pref = reminderfox.core.getPreferenceValue(reminderfox.consts.VIEWS, "");
 		var aViewsPref = reminderfox.view.views.Pref.split(";>,")
 
 		var view_List = document.getElementById('view_List');
@@ -407,7 +406,7 @@ reminderfox.view.ViewFocus = function(mode) {
  */
 reminderfox.view.ViewAdd = function(mode) {
 //------------------------------------------------------------------------------
-	var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+	var prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 
 	var check = {
 		value : false
@@ -861,10 +860,7 @@ reminderfox.view.prefViewsLoad = function(){
 	reminderfox.view.views.Pref = "";
 	reminderfox.view.views.Label = {};
 	reminderfox.view.views.Items = {};
-
-//XX		reminderfox.view.views.Pref = reminderfox.core.getUnicodePref("views");
-	reminderfox.view.views.Pref = reminderfox.core.getPreferenceValue(reminderfox.consts.VIEWS, );
-
+	reminderfox.view.views.Pref = reminderfox.core.getPreferenceValue(reminderfox.consts.VIEWS, "");
 
 	if ((reminderfox.view.views.Pref != null) && (reminderfox.view.views.Pref != "")) {
 		var aViewsPref = reminderfox.view.views.Pref.split(";>,");
@@ -1171,7 +1167,6 @@ reminderfox.view.vSaveAndClose = function(mode){
 
 	// 'views' prefs string saved    
 	reminderfox.view.views.Pref = reminderfox.view.prefBuildStr();
-//XX	reminderfox.core.setUnicodePref("views", reminderfox.view.views.Pref);
 	reminderfox.core.setPreferenceValue(reminderfox.consts.VIEWS, reminderfox.view.views.Pref);
 	window.close();
 };

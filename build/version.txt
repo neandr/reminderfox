@@ -3,6 +3,13 @@
 ##  version.txt
 ##
 
+2018-02-20
+  rel.version 
+  -- update prefs system
+  -- OSswitching with json
+  -- SendPlus icon changed
+
+
 2018-02-07
   release version (update for some log strings)
 

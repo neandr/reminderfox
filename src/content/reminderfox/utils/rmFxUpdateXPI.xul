@@ -119,15 +119,15 @@
 
 		function openAddonsMgr(aView) {
 
-			var winEnum = Components.classes['@mozilla.org/appshell/window-mediator;1']
-				.getService(Components.interfaces.nsIWindowMediator)
+			var winEnum = Cc['@mozilla.org/appshell/window-mediator;1']
+				.getService(Ci.nsIWindowMediator)
 				.getXULWindowEnumerator(null);
 
 			while (winEnum.hasMoreElements())  {
 				var wndE = winEnum.getNext()
-					.QueryInterface(Components.interfaces.nsIXULWindow)
-					.docShell.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-					.getInterface(Components.interfaces.nsIDOMWindow);
+					.QueryInterface(Ci.nsIXULWindow)
+					.docShell.QueryInterface(Ci.nsIInterfaceRequestor)
+					.getInterface(Ci.nsIDOMWindow);
 
 				if ('BrowserOpenAddonsMgr' in wndE) {
 					wndE.BrowserOpenAddonsMgr(aView);

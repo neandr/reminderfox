@@ -13,8 +13,7 @@ if(!reminderfox.tagging)   reminderfox.tagging = {};
  */
 reminderfox.tagging.msg = function (tagName, tagOp, tagColor, messageDBHDR) {
 
-			var tagService = Components.classes["@mozilla.org/messenger/tagservice;1"]
-		                         .getService(Components.interfaces.nsIMsgTagService);
+			var tagService = Cc["@mozilla.org/messenger/tagservice;1"].getService(Ci.nsIMsgTagService);
 			var xKey = tagService.getKeyForTag(tagName); 
 
 			// add the tag to the tag-list if not already exists
@@ -44,8 +43,8 @@ reminderfox.tagging.msg = function (tagName, tagOp, tagColor, messageDBHDR) {
  */
 reminderfox.tagging.msgWithHdr = function (key, addKey, messageHdr)
 {
-	var messages = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIMutableArray);
-	var msg = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIMutableArray);
+	var messages = Cc["@mozilla.org/array;1"].createInstance(Ci.nsIMutableArray);
+	var msg = Cc["@mozilla.org/array;1"].createInstance(Ci.nsIMutableArray);
 	
 	var toggler = addKey ? "addKeywordsToMessages" : "removeKeywordsFromMessages";
 	var prevHdrFolder = null;

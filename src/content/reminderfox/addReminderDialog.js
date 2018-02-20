@@ -536,15 +536,14 @@ function rmFx_mainDialogLoad(restartSkip){
 	reminderfox.colorMap.cssFileRead();
 
 	var cssfile = reminderfox.colorMap.cssFileGet();
-	var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
-						.getService(Components.interfaces.nsIStyleSheetService);
-	var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+	var sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(Ci.nsIStyleSheetService);
+	var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
 
 	var uri = ios.newURI("file:" + cssfile.path, null, null);
 	try {
 		sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
 	} catch (ex) {
-		Components.utils.reportError(ex);
+		Cu.reportError(ex);
 	}
 
 	//gWABContact Handling
@@ -575,29 +574,10 @@ function rmFx_mainDialogLoad(restartSkip){
 	// get/set calendar/list default values (layout, width, height, etc ...)
 	reminderfox.calendar.layout.Setup();
 
-	reminderFox_highlightTodayPreference = reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS_DEFAULT;
-	try {
-		reminderFox_highlightTodayPreference = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS);
-	}
-	catch (e) {
-		}
+	reminderFox_highlightTodayPreference = reminderfox.core.getPreferenceValue(reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS, reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS_DEFAULT);
 
-	try {
-		REPEAT_PREVIOUS_OCCURRENCES = reminderfox._prefsBRANCH.getIntPref(reminderfox.consts.REPEAT_PREVIOUS_OCCURRENCES);
-	}
-	catch (e) {
-		REPEAT_PREVIOUS_OCCURRENCES = -1;
-	}
-
-	try {
-		REPEAT_UPCOMING_OCCURRENCES = reminderfox._prefsBRANCH.getIntPref(reminderfox.consts.REPEAT_UPCOMING_OCCURRENCES);
-	}
-	catch (e) {
-		REPEAT_UPCOMING_OCCURRENCES = -1;
-	}
-
-//reminderfox.core.getPreferenceValue
-
+	REPEAT_PREVIOUS_OCCURRENCES = reminderfox.core.getPreferenceValue(reminderfox.consts.REPEAT_PREVIOUS_OCCURRENCES, -1);
+	REPEAT_UPCOMING_OCCURRENCES = reminderfox.core.getPreferenceValue(reminderfox.consts.REPEAT_UPCOMING_OCCURRENCES, -1);
 	HIDE_COMPLETED_ITEMS = reminderfox.core.getPreferenceValue(reminderfox.consts.HIDE_COMPLETED_ITEMS, false);
 
 	var hideCompletedContextMenu = document.getElementById("treechildren-contextmenu-hideCompleted");
@@ -731,7 +711,7 @@ function rmFx_mainDialogLoad(restartSkip){
 	reminderfox.calendar.ui.tabListChange (tIndex);
 
 	// set Filter display based on preference
-	reminderfox.search.showFilters = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.SHOW_FILTERS);
+	reminderfox.search.showFilters = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_FILTERS, false);
 
 	if (restartSkip == null) reminderfox.calendar.filter.toggle (reminderfox.search.showFilters);
 
@@ -1034,9 +1014,9 @@ function toggleHideCompletedItems(){
 
 
 function doFind(){
-	var nsIPromptService = Components.interfaces.nsIPromptService;
+	var nsIPromptService = Ci.nsIPromptService;
 	var nsPrompt_CONTRACTID = "@mozilla.org/embedcomp/prompt-service;1";
-	var gPromptService = Components.classes[nsPrompt_CONTRACTID].getService(nsIPromptService);
+	var gPromptService = Cc[nsPrompt_CONTRACTID].getService(nsIPromptService);
 	var result = {
 		value: reminderfox.search.textFindLastString
 	};
@@ -1551,12 +1531,7 @@ function reminderFox_getAddTimeString(reminder){
 			var hours = reminder.date.getHours();
 
 			var AMorPM = REMINDER_FOX_PM;
-			var use24HourTime;
-			try {
-				use24HourTime = reminderfox._prefsBRANCH.getBoolPref(reminderfox.consts.USE_24_HOUR_TIME);
-			}
-			catch (e) {
-						}
+			var use24HourTime= reminderfox.core.getPreferenceValue(reminderfox.consts.USE_24_HOUR_TIME, false);
 			if (use24HourTime) {
 				AMorPM = "";
 				if (hours < 10) {
@@ -3161,7 +3136,7 @@ function highlightClosestUpcomingReminder(currentDate, info, lastReminder){
 
 
 	var boxobject = tree.boxObject;
-	boxobject.QueryInterface(Components.interfaces.nsITreeBoxObject);
+	boxobject.QueryInterface(Ci.nsITreeBoxObject);
 
 	// get hashmap - check for tabname
 	var tabName = reminderfox.tabInfo.tabName;
@@ -3212,7 +3187,7 @@ function findHighLight(whichTree, foundIndex, treeLength){
 	if (foundIndex != -1) {
 		var tree = document.getElementById(whichTree);
 		var boxobject = tree.boxObject;
-		boxobject.QueryInterface(Components.interfaces.nsITreeBoxObject);
+		boxobject.QueryInterface(Ci.nsITreeBoxObject);
 
 		// make sure it shows up at the top if possible
 		var first = boxobject.getFirstVisibleRow();
@@ -3404,8 +3379,8 @@ function removeTodoListItem(todo, messageIDtagging){
 function reminderfox_RevertNewNchanged(){
 	// there were changes.  Prompt user to revert/cancel
 	// get a reference to the prompt service component.
-	var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-		.getService(Components.interfaces.nsIPromptService);
+	var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
+		.getService(Ci.nsIPromptService);
 
 	var flags = promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 +
 		promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_1;
@@ -3633,7 +3608,7 @@ function removeReminder(currentReminder, promptForRecurringDelete, deleteDate, d
 				dateLabel = reminderFox_getDateVariableString(currentReminder, deleteDate);
 			}
 
-			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+			var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 			var deleteDescription = reminderfox.string("rf.add.deleteReminderInstance.description") + "\n";
 			deleteDescription += dateLabel + ": " + currentReminder.summary + "\n";
 			var flags = promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 
@@ -3909,7 +3884,7 @@ function reminderFox_toggleReminderColumns(event){
 	var row = {}, column = {}, part = {};
 	var tree = document.getElementById("reminderTree");
 	var boxobject = tree.boxObject;
-	boxobject.QueryInterface(Components.interfaces.nsITreeBoxObject);
+	boxobject.QueryInterface(Ci.nsITreeBoxObject);
 	boxobject.getCellAt(event.clientX, event.clientY, row, column, part);
 
 	var rowIndex = row.value;
@@ -3951,7 +3926,7 @@ function reminderFox_toggleTodoColumns(event){
 	var row = {}, column = {}, part = {};
 	var tree = document.getElementById("todoTree");
 	var boxobject = tree.boxObject;
-	boxobject.QueryInterface(Components.interfaces.nsITreeBoxObject);
+	boxobject.QueryInterface(Ci.nsITreeBoxObject);
 	boxobject.getCellAt(event.clientX, event.clientY, row, column, part);
 
 	var rowIndex = row.value;
@@ -4030,7 +4005,7 @@ function addTooltipWithLabel(tooltipItem, columnId, value, importantStatus, comp
 function reminderTreeTooltip(event){
 	var tree = document.getElementById("reminderTree");
 	var boxobject = tree.boxObject;
-	boxobject.QueryInterface(Components.interfaces.nsITreeBoxObject); // cast to treeboxobject to use getRowAt
+	boxobject.QueryInterface(Ci.nsITreeBoxObject); // cast to treeboxobject to use getRowAt
 	var row = {}, column = {}, part = {};
 	boxobject.getCellAt(event.clientX, event.clientY, row, column, part);
 
@@ -4202,7 +4177,7 @@ function reminderTreeTooltip(event){
 function todoTreeTooltip(event){
 	var tree = document.getElementById("todoTree");
 	var boxobject = tree.boxObject;
-	boxobject.QueryInterface(Components.interfaces.nsITreeBoxObject); // cast to treeboxobject to use getRowAt
+	boxobject.QueryInterface(Ci.nsITreeBoxObject); // cast to treeboxobject to use getRowAt
 	//boxobject.getCellAt(event.clientX, event.clientY, row, column, part);
 
 	var calDAVaccounts = reminderfox.calDAV.getAccounts()
@@ -4918,9 +4893,9 @@ function userDeleteEvent(events){ 		//gWCal
 			deleteDescription += dateLabel + ": " + descLabel + "\n";
 		}
 
-		var nsIPromptService = Components.interfaces.nsIPromptService;
+		var nsIPromptService = Ci.nsIPromptService;
 		var nsPrompt_CONTRACTID = "@mozilla.org/embedcomp/prompt-service;1";
-		var gPromptService = Components.classes[nsPrompt_CONTRACTID].getService(nsIPromptService);
+		var gPromptService = Cc[nsPrompt_CONTRACTID].getService(nsIPromptService);
 		if (gPromptService.confirm(window, reminderTitle, deleteDescription)) {
 
 			for (var i = 0; i < selectedReminders.length; i++) {
@@ -5062,9 +5037,9 @@ function userDeleteTodo(xEvent){		//gWCal
 		deleteDescription += dateLabel + descLabel + "\n";
 	}
 
-	var nsIPromptService = Components.interfaces.nsIPromptService;
+	var nsIPromptService = Ci.nsIPromptService;
 	var nsPrompt_CONTRACTID = "@mozilla.org/embedcomp/prompt-service;1";
-	var gPromptService = Components.classes[nsPrompt_CONTRACTID].getService(nsIPromptService);
+	var gPromptService = Cc[nsPrompt_CONTRACTID].getService(nsIPromptService);
 	if (gPromptService.confirm(window, reminderfox.string("rf.add.deleteToDo.title"), deleteDescription)) {
 
 		var currentTodoList = getCurrentTodoList();
@@ -5502,7 +5477,7 @@ function getAllSelectedTodos(){
 			if (v < 0 || v > treeChildren.childNodes.length - 1) {
 				reminderfox.core.logMessageLevel("  getAllSelectedTodos outside range: " + v + " > nodes: " +
 				treeChildren.childNodes.length +
-				reminderfox.tabInfo.tabName , reminderfox.consts.LOG_LEVEL_DEBUG);		//??? tabName isn't defined ???
+				reminderfox.tabInfo.tabName , reminderfox.consts.LOG_LEVEL_DEBUG);
 			}
 			else {
 				var selectedTreeItem = treeChildren.childNodes[v];
