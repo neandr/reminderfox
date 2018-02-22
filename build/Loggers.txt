@@ -1,5 +1,22 @@
-Loggers enabled insource code
+Loggers in source code
 
+-------- 2018-01 -----------
+
+calDAV, calDAVaccount, calDAVv2
+
+calndr, calndrGrid, calndrLayout, calndrDayPanel 
+
+addTest, checkData, OSinfo, icsFile
+
+AB, FolderListener, send++,
+
+http, network, remote,
+
+filtering, qalarm, userIO, Views,
+
+
+
+-------- old list -----------
 alarm	
 	
 calDAV	General use for CalDAV
