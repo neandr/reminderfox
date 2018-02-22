@@ -230,7 +230,7 @@
 
 				<menuseparator />
 
-				<menuitem label="Reminderfox News" id="reminderfox-news-open"
+				<menuitem label="Reminderfox NEWS" id="reminderfox-news-open"
 					onclick="reminderfox.go4news.callNews();" />
 
 				<menuitem label="&rf.main.help.label;"

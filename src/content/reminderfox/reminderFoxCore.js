@@ -200,9 +200,6 @@ reminderfox.consts.SHOW_FILTERS = "defaults.showFilters"; // BOOL  (def=false)
 reminderfox.consts.SHOW_REMINDERS_IN_TOOLTIP = "showRemindersInTooltip"; // BOOL
 reminderfox.consts.SHOW_REMINDERS_IN_TOOLTIP_DEFAULT = true;
 
-reminderfox.consts.SHOW_STATUS_TEXT = "showReminderStatusText"; // BOOL
-reminderfox.consts.SHOW_STATUS_TEXT_DEFAULT = true;
-
 reminderfox.consts.SHOW_TODOS_IN_TOOLTIP = "showTodosInTooltip";
 reminderfox.consts.SHOW_TODOS_IN_TOOLTIP_DEFAULT = true;
 
@@ -219,6 +216,8 @@ reminderfox.consts.SORT_COLUMNS_PREF = "sortColumns"; // CHAR
 reminderfox.consts.SHOW_WELCOME_PAGE = "showWelcomePage"; // BOOL
 
 reminderfox.consts.STATUS_TEXT_MAX_LENGTH = "statusTextMaxLength"; // INT
+reminderfox.consts.STATUS_TEXT_MAX_LENGTH_DEFAULT = 40;
+
 reminderfox.consts.STORE_FILE = "storeFile"; // CHAR
 
 reminderfox.consts.SUBSCRIPTIONS = "subscriptions"; // CHAR
@@ -228,11 +227,11 @@ reminderfox.consts.TODAYS_REMINDERS_LABEL_DEFAULT = "[reminderDesc] ([time])";
 
 reminderfox.consts.TODO_LISTS = "todoLists"; // CHAR
 
-reminderfox.consts.TOOLBAR = "toolbar"; // CHAR
-reminderfox.consts.TOOLBAR_DEFAULT = "status-bar";
+//reminderfox.consts.TOOLBAR = "toolbar"; // CHAR
+//reminderfox.consts.TOOLBAR_DEFAULT = "status-bar";
 
-reminderfox.consts.TOOLBAR_POSITION = "toolbarPosition"; // INT
-reminderfox.consts.TOOLBAR_POSITION_DEFAULT = -1;
+//reminderfox.consts.TOOLBAR_POSITION = "toolbarPosition"; // INT
+//reminderfox.consts.TOOLBAR_POSITION_DEFAULT = -1;
 
 reminderfox.consts.UPCOMING_REMINDER_DAYS_PREF = "upcomingReminderDays"; // INT
 reminderfox.consts.UPCOMING_REMINDER_DAYS_DEFAULT = 15;
@@ -496,7 +495,7 @@ reminderfox.core.initUserPrefsArray= function(){
     reminderfox._prefsUser[reminderfox.consts.REPEAT_UPCOMING_OCCURRENCES] = reminderfox._prefsTYPE.INT;
     reminderfox._prefsUser[reminderfox.consts.SHOW_FILTERS] = reminderfox._prefsTYPE.BOOL;
     reminderfox._prefsUser[reminderfox.consts.SHOW_REMINDERS_IN_TOOLTIP] = reminderfox._prefsTYPE.BOOL;
-    reminderfox._prefsUser[reminderfox.consts.SHOW_STATUS_TEXT] = reminderfox._prefsTYPE.BOOL;
+
     reminderfox._prefsUser[reminderfox.consts.SHOW_TODOS_IN_TOOLTIP] = reminderfox._prefsTYPE.BOOL;
     reminderfox._prefsUser[reminderfox.consts.SHOW_WEEK_NUMS_PREF] = reminderfox._prefsTYPE.INT;
 
@@ -521,8 +520,8 @@ reminderfox.core.initUserPrefsArray= function(){
   //  reminderfox._prefsUser[reminderfox.consts.TODO_LISTS] = reminderfox._prefsTYPE.COMPLEX;    OK
     reminderfox._prefsUser[reminderfox.consts.TODO_LISTS] = reminderfox._prefsTYPE.CHAR;
 
-    reminderfox._prefsUser[reminderfox.consts.TOOLBAR] = reminderfox._prefsTYPE.CHAR;
-    reminderfox._prefsUser[reminderfox.consts.TOOLBAR_POSITION] = reminderfox._prefsTYPE.INT;
+//    reminderfox._prefsUser[reminderfox.consts.TOOLBAR] = reminderfox._prefsTYPE.CHAR;
+//    reminderfox._prefsUser[reminderfox.consts.TOOLBAR_POSITION] = reminderfox._prefsTYPE.INT;
 
     reminderfox._prefsUser[reminderfox.consts.UPCOMING_REMINDER_DAYS_PREF] = reminderfox._prefsTYPE.INT;
   //  reminderfox._prefsUser[reminderfox.consts.UPCOMING_REMINDERS_LABEL] = reminderfox._prefsTYPE.COMPLEX;  OK
@@ -1027,11 +1026,6 @@ reminderfox.core.loadDefaultPreferences= function(){
                 reminderfox.core.launchWelcomePage(false);
 
                 reminderfox.core.handleMigration(oldVersionNumber);
-
-                //	Firefox 4 disables the addon-bar (status-bar) by default, meaning that new users will have
-                // a poor first experience.  So on first install/update on FF4, let's just make sure the
-                // addon-bar is shown
-                reminderfox.overlay.switchStatusAddonBar();
             }
             // set version number to new current version
             reminderfox.core.setPreferenceValue(reminderfox.consts.MIGRATED_PREF, reminderfox.consts.MIGRATED_PREF_VERSION);
@@ -1068,10 +1062,6 @@ reminderfox.core.loadDefaultPreferences= function(){
 			reminderfox.core.setICSfile();
 		}
 	}
-
-  // 2018-01   ??   reminderfox.consts.TOOLBAR   vs   reminderfox.consts.TOOLBAR1   ??
-  //  var statusbarDisplay = reminderfox.core.getPreferenceValue(reminderfox.consts.TOOLBAR1, reminderfox.consts.TOOLBAR1_DEFAULT);
-  //  document.getElementById("reminderFox-statusLabel").setAttribute("hidden", statusbarDisplay);
 
     reminderfox.core.setPreferenceValue(reminderfox.consts.LAST_MODIFIED, "")
 
@@ -2054,10 +2044,10 @@ reminderfox.core.playSound= function(mode, savefilePath){
 				uri = _ioService.newFileURI(localFile);
 		}
 		catch (e) {
-			uri = _ioService.newURI(aPath, null, null);
+			// uri = _ioService.newURI(aPath, null, null);    //XXX  << aPath ???
 		}
 
-		if (uri)
+		if (uri != null)
 			_soundService.play(uri);
 		}
 };
@@ -6660,11 +6650,11 @@ reminderfox.core.firstStart= function(){
         reminderfox.core.reminderFoxTodosArray = {};
         reminderfox.core.reminderFoxEvents[0] = newReminderToBeAdded;
 
-        // load the foxy icon
+
+        // load the smartFoxy icon to the system default bar
         var defaultToolBar = ("@mozilla.org/messenger;1" in Cc)
             ? "tabbar-toolbar" : "nav-bar";
-        reminderfox.core.installButton(defaultToolBar, "reminderFox_openButton");
-
+        reminderfox.core.installSmartFoxyButton(defaultToolBar, "reminderFox_openButton");
 
         // TODO: delay // 2 seconds
         reminderfox.core.writeOutRemindersAndTodos(false);		// this is for first start 
@@ -7228,8 +7218,10 @@ reminderfox.core.foxyStatus= function(todayEvents, important, upcomingEvents, ev
     }
 }
 
-
-reminderfox.core.installButton= function(toolbarId, id, afterId) {
+/*
+ * Used with smartFoxy button
+ */
+reminderfox.core.installSmartFoxyButton= function(toolbarId, id, afterId) {
     if (!document.getElementById(id)) {
         var toolbar = document.getElementById(toolbarId);
 
@@ -7262,13 +7254,13 @@ reminderfox.core.smartFoxySwitch= function(mode) {
 
     /*------
      * TB _____:
-     0001: rmFXbutton.parentElement.id	$[0] = [string] "tabbar-toolbar"
+     0001: rmFXbutton.parentElement.id	$[0] = [string] "tabbar-toolbar"   << default
      0001: rmFXbutton.parentElement.id 	$[0] = [string] "mail-bar3"
      0001: rmFXbutton.parentElement.id	$[0] = [string] "mail-toolbar-menubar2"
      * 
      * FX ______:
+     0001: rmFXbutton.parentElement.id	$[0] = [string] "nav-bar"         << default
      0001: rmFXbutton.parentElement.id	$[0] = [string] "addon-bar"
-     0001: rmFXbutton.parentElement.id	$[0] = [string] "nav-bar"
      0001: rmFXbutton.parentElement.id	$[0] = [string] "toolbar-menubar"
      -----------*/
 
@@ -7310,8 +7302,6 @@ reminderfox.core.smartFoxySwitch= function(mode) {
         var currentSet = document.getElementById(currentBarName).currentSet;
         var smartFoxyOnBar = (currentSet.indexOf("reminderFox_openButton") > -1);
 
-        //reminderfox.util.Logger('Alert', "currentset: " + currentSet + " -- " + smartFoxyOnBar );
-
         if (smartFoxyOnBar) {
             var aCurrentSet = currentSet.split(",");
             for (var n=0; n < aCurrentSet.length; n++) {
@@ -7327,6 +7317,7 @@ reminderfox.core.smartFoxySwitch= function(mode) {
     document.getElementById(currentBarName).setAttribute("currentset", document.getElementById(currentBarName).currentSet);
     document.persist(currentBarName,"currentset");
 }
+
 
 //gWTESTalarm
 // run a 'Delete' or 'Update' of a remote calendar event/task

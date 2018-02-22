@@ -69,7 +69,7 @@
 
 		<!--   Box to control  Reminderfox NEWS  -->
 		<hbox id="reminderfox-News-box" hidden="true">
-			<button label="Reminderfox News" id="newsButton"
+			<button label="Reminderfox NEWS" id="newsButton"
 				class="reminderfox-calendar-iconLabel reminderFox_BoldBlue" oncommand="reminderfox.go4news.callNews();" />
 		</hbox>
 

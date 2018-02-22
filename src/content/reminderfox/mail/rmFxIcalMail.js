@@ -90,7 +90,7 @@ reminderfox.iCal.getAttachments= function () {
  *                      on attachmentList: reminderfox-mail-ICS_List
  *                      on attachmentItem: reminderfox-mail-ICS_Item
  *
- * Drag&Drop  to SmartFoxy or addon/statusbar of FX/TB
+ * Drag&Drop  to SmartFoxy of FX/TB
  *  from messagePane     reminderfox-mail-ICS_Msg
  *  from attachments     reminderfox-mail-ICS_Item
  *

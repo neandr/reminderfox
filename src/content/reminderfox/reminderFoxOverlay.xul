@@ -170,33 +170,6 @@
 		</panel>
 	</popupset>
 
-<!--  //gWD&D   added for text/link/iCal/file   -->
-<!--    DISABLED see Bug 1246481 - With ReminderFox add-on active: all Toolbar related Drag and Dop fails -->
-
-	<statusbar id="status-bar">	
-
-		<keyset id="reminderFox_keyset">
-		</keyset>
-
-		<statusbarpanel id="reminderFox-statusLabel"
-				tooltip="reminderFox_tip"
-				class="statusbarpanel-iconic"
-
-				context="reminderfox-options-contextmenu"
-				oncontextmenu="reminderfox.overlay.activateOptionsContext(event);"
-				onclick="reminderfox.overlay.openDoubleClickDialog(event);"
-				status="none">
-
-		</statusbarpanel>
-	</statusbar>
-
-
-<!--
-				ondragenter="event.stopPropagation(); event.preventDefault();"
-				ondragover="event.stopPropagation(); event.preventDefault();"
-				ondrop="event.stopPropagation(); event.preventDefault(); reminderfox.util.JS.dispatch('userIO', event);">
--->
-
 
 	<popup id="contentAreaContextMenu">  <!-- context-sep-open" -->
 		<menuitem label="&rf.importing.title;" insertbefore="context-sep-selectall" 
@@ -238,12 +211,12 @@
 		ondragenter="event.stopPropagation(); event.preventDefault();"
 		ondragover="event.stopPropagation(); event.preventDefault();"
 		ondrop="event.stopPropagation(); event.preventDefault(); 
-		  reminderfox.util.JS.dispatch('userIO', event);">
+		reminderfox.util.JS.dispatch('userIO', event);">
 			<hbox>				
 				<image id="smartfoxy_image_bow" /> 
 			</hbox>
-        <label id="reminderfox_smartFoxyBadge_bow"  hidden="true" value="" important="false"/>
-    </toolbarbutton>
+		<label id="reminderfox_smartFoxyBadge_bow"  hidden="true" value="" important="false"/>
+	</toolbarbutton>
 	
 
 <!-- **************** Thunderbird / Seamonkey   ************** -->
@@ -387,12 +360,12 @@
 	</toolbarpalette>
 
 
-		<!-- popup on calendar day with day-header and all day events -->
-		<panel id="reminderfox-calendar-dayPanel" flex="0" width="400px" 
-				onmouseleave= "reminderfox.calendar.ui.panelLeave(this)">
-			<description id="reminderfox-calendar-dayPanelItems" value="Really!"
-				style="color: red;" />
-		</panel>
+	<!-- popup on calendar day with day-header and all day events -->
+	<panel id="reminderfox-calendar-dayPanel" flex="0" width="400px" 
+			onmouseleave= "reminderfox.calendar.ui.panelLeave(this)">
+		<description id="reminderfox-calendar-dayPanelItems" value="Really!"
+			style="color: red;" />
+	</panel>
 
 
 	<!-- PANEL for Status information -->

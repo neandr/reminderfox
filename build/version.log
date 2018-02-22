@@ -1,14 +1,21 @@
 
    Reminderfox  [2.1.6] release
-      as of:    Tue, 20 Feb 2018 11:47:10 +0100 (CET)
-   'reminderfox_2.1.6_release_20180220_1147.xpi'   <'20180220_1147'>
+      as of:    Thu, 22 Feb 2018 18:50:25 +0100 (CET)
+   'reminderfox_2.1.6_release_20180222_1850.xpi'   <'20180222_1850'>
    
 
-2018-02-18
-  rel.version (update prefs system)
-  -- OSswitching with json
+2018-02-22
+  Release version general:
+  -- update prefs system
+  -- OSswitching - prefs using json format
+  -- Statusbar handling has been changed by Mozilla (partially removed),
+     so Reminderfox starting with vers.2.1.6 has removed the Statusbar usage.
+     Instead use SmartFoxy (see Options --> tab:Access)
+  For Thunderbird:
   -- SendPlus icon changed
-  -- 
+  -- Reminders for Addressbook contact switchable between US/EU format
+     (see Options --> tab:Access)
+
 
 2018-02-07
   release version (update for some log strings)

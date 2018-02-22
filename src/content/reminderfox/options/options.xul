@@ -248,7 +248,7 @@
 								</vbox>
 
 								<hbox>
-									<menulist id="reminderFox-smartfoxy-menu">
+									<menulist id="reminderFox-smartfoxy-menu" oncommand="smartFoxyMenuSet()">
 										<menupopup>
 											<menuitem label="&rf.options.smartFoxy.none;" value="0" />
 											<menuitem label="&rf.options.smartFoxy.todays;" value="1" />
@@ -261,56 +261,19 @@
 									value="&rf.main.tip.label;"  tooltiptext="&rf.options.smartFoxy.badge;"/>
 							</row>
 
-							<row align="center" valign="bottom">
-								<vbox>
-									<checkbox id="reminderFox-bowText-control" oncommand="reminderFox_bowTextChanged(this)"
-									label="&rf.options.bow;"/>
-									<description class="rmFx_descBox">&rf.options.bow.description;</description>
-								</vbox>
-
-								<hbox>
-									<menulist id="reminderFox-list-bars" 
-										oncommand="reminderFox_populatePositions();" width="280px">
-										<menupopup id="reminderFox-popup-bars" />
-									</menulist>
+							<row align="center" valign="center">
+								<hbox align="center" >
+									<description class="rmFx_descBox" style="">Today's reminders text length</description>
 								</hbox>
-							</row>
-
-							<row align="center" valign="center">
-								<description class="rmFx_descBox">&rf.options.bow.position.label;</description>
-								<vbox>
-									<radiogroup id="reminderFox-group-position" onselect="reminderFox_groupPositionChanged()">
-										<row align="center">
-											<spacer width="10px" />
-											<radio group="position" label="&rf.options.display.placement.last.label;"
-												value="-1" />
-											<radio group="position"
-												label="&rf.options.display.placement.specificPosition.label;"
-												value="0" />
-											<hbox align="center">
-												<textbox id="reminderFox-text-position" size="2"
-													maxlength="3" />
-												<label id="reminderFox-text-position-valid" class="valid-label" />
-											</hbox>
-										</row>
-									</radiogroup>
-								</vbox>
-							</row>
-
-							<row align="center" valign="center">
-								<description class="rmFx_descBoxXXX">&rf.options.display.limiStatusLength.label;</description>
-
 								<hbox align="center">
-									<label class="valid-label"
-										value="&rf.options.bow.text;"  />
-									<textbox id="reminderFox-status-length" size="2"
-										maxlength="4" />
-									<label class="valid-label" 
-										value="&rf.options.display.limiStatusCharacters.label;"/>
+									<label class="valid-label" value="Limit text to"/>
+									<textbox id="reminderFox-status-length" 
+										editable="true" size="2" maxlength="4" value="20" />
+									<label class="valid-label" value="characters"/>
 								</hbox>
 							</row>
-
 						</rows>
+
 					</grid>
 				</groupbox>
 

@@ -152,7 +152,7 @@ reminderfox.overlay.getAlarmDelay=function() {
 
 /**
  * Open the Reminderfox Add-Dialog with setting the [Add ] to 'reminders' or 'todos
- * Works with bow icon on Statusbar ONLY!!
+ * Works with bow icon
  */
 reminderfox.overlay.openDoubleClickDialog= function(event){
     if (event.button == 0) {
@@ -1124,10 +1124,12 @@ reminderfox.overlay.createToolTip= function(todayRemindersArr, upcomingReminders
         }
     } catch (ex) {}
 
+/*------------
     // we'll set the icon depending on if there's current, upcoming,
     // or no reminders
     var icon = document.getElementById('reminderFox-statusLabel');
     icon.setAttribute("status", "noReminders");
+-------------- */
 
     var todosArr = reminderfox.overlay.getVisibleTodos();
 
@@ -1236,22 +1238,6 @@ reminderfox.overlay.createToolTip= function(todayRemindersArr, upcomingReminders
                     }
                 }
             }
-        }
-    }
-
-    var alarmsEnabled = true;
-    var alertType = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_ENABLE, reminderfox.consts.ALERT_ENABLE_ALL);
-    if (alertType.indexOf(reminderfox.consts.ALERT_SUSPEND) != -1) {
-        alarmsEnabled = false;
-    }
-    // if alarms are not enabled, we will keep to default status as an indicator that alarms are disabled
-    if (alarmsEnabled) {
-        if (todayRemindersArr.length > 0) {
-            icon.setAttribute("status", "currentReminder");
-        }
-        else
-        if (upcomingRemindersArr.length > 0) {
-            icon.setAttribute("status", "upcomingReminder");
         }
     }
 }
@@ -1788,32 +1774,6 @@ reminderfox.overlay.storeTimeOfLastUpdate= function(){
     }
 }
 
-/**
- * Show / Hide the 'bow&todaysEvents' based on Options setting
- * If 'Show' is selected  the [Add-on Bar] (on FX) / the [Status Bar] (on TB)
- * will be shown. 'Hide' will only remove 'bow&todaysEvents' leave the bar open.
- */
-reminderfox.overlay.switchStatusAddonBar= function(){
-    var statusbarDisplay = reminderfox.core.getPreferenceValue(reminderfox.consts.TOOLBAR, reminderfox.consts.TOOLBAR_DEFAULT);
-
-    var elmStatus = document.getElementById("reminderFox-statusLabel");
-    if (elmStatus) {
-        document.getElementById("reminderFox-statusLabel").setAttribute("hidden", !statusbarDisplay);
-        if (reminderfox.util.messenger()) {		// --- on Thunderbird ---
-            if (statusbarDisplay) {
-                if (document.getElementById("status-bar") != null)
-                    document.getElementById("status-bar").setAttribute("hidden", !statusbarDisplay);
-            }
-
-        } else {		// --- on Firefox ---
-            if (statusbarDisplay) {
-                if (document.getElementById("addon-bar") != null) {
-                    document.getElementById("addon-bar").collapsed = false;
-                }
-            }
-        }
-    }
-};
 
 reminderfox.overlay.storeTimeOfLastProcessed= function(){
     // output the last time of update for debugging, but only if the
@@ -2026,8 +1986,6 @@ reminderfox.overlay.initializeReminderFox= function(clearReminders){
 
 reminderfox.overlay.updateRemindersInWindow= function(){
 //------------------------------------------------------------------------------
-    var text = document.getElementById('reminderFox-statusLabel');
-    if (text != null) {
         var reminderString = "";
 
         var todaysAndUpcomingReminders = reminderfox.overlay.getTodaysAndUpcomingReminders();
@@ -2043,55 +2001,19 @@ reminderfox.overlay.updateRemindersInWindow= function(){
             }
         }
 
-        if (reminderString != "") {
-            // get preference for how many chars to make this
-            var statusTextMaxLen = reminderfox.core.getPreferenceValue(reminderfox.consts.STATUS_TEXT_MAX_LENGTH, 40);
+        // get preference for how many chars to make this
+        var statusTextMaxLen = reminderfox.core.getPreferenceValue(reminderfox.consts.STATUS_TEXT_MAX_LENGTH, 
+                  reminderfox.consts.STATUS_TEXT_MAX_LENGTH_DEFAULT);
 
-            // don't want text on status bar too long; truncate it after it gets big
-            if (reminderString.length > statusTextMaxLen) {
-                reminderString = reminderString.substring(0, statusTextMaxLen) + "...";
-            }
-            if (statusTextMaxLen == 0) reminderString = "";
-
-            var alarmsEnabled = true;
-            var alertType = reminderfox.core.getPreferenceValue(reminderfox.consts.ALERT_ENABLE, reminderfox.consts.ALERT_ENABLE_ALL);
-            if (alertType.indexOf(reminderfox.consts.ALERT_SUSPEND) != -1) {
-                alarmsEnabled = false;
-            }
-            // if alarms are not enabled, we will keep to default status as an indicator that alarms are disabled
-            if (alarmsEnabled) {
-                if (important) {
-                    text.setAttribute("style", "color: red;");
-                }
-                else {
-                    text.removeAttribute("style");
-                }
-            }
-            else {
-                text.setAttribute("style", "color: grey;  text-decoration: line-through;");
-            }
-
-            var showStatusText = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_STATUS_TEXT, reminderfox.consts.SHOW_STATUS_TEXT_DEFAULT);
-
-            if (showStatusText) {
-                text.setAttribute("class", "statusbarpanel-iconic-text");
-                text.setAttribute("label", reminderString);
-            }
-            else {
-                // user doesn't want the reminder text - just use icon
-                text.setAttribute("class", "statusbarpanel-iconic");
-            }
-
+        // don't want text on status bar too long; truncate it after it gets big
+        if (reminderString.length > statusTextMaxLen) {
+            reminderString = reminderString.substring(0, statusTextMaxLen) + "...";
         }
-        else {
-            text.setAttribute("class", "statusbarpanel-iconic");
-        }
-
+        if (statusTextMaxLen == 0) reminderString = "";
 
         //smartFoxy button change color if todays reminders
         reminderfox.core.foxyStatus(todayReminders, important, todaysAndUpcomingReminders.upcoming, reminderString)
         reminderfox.overlay.createToolTip(todayReminders, todaysAndUpcomingReminders.upcoming);
-    }
 }
 
 
@@ -2672,13 +2594,6 @@ reminderfox.overlay.start_postInit= function() {
             reminderfox.overlay.bindKeys();
         }
     }
-
-// *** old statusbar
-    reminderfox.overlay.moveBox();
-
-    // moved to only run the very first time after an install (in reminderfox.core.loadDefaultPreferences)
-    // we don't want to override user's addon-bar visibility state once they set it
-    //reminderfox.overlay.switchStatusAddonBar();
 
     var menu = document.getElementById("contentAreaContextMenu");
     if ( menu != null ) {
@@ -3661,76 +3576,6 @@ function reminderfox_PrintTemplatesCopy (){
         } // copy
     };
 };
-
-
-// *** old statusbar
-
-reminderfox.overlay.insertAtIndex= function(aParent, aChild, aIndex){
-    var children = aParent.childNodes;
-    if ((children.length == 0) || (aIndex >= children.length) || (aIndex < 0)) {
-        aParent.appendChild(aChild);
-    }
-    else {
-        aParent.insertBefore(aChild, children[aIndex]);
-    }
-}
-
-
-reminderfox.overlay.moveBox= function(){
-    var toolbarPref = reminderfox.core.getPreferenceValue(reminderfox.consts.TOOLBAR, reminderfox.consts.TOOLBAR_DEFAULT);
-
-    //check if box is in the right location
-    var toolbar = document.getElementById(toolbarPref);
-    var box = document.getElementById("reminderFox-statusLabel");
-
-    // if user has set to use no status bar, then hide it
-    if (toolbarPref == "none") {
-        box.setAttribute("hidden", "true");
-        return;
-    }
-    else {
-        box.removeAttribute("hidden");
-    }
-
-    var position = reminderfox.core.getPreferenceValue(reminderfox.consts.TOOLBAR_POSITION, -1);
-
-    //if toolbar doesn't exist move to default location
-    if (!toolbar) {
-        reminderfox.core.setPreferenceValue(reminderfox.consts.TOOLBAR_POSITION, reminderfox.consts.TOOLBAR_DEFAULT);
-        reminderfox.core.setPreferenceValue(reminderfox.consts.TOOLBAR_POSITION, reminderfox.consts.TOOLBAR_POSITION_DEFAULT);
-        return;
-    }
-
-    // bail if it is in the right place
-    if (reminderfox.core.indexOf(toolbar, box, false) == position) {
-        return;
-    }
-
-    //remove us from parent
-    box.parentNode.removeChild(box);
-
-    reminderfox.overlay.insertAtIndex(toolbar, box, position);
-
-    // add a check to make sure it's there...
-    var found = false;
-    var children = toolbar.childNodes;
-    for (var i = 0; i < children.length; i++) {
-        if (children[i] == box) {
-            found = true;
-            break;
-        }
-    }
-    if (!found) { // if it's not found, add it to the default status bar
-        var toolbar = document.getElementById("status-bar");
-        if (box == null) {
-            box = document.getElementById("reminderFox-statusLabel");
-        }
-        if (toolbar != null && box != null) {
-            toolbar.appendChild(box);
-        }
-    }
-}
-
 
 
 reminderfox.overlay.ContextMenuPopup= function(){

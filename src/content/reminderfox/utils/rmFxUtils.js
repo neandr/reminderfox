@@ -3180,7 +3180,7 @@ reminderfox.online = {
 
 
 /**
- * Support "Reminderfox News" 
+ * Support "Reminderfox NEWS" 
  */
 if (!reminderfox.go4news)    reminderfox.go4news = {};
 
@@ -3223,7 +3223,7 @@ reminderfox.go4news = {
 			reminderfox.core.setPreferenceValue(reminderfox.consts.NEWS, true);
 		}
 		else {
-			msg = " Reminderfox NEWS    *** NO news *** ";
+			msg = "Reminderfox NEWS   Not new:  " + this.currentNewsDate;
 			reminderfox.core.getPreferenceValue(reminderfox.consts.NEWS, false);
 		}
 		console.log(msg);
@@ -3287,9 +3287,10 @@ reminderfox.go4news = {
 			if (call.callnext != null) {
 				call[call.callnext]()
 			}
+		//	console.log("Reminderfox  NEWS as of: ", this.currentNewsDate);
 
 		} else {  // ERROR Handling
-			console.log("Reminderfox  News missing! *** \nCheck News address.");
+			console.log("Reminderfox  NEWS missing: Check News address ");
 		}
 	},
 

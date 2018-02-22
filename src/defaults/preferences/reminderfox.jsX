@@ -77,7 +77,6 @@ pref("extensions.reminderFox.smartFoxy", 2);
 pref("extensions.reminderFox.smartFoxyBar", "tabbar-toolbar");
 pref("extensions.reminderFox.sortColumns", "");
 pref("extensions.reminderFox.status-bar", "");
-pref("extensions.reminderFox.statusbarDisplay", false);
 pref("extensions.reminderFox.statusTextMaxLength", 40);
 pref("extensions.reminderFox.storeFile", "");
 pref("extensions.reminderFox.subscriptions", "");
