@@ -1,5 +1,6 @@
 [2018-02-22] Reminderfox News Date
 
-Note: To build the Reminderfox NEWS "ReText" -- 'Simple but powerful editor for Markdown' -- is used and stored as .MD file. 
-It also can export a HTML page.
+Note: 
+ To build the Reminderfox NEWS "ReText -- A simple but powerful editor for Markdown" -- is used. 
+It stores the document as a .MD file but can export to a .HTML page as well.
 For more info see:  https://github.com/retext-project/retext
