@@ -272,6 +272,7 @@ reminderfox.category.saveGroups = function(mode){
 			rmCategoriesStandard += reminderfox.util.escapeCommas(catMainList.childNodes[i].label) + ",";
 		}
 	}
+	rmCategoriesStandard = reminderfox.category.Clean(rmCategoriesStandard);
 	if (mode != null) {
 		var catArray = reminderfox.category.Array(rmCategoriesStandard);
 		if (mode == 'up') rmCategoriesStandard = catArray.sort().join(',');

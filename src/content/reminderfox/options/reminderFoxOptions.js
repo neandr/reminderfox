@@ -1160,9 +1160,9 @@ function reminderFox_updateOptions() {
 
 	// set the CalDAV Default Account
 	var mIndex = document.getElementById("rmFx_CalDAV_syncDefaultAccount").selectedIndex;
-	if (mIndex == 0) reminderfox.core.setPreferenceValue(reminderfox.consts.CALDAV_DEFAULT_ACCOUNT, "--")
+	if (mIndex == 0) reminderfox.core.setPreferenceValue (reminderfox.consts.CALDAV_DEFAULT_ACCOUNT, "--")
 	else
-		reminderfox.core.setPreferenceValue(reminderfox.consts.CALDAV_DEFAULT_ACCOUNT,
+		reminderfox.core.setPreferenceValue (reminderfox.consts.CALDAV_DEFAULT_ACCOUNT,
 			document.getElementById("rmFx_CalDAV_syncDefaultAccount").label );
 
 	// save of remote file options
@@ -1246,6 +1246,14 @@ function reminderFox_saveNetworkOptions() {
 * save CalDAVaccounts from tab:'Sync'
 */
 function reminderFox_calDAVsave() {
+
+	// set the CalDAV Default Account
+	var mIndex = document.getElementById("rmFx_CalDAV_syncDefaultAccount").selectedIndex;
+	if (mIndex == 0) reminderfox.core.setPreferenceValue (reminderfox.consts.CALDAV_DEFAULT_ACCOUNT, "--")
+	else
+		reminderfox.core.setPreferenceValue (reminderfox.consts.CALDAV_DEFAULT_ACCOUNT,
+			document.getElementById("rmFx_CalDAV_syncDefaultAccount").label );
+
 	var calDAV_calendars = document.getElementById("calDAV_calendars");
 	rmFx_CalDAV_accounts = calDAV_calendars.children.length -1;
 

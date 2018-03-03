@@ -102,7 +102,7 @@ reminderfox.search.textSearchMenuChange= function(xThis){
 	reminderfox.search.textSearchString = "";
 	reminderfox.search.HighlightHeader(reminderfox.search.textSearchType);
 	refillLists();
-	reminderfox.search.focusAddEvent();
+	reminderfox.search.advanceFocus();
 	return true;
 };
 
@@ -123,12 +123,14 @@ reminderfox.search.textSearchBoxClear= function(){
 	reminderfox.search.textSearchString = "";
 	reminderfox.search.HighlightHeader();
 	refillLists();
-	reminderfox.search.focusAddEvent();
+	reminderfox.search.advanceFocus();
 };
 
 
-reminderfox.search.focusAddEvent= function() {
+reminderfox.search.advanceFocus= function() {
 //------------------------------------------------------------------------------
+	document.commandDispatcher.advanceFocus();   // 2.1.6  to remove focus from textbox 
+/*----
 	// if we are in calendar mode, focus on add-event (icon-only button)
 	// tfm: for some reason isLegacy means "use single bar".  Not sure why.
 	if (reminderfox.core.isLegacy ) {
@@ -138,7 +140,8 @@ reminderfox.search.focusAddEvent= function() {
 	else {
 		document.getElementById("reminderfox-calendar-add").focus();
 	}
-}
+---------*/
+};
 
 
 /**
@@ -146,8 +149,6 @@ reminderfox.search.focusAddEvent= function() {
  */
 reminderfox.search.searchTextMenuItem= function(menuNo){
 //------------------------------------------------------------------------------
-reminderfox.util.Logger('filtering', ".search.searchTextMenuItem   menuNo: " + menuNo);
-
 	var menu = document.getElementById('rmFx-searchText-menuItems');
 	if (menu == null) return;
 
@@ -166,8 +167,6 @@ reminderfox.util.Logger('filtering', ".search.searchTextMenuItem   menuNo: " + m
 reminderfox.search.searchTextSpyglass= function(menuNo){
 //------------------------------------------------------------------------------
 	if (reminderfox.search.showFilters == false) return;
-
-	reminderfox.util.Logger('filtering', ".search.searchTextSpyglass  menuNo: " + menuNo);
 
 	reminderfox.search.textSearchType = (menuNo != null) ? menuNo : 0;
 	reminderfox.search.searchTextMenuItem (menuNo);
@@ -318,8 +317,7 @@ reminderfox.search.onSearchInput= function(){
 				// after clearing text box, set the cursor back to the text serach box;
 				// otherwise gives a bad experience where focus shifts to Add Event 
 				// when typing/clearing the text box manually
-				var desc = document.getElementById("rmFx-searchText-box");
-				desc.focus();
+				document.getElementById("rmFx-searchText-box").focus();
 			} else {
 				// tfm Aug 14, 2012: not sure what searchTextSpyglass does. But it causes weird behavior of
 				// refocusing the cursor at the end of the text string even if user puts 
@@ -745,7 +743,7 @@ function rmFx_mainDialogLoad(restartSkip){
 		}
 	}
 	reminderFox_updateFoxyBadge();
-	reminderfox.search.focusAddEvent(); 
+	reminderfox.search.advanceFocus(); 
 
 	// start sync in background for Remote Calendars
 	reminderfox.online.status('rmFx_CalDAV_updatePending','')
@@ -1699,8 +1697,6 @@ function reminderFox_getStartAndEndDates(filtersTypeIndex, useToday, showAll) {
 		case 0: {// year
 			startAndEnd.start = new Date(year, 0, 1);
 			startAndEnd.end = new Date(year, 11, 31);
-//			startAndEnd.start = new Date(year, -nMonth, 1);		//YYYY
-//			startAndEnd.end = new Date(year, 11 + nMonth, 31);				//YYYY
 			break;
 		}
 
@@ -1708,8 +1704,6 @@ function reminderFox_getStartAndEndDates(filtersTypeIndex, useToday, showAll) {
 			var endDay = reminderfox.date.getValidDateForMonth(year, month, 31);
 			startAndEnd.start = new Date(year, month, 1);
 			startAndEnd.end = new Date(year, month, endDay);
-//			startAndEnd.start = new Date(year, month-1, 1);			//YYYY
-//			startAndEnd.end = new Date(year, month+1, endDay);		//YYY
 			break;
 		}
 

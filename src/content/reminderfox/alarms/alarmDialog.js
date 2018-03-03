@@ -208,11 +208,11 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 		var snoozeUnitsIndex = 0;
 		var defaultActionIndex = 0;
 		try {
-			snoozeTime = reminderfox._prefsBRANCH.getIntPref(reminderfox.consts.ALARM_SNOOZE_TIME_DEFAULT);
+			snoozeTime = reminderfox.core.getPreferenceValue(reminderfox.consts.ALARM_SNOOZE_TIME_DEFAULT, 5);
 			if(snoozeTime != null && reminderfox.util.isInteger(snoozeTime)) {
 				snoozeTimeList.label = snoozeTime;
 			}
-			snoozeUnitsIndex = reminderfox._prefsBRANCH.getIntPref(reminderfox.consts.ALARM_DEFAULTS_SNOOZE_UNITS);
+			snoozeUnitsIndex = reminderfox.core.getPreferenceValue(reminderfox.consts.ALARM_SNOOZE_UNITS_DEFAULT, 0);
 			if(snoozeUnitsIndex != null && reminderfox.util.isInteger(snoozeUnitsIndex)) {
 				timeUnitsList.selectedIndex = snoozeUnitsIndex;
 			}
@@ -220,7 +220,7 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 		} catch ( e) {
 		}
 	}
-	defaultActionIndex = reminderfox._prefsBRANCH.getIntPref(reminderfox.consts.ALARM_SNOOZE_ACTION_DEFAULT);
+	defaultActionIndex = reminderfox.core.getPreferenceValue(reminderfox.consts.ALARM_SNOOZE_ACTION_DEFAULT, 0);
 	if(defaultActionIndex != null && reminderfox.util.isInteger(defaultActionIndex)) {
 		actionList.selectedIndex = defaultActionIndex;
 	}

@@ -1240,13 +1240,13 @@ function saveEvent(reminderfoxEvent) {
 		//			return false;
 		//		}
 
-	// Check if the date span (end-start date) is greater the repeat interval
-	if (saveEventRepeat(reminderfoxEvent)) {
+		// Check if the date span (end-start date) is greater the repeat interval
+		if (saveEventRepeat(reminderfoxEvent)) {
 
-		var msg = reminderfox.string("rf.add.datespan.overlapping");
-		reminderfox.util.PromptAlert (msg);
-	//	return false
-	}
+			var msg = reminderfox.string("rf.add.datespan.overlapping");
+			reminderfox.util.PromptAlert (msg);
+		//	return false
+		}
 
 		var showAlert = document.getElementById("reminderFox-alert");
 		var alertVal = showAlert.getAttribute("checked");

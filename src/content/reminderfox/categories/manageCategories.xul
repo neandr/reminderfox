@@ -17,6 +17,10 @@
 	id="reminderFox-manage-categories" persist="screenX screenY" onload="reminderfox.category.readDefault();"
 	title="&rf.categories.manageCat.label;">
 
+	<stringbundleset id="stringbundleset">
+		<stringbundle id="reminderFox-bundle"
+			src="chrome://reminderfox/locale/reminderfox.properties" />
+	</stringbundleset>
 
 	<keyset id="reminderFoxOptions-keys">
 		<key keycode="VK_ESCAPE" oncommand="window.close();" />

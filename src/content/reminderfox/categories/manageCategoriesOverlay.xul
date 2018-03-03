@@ -13,6 +13,11 @@
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	id="reminderFox-manage-categories">
 
+	<stringbundleset id="stringbundleset">
+		<stringbundle id="reminderFox-bundle"
+			src="chrome://reminderfox/locale/reminderfox.properties" />
+	</stringbundleset>
+
 	<vbox id="reminderFoxCategoryVbox">
 		<label id="mainHeader" value="&rf.categories.currentCatHeader.default;"
 			width="60px" />
@@ -49,7 +54,7 @@
 				</hbox>
 
 				<button id="sCatShowAll" label="&rf.categories.list.button.viewall;"
-					onclick="showAllCurrentCategories(this);" />
+					onclick="showAllCurrentCategories(this);" />  <!--   Show 'View other categories...' dialog -->
 			</vbox>
 		</hbox>
 

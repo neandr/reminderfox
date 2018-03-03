@@ -2138,12 +2138,9 @@ reminderfox.calendar.ttt.addReminder= function(dayPanel, reminder, nEvent, mode,
 	// eventBox
 	var eventBox = document.createElement("vbox");
 		eventBox.addEventListener("click", function(event) {reminderfox.calendar.ui.eventMenus(this, event, numDate);},false);
-
-//XXX	dayBox.addEventListener("click", function(event) {reminderfox.calendar.ui.eventAdd(this, event);},false)
-
 		eventBox.setAttribute("idValue", nEvent);
-		eventDrawer.appendChild(eventBox);
 
+	eventDrawer.appendChild(eventBox);
 
 	// *** check current reminder for some attributes ***
 	var icons = {};
@@ -2187,10 +2184,10 @@ reminderfox.calendar.ttt.addReminder= function(dayPanel, reminder, nEvent, mode,
 		var end1Date = reminderfox.date.convertDate(reminderEndDateNum -1);
 		var endDate1Str = reminderfox.date.getDateVariableString(reminder, end1Date);
 
-		var logMsg =  'XXXX    .ttt.addReminder   summary:' + reminder.summary + '  allDay:' + reminder.allDayEvent 
+		var logMsg =  '.ttt.addReminder   summary:' + reminder.summary + '  allDay:' + reminder.allDayEvent 
 		   + '\n    reminder.date   :' + reminderfox.date.convertDate(reminder.date) + "  " + reminder.date 
 		   + '\n    reminder.endDate:' + reminderfox.date.convertDate(reminder.endDate) + "  " + reminder.endDate
-// reminderfox.util.Logger('Alert', logMsg)
+//reminderfox.util.Logger('calndrGrid', logMsg)
 
 		if (reminder.allDayEvent) {	// all Day event
 			if (reminderDateNum == (reminderEndDateNum -1)) { // not for oneDay event
