@@ -2,8 +2,8 @@
 ##
 ##  version.txt
 ##
-2018-03-03
-  Updating 2.1.6
+2018-03-05
+  Updating 2.1.6.1
   -- fixed 'null' category with standard categories
   -- default remote calendar was not set with first selecting
   -- Alarm dialog missed some elements

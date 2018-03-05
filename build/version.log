@@ -1,10 +1,10 @@
 
-   Reminderfox  [2.1.6] release
-      as of:    Sat, 3 Mar 2018 18:00:24 +0100 (CET)
-   'reminderfox_2.1.6_release_20180303_1800.xpi'   <'20180303_1800'>
+   Reminderfox  [2.1.6.1] release
+      as of:    Mon, 5 Mar 2018 19:04:52 +0100 (CET)
+   'reminderfox_2.1.6.1_release_20180305_1904.xpi'   <'20180305_1904'>
    
-2018-03-03
-  Updating 2.1.6
+2018-03-05
+  Updating 2.1.6.1
   -- fixed 'null' category with standard categories
   -- default remote calendar was not set with first selecting
   -- Alarm dialog missed some elements

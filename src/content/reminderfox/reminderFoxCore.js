@@ -15,7 +15,7 @@ if (!reminderfox.calDAV.accounts)   reminderfox.calDAV.accounts = {};  //calDAV 
 // constants / prefs
 // see also: https://dxr.mozilla.org/comm-central/source/common/src/extensionSupport.jsm
 //
-reminderfox.consts.MIGRATED_PREF_VERSION                = "2.1.6";  // update also install.rdf and build.properties
+reminderfox.consts.MIGRATED_PREF_VERSION                = "2.1.6.1";  // update also install.rdf and build.properties
 
 reminderfox.consts.SUPPORT                              = "reminderfox@googlegroups.com";
 
