@@ -39,7 +39,7 @@
 		</description>
 		<spacer height="10px" />
 
-		<vbox id="reminderFoxCategoryVbox" />  <!-- brought in from overlay -->
+		<vbox id="reminderFoxCategoryVbox" />  <!-- brought in from overlay manageCategoriesOverlay.xul -->
 	</groupbox>
 
 	<hbox id="reminderFox-options-footer" class="reminderFox-footer3"

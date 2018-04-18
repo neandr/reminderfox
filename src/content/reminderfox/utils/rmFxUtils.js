@@ -17,17 +17,9 @@ if (!reminderfox.msgnr.name) reminderfox.msgnr.name = "";
 
 // ***************** Reminderfox date functions    .date.  <<<<<<<<<<<<<<<<<<<<<
 
-reminderfox.date.num2= function (val){
-		if (val < 10) 
-			val = "0" + val;
-		return val;
-};
-
-
-reminderfox.date.localeDate= function(dateandtime){
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var locDate = dateandtime.toLocaleString();
-	return locDate.substring(0, locDate.lastIndexOf(" "));
+reminderfox.date.num2 = function(n){
+	var s = "" + n;
+	return(s[1] ? s : "0"+s[0])
 };
 
 
@@ -43,12 +35,6 @@ reminderfox.date.mailDateTime= function(thisdate, format){
 	var sDaysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 	var sMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	var offset = thisdate.getTimezoneOffset();
-	
-	function dVal(val){
-		if (val < 10) 
-			val = "0" + val;
-		return val;
-	}
 
 	if (format == "mailDate") { //Fri, 06 Jun 2008 23:47:53 +0200
 		s = sDaysOfWeek[thisdate.getDay()] + ", ";
@@ -56,9 +42,9 @@ reminderfox.date.mailDateTime= function(thisdate, format){
 		s += sMonths[thisdate.getMonth()] + " ";
 		s += thisdate.getFullYear() + " ";
 		
-		s += dVal(thisdate.getHours()) + ":";
-		s += dVal(thisdate.getMinutes()) + ":";
-		s += dVal(thisdate.getSeconds()) + " ";
+		s += reminderfox.date.num2(thisdate.getHours()) + ":";
+		s += reminderfox.date.num2(thisdate.getMinutes()) + ":";
+		s += reminderfox.date.num2(thisdate.getSeconds()) + " ";
 		if (offset < 0) {
 			offset *= -1;
 			s += "+";
@@ -66,8 +52,8 @@ reminderfox.date.mailDateTime= function(thisdate, format){
 		else 
 			s += "-";
 		
-		s += dVal(Math.floor(offset / 60));
-		s += dVal(Math.floor(offset % 60));
+		s += reminderfox.date.num2(Math.floor(offset / 60));
+		s += reminderfox.date.num2(Math.floor(offset % 60));
 	}
 
 	if (format == "mailHeader") { //Fri Jun 13 20:37:33 2008
@@ -75,9 +61,9 @@ reminderfox.date.mailDateTime= function(thisdate, format){
 		s += sMonths[thisdate.getMonth()] + " ";
 		s += thisdate.getDate() + " ";
 		
-		s += dVal(thisdate.getHours()) + ":";
-		s += dVal(thisdate.getMinutes()) + ":";
-		s += dVal(thisdate.getSeconds()) + " ";
+		s += reminderfox.date.num2(thisdate.getHours()) + ":";
+		s += reminderfox.date.num2(thisdate.getMinutes()) + ":";
+		s += reminderfox.date.num2(thisdate.getSeconds()) + " ";
 
 		s += thisdate.getFullYear() + " ";
 	}
@@ -184,112 +170,55 @@ reminderfox.date.adjustTimeZones= function (eventDateString, fullDateString, rem
 }
 
 
-
-/**
- * Converts a date string to a Date object
- * @param {string} eventDate
- * @return {object} Date
+/*
+ *   ICS/ISO8601 dateTime string like with DTSTART  20180325, 20180325T030000 or 20180325T030000Z
+ *   is converted to a locale new Date object with respect to timezone and DST
+ *
+ *   @param  string  ICS/ISO8601 string
+ *   @param  string  optional current timezone
+ *   @return object  local dateTime
  */
-reminderfox.date.getDateTimeFromString= function (eventDate){
+reminderfox.date.getDTZfromICSstring= function (eventDate, timezoneId){
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var date = null;
-	var timeIndex = eventDate.indexOf("T");
-	var month = eventDate.substring(4, 6);
-	if (month.indexOf("0") === 0) {
-		month = month.substring(1);
+	var Z = eventDate.charAt(eventDate.length-1) == 'Z' ? 'Z' : '';
+
+	var dtString = eventDate.substring(0, 4) +'-' + eventDate.substring(4, 6) +'-'+ eventDate.substring(6, 8);
+	dtString += (eventDate.length > 8) ? ('T'+ eventDate.substring(9, 11) +':'+ eventDate.substring(11, 13)) : "";
+
+	var sec = eventDate.substring(13,15); 
+	dtString += ((sec == 'Z') || (sec == '')) ? ":00" : (":"+sec);
+
+	let tzOffset = "";
+	if (timezoneId && reminderfox.core.reminderFox_timezones[timezoneId] ) {
+		var dt0 = new Date(Date.parse(dtString + Z));
+		tzOffset = (offsetDST(dt0) > 0)
+			? reminderfox.core.reminderFox_timezones[timezoneId]['daylightOffset']
+			: reminderfox.core.reminderFox_timezones[timezoneId]['standardOffset']
 	}
-	var monthInt = parseInt(month, 10) - 1;
-	if (timeIndex == -1) {
-		// all day event
-		date = new Date(eventDate.substring(0, 4), monthInt, eventDate.substring(6, 8));
-	}
-	else {
-		// event with specific hourly time
-		date = new Date(eventDate.substring(0, 4), monthInt, eventDate.substring(6, 8));
-		
-		var hoursInt = parseInt(eventDate.substring(9, 11), 10);
-		var minutsInt = parseInt(eventDate.substring(11, 13), 10);
-		date.setHours(hoursInt);
-		date.setMinutes(minutsInt);
-	}
-	return date;
-};
+	dtString += tzOffset;
+
+	var dt = (Date.parse(dtString + Z));
+// console.error("  dt:", eventDate, new Date(dt), new Date(dt).toLocaleString());  //ZZZ DATE
+	return new Date(dt);
+}
 
 
 /**
- * Converts a date string to a Date object, if UTC string with respect to timezone
- * @param {string} dateString  YYYYMMDDThhmmss{Z}
- * @return {object} Date
+ *  Set ICS/ISO date/time string from Date object
+ *  @param   Date object, if null use current date (new Date)
+ *  @return  {string}  ICS/ISO8601 string  (TZD = Z)
  */
-reminderfox.date.getStringAsDate= function (dateString){
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var date;
-
-	if (dateString  && dateString.length > 0) {
-		var timeIndex = dateString.indexOf("T");
-		var month = dateString.substring(4, 6);
-		if (month.indexOf("0") === 0) {
-			month = month.substring(1);
-		}
-		var monthInt = parseInt(month, 10) - 1;
-		// event with specific hourly time
-		date = new Date(dateString.substring(0, 4), monthInt, dateString.substring(6, 8));
-		date.setHours(dateString.substring(9, 11), dateString.substring(11, 13), dateString.substring(13, 15));
-		
-		// if event is stored in UTC time (20051208T224616Z), then take into account UTC offset for the
-		// current time
-		reminderfox.date.adjustTimeZones(dateString, dateString, date);
-	}
-	return date;
-};
-
-
-/**
- * Generates a date/time string based on a Date object
- * @param {Object} current Date
- * @param {object} control format
- * @return {string}  YYYYMMDDThhmmss  if format null
- * @return {string}  YYYY-MM--DD_hhmm
- */
-reminderfox.date.getDateAsString= function (currentDate, format){
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var dateString = "";
-	var year = currentDate.getFullYear();
-	var month = currentDate.getMonth() + 1;
-	var day = currentDate.getDate();
-	if (month < 10) 
-		month = "0" + month;
-	if (day < 10) 
-		day = "0" + day;
-
-	var hours = currentDate.getHours();
-	var minutes = currentDate.getMinutes();
-	var seconds = currentDate.getSeconds();
-	if (hours < 10) 
-		hours = "0" + hours;
-	if (minutes < 10) 
-		minutes = "0" + minutes;
-	if (seconds < 10) 
-		seconds = "0" + seconds;
-
-	if (!format) 
-		return year + "" + month + "" + "" + day + "T" + hours + "" + minutes + "" + seconds;
-
-		return year + "-" + month + "-" + day + "_" + hours + "" + minutes;
-};
-
-
-/**
- *   Generate current UTC date/time string
- *   @return  {string}  UTC string
- */
-reminderfox.date.getDateTimeZ= function(currentDate) {
+reminderfox.date.objDTtoStringICS= function(currentDate) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Date.parse(new Date())   --> 1522404404000
+	// new Date(Date.parse(new Date())).toISOString() --> "2018-03-30T10:06:29.000Z"
+
 	if (!currentDate) currentDate = new Date();
+	return new Date(Date.parse(currentDate)).toISOString().replace(/-/g,"").replace(/:/g,"").substring(0,15)+"Z"
 	
-	var tzOffset = new Date().getTimezoneOffset();
-	currentDate.setMinutes( currentDate.getMinutes() + tzOffset);
-	return  reminderfox.date.getDateAsString(currentDate)+ "Z";
+//	if (typeof(currentDate) == "string") currentDate = +currentDate;
+//	if (typeof(currentDate) == "number") currentDate = new Date(currentDate);
+//	return currentDate.toISOString().replace(/-/g,"").replace(/:/g,"").substring(0,15)+"Z"
 };
 
 
@@ -425,7 +354,7 @@ reminderfox.date.parseDateTimes= function (pDate, noTime) {
 	
 	if (typeof(pDate) == "number") thisDate.setTime(pDate);
 	if (typeof(pDate) == "object") thisDate = pDate;
-	if (typeof(pDate) == "string") thisDate = reminderfox.date.getStringAsDate(pDate);
+	if (typeof(pDate) == "string") thisDate = reminderfox.date.getDTZfromICSstring(pDate);
 
 	var timeString = "";
 	if (!noTime) timeString =  "  " + reminderfox.date.getTimeString(thisDate);
@@ -1225,7 +1154,8 @@ reminderfox.util.getIOService= function(){
 /**
  * Check if fileName is a valid file, not a directory
  * @param {string | object}  filepath or nsIFile object
- * @return {integer}  1 = valid fileName; 0 = file doesn't exist
+ * @return {integer}  1 = valid fileName; 
+ *                    0 = file doesn't exist
  *                   -1 = directory
  *                   -2 = parent directory isn't valid
  */
@@ -1233,8 +1163,7 @@ reminderfox.util.fileCheck= function (filepath) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var sfile;
 	if (typeof(filepath) == "string") {
-		sfile = Cc["@mozilla.org/file/local;1"]
-			.createInstance(Ci.nsIFile);
+		sfile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 	}
 	try {
 		sfile.initWithPath(filepath);
@@ -1266,27 +1195,25 @@ reminderfox.util.fileCheck= function (filepath) {
  */
 reminderfox.util.filePick = function (aWindow, details, callback) {
 //--------------------------------------------------------------------------
-	var nsIFilePicker = Ci.nsIFilePicker;
-	var fp = Cc["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+   var nsIFilePicker = Ci.nsIFilePicker;
+   var fp = Cc["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
-	fp.init(aWindow, details.title, nsIFilePicker[details.fileMode]);
-	fp.appendFilters(nsIFilePicker.filterAll);
-	fp.appendFilter(details.filterName, details.extensions);
-	fp.filterIndex = 1;
+   fp.init(aWindow, details.title, nsIFilePicker[details.fileMode]);
+   fp.appendFilters(nsIFilePicker.filterAll);
+   fp.appendFilter(details.filterName, details.extensions);
+   fp.filterIndex = 1;
 
-	if (details.cDir && details.cDir.parent) fp.displayDirectory = details.cDir.parent;
-	if (details.defaultString) fp.defaultString= details.defaultString;
+   if (details.cDir && details.cDir.parent) fp.displayDirectory = details.cDir.parent;
+   if (details.defaultString) fp.defaultString= details.defaultString;
 
-    return new Promise(resolve => {
+   return new Promise(resolve => {
       //show the window
       fp.open(rv => {
-        if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
-
-//console.log("filePick resolve ", fp.file, " mode --> ", details.mode );
-        callback(fp.file, details);
-      };
-    });
-  });		
+         if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+            callback(fp.file, details);
+         };
+      });
+   });
 };
 
 
@@ -1298,27 +1225,41 @@ reminderfox.util.filePick = function (aWindow, details, callback) {
 reminderfox.util.getExportFile= function () {
 //---------------------------------------------------------------
 	var details= {};
-	details.currentFileName   = document.getElementById("exportFile").value;
 
-	details.cDir = Cc["@mozilla.org/file/local;1"]
-		.createInstance(Ci.nsIFile);
-	details.cDir.initWithPath(details.currentFileName);
+	var fName = document.getElementById("exportFile").value;
+	details.defaultString = fName;
+	details.title        = reminderfox.string("rf.export.send.title");	// "Set / Select file to export reminder(s)";
+	details.mode         = 'exportICSfile';
 
 	details.filterName   = "Event File (ICS)";
 	details.extensions   = '*.ics';
-	details.title        = reminderfox.string("rf.export.send.title");	// "Set / Select file to export reminder(s)";
-	details.mode         = 'exportICSfile';
 
 	details.fileMode     = 'modeSave';
 
 	reminderfox.util.filePick(window, details, 
 		function(file, details) {
 			if (file != null) {
-				reminderfox.core.setPreferenceValue("exportEventsFile", file.path);
+				reminderfox.core.setPreferenceValue(reminderfox.consts.EXPORT_EVENTS, file.path);
 				document.getElementById("exportFile").setAttribute("value", file.path);
 	 		}
 		});
 };
+
+reminderfox.util.eventsExportFile= function (fName) {
+//---------------------------------------------------------------
+	var exportFile = reminderfox.core.getPreferenceValue(reminderfox.consts.EXPORT_EVENTS, "");
+	if (exportFile == "" || exportFile == null){
+
+		var defaultFile = Cc["@mozilla.org/file/directory_service;1"]
+			.getService(Ci.nsIProperties)
+			.get("Desk", Ci.nsIFile);
+		defaultFile.append(fName);
+		exportFile = defaultFile.path
+		reminderfox.core.setPreferenceValue(reminderfox.consts.EXPORT_EVENTS, exportFile)
+	}
+	return exportFile;
+}
+
 
 /*
  * Export (Backup) the current reminders/events
@@ -1328,47 +1269,45 @@ reminderfox.util.exportReminders= function (backup) {
 //---------------------------------------------------------------
 	var details = {};
 
-    // get current store file name  
+	// get current store file name
 	var fName = reminderfox.core.getICSfile();
-	details.cDir = Cc["@mozilla.org/file/local;1"]
-		.createInstance(Ci.nsIFile);
+	details.cDir = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 	details.cDir.initWithPath(fName.path);
 
 	// set store file name for ics 
 	fName = fName.leafName;
 
 	if (backup) {
-		var icsFile = fName.replace(".ics", "")
+		var icsFile = fName.replace(".ics", "");
 
-		var date = new Date()
-		var dateString = reminderfox.date.getDateAsString (date, 'format')
+		var date = new Date();
+		var dateString = reminderfox.date.objDTtoStringICS(date);
 		fName = icsFile + "_" + dateString + ".ics";
-	}	
-    details.defaultString = fName;
+	}
+	details.defaultString = fName;
 
 	details.outputStr   = reminderfox.core.constructReminderOutput(
-		reminderfox.core.getReminderEvents(), 
-		reminderfox.core.getReminderTodos(), 
+		reminderfox.core.getReminderEvents(),
+		reminderfox.core.getReminderTodos(),
 		true);
 
 	details.title       = 'Export iCal/ICS reminders';
 	details.mode        = 'exportICS';
 
-	details.filterName  = "Reminder Data (" + details.extensions + ")"
+	details.filterName  = "Reminder Data (" + details.extensions + ")";
 	details.extensions  = '*.ics';
 	details.fileMode    = 'modeSave';
 
-	reminderfox.util.filePick(window, details, 	
-		function (file, details){	
+	reminderfox.util.filePick(window, details,
+		function (file, details){
 			if(!file)
 				return;
-		
+
 			if(file.exists() == false) {
 				file.create(Ci.nsIFile.NORMAL_FILE_TYPE, 420);
 			}
-		
 			reminderfox.core.writeStringToFile(details.outputStr, file, true);
-		
+
 			// show success message
 			var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 			promptService.alert(window, reminderfox.string("rf.options.export.success.title"), reminderfox.string("rf.options.export.success.description"));
@@ -1426,11 +1365,8 @@ reminderfox.util.pickFileICSfile= function (details) {
 
 	details.fileMode = 'modeOpen';
 
-	reminderfox.util.filePick(window, details, 
+	reminderfox.util.filePick(window, details,
 		function (file, details) {
-
-//console.log("RmFX  [.util.pickFileICSfile]  File location selected", file.path, "mode ", details.mode);
-
 			if (details.mode == 'browse_file_location') {
 				document.getElementById("reminderFox-file-location").value = file.path;
 				document.getElementById("reminderFox-apply").removeAttribute("disabled");
@@ -1440,7 +1376,7 @@ reminderfox.util.pickFileICSfile= function (details) {
 				var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
 					.getService(Ci.nsIPromptService);
 
-				reminderfox.core.logMessageLevel("  filebrowse1: ", reminderfox.consts.LOG_LEVEL_INFO);
+				reminderfox.core.logMessageLevel("  filebrowse ", reminderfox.consts.LOG_LEVEL_INFO);
 				// make sure they REAAAAALY want to overwrite
 				var msg = reminderfox.string("rf.options.import.overwrite.description") 
 					+ "\n\n File to restore: " + file.path;		//$$$_locale
@@ -1456,8 +1392,6 @@ reminderfox.util.pickFileICSfile= function (details) {
 
 				if(buttonPressed == 1) return;	// cancel pressed
 
-				reminderfox.core.setICSfile(file.path);
-
 				var reminderEvents = new Array();
 				var reminderTodos = new Array();
 				reminderfox.core.readInRemindersAndTodosICSFromFile(reminderEvents, reminderTodos, file, false /*ignoreExtraInfo IfImportingAdditionalEvents*/);
@@ -1466,8 +1400,7 @@ reminderfox.util.pickFileICSfile= function (details) {
 				// be traced in  'reminderfox.calDAV.accounts' 
 				reminderfox.calDAV.getAccounts();
 
-				// check if we've successfully imported any reminders or todo events
-				var importedSuccess = reminderEvents.length !== 0;
+				// check if we've successfully imported any reminders or todo events				var importedSuccess = reminderEvents.length !== 0;
 				var numTodos = 0;
 				for(var n in reminderTodos) {
 					var importedTodos = reminderTodos[n];
@@ -1477,7 +1410,7 @@ reminderfox.util.pickFileICSfile= function (details) {
 						//break;
 					}
 				}
-				var numEvents = reminderEvents.length/*numEvents*/;
+				var numEvents = reminderEvents.length; /*numEvents*/;
 
 				reminderfox.util.PromptAlert("Imported  Reminders: " + numEvents  +  "  ToDo's:" + numTodos);
 
@@ -1489,15 +1422,14 @@ reminderfox.util.pickFileICSfile= function (details) {
 			if (details.mode == 'userIO.readICSfile') {
 				if(!file) return  // // cancel pressed -- no file selected
 				var localFile = file.path;
-				reminderfox.core.setICSfile(file.path);
 
-				var call = {}
-				call.details = {}
-				call.details.url         = localFile
-				call.details.summary     = 'Import from iCal/ICS file : ' + localFile
-				call.details.noSubscribe = true
+				var call = {};
+				call.details = {};
+				call.details.url         = localFile;
+				call.details.summary     = 'Import from iCal/ICS file : ' + localFile;
+				call.details.noSubscribe = true;
 
-				var icsData = reminderfox.util.readInFileContents(localFile)
+				var icsData = reminderfox.util.readInFileContents(localFile);
 				reminderfox.userIO.readICSdata (icsData, call);
 			}
 		});
@@ -1530,14 +1462,12 @@ reminderfox.util.buildUIDFile= function(rmFx_UID){
 reminderfox.util.filePath4storePath= function(fileName){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// set 'path' to same dir as 'reminderfox.ics' file      
-	var sfile = Cc["@mozilla.org/file/local;1"]
-		.createInstance(Ci.nsIFile);
-	
+	var sfile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
+
 	sfile.initWithPath(reminderfox.core.getICSfile().parent.path);
 	sfile.append(fileName);
 
 	return sfile.path;
-
 };
 
 reminderfox.util.ProfD_extend= function(dirName){
@@ -1564,12 +1494,10 @@ reminderfox.util.getICSdefaultFilePath= function() {
  */
 reminderfox.util.readInFileContents= function(tmpFile){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var sfile = Cc["@mozilla.org/file/local;1"]
-		.createInstance(Ci.nsIFile);
+	var sfile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 	sfile.initWithPath(tmpFile);
 
-	var is = Cc["@mozilla.org/network/file-input-stream;1"]
-		.createInstance(Ci.nsIFileInputStream);
+	var is = Cc["@mozilla.org/network/file-input-stream;1"].createInstance(Ci.nsIFileInputStream);
 	try {
 		is.init(sfile, 0x01, 00004, null);
 	}
@@ -1601,8 +1529,7 @@ reminderfox.util.readInFileContents= function(tmpFile){
 
 reminderfox.util.makeMsgFile= function(xcontent, tempFile){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var sfile = Cc["@mozilla.org/file/local;1"]
-		.createInstance(Ci.nsIFile);
+	var sfile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 	try {
 		sfile.initWithPath(tempFile);
 	}
@@ -1624,8 +1551,7 @@ reminderfox.util.makeMsgFile= function(xcontent, tempFile){
 
 reminderfox.util.makeFile8= function(outputStr, file){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var sfile = Cc["@mozilla.org/file/local;1"]
-		.createInstance(Ci.nsIFile);
+	var sfile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 	sfile.initWithPath(file);
 
 	var outputStream = Cc["@mozilla.org/network/file-output-stream;1"]
@@ -2713,25 +2639,16 @@ reminderfox.calDAV.getAccounts = function () {
 	if ((reminderfox.calDAV.accounts != null) && (Object.keys(reminderfox.calDAV.accounts ).length === 0)){
 
 		calDAVfile = reminderfox.calDAV.accountsFile(icsFile);
-		try {
-			reminderfox.calDAV.accounts = JSON.parse(reminderfox.core.readInFileContents (calDAVfile));
-			msg += "   read from file: " + calDAVfile.path
-		} catch(ex) {
+		reminderfox.calDAV.accounts = JSON.parse(reminderfox.core.readInFileContents (calDAVfile));
+
+		if (reminderfox.calDAV.accounts == null){
+		// need to write an empty accounts file
 			reminderfox.calDAV.accounts = {};
-			msg += "   new array!"
+			reminderfox.calDAV.accountsWrite (reminderfox.calDAV.accounts);
 		}
 
 		var calDAVstatus = reminderfox.calDAV.accountsStatus()
-		msg += "  .... on windowtype  >>" + document.documentElement.getAttribute('windowtype') 
-			+ "\n  count#:" + calDAVstatus.count + "  active#: " + calDAVstatus.active 
-			+ "  .pendingReminders: " + calDAVstatus.pendingReminders
-			+ "\n  snap: " + calDAVstatus.snap
-		reminderfox.util.Logger('calDAVaccount', msg)
-
-	} else {
-		// "   already loaded!"
 	}
-
 	return reminderfox.calDAV.accounts
 }
 
@@ -3287,7 +3204,6 @@ reminderfox.go4news = {
 			if (call.callnext != null) {
 				call[call.callnext]()
 			}
-		//	console.log("Reminderfox  NEWS as of: ", this.currentNewsDate);
 
 		} else {  // ERROR Handling
 			console.log("Reminderfox  NEWS missing: Check News address ");

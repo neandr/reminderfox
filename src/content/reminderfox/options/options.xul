@@ -4,7 +4,8 @@
 <?xml-stylesheet href="chrome://reminderfox/skin/reminder.css"  type="text/css"?>
 <?xml-stylesheet href="chrome://reminderfox/skin/catBox.css"  type="text/css"?>
 
-<?xul-overlay href="chrome://reminderfox/content/categories/manageCategoriesOverlay.xul"?>
+<!--    <?xul-overlay href="chrome://reminderfox/content/categories/manageCategoriesOverlay.xul"?>
+disabled because not used with current XUL -->
 <?xul-overlay href="chrome://reminderfox/content/caldav/optionsCalDAVoverlay.xul"?>
 
 <!-- DTD Files -->
@@ -621,8 +622,25 @@
 					<hbox align="center">
 						<checkbox id="reminderFox-cat"
 							label="&rf.categories.options.default.category.label;" autocheck="false"
-							oncommand="reminderFox_defaultCatChanged()" tabindex="12"  width="200px"/>
-						<textbox id="reminderFox-cat-text" value="" disabled="true"  width="330px"/>
+							oncommand="rmFXtoggleGroup(rmFXelementIsTrue('reminderFox-cat'), 'inputRmCategories,catChange');" tabindex="12"  width="200px"/>
+						<textbox id="inputRmCategories" value="" disabled="true"  width="330px"/>
+
+						<toolbarbutton id="catChange" type="menu"
+							tooltiptext="&rf.categories.tooltip.catChange;" onmousedown="reminderfox.category.Setup(this);">
+							<menupopup id="categories-menupopup" popupalign="topleft"
+								popupanchor="bottomleft">
+								<!-- value=1 indicates "User" defined cat-items -->
+								<menuitem value="2" label="" oncommand="reminderfox.category.Set(this);" />
+								<menuseparator />
+								<!-- value=2 indicates "Main" defined cat-items -->
+								<menuitem value="1" label="" oncommand="reminderfox.category.Set(this);" />
+								<menuseparator />
+								<menuitem value="3" label="&rf.categories.manageCat.label;"
+									oncommand="manageCategory(this);" />
+							</menupopup>
+						</toolbarbutton>
+
+
 					</hbox>
 
 					<hbox align="center">

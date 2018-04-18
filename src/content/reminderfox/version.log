@@ -1,8 +1,22 @@
 
-   Reminderfox  [2.1.6.1] release
-      as of:    Mon, 5 Mar 2018 19:04:52 +0100 (CET)
-   'reminderfox_2.1.6.1_release_20180305_1904.xpi'   <'20180305_1904'>
+   Reminderfox  [2.1.6.2] release
+      as of:    Wed, 18 Apr 2018 23:32:13 +0200 (CEST)
+   'reminderfox_2.1.6.2_release_20180418_2332.xpi'   <'20180418_2332'>
    
+
+2018-04-18 
+  Fixes
+  -- random alarms
+  -- fix some problems with timezone
+  -- the missing time dimension on Options and Add dialog
+  -- on Options the exporting failed
+
+
+2018-03-11
+  Options tab:Reminderfox Dialog
+    -- selector for existing categories added
+
+
 2018-03-05
   Updating 2.1.6.1
   -- fixed 'null' category with standard categories

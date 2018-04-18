@@ -4819,8 +4819,7 @@ function reminderFox_copyReminder(originalReminder, isTodo){
 	if (newReminderFoxEvent.alarm != null) {
 		newReminderFoxEvent.alarmLastAcknowledge = currentDate.getTime();
 	}
-//	newReminderFoxEvent.lastModified = reminderfox.date.getDateAsString(currentDate);
-	newReminderFoxEvent.lastModified = reminderfox.date.getDateTimeZ(currentDate);	//gWTZID
+	newReminderFoxEvent.lastModified = reminderfox.date.objDTtoStringICS(currentDate);	//gWTZID
 
 	if (newReminderFoxEvent.remindUntilCompleted == reminderfox.consts.REMIND_UNTIL_COMPLETE_MARKED /*2*/) {
 		newReminderFoxEvent.remindUntilCompleted = reminderfox.consts.REMIND_UNTIL_COMPLETE_TO_BE_MARKED; /*1*/
@@ -5547,8 +5546,7 @@ function updateInListReminder(reminder){
 			updateReminder(reminder, item, reminderInstanceDate);
 		}
 	}
-//	reminder.lastModified = reminderfox.date.getDateAsString(todaysDate);
-	reminder.lastModified = reminderfox.date.getDateTimeZ(todaysDate);	//gWTZID
+	reminder.lastModified = reminderfox.date.objDTtoStringICS(todaysDate);	//gWTZID
 
 	reminderfox.calendar.dateArray.EventUpdate (currentSelectedDate);
 

@@ -320,13 +320,14 @@ reminderfox.mail.sendAsItIs = function (selcReminders, organizer, mode, reminder
 		if (reminderTyp == 'todo') {
 				var iCalString = reminderfox.core.constructReminderOutput( "", selcReminders, true, true, "PUBLISH" );
 				var nReminders = 1 /*selcReminders[0].length*/;
-		}  else {
+		} else {
 				var iCalString = reminderfox.core.constructReminderOutput( selcReminders, "", true, true, "PUBLISH" );
 				var nReminders = selcReminders.length;
 		}
-		var exportFile = reminderfox.core.getPreferenceValue("exportEventsFile", "reminderfoxEvents.ics");
 
+		var exportFile = reminderfox.util.eventsExportFile("reminderfoxEvents.ics");
 		var iCalToEmailFile = reminderfox.util.makeMsgFile (reminderfox.util.encodeUTF8(iCalString), exportFile);
+
 		if (iCalToEmailFile == null) {
 				reminderfox.util.PromptAlert("Export failed. File '" + exportFile + "' path not valid!");
 		}  else {

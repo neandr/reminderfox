@@ -1012,8 +1012,7 @@ reminderfox.iCal.exportOrSend= function (event, _selectedTyp, _reminderTyp, _Rem
 	var currentDate = new Date();
 	var tzOffset = new Date().getTimezoneOffset();
 	currentDate.setMinutes( currentDate.getMinutes() + tzOffset );
-//	var dtStamp = reminderfox.date.getDateAsString(currentDate)+ "Z";
-	var dtStamp = reminderfox.date.getDateTimeZ(currentDate);	//gWTZID
+	var dtStamp = reminderfox.date.objDTtoStringICS(currentDate);	//gWTZID
 	reminderfox.core.extraInfoAdd (updatedReminder.extraInfoArray, "DTSTAMP", dtStamp);
 	// add SEQUENCE=1 
 	reminderfox.core.extraInfoAdd (updatedReminder.extraInfoArray, "SEQUENCE", 1);
@@ -1131,9 +1130,8 @@ function getMailAddress(address) {
 		// if there's a snooze... and lastack > snooze, erase snooze...
 		// this means...  well it should be if date changed at all, then need to clear snooze...
 	}
-//	updatedReminder.lastModified = reminderfox.date.getDateAsString(newDate );
-	updatedReminder.lastModified = reminderfox.date.getDateTimeZ(newDate );	//gWTZID
-	
+	updatedReminder.lastModified = reminderfox.date.objDTtoStringICS(newDate );	//gWTZID
+
 	var reminder = reminderfox.core.processReminderDescription(updatedReminder,  currentDate.getFullYear(), false);
 	updateInListReminder( reminder );
 	sortReminderIfNeccessary( updatedReminder.id);
@@ -1292,7 +1290,7 @@ reminderfox.iCal.reschedule= function(originalReminder, currentReminder) {
 		}
 	}
 	reminderfox.core.extraInfoReplace (aExtraInfo, "SEQUENCE", reminderfox.core.extraInfo(aExtraInfo, "SEQUENCE")*1 + 1);
-	reminderfox.core.extraInfoReplace (aExtraInfo, "DTSTAMP", reminderfox.date.getDateTimeZ());
+	reminderfox.core.extraInfoReplace (aExtraInfo, "DTSTAMP", reminderfox.date.objDTtoStringICS());
 	reminderfox.core.extraInfoReplace (aExtraInfo, "COMMENT", "");	  // erase old
 
 	currentReminder.extraInfo = aExtraInfo.join("\\n");

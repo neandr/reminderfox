@@ -239,7 +239,7 @@ reminderfox.overlay.openQuickAlarmDialog= function(){
 
 
 reminderfox.overlay.processAlarm= function( recentReminderOrTodo, isReminder, listName ) {
-var msg = "RmFX  overlay.processAlarm " + reminderfox.overlay.reminder_Infos(recentReminderOrTodo)
+var msg = "RmFX  overlay.processAlarm " + reminderfox.overlay.reminder_Infos(recentReminderOrTodo);
 //reminderfox.core.logMessageLevel(msg, reminderfox.consts.LOG_LEVEL_SUPER_FINE);
     recentReminderOrTodo.currentInstance = recentReminderOrTodo.date
 
@@ -1049,7 +1049,7 @@ var msg = ("RmFX  overlay.processRecentReminders    " )
                 // check for any RemindUntilComplete - if found, set it to be shown in today's list of reminders
                 if (recentReminder.remindUntilCompleted == reminderfox.consts.REMIND_UNTIL_COMPLETE_TO_BE_MARKED) {
                     if (reminder.recurrence.type == reminderfox.consts.RECURRENCE_ONETIME || recentReminder.lastModified != null) {
-                        var modifiedDate = reminderfox.date.getStringAsDate(recentReminder.lastModified);
+                        var modifiedDate = reminderfox.date.getDTZfromICSstring(recentReminder.lastModified);
                         // if you last modified this on or  before the reminder date, then set it as RUC;
                         // otherwise if you've modified this after the reminder date (such as setting it complete)
                         // then leave it alone and don't set it as RUC (unless it's a one-timer... then we'll just move it to RUC
@@ -1059,13 +1059,13 @@ var msg = ("RmFX  overlay.processRecentReminders    " )
                                 !reminderfox.core.isCompletedForDate(recentReminder, recentReminder.date))) { // don't change if it's Complete
                             reminder.remindUntilCompleted = reminderfox.consts.REMIND_UNTIL_COMPLETE_MARKED;
                             changed = true;
-                            reminder.lastModified = reminderfox.date.getDateAsString(todaysDate);
+                            reminder.lastModified = reminderfox.date.objDTtoStringICS(todaysDate);
                         }
                     }
                     else {
                         reminder.remindUntilCompleted = reminderfox.consts.REMIND_UNTIL_COMPLETE_MARKED;
                         changed = true;
-                        reminder.lastModified = reminderfox.date.getDateAsString(todaysDate);
+                        reminder.lastModified = reminderfox.date.objDTtoStringICS(todaysDate);
                     }
                 }
             }
@@ -1971,8 +1971,7 @@ reminderfox.overlay.initializeReminderFox= function(clearReminders){
             }
             reminderfox.overlay.lastDay = day;
 
-            reminderfox.core.logMessageLevel("  Setting  .intervalTimer!", 
-                reminderfox.consts.LOG_LEVEL_FINE);
+            reminderfox.core.logMessageLevel("  Setting  .intervalTimer!", reminderfox.consts.LOG_LEVEL_FINE);
 
             reminderfox.overlay.storeTimeOfLastProcessed();
         }
@@ -3632,8 +3631,8 @@ reminderfox.overlay.alarm_Infos = function(alarmInfos) {
 			infos += "  ruc:" + (cInfo.alarmRecentReminder.remindUntilCompleted)
 			infos += "  reminderTime:" + rmFXtDate(cInfo.reminderTime)
 			infos += "  reminderTimeDiff:" + (cInfo.reminderTimeDifference)
-			infos += "\n current instance reminder  --->" + rmFXtDate(cInfo.alarmRecentReminder.currentInstance) + "<---"
-			infos += "\n reminderInstanceDate  --->" + rmFXtDate(cInfo.reminderInstanceDate) + "<---"
+			infos += "\n current  instance reminder -->" + rmFXtDate(cInfo.alarmRecentReminder.currentInstance) + "<---"
+			infos += "\n reminder Instance Date     -->" + rmFXtDate(cInfo.reminderInstanceDate) + "<---"
 
 			infos += "\n"
 		}

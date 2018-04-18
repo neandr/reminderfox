@@ -271,9 +271,8 @@ function invitationLoadDialog () {
 			//		 .setAttribute( "hidden", true);
 	}
 
-	rmFx_exportFile = reminderfox.core.getPreferenceValue("exportEventsFile", "reminderfoxEvents.ics");
-
-	document.getElementById("exportFile").setAttribute ("value", rmFx_exportFile);
+	var defaultFile = reminderfox.util.eventsExportFile("reminderfoxEvents.ics");
+	document.getElementById("exportFile").setAttribute ("value", defaultFile);
 
 	if (window.arguments[0].reminderTyp == 'reminder') {
 		document.title = document.title
@@ -371,7 +370,7 @@ function invitationCloseDialog (mode) {
 		window.arguments[0].selectedTyp = 'info';
 
 		var exportFile = document.getElementById('exportFile').value;
-		
+
 		// need to check export file -- valid filePath, NOT a directory?
 
 		var fs = reminderfox.util.fileCheck(exportFile);
@@ -383,10 +382,10 @@ function invitationCloseDialog (mode) {
 			if (!confirm (reminderfox.string("rf.mail.sendexport.reminder.export.fileexists"))) return;
 		};
 
-		var prefsName = "exportEventsFile"  // set as prefs 'extensions.reminderFox.exportEventsFile'
-		reminderfox.core.setPreferenceValue(prefsName, exportFile);
+		var defaultFile = reminderfox.util.eventsExportFile("reminderfoxEvents.ics");
+		reminderfox.core.setPreferenceValue(reminderfox.consts.EXPORT_EVENTS, defaultFile);
 		window.close();
-	 }
+	}
 };
 
 

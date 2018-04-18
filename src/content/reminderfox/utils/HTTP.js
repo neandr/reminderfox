@@ -8,9 +8,6 @@ reminderfox.HTTP = {
 
 	reminderfox.HTTP.request = function (caller) {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		reminderfox.util.Logger('http', " HTTP.js   .HTTP.request .... "
-		    + " username >>" + caller.username + "<<   url >>" + caller.urlstr + "<<")
-
 		var request      = caller.callback
 		caller.ID        = new Date().getTime()
 
@@ -24,8 +21,6 @@ reminderfox.HTTP = {
 			caller[caller.onError](status,xml,text,headers,statusText, caller)
 			return
 		}
-
-		reminderfox.util.Logger('http', "HTTP.js    reminderfox.HTTP.call .... ")
 
 		reminderfox.HTTP.call(caller.method, caller.urlstr, { /* options */
 				username      : encodeURIComponent(caller.username ),   // ; caller.username,
@@ -137,7 +132,7 @@ reminderfox.HTTP = {
 			timeout = setTimeout( function() {
 		//			 var callback = options.onTimeout ? options.onTimeout : options.onFailure;
 		//			 callback(0,"Operation timeout.");
-					options.onSuccess(0,"Operation timeout.");
+					options.onSuccess(0,"HTTP.js  Operation timeout.");
 				 },
 				 options.timeout
 			);

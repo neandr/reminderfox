@@ -958,7 +958,7 @@ function loadEvent(reminderFoxEvent, editing) {
 		// trigabs::   TRIGGER;VALUE=DATE-TIME:20130505T143000Z
 			// absolute ALARM convert it to relative minutes for RmFx compatibilty 
 			if (reminderFoxEvent.alarm.charAt(reminderFoxEvent.alarm.length-1) == "Z")  {
-				var _alarmMins = reminderFoxEvent.date - reminderfox.date.getDateTimeFromString(reminderFoxEvent.alarm);
+				var _alarmMins = reminderFoxEvent.date - reminderfox.date.getDTZfromICSstring(reminderFoxEvent.alarm);
 				_alarmMins = _alarmMins/60/1000;
 				alarmTime = "-PT" + _alarmMins + "M";
 			} else {

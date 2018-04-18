@@ -133,8 +133,8 @@ function reminderFox_loadOptions() {
 	var rfCat = document.getElementById("reminderFox-cat");
 	rfCat.setAttribute("checked", false);
 	if(defaultCat != null && defaultCat.length > 0) {
-		document.getElementById("reminderFox-cat-text").setAttribute("value", defaultCat);
-		document.getElementById("reminderFox-cat-text").removeAttribute("disabled");
+		document.getElementById("inputRmCategories").setAttribute("value", defaultCat);
+		document.getElementById("inputRmCategories").removeAttribute("disabled");
 	rfCat.setAttribute("checked", true);
 	}
 
@@ -342,7 +342,7 @@ function reminderFox_loadOptions() {
 		var timeUnitsList = document.getElementById('reminderFox-alertTimeUnits');
 		var alarmUnitsIndex;
 		try {
-			alarmUnitsIndex = reminderfox.core.getPreferenceValue(reminderfox.consts.ALARM_UNITS_DEFAULT);
+			alarmUnitsIndex = reminderfox.core.getPreferenceValue(reminderfox.consts.ALARM_UNITS_DEFAULT, 0);
 		} catch(e) {
 		}
 		timeUnitsList.selectedIndex = alarmUnitsIndex;
@@ -525,16 +525,6 @@ function rmFX_calDAVsetup(){
 }
 
 
-function reminderFox_defaultCatChanged() {
-	var showAlert = document.getElementById("reminderFox-cat");
-	var alertValue = showAlert.getAttribute("checked");
-	if(alertValue == false || alertValue == "false") {
-		document.getElementById("reminderFox-cat-text").setAttribute("disabled", "true");
-	} else {
-		document.getElementById("reminderFox-cat-text").removeAttribute("disabled");
-	}
-}
-
 /*
  * Export reminderFox prefs as JS data
  */
@@ -587,7 +577,7 @@ function reminderFox_exportPrefs(prefsList, all) {
 
 	var details= {};
 	var date = new Date()
-	var dateString = reminderfox.date.getDateAsString (date, 'format')
+	var dateString = reminderfox.date.objDTtoStringICS (date)
 	var fName = "rmFXprefs_" + dateString + ".js";
 
     details.defaultString = fName;
@@ -956,7 +946,7 @@ function reminderFox_updateOptions() {
 	if(catChecked == false || catChecked == "false") {
 		reminderfox.core.setPreferenceValue(reminderfox.consts.DEFAULT_CATEGORY, "");
 	} else {
-		var cat = document.getElementById("reminderFox-cat-text").value;
+		var cat = document.getElementById("inputRmCategories").value;
 		reminderfox.core.setPreferenceValue(reminderfox.consts.DEFAULT_CATEGORY, cat);
 	}
 

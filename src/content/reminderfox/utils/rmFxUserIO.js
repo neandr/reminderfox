@@ -427,13 +427,13 @@ reminderfox.userIO.readICSdata = function (icsData, call) {
 	else { // ('one or none event or has todos') 
 		logInfo = " read in of   #reminderEvents : " + reminderEvents.length + "  #Todos : " + reminderTodosArr.length
 
-		// if no reminders/todos are read, do nothing ... but .... ?????    //TODO  //XXX
+		// if no reminders/todos are read, do nothing
 		if ((reminderEvents.length == 0) && (reminderTodosArr.length == 0)) {
 			return
 		}
 
 		if ((reminderEvents.length == 1) && (reminderTodosArr.length == 0)) {
-			reminderfox.core.addReminderHeadlessly( reminderEvents[0]);
+			reminderfox.core.addReminderHeadlessly( reminderEvents[0], true);
 		} else
 		reminderfox.userIO.defaultMode(reminderfox.userIO.details, logInfo)
 	}

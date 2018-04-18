@@ -1950,9 +1950,9 @@ reminderfox.calendar.dayPanel= function(anchor, mode, xEvent){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var numDate = anchor.getAttribute('gridDayNum')
 
-	var msg = 'calendar.dayPanel  mode>' + mode + "<  numDate:" + numDate 
-		+ "\n  reminderfox.datePicker.gSelectedDate  " + reminderfox.datePicker.gSelectedDate
-		+ "  " + reminderfox.date.localeDate(reminderfox.date.convertDate(numDate));
+	//var msg = 'calendar.dayPanel  mode>' + mode + "<  numDate:" + numDate 
+	//	+ "\n  reminderfox.datePicker.gSelectedDate  " + reminderfox.datePicker.gSelectedDate
+	//	+ "  " + reminderfox.date.convertDate(numDate).toLocaleString();
 	// reminderfox.util.Logger('ALERT', msg);
 
 	// before poping the daybox panel, close all other panels

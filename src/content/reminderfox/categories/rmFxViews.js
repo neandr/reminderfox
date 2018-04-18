@@ -818,7 +818,9 @@ reminderfox.view.CriteriaDatePanelClose = function(xEvent) {
 	//    add 'W' for week
 	var spanString = ((future == 0) ? "-" : "") + dValue + ((periode == 0) ? "D" : ((periode == 1) ? "W" : ((periode == 2) ? "M" : "Y")));
 
-//	reminderfox.util.Logger('Views', "reminderfox.view.CriteriaDatePanelClose" + " future:" + future + " dValue:" + dValue + " period:" + periode + "\n spanString:" + spanString + "  timeType" + timeType + "\n" + reminderfox.date.localeDate(reminderfox.view.vDateSpanFromString(spanString)));
+//	reminderfox.util.Logger('Views', "reminderfox.view.CriteriaDatePanelClose" + " future:" + future + " dValue:" + dValue + " period:" + periode 
+//       + "\n spanString:" + spanString + "  timeType" + timeType 
+//       + "\n" + reminderfox.view.vDateSpanFromString(spanString).toLocaleString());
 
 	document.getElementById(timeType).value = spanString;
 	document.getElementById(timeType).tooltipText = 
