@@ -185,9 +185,10 @@ reminderfox.date.getDTZfromICSstring= function (eventDate, timezoneId){
 	var dtString = eventDate.substring(0, 4) +'-' + eventDate.substring(4, 6) +'-'+ eventDate.substring(6, 8);
 	dtString += (eventDate.length > 8) ? ('T'+ eventDate.substring(9, 11) +':'+ eventDate.substring(11, 13)) : "";
 
-	var sec = eventDate.substring(13,15); 
-	dtString += ((sec == 'Z') || (sec == '')) ? ":00" : (":"+sec);
-
+	if (eventDate.length > 8) {
+		var sec = eventDate.substring(13,15); 
+		dtString += ((sec == 'Z') || (sec == '')) ? ":00" : (":"+sec);
+	}
 	let tzOffset = "";
 	if (timezoneId && reminderfox.core.reminderFox_timezones[timezoneId] ) {
 		var dt0 = new Date(Date.parse(dtString + Z));

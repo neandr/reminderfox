@@ -2,6 +2,22 @@
 ##
 ##  version.txt
 ##
+
+
+2018-04-20
+  Fixes
+  -- random alarms
+  -- fix some problems with timezone
+  -- date strings without time was not parsed correctly
+  -- the missing time dimension on Options and Add dialog
+  -- on Options the exporting failed
+
+
+2018-03-11
+  Options tab:Reminderfox Dialog
+    -- selector for existing categories added
+
+
 2018-03-05
   Updating 2.1.6.1
   -- fixed 'null' category with standard categories
