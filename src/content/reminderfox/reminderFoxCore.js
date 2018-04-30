@@ -118,7 +118,9 @@ reminderfox.consts.ALERTSLIDER_TOP = "alert.notification.top"; // BOOL   (def=fa
 
 reminderfox.consts.CALDAV_DEFAULT_ACCOUNT = "defaultSyncAccount"; // CHAR
 reminderfox.consts.CALDAV_SATURATION = "calDAVcolorSaturation"; // INT
-reminderfox.consts.CALDAV_SATURATION_DEFAULT =35;
+reminderfox.consts.CALDAV_SATURATION_DEFAULT =25;
+
+reminderfox.consts.CALDAV_COLORS = "calDAVcolors";
 
 reminderfox.consts.CALENDAR_MONTHS = "calendarMonths"; // INT
 reminderfox.consts.CALENDAR_MONTHS_DEFAULT = "1";
@@ -432,6 +434,9 @@ reminderfox.core.initUserPrefsArray= function(){
     reminderfox._prefsUser[reminderfox.consts.CALDAV_SATURATION] = reminderfox._prefsTYPE.INT;
   //  reminderfox._prefsUser[reminderfox.consts.CALENDAR_DAYPOPUP_DELAY] = reminderfox._prefsTYPE.INT; see .core.
 
+    reminderfox._prefsUser[reminderfox.consts.CALDAV_COLORS] = reminderfox._prefsTYPE.CHAR;
+
+
     reminderfox._prefsUser[reminderfox.consts.CALENDAR_MONTHS] = reminderfox._prefsTYPE.INT;
     reminderfox._prefsUser[reminderfox.consts.CALENDAR_START_DAY] = reminderfox._prefsTYPE.INT;
 
@@ -656,7 +661,7 @@ reminderfox.core.setUnicodePref= function(prefName, prefValue){
 
 reminderfox.core.logMessageLevel= function(logString, level){
     var logLevel = reminderfox.core.getPreferenceValue(reminderfox.consts.LOG, 0);
-    var date = new Date()
+
     if ((level <= logLevel) || (logLevel >= 4) ){
         if (reminderfox.consts.consoleService) {
             var caller0 = ""
@@ -666,7 +671,7 @@ reminderfox.core.logMessageLevel= function(logString, level){
 
             var caller1 = Components.stack.caller.filename + "#" + Components.stack.caller.lineNumber
 
-            var msg =("Reminderfox: [Debug " + level +" |" + logLevel +"]  "+ new Date()+ (" >"+ +(new Date()) + "<\n"));
+            var msg =("Reminderfox: [Debug " + level +" |" + logLevel +"]  "+ reminderfox.util.logDate() + "\n");
             console.error(msg + logString)
         }
     }
@@ -2148,7 +2153,7 @@ reminderfox.core.getAllTodosInDateRangeForGivenListMultiples= function(todoList,
 };
 
 
-reminderfox.core.getAllRemindersInDateRange= function(reminder, initialStartDate, endDate, limitWeeklyReminders, info){
+reminderfox.core.getAllRemindersInDateRange= function(reminder, initialStartDate, endDate, limitWeeklyReminders){
     var yearReminder, monthReminder, weeklyReminder, weekNumber,
         dailyReminder, arrayIndex,
         reminderDay, origDate, endIndex, interval, result, dayOfYear, endDayOfYear;
@@ -2209,7 +2214,6 @@ reminderfox.core.getAllRemindersInDateRange= function(reminder, initialStartDate
             }
         }
     }
-
 
 
     // if reminder date is greater than the end date, then return empy array
@@ -2670,9 +2674,6 @@ reminderfox.core.getICSXLastmodifiedFromString= function(chunk){
     }
     if (typeof(ret) != 'number') ret = null; 
 
-//console.log("//XXXgW  get Lastmodified FromString ", (new Date()).toLocaleString(),"  chunk:\n", chunk.substring(0,500), "\n time, return value:", ret);
-//console.trace();
-
     return ret;
 };
 
@@ -2837,7 +2838,7 @@ reminderfox.core.initiliazeTooltip= function(){
 
         //reminderfox.core.filesystemTimeStampHasChanged
     }
-    reminderfox.core.logMessageLevel("  Tooltip initialized: " + new Date(), reminderfox.consts.LOG_LEVEL_FINE);
+    reminderfox.core.logMessageLevel(" ** Tooltip initialized ** ", reminderfox.consts.LOG_LEVEL_FINE);
 };
 
 
@@ -3557,7 +3558,7 @@ reminderfox.core.createStringForEndDate= function(reminderOrTodo, currentDate, i
 reminderfox.core.writeOutRemindersAndTodos= function(isExport){
 
 if (isExport && isExport == true) {
-      console.error("RmFX  .core.writeOutRemindersAndTodos  **************  isExport: ", isExport);
+   //   console.error("RmFX  .core.writeOutRemindersAndTodos  **************  isExport: ", isExport);
 }
 
     var remindersToOutput = reminderfox.core.getReminderEvents();
@@ -3684,7 +3685,7 @@ reminderfox.core.timeStampHasChanged= function(){
        var msg=
          "RmFX  [.timeStampHasChanged]  ICSfile: " + reminderfox.core.getICSfile().path
          + "\n       last recorded (pref) >" + lastPrefTimeStamp + "<"
-         + "; current file timeStamp >" + new Date(lastFileTime) + "<  ";
+         + "; current file timeStamp " + reminderfox.util.logDate(new Date(lastFileTime));
        console.log(msg);
        return lastFileTime;
     }
@@ -3950,7 +3951,7 @@ reminderfox.core.readInTimezone= function(reminderEvent, index, readIn, reminder
         daylightDate.setFullYear(new Date().getFullYear());
     }
 
-//console.log("core.readInTimezone   timezoneid: " + timezoneId + "\n  STANDARD:" + standardDate + "\n  DAYLIGHT:" + daylightDate );  //ZZZ
+//console.log("core.readInTimezone   timezoneid: " + timezoneId + "\n  STANDARD:" + standardDate + "\n  DAYLIGHT:" + daylightDate );
 //console.log("core.readInTimezone   checkdate : " + reminderfox.core.calculateRRule(daylightRRule, new Date(2015,1,30)));
 
     var inDST = false;
@@ -4101,7 +4102,7 @@ reminderfox.core.calculateRRule= function(standardRRule, checkdate){
 
     checkdate.setDate(standardDate);
 
-//ZZZ console.log(".core.calculateRRule  rrule:", standardRRule, "  check for date:", checkdate, "  offset is:", offsetDST(checkdate));
+//  console.log(".core.calculateRRule  rrule:", standardRRule, "  check for date:", checkdate, "  offset is:", offsetDST(checkdate));
 
     return checkdate;
 };
@@ -4188,7 +4189,7 @@ reminderfox.core.readInReminderEvent= function(reminderEvent, index, readIn, rem
                 colonIndex = readIn.indexOf(":");
             }
             reminderEvent.lastModified = readIn.substring(colonIndex + 1);
-            reminderEvent.lastModified= rmFX_icsDate2number(reminderEvent.lastModified);   //ZZZx DATE
+            reminderEvent.lastModified= rmFX_icsDate2number(reminderEvent.lastModified);
 
         }
 
@@ -4350,7 +4351,7 @@ reminderfox.core.readInReminderEvent= function(reminderEvent, index, readIn, rem
                 colonIndex = readIn.indexOf(":");
             }
             reminderEvent.snoozeTime = readIn.substring(colonIndex + 1);
-            reminderEvent.snoozeTime= rmFX_icsDate2number(reminderEvent.snoozeTime);   //ZZZ DATE
+            reminderEvent.snoozeTime= rmFX_icsDate2number(reminderEvent.snoozeTime);
         }
 
 /*
@@ -5050,7 +5051,7 @@ reminderfox.core.readInReminderTodo= function(reminderTodo, index, readIn, remin
                 colonIndex = readIn.indexOf(":");
             }
             reminderTodo.alarmLastAcknowledge = readIn.substring(colonIndex + 1);
-            reminderTodo.alarmLastAcknowledge= rmFX_icsDate2number(reminderTodo.alarmLastAcknowledge);   //ZZZ DATE
+            reminderTodo.alarmLastAcknowledge= rmFX_icsDate2number(reminderTodo.alarmLastAcknowledge);
         }
 
         else if (readIn.indexOf(reminderfox.consts.REMINDER_FOX_EXTENDED + "SNOOZE-TIME") === 0) {
@@ -5194,10 +5195,11 @@ reminderfox.core.readInReminderTodo= function(reminderTodo, index, readIn, remin
     return index;
 }
 
-//ZZZ DATE
-//   X-REMINDERFOX-LAST-MODIFIED:1523631361000   or  20180413T145601Z
-// reminderfox.date.getDTZfromICSstring
 
+/**
+ *  X-REMINDERFOX-LAST-MODIFIED:1523631361000   or  20180413T145601Z
+ *  reminderfox.date.getDTZfromICSstring
+ */
 function rmFX_icsDate2number(item) {
    if (item.length = 16 && item[15] == "Z"){
       item = +reminderfox.date.getDTZfromICSstring(item);
@@ -6369,7 +6371,7 @@ reminderfox.core.addTodo= function (newTodo, thisDate){
         newTodo.date = selectedDate;
 
         if (tab.indexOf(':') == -1) {
-            var showInTooltipDefault = reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_SHOW_IN_TOOLTIP); //XXX NON DEFAULT defined!
+            var showInTooltipDefault = reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_SHOW_IN_TOOLTIP, true);
             if (showInTooltipDefault || newTodo.showInTooltip == true) {
                 newTodo.showInTooltip = true;
             }

@@ -444,11 +444,14 @@
 						newBox.setAttribute("class", "rmFx-calDAV-color-selector");
 						newBox.setAttribute("label", "  ");
 
-						if (+nextAccount.Color != 999) 
-							style = "background-color:#" + reminderfox.calDAV.colorMap[+nextAccount.Color][0] + ";border: green 1px solid;";
-						else
-							style = "border: green 1px solid;";
+						if (+nextAccount.Color != 999) {
 
+							style = "background-color:#" + reminderfox.calDAV.colorMap[+nextAccount.Color][0] + ";border: green 1px solid;";
+//							style = "background-color:" + nextAccount.calendarColor + ";border: green 1px solid;"
+
+						} else {
+							style = "border: green 1px solid;";
+						}
 						newBox.setAttribute("style", style);
 						newBox.setAttribute("colorNum", nextAccount.Color);
 						hbox1.appendChild(newBox);

@@ -694,7 +694,7 @@ function loadEventRepeat(calendarEvent, editing) {
 	var repeat = document.getElementById("reminderFox-repeat");
 	var repeatList = document.getElementById("reminderFox-repeatList");
 	if(!editing) {
-		var defaultRepeat= reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_REPEAT);
+		var defaultRepeat= reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_REPEAT, -1);
 		if(defaultRepeat < 0) {
 			repeat.removeAttribute("checked");
 		} else {
@@ -850,7 +850,7 @@ function loadEvent(reminderFoxEvent, editing) {
 			catText.setAttribute('value', reminderfox.category.Clean(reminderFoxEvent.categories));
 		} 
 	} else {// if adding a new event, use default category if user has specified it
-		var defaultCategory = reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_CATEGORY);
+		var defaultCategory = reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_CATEGORY, "");
 		if(defaultCategory != null && defaultCategory.length > 0) {
 			catText.setAttribute('value', defaultCategory);
 		}
@@ -861,7 +861,7 @@ function loadEvent(reminderFoxEvent, editing) {
 
 	try {
 		var showInTooltip = document.getElementById("showInTooltip");	
-		var showInTooltipDefault =  reminderfox.core.getPreferenceValue( reminderfox.consts.DEFAULT_SHOW_IN_TOOLTIP,true);
+		var showInTooltipDefault =  reminderfox.core.getPreferenceValue( reminderfox.consts.DEFAULT_SHOW_IN_TOOLTIP, true);
 		if (editing) {
 			showInTooltip.setAttribute( "checked", showInTooltipDefault );
 		}

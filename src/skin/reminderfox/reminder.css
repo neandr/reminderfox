@@ -164,7 +164,14 @@ treechildren::-moz-tree-row(odd) { background-color: #EEEEEE; }
 treechildren::-moz-tree-row(odd, selected) { background-color: #FFFFAA; }
 treechildren::-moz-tree-cell-text(selected) { color: #000000; }
 treechildren::-moz-tree-cell-text(odd, selected) { color: #000000; }
---------*/
+
+treechildren::-moz-tree-row(caldavX) {background-color:#F4C8FA !important;}
+treechildren::-moz-tree-row(caldavX, selected) {background-color:#635266 !important;}
+----*/
+/*		  color: var(--my-var, black); /* Red if --my-var is not defined */
+
+
+
 
 /*  For calDAV tree colors 
  *   see calDAVmap.css  -- this is generated in rmFxUtils.js */
@@ -541,7 +548,6 @@ menuitem.menuitem-iconic > .menu-iconic-left {
 	margin-top:5px !important;
 	margin-left:20px !important;
 }
-
 
 
 /*------------------------------

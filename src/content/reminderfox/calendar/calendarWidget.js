@@ -1360,7 +1360,7 @@ reminderfox.calendar.dateArray.Events= function() {
 			}
 
 			var rangeEvents = reminderfox.core.getAllRemindersInDateRange(baseEvent,
-				calendarBeginDate, calendarEndDate, false, "calW");
+				calendarBeginDate, calendarEndDate, false);
 
 			// ignore used to only move the oldest occurrence of RUC to TODAY
 			// XXX   oldest  should be the REAL oldest NOT only the oldest in the date span on
@@ -1487,7 +1487,7 @@ reminderfox.calendar.dateArray.Events= function() {
 
 reminderfox.calendar.prefsGetShowWeeks= function () {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var weekNumShow = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF, 0); //XXX NO DEFAULT defined!
+	var weekNumShow = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF, 0);
 			// Week Numbering:
 			// 0 (none),
 			// 1 (default),
@@ -1897,7 +1897,7 @@ reminderfox.calendar.dateArray.DayAttributes= function (numDay, attributes, even
  */
 reminderfox.calendar.aMonthFirstWeek= function() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var showWeekNum = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF, 0); //XXX NO DEFAULT defined!
+	var showWeekNum = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF, 0);
 	// Week Numbering:  0 (none), 1 (default), 2 (ISO 8601)
 
 	// get week number for .gSelectedDate

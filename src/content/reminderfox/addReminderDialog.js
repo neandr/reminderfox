@@ -1265,7 +1265,7 @@ function createCalendarReminderArray(){
 	for (var i = 0; i < reminders.length; i++) {
 		var basereminder = reminders[i];
 
-		var allReminders = reminderfox.core.getAllRemindersInDateRange(basereminder, dateSpan.start, dateSpan.end, false, "addR 1363");
+		var allReminders = reminderfox.core.getAllRemindersInDateRange(basereminder, dateSpan.start, dateSpan.end, false);
 		var x;
 		// maybe make this a method that returns start/endindex
 		var startIndex = 0;
@@ -1428,7 +1428,7 @@ function createCalendarTodoArray () {
 			continue; // if there is no date set on this todo, then ignore it
 		}
 
-		var allTodos = reminderfox.core.getAllRemindersInDateRange(basereminder, dateSpan.start, dateSpan.end, false, "addR 1528");
+		var allTodos = reminderfox.core.getAllRemindersInDateRange(basereminder, dateSpan.start, dateSpan.end, false);
 		var x;
 		// maybe make this a method that returns start/endindex
 		var startIndex = 0;
@@ -1810,7 +1810,7 @@ function createUIListItemReminder(baseReminder){
 		year = new Date().getFullYear();
 	}
 	var todaysDate = new Date();
-	var allReminders = reminderfox.core.getAllRemindersInDateRange(baseReminder, dateSpan.start, dateSpan.end, false, "aaR 1921");
+	var allReminders = reminderfox.core.getAllRemindersInDateRange(baseReminder, dateSpan.start, dateSpan.end, false);
 
 	var startIndex = 0;
 	var endIndex = 0;
@@ -1885,12 +1885,12 @@ function createUIListItemReminder(baseReminder){
 
 //calDAV_color
 		if (baseReminder.calDAVid != null) {
-			var thisAccountDef = calDAVaccounts[baseReminder.calDAVid]
-			
-			if ((thisAccountDef != null) && (thisAccountDef.Color != null)) {
-				var calDAVNum = thisAccountDef.Color;
-				newRow.setAttribute('properties', 'caldav' + calDAVNum);
-				newRow.setAttribute('class', 'caldav' + calDAVNum);
+			var account = calDAVaccounts[baseReminder.calDAVid];
+
+			if ((account != null) && (account.Color != null)) {
+				var calDAVcolor = account.Color;          //getCalendarColor(account);
+				newRow.setAttribute('properties', 'caldav' + calDAVcolor);
+				newRow.setAttribute('class', 'caldav' + calDAVcolor);
 			}
 		}
 
@@ -2092,11 +2092,6 @@ function createUIListItemReminder(baseReminder){
 		newRow.appendChild(calDAVlabel);
 
 		if ((reminder.calDAVid != null) && (reminder.calDAVid != "")){
-// reminderfox.util.Logger('calDAV', " reminder.calDAVid : " + reminder.calDAVid);
-			//	<image class="rmFx-calDAV-badge"
-			//		tooltiptext="badge testing" />
-			//	<label value="Q" class="rmFx-calDAV-text"/>
-
 			var calDAVbadgeImage = document.createElement("image");
 			calDAVlabel.appendChild(calDAVbadgeImage);
 				calDAVbadgeImage.setAttribute("class", "rmFx-calDAV-badge");
@@ -2325,9 +2320,9 @@ function createUIListReminderItemSorted(reminder, todaysDate){
 			var account = calDAVaccounts[reminder.calDAVid]
 
 			if ((account != null) && (account.Color != null)) {
-				var calDAVNum = account.Color;
-				newRow.setAttribute('properties', 'caldav' + calDAVNum);
-				newRow.setAttribute('class', 'caldav' + calDAVNum);
+				var calDAVcolor = account.Color;          //getCalendarColor(account);
+				newRow.setAttribute('properties', 'caldav' + calDAVcolor);
+				newRow.setAttribute('class', 'caldav' + calDAVcolor);
 			}
 		}
 

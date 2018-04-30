@@ -284,7 +284,7 @@ reminderfox.mail.getSelectedTodos = function () {
 		if (tabIndex == 1) tabLabel = "ToDo's";
 		if (tabIndex > 0) {
 			if (todosToBeSend[i].extraInfo == null) {
-				todosToBeSend[i].extraInfo = REMINDERFOX_EXTENDED + "LISTID:" + tabLabel;
+				todosToBeSend[i].extraInfo = reminderfox.consts.REMINDER_FOX_EXTENDED + "LISTID:" + tabLabel;
 			} else {
 				if (todosToBeSend[i].extraInfo.indexOf(reminderfox.consts.REMINDER_FOX_EXTENDED + "LISTID") == -1) {
 					todosToBeSend[i].extraInfo += "\\n" + reminderfox.consts.REMINDER_FOX_EXTENDED + "LISTID:" + tabLabel;

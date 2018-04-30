@@ -135,14 +135,13 @@ reminderfoxX.calDAVhttp.prototype.sendContentToURL = function(caller,call) {
 	}
 
 	logMsg = "CalDAV  HTTP sendContentToURL  [" + call.request + "|" + call.callback +"]  (" + call.ID + ")"
-		+ "\n  method: " + call.method 
-		+ "\n  headers \n>>\n" + call.header + "\n<<"
+	//	+ "\n>> Headers:\n" + call.header + "\n<<"
 		+ "\n  login : " + call.username
 		+ "\n  urlstr: "  + urlstr
-		+ "\n  contentType:" + call.contentType
-		+ "\n  content \n>>\n" + call.body + "\n<<";
-	reminderfox.util.Logger('calDAV', logMsg);
-	//reminderfox.util.Logger('Alert', logMsg);			//XXXgW
+		+ "\n>> content:    (contentType:" + call.contentType + "  method: " + call.method + ")" 
+		+ "\n  " + call.body + "\n<<";
+	reminderfox.util.Logger('calDAVrequest', logMsg);
+
 
 	var requester;
 	var currentApp = this;

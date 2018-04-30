@@ -311,6 +311,7 @@
 			var accountID    = window.arguments[0].ID;
 			var accountTyp   = window.arguments[0].Typ;
 			var accountColor = window.arguments[0].Color;
+			var calendarColor = window.arguments[0].calendarColor;
 
 			var isNew        = window.arguments[0].isNew;
 
@@ -753,6 +754,8 @@
 			var colorHue = (256-xevent.offsetX)*360/256;
 			var pickerColor = reminderfox.colorUtil.getRgbCodeByHsv(colorHue, saturation, 98);
 			var pickerColorDark = reminderfox.colorUtil.getRgbCodeByHsv(colorHue, saturation, 50);
+
+//console.log("//XXX  colorpickerThis ", colorNum, colorHue, " N:", pickerColor, " S:", pickerColorDark);
 
 			if ((colorNum !== "") && (pickerColor !== "")) {
 				reminderfox.calDAV.colorMap[colorNum][0] = pickerColor;

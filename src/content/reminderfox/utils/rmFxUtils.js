@@ -180,7 +180,12 @@ reminderfox.date.adjustTimeZones= function (eventDateString, fullDateString, rem
  */
 reminderfox.date.getDTZfromICSstring= function (eventDate, timezoneId){
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var Z = eventDate.charAt(eventDate.length-1) == 'Z' ? 'Z' : '';
+//console.error("rmFX  .date.getDTZfromICSstring", ">>" + eventDate + "<<", typeof(eventDate), timezoneId);
+
+	var Z = '';
+	if (eventDate.length > 0){ 
+		Z = eventDate.charAt(eventDate.length-1) == 'Z' ? 'Z' : '';
+	}
 
 	var dtString = eventDate.substring(0, 4) +'-' + eventDate.substring(4, 6) +'-'+ eventDate.substring(6, 8);
 	dtString += (eventDate.length > 8) ? ('T'+ eventDate.substring(9, 11) +':'+ eventDate.substring(11, 13)) : "";
@@ -199,7 +204,7 @@ reminderfox.date.getDTZfromICSstring= function (eventDate, timezoneId){
 	dtString += tzOffset;
 
 	var dt = (Date.parse(dtString + Z));
-// console.error("  dt:", eventDate, new Date(dt), new Date(dt).toLocaleString());  //ZZZ DATE
+// console.error("  dt:", eventDate, new Date(dt), new Date(dt).toLocaleString());
 	return new Date(dt);
 }
 
@@ -1552,12 +1557,19 @@ reminderfox.util.makeMsgFile= function(xcontent, tempFile){
 
 reminderfox.util.makeFile8= function(outputStr, file){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//ZZZ
+// console.error("rmFX  .util.makeFile8 ", new Date().toISOString(), ">>"+ outputStr +"<<", file);
+
+try {
 	var sfile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 	sfile.initWithPath(file);
 
 	var outputStream = Cc["@mozilla.org/network/file-output-stream;1"]
 		.createInstance(Ci.nsIFileOutputStream);
 	outputStream.init(sfile, 0x04 | 0x08 | 0x20, 420, 0);
+} catch (ex){
+	console.error("rmFX  .util.makeFile8   ERROR nsIFileOutputStream .init", ex);
+}
 
 	var converter = Cc["@mozilla.org/intl/scriptableunicodeconverter"]
 		.createInstance(Ci.nsIScriptableUnicodeConverter);
@@ -1589,11 +1601,9 @@ reminderfox.util.PromptAlert= function(msgErr, noAlert){
 		.getService(Ci.nsIPromptService);
 
 	promptService.alert(window, "ReminderFox Alert : \n\n", msgErr);
-	if (!noAlert) {
-	//	reminderfox.util.Logger('ALERT', msgErr);		// 'ALERT'  adds the stack to the console output
+	if (noAlert) {
+		console.error(msgErr);
 	}
-	else
-		console.error(msgErr);		//   no stack to the console output	
 };
 
 
@@ -1685,8 +1695,8 @@ reminderfox.util.Logger = function (Log, msg) {
 	var _LogLevel = {
 		FATAL:  70,
 		ERROR:  60,
-		WARN:   50,		// 70 .. 50  console.error (with trace)
-		INFO:   40,		//  0 .. 40  console.info
+		WARN:   50,
+		INFO:   40,
 		CONFIG: 30,
 		DEBUG:  20,
 		TRACE:  10,
@@ -1694,11 +1704,7 @@ reminderfox.util.Logger = function (Log, msg) {
 		};
 
 	if (Log.toLowerCase().search('alert') > -1){
-		var date = new Date();
-		logMsg = "Reminderfox  ** Alert **    " + date + " >" + +(new Date()) + "<"
-			+ "\n" + msg;
-
-		console.error (logMsg);
+		console.error ("Reminderfox  ** Alert **    " + reminderfox.util.logDate() + "\n" + msg);
 		return;
 	}
 
@@ -1720,19 +1726,20 @@ reminderfox.util.Logger = function (Log, msg) {
 	if ((!rootNum) || (!logNum)) return;
 	if (logNum < rootNum) return;
 
-	var date = new Date();
-	logMsg = "Reminderfox Logger: "+ rootID + "  [" + Log + ": " + logId + "]   "+ date + (" >"+ +date + "<")
-		+ "\n" + msg;
-
-	if (logNum >= 50 /*  'Fatal' =70, 'Error'=60, 'Warn'=50 */) {
-		console.error(logMsg, "   ")
-	} else { // below 50 ... 0 
-		console.info(logMsg, reminderfox.util.STACK(1));
-	} 
+	console.error("Reminderfox Logger: "+ rootID + "  [" + Log + ": " + logId + "]   " + reminderfox.util.logDate() + "\n" + msg);
 };
 
 //  console.log(), console.info(), console.warn(), console.error() 
 
+
+reminderfox.util.logDate = function (date) {
+//------------------------------------------------------------------------------
+	if (!date){
+		date = new Date();
+	}
+	let tzOffset = date.getTimezoneOffset()
+	return (new Date(date.setMinutes(date.getMinutes() - tzOffset))).toISOString().substring(0,19) + "  >" + +date + "<";
+};
 
 /**
  *    Generic function to copy the data to Clipboard
@@ -2336,7 +2343,7 @@ reminderfox.date.getWeekOfYear= function(aDate, dowOffset) {
 	if (typeof(aDate) != "object") {
 		aDate = this.getDate(aDate);
 	}
-	var weekNumShow = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF, 0); //XXX NO DEFAULT defined!
+	var weekNumShow = reminderfox.core.getPreferenceValue(reminderfox.consts.SHOW_WEEK_NUMS_PREF, 0);
 			// Week Numbering:
 			// 0 (none),
 			// 1 (default),
@@ -2477,9 +2484,6 @@ reminderfox.colorMap.cssFileGet= function(){
 	cssFile.append("preferences");
 	cssFile.append("calDAVmap.css");
 
-//console.info("//XXXgW  .colorMap.cssFileGet  cssFile ", cssFile.path)
-//console.trace()
-
 	if (cssFile.exists() === false) {
 		console.error("reminderfox.colorMap.cssFileGet::  Failed to find  'calDAVmap.css' ");
 		return null;
@@ -2498,7 +2502,6 @@ reminderfox.colorMap.cssFileRead= function() {
 		console.error("reminderfox.colorMap.cssFileRead::  Missing 'calDAV colorMap' file!");
 		return
 	}
-//reminderfox.util.Logger('calDAV',"  reminderfox.colorMap.cssFileRead  OK");			//XXXgW
 
 	var cssString = reminderfox.core.readInFileContents (cssFile);
 	var colorCode;
@@ -2784,6 +2787,28 @@ reminderfox.calDAV.accountsClearReminderDetails= function (calDAVaccounts) {
  */
 reminderfox.colorUtil = {
 //--------------------------------------------------------------------
+
+
+		/*
+		 *    Convert a rgb color with Satuation = 20% and Brightness=90%
+		 */
+		setRgbCode4Account : function(calendarColor) {
+
+			var hsv = reminderfox.colorUtil.getHsvByRgbCode(calendarColor);
+				//	hsv.hue 
+				//	hsv.saturation
+				//	hsv.brightness 
+
+		//	var saturation = reminderfox.core.getPreferenceValue(reminderfox.consts.CALDAV_SATURATION, reminderfox.consts.CALDAV_SATURATION_DEFAULT);
+			var saturation = "0.2"
+			var brightness = "0.9"
+			var rgb = reminderfox.colorUtil.getRgbColorsByHsv(hsv.hue, saturation, brightness)
+			var rgb1 = reminderfox.colorUtil.getRgbCodeByRgbColors(rgb.red,rgb.green,rgb.blue)
+
+// 	console.error("//XXX calendarColor  rgb:",calendarColor, hsv, rgb, rgb1);
+			return "#" + rgb1;
+		},
+
 		getRgbCodeByRgbColors : function(red, green, blue) {
 			red = parseInt(red, 10).toString(16);
 			green =  parseInt(green, 10).toString(16);
@@ -3001,11 +3026,6 @@ reminderfox.util.picturePanel = function showPicture(anchor) {
 
 
 /**
- * //XXX   reminderfox_isSubscribedCalendarTabSelected() this is called repeatively 
- * //XXX       -- with each reminder on the whole list!
- * //XXX   and always reading the prefs! 
- * //XXX   How to just check reminderfox.tabInfo.XX ??  If there is a ID for subscription
- * 
  * Check if the current tab is a Subscription List
  * @return {boolean} 
  */

@@ -254,7 +254,7 @@ reminderfox.userIO.addReminder4Email = function (xthis) {
 
 		var details = reminderfox.util.selectionDetails();
 		
-		details.summary = details.infos.subject;     //XXX
+		details.summary = details.infos.subject;
 
 //0001: details.url  = [string] "http://sports.yahoo.com/nfl/teams/buf/ical.ics"
 // webcal://www.tirol.fr/index.php?option=com_jevents&task=icals.export&format=ical&catids=0&years=0&k=254a061439c8e2a966a94aaa2683f74d
@@ -411,12 +411,31 @@ reminderfox.userIO.getICS = function (status, xml, text, headers, statusText, ca
  */
 reminderfox.userIO.readICSdata = function (icsData, call) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var reminderEvents = [];
-	var reminderTodosArr = [];
+//console.error("rmRX   .userIO.readICSdata",new Date(),"\n>>\n" +icsData + "<<\n", call)
+
+	let reminderEvents = [];
+	let reminderTodosArr = [];
 	reminderfox.core.readInRemindersAndTodosICSFromString(reminderEvents, reminderTodosArr, icsData, false /*ignoreExtraInfo*/)
 
-	if ((reminderEvents.length > 1) || (reminderTodosArr.length != 0)) {
-		var xulData = {
+	let eventLen = reminderEvents.length;
+
+	let todoLen = 0;
+	for(var list in reminderTodosArr ) {
+		let cList = reminderTodosArr[list];
+		todoLen += cList.length
+	}
+
+
+	let logInfo = " read in of   #reminderEvents : " + eventLen + "  #Todos : " + todoLen;
+//console.log("rmRX   .userIO.readICSdat", logInfo);
+
+	// if no reminders/todos are read, do nothing
+	if ((eventLen == 0) && (todoLen == 0)) {
+		return
+	}
+
+	if ((eventLen > 1) || (todoLen > 1)) {
+		let xulData = {
 			reminders      : reminderEvents,
 			todos          : reminderTodosArr,
 			details        : call.details
@@ -424,18 +443,15 @@ reminderfox.userIO.readICSdata = function (icsData, call) {
 		window.openDialog('chrome://reminderFox/content/utils/rmFxImportHandling.xul', 
 			'reminderFox-importSubscribeReminders', 'modal, centerscreen', xulData);
 	}
-	else { // ('one or none event or has todos') 
-		logInfo = " read in of   #reminderEvents : " + reminderEvents.length + "  #Todos : " + reminderTodosArr.length
-
-		// if no reminders/todos are read, do nothing
-		if ((reminderEvents.length == 0) && (reminderTodosArr.length == 0)) {
-			return
-		}
-
-		if ((reminderEvents.length == 1) && (reminderTodosArr.length == 0)) {
+	else {
+		if (eventLen == 1) {
 			reminderfox.core.addReminderHeadlessly( reminderEvents[0], true);
-		} else
-		reminderfox.userIO.defaultMode(reminderfox.userIO.details, logInfo)
+		} else {
+			let key = Object.keys(reminderTodosArr)[0];
+			reminderfox.core.addReminderHeadlessly( (reminderTodosArr)[key][0], true, true);
+
+//			reminderfox.userIO.defaultMode(reminderfox.userIO.details, logInfo);
+		}
 	}
 }
 
@@ -540,7 +556,7 @@ reminderfox.userIO.getRemoteCalendar = function (mode) {
 	if (mode == true)
 		reminderFox_saveNetworkOptions();
 
-//XXX   Check if unsaved Reminders (Main Dailog should not be open, if yes, skip)
+	// Check if unsaved Reminders (Main Dailog should not be open, if yes, skip)
 	if (reminderfox.core.checkModified()) {
 		reminderfox.util.PromptAlert ("Unsaved Reminders. \n\nDownload from Remote Server stopped!");
 		return;

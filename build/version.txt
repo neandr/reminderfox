@@ -4,13 +4,18 @@
 ##
 
 
-2018-04-20
+2018-04-30
   Fixes
   -- random alarms
   -- fix some problems with timezone
   -- date strings without time was not parsed correctly
   -- the missing time dimension on Options and Add dialog
   -- on Options the exporting failed
+  -- tab:Options --> Import  Importing one Todo now opens Add dialog 
+
+  Changed
+  -- Logging using .error, this give whole stack behind arrow icon 
+  -- Logging date/time: locale format and >serial number of Date<
 
 
 2018-03-11

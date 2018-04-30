@@ -523,7 +523,7 @@
 
 	function goAdd(xThis){
 	// -----------------------------------------
-	// var msg = ("ADD:  open Add/Edit dialog with imported remeinder");
+	// var msg = ("ADD:  open Add/Edit dialog with imported reminder");
 
 		setKey ('key_goNext', '')
 

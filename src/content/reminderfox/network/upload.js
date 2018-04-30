@@ -87,9 +87,9 @@ reminderfox.network.upload.reminderFox_upload_senddata = function() {
 
   var _reminderEvents = reminderfox.core.getReminderEvents();
   var _todosArray = reminderfox.core.getReminderTodos();  // iterate over all reminders
-  var str=reminderfox.core.constructReminderOutput(_reminderEvents, _todosArray, true);;
-  
-	
+  var str=reminderfox.core.constructReminderOutput(_reminderEvents, _todosArray, true);
+
+
   // now clear the reminders so the Add Reminder doesn't use them (because they would have escaped commas)
   reminderfox.core.clearRemindersAndTodos();
 

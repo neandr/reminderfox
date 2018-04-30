@@ -82,22 +82,22 @@ function reminderfox_loadTodos( newTodo, editing ) {
 	var showInTooltipDefault = true;
 	if ( !editing ) {
 		try {
-			showInTooltipDefault =  reminderfox.core.getPreferenceValue( reminderfox.consts.DEFAULT_SHOW_IN_TOOLTIP );	
-			if ( showInTooltipDefault || newTodo.showInTooltip == true  ) {
-					showInTooltip.setAttribute( "checked", true );
+			showInTooltipDefault =  reminderfox.core.getPreferenceValue(reminderfox.consts.DEFAULT_SHOW_IN_TOOLTIP, true);
+			if ( showInTooltipDefault || newTodo.showInTooltip == true ) {
+				showInTooltip.setAttribute( "checked", true );
 			}
 			else {
-					showInTooltip.setAttribute( "checked", false );
+				showInTooltip.setAttribute( "checked", false );
 			}
 		} catch(e) {
 		}
 	}
 	else {
 		if ( newTodo.showInTooltip == true ) {
-				showInTooltip.setAttribute( "checked", true );
+			showInTooltip.setAttribute( "checked", true );
 		}
 		else {
-				showInTooltip.setAttribute( "checked", false );
+			showInTooltip.setAttribute( "checked", false );
 		}
 	}
 }

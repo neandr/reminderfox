@@ -8,6 +8,7 @@
  *   .calDAV.accounts[ "calDAV account.ID" ] .Url              = [string]
  *   .calDAV.accounts[ "calDAV account.ID" ] .Active           = [boolean]
  *   .calDAV.accounts[ "calDAV account.ID" ] .CTag             = [string]
+ *   .calDAV.accounts[ "calDAV account.ID" ] .calendarColor    = [string]   //optional
  *   .calDAV.accounts[ "calDAV account.ID" ] .Color            = [integer]  //optional
  *   .calDAV.accounts[ "calDAV account.ID" ] [ "UID" ].etag    = [string]
  *   .calDAV.accounts[ "calDAV account.ID" ] [ "UID" ].status  = [integer]
@@ -50,10 +51,12 @@ if (!reminderfox.calDAVcalls)  reminderfox.calDAVcalls = {
 
 // ======================= call definitions ====================================
 	getCTAG			: ['PROPFIND', 
-							'<d:propfind xmlns:d=\"DAV:\" xmlns:cs=\"http://calendarserver.org/ns/\">\n'
+							'<d:propfind xmlns:d=\"DAV:\" xmlns:cs=\"http://calendarserver.org/ns/\"'
+							+' xmlns:ic="http://apple.com/ns/ical/\">\n'
 							+'  <d:prop>\n'
 							+'    <d:displayname />\n'
 							+'    <cs:getctag />\n'
+							+'    <ic:calendar-color />\n'
 							+'  </d:prop>\n'
 							+'</d:propfind>\n',
 							'Depth:0'],
@@ -63,6 +66,7 @@ if (!reminderfox.calDAVcalls)  reminderfox.calDAVcalls = {
 							+'  <d:prop>\n'
 							+'    <d:getetag />\n'
 							+'    <c:calendar-data />\n'
+							+'    <d:calendar-color />\n'
 							+'  </d:prop>\n'
 							+'  <c:filter>\n'
 							+'    <c:comp-filter name=\"VCALENDAR\"/>\n'
@@ -114,6 +118,7 @@ if (!reminderfox.calDAVcalls)  reminderfox.calDAVcalls = {
 							+'		<d:prop>\n'
 							+'			<d:getetag />\n'
 							+'			<c:calendar-data />\n'
+							+'          <d:calendar-color />\n'
 							+'		</d:prop>\n'
 							+'		%<d:href/>%\n'
 							+'</c:calendar-multiget>\n',
@@ -193,6 +198,7 @@ function rmFx_CalDAV_AccountListing (call, rAccounts) {
 			case 'Login':  msg += 'Account ' + name + '\t' +account.Login + "\n";break;
 			case 'CTag':   msg += 'Account ' + name + '\t' +account.CTag + "\n";break;
 			case 'Color':  msg += 'Account ' + name + '\t' +account.Color + "\n";break;
+			case 'calendarColor':  msg += 'Account ' + name + '\t' +account.calendarColor + "\n";break;
 
 			default: {
 				xreminder = ((account.Typ == "VTODO") 
@@ -571,7 +577,7 @@ function  rmFx_CalDAV_SyncActiveAccounts() {
 
 
 				rmFX_calDAV_progressmeterOnMain();
-				reminderfox.util.Logger('calDAV', " *** DONE ***  ")
+				reminderfox.util.Logger('calDAV', " *** SyncActiveAccounts DONE ***  ")
 			}
 		}
 
@@ -1393,6 +1399,9 @@ reminderfoxX.calDAVrequest = function () {}
 			} else {
 				call.ctag = "null";
 			}
+			var calendarColor = reminderfox.HTTP.XMLobject (xCtag, "calendar-color");
+			call.calendarColor = reminderfox.colorUtil.setRgbCode4Account(calendarColor.keyValue);
+
 			document.getElementById('accountStatus').setAttribute('validate',true);
 			document.getElementById('accountStatus').value = "Validated! CalDAV account saved. ";		//$$$_locale
 			document.getElementById('accountStatus').setAttribute('style', "font-weight:bold;color:black;");
@@ -1429,7 +1438,7 @@ reminderfoxX.calDAVrequest = function () {}
 		reminderfoxX.calDAVrequest.prototype.readEtag = function (status, xml, text, headers, statusText, call) {
 		// -----------------------------------------------------------------------
 		var msg, nEvents;
-		var callMsg = rmFx_CalDAV_callMsg (status, statusText, call, headers);
+		var callMsg = rmFx_CalDAV_callMsg (status, statusText, call, "" /*headers*/);
 
 		rmFX_calDAV_progressMeter();
 
@@ -1509,7 +1518,7 @@ reminderfoxX.calDAVrequest = function () {}
 
 			call.ID           = new Date().getTime();
 
-			var msg = "CalDAV   SyncAccount:  " + call.request +"|"+ call.callback + "  (" +call.ID + ")  "
+			var msg = "CalDAV   SyncAccount:  [" + call.request +"|"+ call.callback + "]  (" +call.ID + ")  "
 				msg += (call.Typ != null) ? ("  Typ : " + call.Typ) : ""
 				msg += "\n  Url: " + call.url + "   call.username: " + call.username;
 			reminderfox.util.Logger('calDAV', msg);
@@ -1522,16 +1531,18 @@ reminderfoxX.calDAVrequest = function () {}
 		reminderfoxX.calDAVrequest.prototype.responseCTAG = function(status, xml, text, headers, statusText, call) {
 		// -----------------------------------------------------------------------
 		var msg, response;
-		var callMsg = rmFx_CalDAV_callMsg (status, statusText, call, headers);
+		var callMsg = rmFx_CalDAV_callMsg (status, statusText, call, "" /*headers*/);
 
 		if (status>=200 && status<300) {
 			var xCtag = new reminderfox.HTTP.JXONTree(xml); 
 			response  = reminderfox.HTTP.XMLobject (xCtag, "getctag");
 
-			msg = callMsg + " [" + call.account.ID + "]  " + call.account.Name
-				+ "\n  response: " + response.keyValue + "    call.account.CTag: " + call.account.CTag
-				+ "\n  text(JSON)"
-				+ "\n " + JSON.stringify(response);
+			var calendarColor = reminderfox.HTTP.XMLobject (xCtag, "calendar-color");
+			call.account.calendarColor = reminderfox.colorUtil.setRgbCode4Account(calendarColor.keyValue);
+
+			msg = callMsg + "\n [" + call.account.ID + "]  " + call.account.Name
+				+ " call.account.CTag: " + call.account.CTag
+				+ "   " + (call.account.calendarColor);
 			reminderfox.util.Logger('calDAV',  msg);
 
 			// if response has the same value as CTag .. no change on remote calendar
@@ -2459,7 +2470,7 @@ function rmFx_CalDAV_getGCALAccessToken (user, previousAccountID) {
 		reminderfoxX.calDAVrequest.prototype.haveGCALAccessToken = function(status, xml, text, headers, statusText, call) {
 		// --------------------------------------------------------------------------
 		var msg;
-		var callMsg = rmFx_CalDAV_callMsg (status, statusText, call, headers);
+		var callMsg = rmFx_CalDAV_callMsg (status, statusText, call, "" /*headers*/ );
 
 		if (status === 0 || (status >= 200 && status < 300)) {
 
@@ -2585,6 +2596,7 @@ function rmFx_calDAV_Renew(accountID) {
 			case 'Name':
 			case 'Url':
 			case 'Login':
+			case 'calendarColor':
 			case 'Color': break;
 
 			case 'CTag':
@@ -2664,12 +2676,13 @@ function rmFx_CalDAV_callMsg (status, statusText, call, headers){
 			callMsg += (call.Typ != null) ? ("  Typ : " + call.Typ) : ""
 			callMsg += "  Status: " + status + " " + statusText;
 
+		if (headers != ""){
 			var headersStr = "\n  >> Headers :"
 				for (var header in headers) {
 					headersStr += "\n   " + header + ": " + headers[header];
 				}
 				callMsg += headersStr + "<<\n";
-
+		}
 		return callMsg;
 }
 
@@ -2713,18 +2726,20 @@ function rmFx_CalDAV_callMsg (status, statusText, call, headers){
 		if (status>=200 && status<300) {
 			var xCtag = new reminderfox.HTTP.JXONTree(xml); 
 			response  = reminderfox.HTTP.XMLobject (xCtag, "getctag");
+			call.account.CTag = response.keyValue
+
+			var calendarColor = reminderfox.HTTP.XMLobject (xCtag, "calendar-color");
+			call.account.calendarColor = reminderfox.colorUtil.setRgbCode4Account(calendarColor.keyValue);
 
 			msg = callMsg + " [" + call.account.ID + "]  " + call.account.Name
 				+ "\n  response: " + response.keyValue + "    call.account.CTag: " + call.account.CTag
-				+ "\n  text(JSON)"
-				+ "\n " + JSON.stringify(response);
+				+ "   " + call.account.calendarColor;
 			reminderfox.util.Logger('calDAV',  msg);
 
-			call.account.CTag = response.keyValue
 			rmFx_CalDAV_AccountListing (call)
 
 			} else {
 				msg = callMsg + "CalDAV   Error with CTag:   [" + call.account.ID + "]  " + call.account.Name
 				reminderfox.util.Logger('calDAV',  msg);
 			}
-		}
+		};
