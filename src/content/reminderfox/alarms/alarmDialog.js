@@ -296,12 +296,8 @@ function initializeAlarm(reminderAlarmOptions, hasNotes, firstTab) {
 	} else {
 		getChildElementById(tabPanel, "reminderDateLabel").setAttribute("hidden", true);
 		getChildElementById(tabPanel, "reminderDateText").setAttribute("hidden", true);
-		//getChildElementById(tabPanel, "timeDescLabel").setAttribute("hidden", true);
 		getChildElementById(tabPanel, "reminderTimeText").setAttribute("hidden", true);
 	}
-	//XXX getChildElementById(tabPanel, "reminderID").setAttribute("tooltiptext", recentReminder.id)
-	//XXX getChildElementById(tabPanel, "reminderID").setAttribute("uid", recentReminder.id)
-
 
 	var tabbox = document.getElementById("tabbox");
 	var selectedPanel = tabbox.selectedPanel;
@@ -691,7 +687,6 @@ function reminderFox_editReminderFromAlarm() {
 
 	var alarmReminder;
 	if (isReminderType) reminderOrTodoEdit (reminderfox.core.getRemindersById(reminderID), false /*isTodo*/);
-//XXX	if (!isReminderType) reminderOrTodoEdit(reminderfox.core.getSpecificTodoById(reminderID), true, reminderAlarmArray[index].alarmListName);
 	if (!isReminderType) reminderOrTodoEdit(reminderfox.core.getSpecificTodoById(reminderID), true);
 
 	// successful edit will set the .lastEvent -- so we can update the Alarm dialog 

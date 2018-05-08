@@ -524,11 +524,38 @@ function rmFx_mainDialogLoadReload() {
 };
 
 
+
+function rmFx_setTreeRowColors() {
+	var calDAVaccounts = reminderfox.calDAV.getAccounts();
+
+	for (var account in calDAVaccounts) {
+		var id = calDAVaccounts[account].ID;
+		var color = calDAVaccounts[id]['calendarColor']
+
+		var opacity = reminderfox.core.getPreferenceValue(reminderfox.consts.CALDAV_OPACITY_SELECTED, 
+			reminderfox.consts.CALDAV_OPACITY_SELECTED_DEFAULT);
+		reminderfox.core.setPreferenceValue(reminderfox.consts.CALDAV_OPACITY_SELECTED, opacity);
+
+		var color1 = color.split(',');
+		color1[3] = ' ' + opacity/100;
+		color1 = color1.join(',') + ')';
+
+		reminderfox.styleUtil.insertStyle('caldav.css', 
+			"treechildren::-moz-tree-row(caldav" + id + ") {background-color:" + color +" !important;}")
+
+		reminderfox.styleUtil.insertStyle('caldav.css', 
+			"treechildren::-moz-tree-row(caldav" + id + ", selected) {background-color:" + color1 +" !important;}")
+	}
+};
+
+
+
 /**
  *  Starting the ReminderFox Main Dialog with MainList and/or Calendar
  */
 function rmFx_mainDialogLoad(restartSkip){
-	reminderfox.calDAV.getAccounts();
+
+/*---- disabled, replace with using colors from remote caldav server   gW 2018-05-03
 
 	// --- load calDAVcolorMap and set the CSS file to respect prefs saturation
 	reminderfox.colorMap.cssFileRead();
@@ -543,6 +570,27 @@ function rmFx_mainDialogLoad(restartSkip){
 	} catch (ex) {
 		Cu.reportError(ex);
 	}
+
+-------------*/
+
+/* ------------
+   Tree-Row Colors using remote caldav server definition for each 
+   individual callendar
+
+   treerow styling using reminderfox.css  with 'properties' like this 
+			treechildren::-moz-tree-row(caldavX) {background-color:#BFDEFF !important;}
+			treechildren::-moz-tree-row(caldavX, selected) {background-color:#664D4D !important;}
+		(caldavX)  X: account.ID
+
+         reminderfox.styleUtil.getStyle('caldav.css', 'treechildren::-moz-tree-row(caldavI)')
+           -->  "treechildren::-moz-tree-row(caldavI) { background-color: rgb(191, 213, 255) !important; }"
+
+         reminderfox.styleUtil.getStyle('caldav.css', 'treechildren::-moz-tree-row(caldavV)')
+           --> "" 
+
+   Supported by .insertStyle and .deleteStyle
+ ---------- */
+	rmFx_setTreeRowColors();
 
 	//gWABContact Handling
 	reminderfox.msgnr.whichMessenger();
@@ -1886,11 +1934,9 @@ function createUIListItemReminder(baseReminder){
 //calDAV_color
 		if (baseReminder.calDAVid != null) {
 			var account = calDAVaccounts[baseReminder.calDAVid];
-
-			if ((account != null) && (account.Color != null)) {
-				var calDAVcolor = account.Color;          //getCalendarColor(account);
-				newRow.setAttribute('properties', 'caldav' + calDAVcolor);
-				newRow.setAttribute('class', 'caldav' + calDAVcolor);
+			if ((account != null) && (account.calendarColor != null)) {
+				newRow.setAttribute('properties', 'caldav' + account.ID);   //set calendarColor with account.ID
+				newRow.setAttribute('class', 'caldav' + account.ID);
 			}
 		}
 
@@ -2313,16 +2359,13 @@ function createUIListReminderItemSorted(reminder, todaysDate){
 
 	var newItem = document.createElement("treeitem");
 	var newRow = document.createElement("treerow");
-	newRow.setAttribute(REMINDER_FOX_ID_REF, reminder.id);
-
+	newRow.setAttribute(REMINDER_FOX_ID_REF, reminder.id);       // REMINDER_FOX_ID_REF  = idRef
 
 		if (reminder.calDAVid != null) {
 			var account = calDAVaccounts[reminder.calDAVid]
-
-			if ((account != null) && (account.Color != null)) {
-				var calDAVcolor = account.Color;          //getCalendarColor(account);
-				newRow.setAttribute('properties', 'caldav' + calDAVcolor);
-				newRow.setAttribute('class', 'caldav' + calDAVcolor);
+			if ((account != null) && (account.calendarColor != null)) {
+				newRow.setAttribute('properties', 'caldav' + account.ID);   //set calendarColor with account.ID
+				newRow.setAttribute('class', 'caldav' + account.ID);
 			}
 		}
 
@@ -2434,9 +2477,12 @@ function createUIListReminderItemSorted(reminder, todaysDate){
 	if ((reminder.calDAVid != null) && (reminder.calDAVid != "")) {
 //	reminderfox.util.Logger('calDAV', " reminder.calDAVid : " + reminder.calDAVid ,true);
 		calDAVlabel.setAttribute("class", "calDAVbadge");
-
-		calDAVlabel.setAttribute("src", reminderfox.consts.SHARE16);
 		calDAVlabel.setAttribute("label", reminder.calDAVid);
+		if (reminderfox.calDAV.accounts[reminder.calDAVid].Active == true) {
+			calDAVlabel.setAttribute("src", reminderfox.consts.SHARE16);
+		} else {
+			calDAVlabel.setAttribute("src", reminderfox.consts.SHARE16w);
+		}
 	}
 
 	if (reminder.categories != null) {
@@ -2824,9 +2870,13 @@ function createUIListItemTodo(todo, sort, todaysDate, addToArray){
 //	reminderfox.util.Logger('calDAV', " todo.calDAVid #1: " + todo.summary + "  " +  todo.calDAVid ,true);
 	if ((todo.calDAVid != null) && (todo.calDAVid != "")) {
 		calDAVlabel.setAttribute("class", "calDAVbadge");
-
-		calDAVlabel.setAttribute("src", reminderfox.consts.SHARE16);
 		calDAVlabel.setAttribute("label", todo.calDAVid);
+
+		if (reminderfox.calDAV.accounts[todo.calDAVid].Active == true) {
+			calDAVlabel.setAttribute("src", reminderfox.consts.SHARE16);
+		} else {
+			calDAVlabel.setAttribute("src", reminderfox.consts.SHARE16w);
+		}
 	}
 
 
@@ -3060,9 +3110,13 @@ function createUIListItemTodoAtIndex(todo, index){
 //	reminderfox.util.Logger('calDAV', " todo.calDAVid #2: " + todo.summary + "  " + todo.calDAVid ,true);
 	if ((todo.calDAVid != null) && (todo.calDAVid != "")) {
 		calDAVlabel.setAttribute("class", "calDAVbadge");
-
-		calDAVlabel.setAttribute("src", reminderfox.consts.SHARE16);
 		calDAVlabel.setAttribute("label", todo.calDAVid);
+
+		if (reminderfox.calDAV.accounts[todo.calDAVid].Active == true) {
+			calDAVlabel.setAttribute("src", reminderfox.consts.SHARE16);
+		} else {
+			calDAVlabel.setAttribute("src", reminderfox.consts.SHARE16w);
+		}
 	}
 
 

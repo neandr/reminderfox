@@ -1,8 +1,15 @@
 
-   Reminderfox  [2.1.6.2] release
-      as of:    Mon, 30 Apr 2018 23:28:45 +0200 (CEST)
-   'reminderfox_2.1.6.2_release_20180430_2328.xpi'   <'20180430_2328'>
+   Reminderfox  [2.1.6.3] release
+      as of:    Tue, 8 May 2018 19:21:07 +0200 (CEST)
+   'reminderfox_2.1.6.3_release_20180508_1921.xpi'   <'20180508_1921'>
    
+
+2018-05-08
+  New
+    -- Reminderfox Remote Calendar feature now uses the color set by the
+       remote calendar system (eg. fruux or GCal)
+    -- Inactive set remote calendars now show it's events/todos with 
+       a white instead of a black icon on the Main List 
 
 
 2018-04-30

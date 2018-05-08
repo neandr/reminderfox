@@ -1,7 +1,7 @@
 <?xml version="1.0"?>   <!-- optionsCalDAVoverlay.xul -->
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://reminderfox/skin/reminder.css"  type="text/css"?>
+<!--?xml-stylesheet href="chrome://reminderfox/skin/reminder.css"  type="text/css"? -->
 <?xml-stylesheet href="chrome://reminderfox/skin/toolbar.css"  type="text/css"?>
 
 <!-- DTD Files -->
@@ -210,8 +210,6 @@
 		//-------------------------------------------
 			if (reminderfox.core.checkModified()) return;
 
-			reminderfox.colorMap.setup();
-
 			var callOptions = {
 				Active: true,
 				Typ:    'VEVENT',
@@ -245,7 +243,6 @@
 		//-------------------------------------------
 			var style;
 
-			reminderfox.colorMap.setup();
 			var elem = xthis.parentNode;
 
 			var oldID = elem.querySelector("#calDAV_ID").value;
@@ -255,6 +252,7 @@
 
 				Name:   elem.querySelector(".calDAV_Name").value,
 				Color:  elem.querySelector(".calDAV_Name").getAttribute('color'),
+				calendarColor:  elem.querySelector("#calDAV_COLOR").getAttribute('calendarColor'),
 
 				Url:    elem.querySelector(".calDAV_Url").value,
 				Typ:    elem.querySelector(".calDAV_Url").getAttribute('typ'),
@@ -277,21 +275,15 @@
 
 			elem.querySelector(".calDAV_Active").checked = callOptions.Active;
 
-			elem.querySelector(".calDAV_Name").value	= callOptions.Name;
-			elem.querySelector(".calDAV_Name").setAttribute('color',callOptions.Color);
+			var aColor = (callOptions.calendarColor);
+			elem.querySelector("#calDAV_COLOR").setAttribute("style", 
+				"background-color:" + aColor + ";border: green 1px solid;");
+			elem.querySelector("#calDAV_COLOR").setAttribute('tooltiptext', 
+				"Account Color: " + aColor + " (Based on remote calendar)");
+			elem.querySelector("#calDAV_COLOR").setAttribute('calendarColor', aColor);
+
+			elem.querySelector(".calDAV_Name").value = callOptions.Name;
 			elem.querySelector(".calDAV_Name").setAttribute('tooltiptext', callOptions.Url);
-
-			//read color map to get changes after selection
-			reminderfox.colorMap.setup();
-
-			if (+callOptions.Color != 999) 
-				style = "background-color:#" + reminderfox.calDAV.colorMap[callOptions.Color][0] + ";border: green 1px solid;";
-			else
-				style = "border: green 1px solid;";
-
-			reminderfox.util.Logger('calDAV',"CalDAV:Configure Color : " + style);
-
-			elem.querySelector(".rmFx-calDAV-color-selector").setAttribute("style", style);
 
 			elem.querySelector(".calDAV_Url").value	= callOptions.Url;
 			elem.querySelector(".calDAV_Url").setAttribute('typ',callOptions.Typ);
@@ -382,15 +374,16 @@
 
 		function rmFx_calDAV_AddAccount (accounts, accountID, newAccount) {
 		//-------------------------------------------
-		reminderfox.util.Logger('calDAV', "  [rmFx_calDAV_AddAccount]   "
-		 + "\n  accountID: " + accountID);
-
 		var nextAccount, style, tboxName, button;
 
 		if (newAccount) {nextAccount = newAccount;}
 		else { 
 			nextAccount = accounts[accountID];
 		}
+
+		reminderfox.util.Logger('calDAV', "  [rmFx_calDAV_AddAccount]   "
+		 + "  accountID: " + accountID + "   " + nextAccount.calendarColor);
+
 		// Insert newCalendar into the DOM before entryPoint
 		var calendars = document.getElementById("calDAV_calendars");
 		var entryPoint = document.getElementById("rmFx-CalDAV-addNew");
@@ -441,19 +434,16 @@
 						calDAVlabel.setAttribute("status",  nextAccount.Active);
 
 					var newBox = document.createElement("hbox");
+						newBox.setAttribute("id", "calDAV_COLOR");
 						newBox.setAttribute("class", "rmFx-calDAV-color-selector");
 						newBox.setAttribute("label", "  ");
 
-						if (+nextAccount.Color != 999) {
+						var aColor = (nextAccount.calendarColor);
+						newBox.setAttribute("style", "background-color:" + aColor + ";border: green 1px solid;");
+						newBox.setAttribute('tooltiptext', 
+							"Account Color: " + aColor + " (Based on remote calendar)");
+						newBox.setAttribute("calendarColor", aColor);
 
-							style = "background-color:#" + reminderfox.calDAV.colorMap[+nextAccount.Color][0] + ";border: green 1px solid;";
-//							style = "background-color:" + nextAccount.calendarColor + ";border: green 1px solid;"
-
-						} else {
-							style = "border: green 1px solid;";
-						}
-						newBox.setAttribute("style", style);
-						newBox.setAttribute("colorNum", nextAccount.Color);
 						hbox1.appendChild(newBox);
 
 
@@ -513,8 +503,9 @@
 					case 'Url': 
 					case 'Login': 
 					case 'CTag': 
-					case 'Color': break;
-		
+					case 'Color':
+					case 'calendarColor': break;
+
 					default: {
 						accountHasEvents = true;
 					}

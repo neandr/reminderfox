@@ -73,12 +73,6 @@
 									urlDav="https://www.googleapis.com"
 									type="VEVENT" />
 
-		<!-- 2015-11-11  disabled, not supported by Google anymore
-								<menuitem id="GCal" label="Google Calendar"
-									urlServer="https://www.google.com" 
-									urlDav="https://www.google.com"
-									type="VEVENT" />
-		-->
 								<menuitem id="OC_local7" label="ownCloud 7 (local)"
 									urlServer="http://localhost" 
 									urlDav="http://localhost"
@@ -89,12 +83,6 @@
 									urlDav="http://localhost"
 									type="VEVENT" />
 
-					<!-- DISABLED for 2.14 --> 
-								<menuitem id="Radicale" label="Radicale"
-									urlServer="http://localhost" 
-									urlDav="http://localhost:5232/"
-									type="VEVENT" />
-					<!-- -->
 								<menuitem id="General" label="Other (define your own)"
 									urlServer="" 
 									urlDav=""
@@ -219,15 +207,8 @@
 							tooltiptext="&rf.caldav.account.userletter;" onblur="rmFxCalDAVedit.setCalDAV_ID(this);" />
 
 						<hbox id="accountColorDefault" class="rmFx-calDAV-color-selector"
-							onclick="rmFxCalDAVedit.accountColorsSelect(this)" label="  "
-							tooltiptext="&rf.caldav.color.reset;" style="border: blue 2px solid;"
-							colorNum="999" />
-						<hbox id="accountColors" /> <!-- will be set by JS -->
+							label="  " />
 					</hbox>
-					<toolbarbutton class="rmFx_colorChange" type="button"
-						onclick="var panel = document.getElementById('rmFx_colorpicker_panel');
-								panel.openPopup(this, 'overlap', -260, 28);"
-						label="&rf.caldav.account.color;" tooltiptext="&rf.caldav.account.color.ttt;" />
 
 				</row>
 
@@ -275,19 +256,6 @@
 	</panel>
 
 
-	<!-- PANEL for colorpicker -->
-
-	<panel id="rmFx_colorpicker_panel" onmouseleave="this.hidePopup();">
-		<hbox id="rmFx-calDAV-color-selector-box">
-			<hbox id="rmFx-calDAV-color-selector-hue" onclick="rmFxCalDAVedit.colorpickerThis(this, event)" />
-			<spacer width="3px" />
-			<hbox height="30px">
-				<image class="infoButton" tooltiptext="&rf.caldav.documentation.i;"
-					onclick="reminderfox.util.docRmFX('remote-calendar-n/#changingBackgroundColor');" />		<!-- $$$_locale/doc -->
-			</hbox>
-		</hbox>
-	</panel>
-
 	<script type="application/x-javascript"><![CDATA[
 
 	var rmFxCalDAVedit = {
@@ -295,6 +263,7 @@
 		accounts : null,
 		accountID : null,
 		account : null,
+		calendarColor : "#FFFFBF",
 
 		cReminders : null,
 
@@ -305,16 +274,19 @@
 			this.accounts    = window.arguments[0].accounts;
 			this.accountID   = window.arguments[0].ID;
 
+			this.calendarColor = "#FFFFBF";   // default color yellow (s=1, b=0.25)
+			if (this.accountID != '?') {
+				this.calendarColor = this.accounts[this.accountID].calendarColor
+			}
+
 			var accountName  = window.arguments[0].Name;
 			var accountUrl   = window.arguments[0].Url;
 			var accountLogin = window.arguments[0].Login;
 			var accountID    = window.arguments[0].ID;
 			var accountTyp   = window.arguments[0].Typ;
 			var accountColor = window.arguments[0].Color;
-			var calendarColor = window.arguments[0].calendarColor;
 
 			var isNew        = window.arguments[0].isNew;
-
 
 			document.getElementById('accountLogin').value    = accountLogin ? accountLogin : "";
 			document.getElementById('accountLogin').setAttribute('accountURL',accountUrl);
@@ -373,8 +345,13 @@
 				}
 
 			}
-			this.accountColorsSetup(accountColor);
 
+			var aColor = window.arguments[0].calendarColor;
+			document.getElementById("accountColorDefault")
+				.setAttribute("style","background-color:" + aColor + ";border: green 1px solid;");
+			document.getElementById("accountColorDefault").setAttribute('tooltiptext', 
+				"Account Color: " + aColor + " (Based on remote calendar)");
+			document.getElementById("accountColorDefault").setAttribute('calendarColor', aColor);
 		},
 
 		/**
@@ -521,8 +498,7 @@
 			window.arguments[0].Url = document.getElementById('accountLogin').getAttribute('accountURL');
 			window.arguments[0].Login = document.getElementById('accountLogin').value;
 
-			window.arguments[0].Color = document.getElementById('accountColors').getAttribute('colorNum');
-
+			window.arguments[0].calendarColor = document.getElementById('accountColorDefault').getAttribute('calendarColor');
 			window.close();
 		},
 
@@ -594,16 +570,6 @@
 				document.getElementById('accountStatus').setAttribute('style', "font-weight: normal;color:black;");
 
 				var p = username.indexOf("@");
-			/*----   2016-05-17  changed to allow buisness accounts 
-				if (p != -1) {
-					useraddress = username.substring(p);
-					username = username.substring(0,p);
-				}
-				if (useraddress != '@googlemail.com') {
-					username += '@gmail.com';
-					document.getElementById('accountLogin').value = username;
-				}
-			-----------*/
 				if (p == -1) {
 					username += '@gmail.com';
 					document.getElementById('accountLogin').value = username;
@@ -667,8 +633,9 @@
 					case 'Url': 
 					case 'Login': 
 					case 'CTag': 
-					case 'Color': break;
-		
+					case 'Color':
+					case 'calendarColor': break;
+
 					default: {
 						return true;
 					}
@@ -676,100 +643,6 @@
 			}
 			return false;
 		},
-
-
-		// ---- calDAV color selection  --------
-
-		accountColorsSetup : function (accountColor) {
-		//-----------------------------------------------------
-			reminderfox.colorMap.cssFileRead();
-			var colorsLength = reminderfox.calDAV.colorMap.length;
-			if (accountColor === "") accountColor = 999;
-
-			var accountColors = document.getElementById('accountColors');
-			accountColors.setAttribute('colorNum', accountColor);
-
-			while (accountColors.hasChildNodes()) {
-				accountColors.removeChild(accountColors.lastChild);
-			}
-			for (var n = 0; n < colorsLength; n++) {
-				var newBox = document.createElement("hbox");
-				newBox.setAttribute("class", "rmFx-calDAV-color-selector");
-				newBox.setAttribute("id", "rmFx-calDAV-color-selector" + n);
-				newBox.setAttribute("onclick", "rmFxCalDAVedit.accountColorsSelect(this)");
-				newBox.setAttribute("label", "  ");
-
-				var acolor = "";
-				if (n != 999) acolor =  reminderfox.calDAV.colorMap[n][0];
-				newBox.setAttribute("tooltiptext", reminderfox.string("rf.caldav.color.select") 
-						+" [#" + acolor + "]");
-
-				if (n == accountColor) {
-					newBox.setAttribute("style","background-color:#" + acolor + ";border: blue 2px solid;");
-					var thisBox = document.getElementById("accountColorDefault");
-					thisBox.setAttribute("style","border: green 1px solid;");
-				}
-				else 
-					newBox.setAttribute("style","background-color:#" + acolor + ";border: green 1px solid;");
-
-				newBox.setAttribute("colorNum", n);
-				accountColors.appendChild(newBox);
-			}
-//XXX			reminderfox.colorMap.cssFileWrite()
-		},
-
-		accountColorsSelect : function (xthis) {
-		//-----------------------------------------------------
-		var thisBox;
-			var colorsLength = reminderfox.calDAV.colorMap.length;
-
-			var colorNum = +xthis.getAttribute("colorNum");
-			var accountColors = document.getElementById("accountColors");
-			accountColors.setAttribute ('colorNum', colorNum);
-
-			for (var n= 0; n < colorsLength; n++) {
-				thisBox = document.getElementById("rmFx-calDAV-color-selector" + n);
-				if (!thisBox) break;
-				thisBox.setAttribute("style","background-color:#" + reminderfox.calDAV.colorMap[n][0] + ";border: green 1px solid;");
-			}
-
-			thisBox = document.getElementById("accountColorDefault");
-			thisBox.setAttribute("style","border: green 1px solid;");
-
-			if (+colorNum != 999) 
-				xthis.setAttribute("style","background-color:#" + reminderfox.calDAV.colorMap[colorNum][0] + ";border: blue 2px solid;");
-			else
-				xthis.setAttribute("style", "border: blue 2px solid;");
-		},
-
-
-		colorpickerThis : function (xthis, xevent) {
-		//-----------------------------------------------------
-			var accountColors = document.getElementById("accountColors");
-			var colorNum = accountColors.getAttribute('colorNum');
-			if ((colorNum === "") || (colorNum == 999) || (!colorNum)) return;  // no destination selected
-
-			var saturation = reminderfox.core.getPreferenceValue(reminderfox.consts.CALDAV_SATURATION, reminderfox.consts.CALDAV_SATURATION_DEFAULT);
-
-			var colorHue = (256-xevent.offsetX)*360/256;
-			var pickerColor = reminderfox.colorUtil.getRgbCodeByHsv(colorHue, saturation, 98);
-			var pickerColorDark = reminderfox.colorUtil.getRgbCodeByHsv(colorHue, saturation, 50);
-
-//console.log("//XXX  colorpickerThis ", colorNum, colorHue, " N:", pickerColor, " S:", pickerColorDark);
-
-			if ((colorNum !== "") && (pickerColor !== "")) {
-				reminderfox.calDAV.colorMap[colorNum][0] = pickerColor;
-				reminderfox.calDAV.colorMap[colorNum][1] = pickerColorDark;
-
-				var thisBox = document.getElementById("rmFx-calDAV-color-selector" + colorNum);
-				thisBox.setAttribute("style","background-color:#" + pickerColor + ";border: blue 2px solid;");
-				thisBox.setAttribute("tooltiptext","[#" + pickerColor +"]");
-				thisBox.setAttribute("hexColor",pickerColor);
-				thisBox.setAttribute("hexColorD",pickerColorDark);
-			}
-			reminderfox.colorMap.cssFileWrite()
-		},
-
 
 
 		loginMUsernames: function (idHost) {
@@ -839,7 +712,6 @@
 
 		usernameSelection : "-- Enter User Name or use menu selector--" // $$$_locale
 	};
-
 
 	]]></script>
 

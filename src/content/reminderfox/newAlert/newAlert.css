@@ -48,11 +48,6 @@
 }
 
 
-/* .folderSummary-message-row -----  removed .. not used in RmFX    //XXXgW
-*/
-
-
-
 #closeButton {
   list-style-image: url("chrome://reminderfox/skin/images/close.png");
   -moz-image-region: rect(0px, 16px, 16px, 0px);

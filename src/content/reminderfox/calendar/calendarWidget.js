@@ -342,9 +342,6 @@ reminderfox.calendar.ui.eventMenus= function(xThis, xEvent, numDate){
 		return;
 	} // was context menu ..
 
-	// open _reminder for edit
-//reminderfox.util.Logger('calndr', " open _reminder for edit ", xThis.getAttribute('numDate'), xThis.getAttribute('idValue'));		//XXX
-//	reminderfox.calendar.ui.eventContext ('Edit', null, xThis.getAttribute('numDate'));
 	reminderfox.calendar.ui.eventContext ('Edit', null, instanceDate);
 };
 
@@ -2286,7 +2283,6 @@ reminderfox.calendar.ttt.addLabel= function(dayPanel,
 	tooltipValue.setAttribute("crop", "end");
 	tooltipValue.setAttribute("flex", "1");
 
-//	tooltipValue.setAttribute("tooltiptext", ((rmID != null)? (value + "  " + rmID) : value));				//XXXshowRmFXID
 	tooltipValue.setAttribute("tooltiptext", value);
 
 	tooltipValue.setAttribute("numDate", numDate);

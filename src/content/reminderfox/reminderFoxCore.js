@@ -15,7 +15,7 @@ if (!reminderfox.calDAV.accounts)   reminderfox.calDAV.accounts = {};  //calDAV 
 // constants / prefs
 // see also: https://dxr.mozilla.org/comm-central/source/common/src/extensionSupport.jsm
 //
-reminderfox.consts.MIGRATED_PREF_VERSION                = "2.1.6.2";  // update also install.rdf and build.properties
+reminderfox.consts.MIGRATED_PREF_VERSION                = "2.1.6.3";  // update also install.rdf and build.properties
 
 reminderfox.consts.SUPPORT                              = "reminderfox@googlegroups.com";
 
@@ -118,7 +118,13 @@ reminderfox.consts.ALERTSLIDER_TOP = "alert.notification.top"; // BOOL   (def=fa
 
 reminderfox.consts.CALDAV_DEFAULT_ACCOUNT = "defaultSyncAccount"; // CHAR
 reminderfox.consts.CALDAV_SATURATION = "calDAVcolorSaturation"; // INT
-reminderfox.consts.CALDAV_SATURATION_DEFAULT =25;
+reminderfox.consts.CALDAV_SATURATION_DEFAULT = 25;
+
+reminderfox.consts.CALDAV_OPACITY = "calDAVcolorOpacity"; // INT
+reminderfox.consts.CALDAV_OPACITY_DEFAULT = 15;
+
+reminderfox.consts.CALDAV_OPACITY_SELECTED = "calDAVcolorOpacitySelected"; // INT
+reminderfox.consts.CALDAV_OPACITY_SELECTED_DEFAULT = 45;
 
 reminderfox.consts.CALDAV_COLORS = "calDAVcolors";
 
@@ -291,6 +297,7 @@ reminderfox.consts.NOTES_IMAGE = "chrome://reminderfox/skin/images/notes.png";
 reminderfox.consts.REMIND_UNTIL_COMPLETED_IMAGE = "chrome://reminderfox/skin/images/ribbon-red-small.png";
 reminderfox.consts.REMIND_UNTIL_COMPLETED_TO_BE_MARKED_IMAGE = "chrome://reminderfox/skin/images/ribbon-blue-small.png";
 reminderfox.consts.SHARE16 = "chrome://reminderfox/skin/images/icon_share_16.png";
+reminderfox.consts.SHARE16w = "chrome://reminderfox/skin/images/icon_share_16w.png";
 reminderfox.consts.SHARE = "chrome://reminderfox/skin/images/icon_share_20.png";
 reminderfox.consts.SHAREW = "chrome://reminderfox/skin/images/icon_share_20w.png";
 reminderfox.consts.SHOW_IN_TOOLTIP_IMAGE = "chrome://reminderfox/skin/images/tooltip.png";
@@ -432,6 +439,8 @@ reminderfox.core.initUserPrefsArray= function(){
   //  reminderfox._prefsUser[reminderfox.consts.CALDAV_DEFAULT_ACCOUNT] = reminderfox._prefsTYPE.COMPLEX;  OK
     reminderfox._prefsUser[reminderfox.consts.CALDAV_DEFAULT_ACCOUNT] = reminderfox._prefsTYPE.CHAR;
     reminderfox._prefsUser[reminderfox.consts.CALDAV_SATURATION] = reminderfox._prefsTYPE.INT;
+    reminderfox._prefsUser[reminderfox.consts.CALDAV_OPACITY] = reminderfox._prefsTYPE.INT;
+    reminderfox._prefsUser[reminderfox.consts.CALDAV_OPACITY_SELECTED] = reminderfox._prefsTYPE.INT;
   //  reminderfox._prefsUser[reminderfox.consts.CALENDAR_DAYPOPUP_DELAY] = reminderfox._prefsTYPE.INT; see .core.
 
     reminderfox._prefsUser[reminderfox.consts.CALDAV_COLORS] = reminderfox._prefsTYPE.CHAR;
@@ -3557,10 +3566,6 @@ reminderfox.core.createStringForEndDate= function(reminderOrTodo, currentDate, i
 
 reminderfox.core.writeOutRemindersAndTodos= function(isExport){
 
-if (isExport && isExport == true) {
-   //   console.error("RmFX  .core.writeOutRemindersAndTodos  **************  isExport: ", isExport);
-}
-
     var remindersToOutput = reminderfox.core.getReminderEvents();
     //§§§ 2014-02-16  var remindersToOutput = reminderfox.core.reminderFoxEvents;		//gWSaveReminders
     var outputStr = reminderfox.core.constructReminderOutput(remindersToOutput,
@@ -5501,7 +5506,7 @@ reminderfox.core.mergeEvents= function(existingEvents, importedEvents, categorie
 
     if (topWindow) {
         topWindow.reminderfox.core.reminderFoxEvents = existingEvents;
-        topWindow.reminderfox.calendar.ui.selectDay('today');	//XXX which day to focus to ?
+        topWindow.reminderfox.calendar.ui.selectDay('today');
         topWindow.modifiedReminders();
     }
 
@@ -6218,7 +6223,7 @@ reminderfox.core.compareColumnReminder1LessThan= function(reminder1, reminder2, 
         return reminderfox.core.compareColumnReminder1LessThanCategory(reminder1, reminder2);
     }
     else
-    	if (column == "calDAVcolLabel") { //XXXCalDAV
+    	if (column == "calDAVcolLabel") {
         return reminderfox.core.compareColumnReminder1LessThanCalDAV(reminder1, reminder2);
     }
     else

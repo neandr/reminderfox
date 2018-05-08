@@ -12,6 +12,7 @@
 <?xml-stylesheet href="chrome://reminderfox/skin/reminder.css"  type="text/css"?>
 <?xml-stylesheet href="chrome://reminderfox/skin/rmSearchBox.css"  type="text/css"?>
 
+<?xml-stylesheet href="chrome://reminderfox/skin/caldav.css"  type="text/css"?>
 
 <?xul-overlay href="chrome://reminderfox/content/calendar/calendarWidget.xul"?>
 
@@ -829,6 +830,8 @@
 		if (updateWindow != null) {
 			updateWindow.close()
 		}
+
+		rmFx_setTreeRowColors()
 
 		var textFilter = document.documentElement.attributes["textFilter"].value
 	//	reminderfox.util.Logger('ALERT', " textFiltering on XUL start" + textFilter )

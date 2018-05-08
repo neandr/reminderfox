@@ -205,7 +205,7 @@
 	</tabbox>
 
 	<script>
-	function copytoClipboard(xthis) {				//XXX
+	function copytoClipboard(xthis) {
 		var data = xthis.getAttribute("uid");
 		reminderfox.util.copytoClipboard(data);
 	}

@@ -411,8 +411,6 @@ reminderfox.userIO.getICS = function (status, xml, text, headers, statusText, ca
  */
 reminderfox.userIO.readICSdata = function (icsData, call) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//console.error("rmRX   .userIO.readICSdata",new Date(),"\n>>\n" +icsData + "<<\n", call)
-
 	let reminderEvents = [];
 	let reminderTodosArr = [];
 	reminderfox.core.readInRemindersAndTodosICSFromString(reminderEvents, reminderTodosArr, icsData, false /*ignoreExtraInfo*/)

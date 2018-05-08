@@ -778,6 +778,7 @@ function reminderFox_updateOptions() {
 	}
 	reminderfox.core.setICSfile(sFile);
 
+	var currentCalDAVaccounts = reminderfox.calDAV.accounts;
 
 	var calDAVaccounts = reminderfox.calDAV.getAccounts()
 
@@ -1134,8 +1135,9 @@ function reminderFox_updateOptions() {
 			if ( query != null ) {
 				reminderfox.calDAV.accounts[ID].Name   = query.value;
 	
-				var x = elem.querySelector(".calDAV_Name").getAttribute('color');
-				reminderfox.calDAV.accounts[ID].Color  = (x == null) ? "" : x;
+	//			var x = elem.querySelector(".calDAV_Name").getAttribute('color');
+				var x = elem.querySelector("#calDAV_COLOR").getAttribute('calendarColor');
+				reminderfox.calDAV.accounts[ID].calendarColor  = (x == null) ? "" : x;
 	
 				reminderfox.calDAV.accounts[ID].ID     = ID;
 				reminderfox.calDAV.accounts[ID].Typ    = elem.querySelector(".calDAV_Active").getAttribute('typ');
@@ -1267,8 +1269,8 @@ function reminderFox_calDAVsave() {
 			if ( query != null ) {
 				reminderfox.calDAV.accounts[ID].Name   = elem.querySelector(".calDAV_Name").value;
 	
-				var x = elem.querySelector(".calDAV_Name").getAttribute('color');
-				reminderfox.calDAV.accounts[ID].Color  = (x == null) ? "" : x;
+				var x = elem.querySelector("#calDAV_COLOR").getAttribute('calendarColor');
+				reminderfox.calDAV.accounts[ID].calendarColor  = (x == null) ? "" : x;
 	
 				reminderfox.calDAV.accounts[ID].ID     = ID;
 				reminderfox.calDAV.accounts[ID].Typ    = elem.querySelector(".calDAV_Active").getAttribute('typ');

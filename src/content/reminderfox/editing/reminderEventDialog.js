@@ -206,7 +206,6 @@ function loadEventOptions() {
  */
 function reminderFox_ListChooserChanged(listIndex, editThis, firstRun) {
 //------------------------------------------------------------------------------
-// console.error("XXX  reminderFox_ListChooserChanged:" ,listIndex, editThis, firstRun); 
 	var reminderListChooser = document.getElementById("reminderListChooser");
 
 	if(listIndex == null){

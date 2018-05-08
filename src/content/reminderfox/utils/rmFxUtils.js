@@ -180,8 +180,6 @@ reminderfox.date.adjustTimeZones= function (eventDateString, fullDateString, rem
  */
 reminderfox.date.getDTZfromICSstring= function (eventDate, timezoneId){
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//console.error("rmFX  .date.getDTZfromICSstring", ">>" + eventDate + "<<", typeof(eventDate), timezoneId);
-
 	var Z = '';
 	if (eventDate.length > 0){ 
 		Z = eventDate.charAt(eventDate.length-1) == 'Z' ? 'Z' : '';
@@ -204,7 +202,6 @@ reminderfox.date.getDTZfromICSstring= function (eventDate, timezoneId){
 	dtString += tzOffset;
 
 	var dt = (Date.parse(dtString + Z));
-// console.error("  dt:", eventDate, new Date(dt), new Date(dt).toLocaleString());
 	return new Date(dt);
 }
 
@@ -1559,7 +1556,6 @@ reminderfox.util.makeFile8= function(outputStr, file){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //ZZZ
 // console.error("rmFX  .util.makeFile8 ", new Date().toISOString(), ">>"+ outputStr +"<<", file);
-
 try {
 	var sfile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 	sfile.initWithPath(file);
@@ -2388,7 +2384,6 @@ reminderfox.about= function() {
 //--------------------------------------------------------------------------
 	document.getElementById('rmFx_Version').setAttribute( "value",
 		reminderfox.consts.MIGRATED_PREF_VERSION);
-
 	reminderfox.aboutXPI();
 };
 
@@ -2399,6 +2394,8 @@ reminderfox.promiseRequest = {
 	get : function (url) {
 		return new Promise(function(resolve, reject) {
 			var req = new XMLHttpRequest();
+
+			req.responseType = 'text';
 
 			req.open('GET', url);
 
@@ -2451,7 +2448,6 @@ reminderfox.aboutXPI= function () {
 				+ "\n  " + navigator.userAgent + " (" + navigator.language + ")";
 
 		console.log("RmFX  [.aboutXPI] " + (new Date()) + "\n" + msg);
-
 		reminderfox.util.copytoClipboard(msg);
 
 		if (document.getElementById('logoText')) {
@@ -2667,10 +2663,12 @@ reminderfox.calDAV.accountsStatus = function (calDAVaccounts) {
 	calDAVstatus.count = 0;
 	calDAVstatus.active = 0;
 	calDAVstatus.snap=""
+
 	for (var account in calDAVaccounts) {
 		if (calDAVaccounts[account].Active === true) calDAVstatus.active++;
-		calDAVstatus.snap += "["+calDAVaccounts[account].ID + "] CTag:" + calDAVaccounts[account].CTag + ";  "
-
+		calDAVstatus.snap += "\n["+calDAVaccounts[account].ID + "] "
+		calDAVstatus.snap += calDAVaccounts[account].Name + "  " + calDAVaccounts[account].calendarColor
+		calDAVstatus.snap += " CTag:" + calDAVaccounts[account].CTag + " active:" + calDAVaccounts[account].Active;
 		calDAVstatus.count++;
 	}
 
@@ -2694,8 +2692,7 @@ reminderfox.calDAV.accountsStatus = function (calDAVaccounts) {
  */
 reminderfox.calDAV.accountsWrite= function (calDAVaccounts) {
 //-------------------------------------------------------------
-	var msg = "  ....  calDAV.accountsWrite   .. "
-	reminderfox.calDAV.accountsStatus (msg, calDAVaccounts) 
+	var calDAVstatus = reminderfox.calDAV.accountsStatus (calDAVaccounts) 
 
 	if (!calDAVaccounts) calDAVaccounts = {};
 
@@ -2710,13 +2707,10 @@ reminderfox.calDAV.accountsWrite= function (calDAVaccounts) {
 	var windowManager = Cc["@mozilla.org/appshell/window-mediator;1"].getService();
 	var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
 
-	msg = " ....  enum xulWindows"
-
 	for (var aWin in xWin) {
 		var windowEnumerator = windowManagerInterface.getEnumerator(xWin[aWin]);
 		while (windowEnumerator.hasMoreElements()) {
 
-			msg += "   >> " + xWin[aWin] 
 			var currentWindow = windowEnumerator.getNext();
 			currentWindow.reminderfox.calDAV.accounts = calDAVaccounts
 		}
@@ -2730,8 +2724,9 @@ reminderfox.calDAV.accountsWrite= function (calDAVaccounts) {
 	var outputStr = JSON.stringify (calDAVaccounts);
 	var file = reminderfox.calDAV.accountsFile();
 
-	var mssg = " .... WriteOut calDAVaccounts to file: " + file.path + "\n" + msg;
-	reminderfox.util.Logger('calDAVaccount',  mssg);
+	var mssg = " CalDAV accounts in: " + file.path 
+		+ " calDAVaccounts: " + calDAVstatus.count + calDAVstatus.snap;
+	reminderfox.util.Logger('calDAV',  mssg);
 
 	reminderfox.util.makeFile8(outputStr, file.path)
 	return calDAVaccountsNo;
@@ -2782,31 +2777,101 @@ reminderfox.calDAV.accountsClearReminderDetails= function (calDAVaccounts) {
 };
 
 
+/*
+ *  Tree-row coloring 
+ *    see alsoo  https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XUL/Tutorial/Styling_a_Tree
+ * 
+ *  @call  getStyle(cssStyleSheetName, rule)     @returns {string}
+ *  @call  insertStyle(cssStyleSheetName, rule)  insert a new rule at index 0, an old rule will be removed
+ *  @call  deleteStyle(cssStyleSheetName, rule)  @return  --
+* 
+*   Examples:
+*    reminderfox.styleUtil.insertStyle('caldav.css', "treechildren::-moz-tree-row(caldavI) {background-color:red !important;}")
+*    reminderfox.styleUtil.deleteStyle('caldav.css', 'treechildren::-moz-tree-row(caldavI)');
+*/
+reminderfox.styleUtil = {
+//-------------------------------------------------------------
+	getStyle: function(styleSheet, rule) {
+		let detail = "";
+		this._findSheet(styleSheet);
+
+		if (this._styleSheetNo != -1) {
+			var r = this._findRule(rule);
+			if (r != -1) {
+				let classes = document.styleSheets[this._styleSheetNo].rules || document.styleSheets[this._styleSheetNo].cssRules;
+				detail = (classes[r].cssText) ? (classes[r].cssText) : (classes[r].style.cssText);
+	//			console.log("rmFX  rule", rule, detail);
+			}
+		}
+		return detail;
+	},
+
+	deleteStyle: function(styleSheet, rule) {
+		this._findSheet(styleSheet);
+		if (this._styleSheetNo != -1) {
+			let r = this._findRule(rule);
+			if (r != -1) {
+				document.styleSheets[this._styleSheetNo].deleteRule(r)
+			}
+		}
+	},
+
+	insertStyle: function(styleSheet, rule){
+		this._findSheet(styleSheet);
+		if (this._styleSheetNo != -1) {
+			// delete a previous set rule
+			this.deleteStyle(styleSheet, rule.split(' ')[0]);
+			document.styleSheets[this._styleSheetNo].insertRule(rule, 0);
+		}
+	},
+
+	_styleSheetNo : -1,
+
+	_findSheet: function(styleSheet) {
+		for (var x = 0; x < document.styleSheets.length; x++) {
+			if (document.styleSheets[x].href.search(styleSheet) > -1) {
+				this._styleSheetNo = x;
+				break;
+			}
+		}
+	},
+
+	_findRule: function(rule){
+		let classes = document.styleSheets[this._styleSheetNo].rules || document.styleSheets[this._styleSheetNo].cssRules;
+		for (var x = 0; x < classes.length; x++) {
+			if (classes[x].selectorText == rule) {
+				return x;
+			}
+		}
+		return -1;
+	},
+}
+
+
 /**
  * This color util is based on colorpicker.com JS routines 
  */
 reminderfox.colorUtil = {
 //--------------------------------------------------------------------
-
-
 		/*
-		 *    Convert a rgb color with Satuation = 20% and Brightness=90%
+		 *  Color converted  rgb(red,green,blue) using Opacity to rgba(red,green,blue, opacity)
+		 *   @param  {string}  rgbColor    ex:"#E6E0B8"
+		 *   @return {string}  ex: rgba(113,26,118,0.15)
 		 */
-		setRgbCode4Account : function(calendarColor) {
+		convertRgb2RgbA : function(rgbColor) {
 
-			var hsv = reminderfox.colorUtil.getHsvByRgbCode(calendarColor);
+			var hsv = reminderfox.colorUtil.getHsvByRgbCode(rgbColor);
 				//	hsv.hue 
 				//	hsv.saturation
 				//	hsv.brightness 
 
-		//	var saturation = reminderfox.core.getPreferenceValue(reminderfox.consts.CALDAV_SATURATION, reminderfox.consts.CALDAV_SATURATION_DEFAULT);
-			var saturation = "0.2"
-			var brightness = "0.9"
-			var rgb = reminderfox.colorUtil.getRgbColorsByHsv(hsv.hue, saturation, brightness)
-			var rgb1 = reminderfox.colorUtil.getRgbCodeByRgbColors(rgb.red,rgb.green,rgb.blue)
+			var opacity = reminderfox.core.getPreferenceValue(reminderfox.consts.CALDAV_OPACITY, 
+				reminderfox.consts.CALDAV_OPACITY_DEFAULT);
+			reminderfox.core.setPreferenceValue(reminderfox.consts.CALDAV_OPACITY, opacity);
 
-// 	console.error("//XXX calendarColor  rgb:",calendarColor, hsv, rgb, rgb1);
-			return "#" + rgb1;
+			var rgb = reminderfox.colorUtil.getRgbColorsByHsv(hsv.hue, hsv.saturation, hsv.brightness)
+			var rgba = "rgba(" + rgb.red + "," + rgb.green +"," + rgb.blue +"," + opacity/100 + ")"
+			return rgba;
 		},
 
 		getRgbCodeByRgbColors : function(red, green, blue) {
@@ -2971,8 +3036,6 @@ reminderfox.colorUtil = {
 	};
 
 
-
-
 function reminderfox_isReminderTabSelected(){
 	var isReminder = false;
 	if (reminderfox.tabInfo.tabIndex === 0) {
@@ -3043,47 +3106,47 @@ function reminderfox_isSubscribedCalendarTabSelected(){
 }
 
 
-		/**
-		 * Reorder the 'Sync' Option tabs for Remote / CalDAV,
-		 * if CalDAV accounts are defined, set the CalDAV tab as first.
-		 */
-		function rmFx_calDAV_syncTABreorder(calDAVaccounts, networkSync) {
-		//-------------------------------------------
-	//	reminderfox.util.Logger('Alert', "  _syncTABreorder  calDAVaccounts.active, networkSync : "
-	//		+ calDAVaccounts.active +"|" + networkSync) 
+/**
+ * Reorder the 'Sync' Option tabs for Remote / CalDAV,
+ * if CalDAV accounts are defined, set the CalDAV tab as first.
+ */
+function rmFx_calDAV_syncTABreorder(calDAVaccounts, networkSync) {
+//-------------------------------------------
+//	reminderfox.util.Logger('Alert', "  _syncTABreorder  calDAVaccounts.active, networkSync : "
+//		+ calDAVaccounts.active +"|" + networkSync) 
 
-			if (calDAVaccounts.active) {
-				reorder(1,2,0);		// changing the tab order: CalDAV, Remote, About
-			} else  if (networkSync){
-				reorder(2,1,0);		// changing the tab order: Remote, CalDAV, About
-			} else {
-				reorder(0,1,2);		// changing the tab order: About, CalDAV, Remote
-			}
+	if (calDAVaccounts.active) {
+		reorder(1,2,0);		// changing the tab order: CalDAV, Remote, About
+	} else  if (networkSync){
+		reorder(2,1,0);		// changing the tab order: Remote, CalDAV, About
+	} else {
+		reorder(0,1,2);		// changing the tab order: About, CalDAV, Remote
+	}
 
-			function reorder (sOrder1, sOrder2, sOrder3) {
-				var sLabel = [reminderfox.string("rf.caldav.sync.about"), 
-								reminderfox.string("rf.caldav.calendars"),
-								document.getElementById("rServer").getAttribute("value1")];
-	
-				var sLink  = ['infoPanel', 'calDAV_calendars', 'reminderFoxVbox4'];
-	
-				var panel1 = document.getElementById("panel1");
-				var panel2 = document.getElementById("panel2");
-				var panel3 = document.getElementById("panel3");
-	
-				panel1.setAttribute('label', sLabel[sOrder1]);
-				panel1.setAttribute('linkedpanel', sLink[sOrder1]);
-	
-				panel2.setAttribute('label', sLabel[sOrder2]);
-				panel2.setAttribute('linkedpanel', sLink[sOrder2]);
-	
-				panel3.setAttribute('label', sLabel[sOrder3]);
-				panel3.setAttribute('linkedpanel', sLink[sOrder3]);
-	
-				var tabbox = document.getElementById('content-tabs');
-				tabbox.selectedIndex = tabbox.selectedIndex;
-			}
-		}
+	function reorder (sOrder1, sOrder2, sOrder3) {
+		var sLabel = [reminderfox.string("rf.caldav.sync.about"), 
+						reminderfox.string("rf.caldav.calendars"),
+						document.getElementById("rServer").getAttribute("value1")];
+
+		var sLink  = ['infoPanel', 'calDAV_calendars', 'reminderFoxVbox4'];
+
+		var panel1 = document.getElementById("panel1");
+		var panel2 = document.getElementById("panel2");
+		var panel3 = document.getElementById("panel3");
+
+		panel1.setAttribute('label', sLabel[sOrder1]);
+		panel1.setAttribute('linkedpanel', sLink[sOrder1]);
+
+		panel2.setAttribute('label', sLabel[sOrder2]);
+		panel2.setAttribute('linkedpanel', sLink[sOrder2]);
+
+		panel3.setAttribute('label', sLabel[sOrder3]);
+		panel3.setAttribute('linkedpanel', sLink[sOrder3]);
+
+		var tabbox = document.getElementById('content-tabs');
+		tabbox.selectedIndex = tabbox.selectedIndex;
+	}
+}
 
 
 /**
@@ -3100,8 +3163,7 @@ reminderfox.online = {
 				foxy.setAttribute('mode', 'online');
 
 			msg += " +++ ONLINE +++"
-			reminderfox.util.Logger('calDAV',msg)
-
+		//	reminderfox.util.Logger('calDAV',msg)
 			rmFx_CalDAV_updatePending();
 
 		} else {
