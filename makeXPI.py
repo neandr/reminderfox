@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#  /makeXPI.py/  gWahl  2019-01-15/
+#  /makeXPI.py/  gWahl  2019-01-16/
 
 from __future__ import division
 from datetime import datetime
@@ -46,16 +46,19 @@ def xpiVersion():
     f.write(xpi_log + "\n\n")
 
     fv = 'version.txt'
-    with open(fv) as file_object:
-        lines = file_object.readlines()
-        for line in lines:
-            # print (' ... ' + line)
-            if line[0:2] != '##':
-                # print (' +++  add line ')
-                f.write(line)
-        f.close()
+    if os.path.isfile(fv):
+        with open(fv) as file_object:
+            lines = file_object.readlines()
+            for line in lines:
+                # print (' ... ' + line)
+                if line[0:2] != '##':
+                    # print (' +++  add line ')
+                    f.write(line)
+            f.close()
+    else:
+        print("  >>> Warning: no 'version.txt' found!")
 
-    # Copy to /chrome/content/reminderfox/
+    # Copy to /chrome/content/
     shutil.copy2('version.log', './chrome/content/version.log')
 
 
@@ -100,10 +103,8 @@ def go_zip():
     s.close
 
 
-
 #---------------------------------
 if __name__ == "__main__":
-
 
     print ("""
       XPI Building for Thunderbird/Firefox/SM """)
