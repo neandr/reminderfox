@@ -1,0 +1,41 @@
+<div id="doc-contents">
+<h2>Documentation</h2>
+<p style="padding-left: 30px;">If you have a question, first check the <a href="documentation.html">documentation pages</a>. There you will find a user guide, videos, and a frequently asked questions page that may provide the answer that you are looking for.</p>
+&nbsp;
+
+<h2>Reminderfox Forum</h2>
+<p style="padding-left: 30px;">If our documentation doesn't solve your problem,
+  the <strong><a href="https://groups.google.com/forum/#!forum/reminderfox"> Reminderfox Forum</a></strong>
+  is an additional resource. Users post their questions there and get answers and recommendations
+  also from other users. Probably you find an answer already there. Basically it's the best place
+  to ask questions, report problems, or leave comments.</p>
+
+<p style="padding-left: 50px;"><em>Please make sure to check for similar points you have
+  before post or mail to the Forum.</em></p>
+
+<p style="padding-left: 30px;">You can also send <a id="request">help request</a>
+  using your favorite mail system. This will include some details about your
+  installation which helps to understand your situation.</p>
+
+<p style="padding-left: 50px;"><em>Please note that this is a public mailing
+  list; other list members may reply with help, and your message
+  (including your e-mail address) will be archived in the mailing list archives.</em></p>
+
+<script type="text/javascript">
+  var setupMailto = function() {
+  var ms = new Date().getTime().toString().substring(10,13);
+  var recip = encodeURIComponent("reminderfox@googlegroups.com");
+  var mSubject = encodeURIComponent("ReminderFox Request/Feedback ");
+  mSubject = mSubject + " #" + ms + " .. ";
+  var msg = "... Please set a descriptive 'Subject' for your request  ... ";
+  msg += "\n\n___________________________________________________________\n";
+  msg += "This relates to ReminderFox installed on: ";
+  var mBody = (encodeURIComponent(msg) + navigator.userAgent);
+  document.getElementById("request").setAttribute(
+      "href",
+  "mailto:" + recip + "?" + "subject=" + mSubject
+  + decodeURIComponent("%26") + "body=" + mBody);}
+  window.onload = setupMailto;
+</script>
+
+</div>

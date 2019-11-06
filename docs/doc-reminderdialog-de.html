@@ -1,0 +1,203 @@
+<style /* format */ type="text/css">
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none;
+  font-style:normal;  line-height: 1.5em;}
+  img {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  /* format */</style>
+
+<h2 id="doctitle" class="pagetitle" title="Anzeigen und Bearbeiten der Erinnerungen, Such- und Filterfunktionen">ReminderFox HauptDialog</h2>
+<table class="doc-toc">
+<tbody>
+<tr>
+<td>
+<div id="toctitle">
+<h2>Inhalt</h2>
+</div>
+<ul id="toc-ul">
+<li class="toclevel-1"><a href="#columns"><span class="tocnumber">1</span> <span class="toctext">Spaltenauswahl</span></a></li>
+<li class="toclevel-1"><a href="#calendarwidget"><span class="tocnumber">2</span> <span class="toctext">Übersichtskalender</span></a></li>
+<li class="toclevel-1"><a href="#editEvents"><span class="tocnumber">3</span> <span class="toctext">Ereignisse Bearbeiten</span></a></li>
+<li class="toclevel-1"><a href="#filtering"><span class="tocnumber">4</span> <span class="toctext">Filtern der Ereignisse</span></a></li>
+<li class="toclevel-2"><a href="#ViewsDefinitions"><span class="tocnumber">5</span> <span class="toctext">Benutzer definierte 'Ansichten' - Definitionen</span></a></li>
+<li class="toclevel-1"><a href="#ViewsEditor"><span class="tocnumber">6</span> <span class="toctext">'Ansichten' Editor</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div id="doc-contents">
+
+<!-- ["reminderdialog", "Dialog fuer Termine/Aufgaben", "Anzeigen und Bearbeiten der Erinnerungen, Such- und Filterfunktionen"]-->
+
+<p>Der ReminderFox Dialog - das Fenster, das beim Öffnen von ReminderFox durch den Benutzer angezeigt wird - ist die Zentrale zum Darstellen und Bearbeiten der Termine bzw. Aufgaben.
+Der Aufruf erfolgt durch Klick auf das Schleifen-Symbol oder mittels des Kontextmenüs über dem Schleifen-Symbol.
+<br>
+In der Listenanzeige werden die Termine bzw. Aufgaben dargestellt und bearbeitet, sie hat Tabulatoren für "Termine", "Aufgaben" und selbst hinzugefügte Listen. Das Fenster zeigt alle Ereignisse zusammen mit Attributen in den verschiedenen Spalten.
+Die Listenanzeige bietet ebenso Such- und Filterfunktionen für Termine und Aufgaben. Mit der Merkmalen der Termine und Aufgaben (Datum, Kategorie, Notizen usw.) können lassen sich sehr flexibel verschiedene 'Ansichten' der Listen erzeugt werden.
+<br>
+Aus der Listendarstellung heraus ist das Exportieren oder Versenden von Ereignissen /Einladungen möglich.</p>
+<h2 id="columns">Spaltenauswahl</h2>
+<p>Die meisten Spalten sind in der Grundstellung verdeckt. Sie können mit dem Symbol für die Auswahl der Spalten in der rechten oberen Ecke sichtbar gemacht werden. Es erscheint dann dieses Kontextmenü:</p>
+
+<p><strong><img title="rmFx_Columns" src="pics/rmFx_Columns.png" alt="de/rmFx_Columns" /></strong></p>
+<ul>
+<li><strong>Zeit</strong> - zeigt "ganzer Tag" oder zu welcher Zeit das Ereignis stattfindet.</li>
+<li><strong>Datum erledigt</strong> - zeigt das Datum, zu dem der Termin abgeschlossen wurde.</li>
+<li><strong>Wiederholung</strong> - zeigt in Kurzform, um welche Wiederholungsform es sich handelt (wöchentlich, monatlich, jährlich, etc)</li>
+<li><strong>Erledigt</strong> - zeigt ein Symbol, wenn der Termin erledigt wurde. Durch Anklicken dieses Symbols kann der Status des Termins direkt umgeschaltet werden.</li>
+<li><strong>Notiz</strong> - zeigt ein Notiz-Symbol, wenn der Termin zusätzliche Notizen enthält.</li>
+<li><strong>Erinnern bis erledigt</strong> - zeigt ein Schleifen-Symbol, wenn für den Termin "Erinnern bis zur Erledigung" gesetzt wurde. Die Schleife ist blau, wenn das Datum des Termins in der Zukunft liegt: Es ist rot, wenn der Termin überschritten und damit überfällig ist.</li>
+<li><strong>Benachrichtigung</strong> - zeigt ein Benachrichtigungs-Symbol, wenn für den Termin eine Benachrichtigung gesetzt ist. Wird der Mauszeiger auf das Symbol geführt, werden die Details der Benachrichtigung angezeigt.</li>
+<li><strong>Mail</strong> - zeigt ein Mail-Symbol, wenn der Termin mit einem E-Mail verbunden ist.
+  <br><em> Siehe auch <a title=" [mail]" href="doc-email-de.html"> Erinnerungen mit E-Mail</a> </em></li>
+</ul>
+<p>Es kann jede Spalte ein- oder ausgeblendet werden. Ebenso lassen sich die Spalten verschieben, einfach am Kopf anfassen und wie gewünscht verschieben.
+Einige Spalten erlauben es, die Termine einfach durch Klick zu ändern. Wird in einer Terminzeile auf die Spalte "Erledigt" geklickt, schaltet dies den Status um. Klick in der Spalte "Erinnern bis erledigt" schaltet dies ein / aus. Klick auf das Mail-Symbol öffnet das zugehörige E-Mail in der Mail Anwendung.</p>
+<h2 id="calendarwidget">Übersichtskalender</h2>
+<p>Der Übersichtskalender im rechten Teil der Listenanzeige durch Anklicken des Symbols Kalender Icon <strong> <img title="calendar-icon" src="pics/calendar.gif" alt="calendar-icon" /></strong> ein- / ausgeschaltet werden.</p>
+<ul>
+<li>Der Kalender ist direkt mit den Ereignissen der angezeigten Liste synchronisiert. Ein gelber Hintergrund zeigt Tage des Monats mit Ereignissen, rote Zahlen bedeuten Tage mit wichtigen Ereignissen.</li>
+<li>Wird der Mauszeiger auf ein Datum mit einem Ereignis geführt, so erscheint die Beschreibung als Tooltip.</li>
+<li>Wird auf ein Datum mit einem Ereignis geklickt, springt die Anzeige in der Liste ebenfalls auf dieses Datum - ebenso umgekehrt.</li>
+<li>Doppel-Klick auf ein Datum zeigt den Dialog "Termin hinzufügen" bzw. "Aufgabe hinzufügen", wobei das Datum übernommen wird.</li>
+<li>Das Kontextmenü eines Datums mit einem Ereignis zeigt die Optionen zur Bearbeitung.</li>
+<li>Das angezeigte Jahr wird geändert durch Anklicken des rechten oder linken Pfeils neben der Jahreszahl.<em> Hinweise:
+- Termine/Aufgaben für andere Jahre können eingeben werden, wenn vorher das gewünschte Jahr gewählt wurde.
+- Die Liste zeigt nur Ereignisse in dem ausgewählten Jahr, d.h. auch Ereignisse die im Januar des nächsten Jahres (z.B. 20.01.2008) liegen, werden im laufenden Jahr nicht angezeigt. Hierfür muss erst das Jahr über das Kalender-Symbol geändert werden! </em></li>
+</ul>
+<h2 id="editEvents">Ereignisse Bearbeiten</h2>
+<p>Ein Klick auf einen beliebigen Termin startet die Bearbeitung. (Dies gilt sinngemäß auch für Aufgaben).
+Der Termin wird angezeigt und es sind nun alle vorher gewählten Optionen änderbar. Das Termin-Kontextmenü der Terminliste stellt eine Reihe von Optionen zur Verfügung:</p>
+<br><p><strong><img title=" rmFx_Context1" src="pics/rmFx_Context1.jpg" alt=" rmFx_Context1" /></strong></p>
+<ul>
+<li><strong>Termin bearbeiten</strong> - Ermöglicht, die Eigenschaften der Termine zu ändern.</li>
+<li><strong>Termin löschen</strong> - Löscht den Termin aus der Liste. Wenn es ein Termin mit Wiederholung ist, wird abgefragt, ob diese einzelne und die vorherigen Vorkommen (Instanzen) oder der gesamte Terminfolge gelöscht werden soll.</li>
+<li><strong>In eine Liste verschieben</strong> - Verschiebt den gewählten Termin in jede andere Liste -- Aufgaben oder individuelle Listen.</li>
+<li><strong>Wichtig</strong> - Umschalten der Bedeutung des Termins. Dies ist vorsehen für außergewöhnliche Ereignisse, die keinesfalls vergessen werden dürfen, z.B. der Geburtstag der Ehefrau. Diese Termine werden in der Terminliste, im Tooltip und in der Statusleiste rot hervorgehoben.</li>
+<li><strong>Beendet</strong> - Termine können als erledigt markiert werden. Diese werden dann nicht mehr in den Tooltip oder in der Statusleiste angezeigt.<em>Beispiel: für einen Termin "Telefonrechnung bezahlen": wird vor dem Termin bezahlt, dann kann durch dieses Attribut markiert werden, dass es erledigt ist. Dadurch wird es nicht mehr in den "kommenden Terminen" angezeigt. Dieser "Erledigt"-Status gilt nur für diesen bearbeiteten Termin, so dass kommende Termine dieser Terminfolge z.B. im nächsten Monat wieder angezeigt werden.</em></li>
+<li><strong>Täglich erinnern bis zur Beendigung</strong> - Mit dieser Option wird der Termin solange wiederholt bis er erledigt ist. D.h. sobald der Termin einmal angezeigt wurde, wird er an jedem folgenden Tag angezeigt bis er als "erledigt" markiert oder gelöscht wird. So wird man an Dinge erinnert bis sie wirklich getan sind (z.B. eine bestimmte Mail zu beantworten). Sobald die Aktion erledigt ist, wird der Termin mit Hilfe des Kontextmenüs oder in der Liste durch Umschalten als erledigt markiert.</li>
+<li><strong>Suchen</strong> - hiermit kann nach einem Termin mit einem bestimmten Text gesucht werden.
+<blockquote><em>Siehe auch</em> <a href="#filtering">Filtern /Suchen der Ereignisse ("Ansichten")</a></blockquote>
+</li>
+<li><strong>Terminfolgen ausblenden</strong> - Zeigt für alle Terminfolgen nur den nächst kommenden Termin. *\</li>
+<li><strong>Terminfolgen anzeigen</strong> - Zeigt für alle Terminfolgen alle Termine in der Liste an. *\</li>
+<li><strong>Verberge erledigte Termine</strong> - Dies verbirgt alle Termine, die als "Erledigt" markiert sind.*\<em>*
+Hinweis:
+Dies ist nur gültig während der augenblicklichen Anzeige der Liste.
+Siehe auch <a title="Anpassen der Anzeigen [faqdetails]" href="doc-options-de.html#defaults"> Options: Terminstandards</a> für generelle Vorgabe</em></li>
+<li><strong>Anzeigen und Drucken</strong> - Dies zeigt die Liste der Termine in einem Browser-Fenster in HTML Darstellung an. Mit Hilfe der Browser-Druckfunktionen lassen sich so die Listen ausdrucken.</li>
+<li><strong>Termin senden ..</strong> - Hiermit können Termine per Mail versandt werden.
+<br><em>Siehe hierzu <a title="Beschreibungen [exchanging]" href="doc-exchanging-de.html"> Austausch von Terminen und Aufgaben</a> </em></li>
+</ul>
+
+<hr />
+
+<h2 id="filtering">Filtern der Ereignisse</h2>
+<p>Die Anzeige von Terminen, Aufgaben und Listen kann zur besseren Übersicht nach bestimmten Kriterien einschränkt werden. Hierzu haben die Übersichtsfenster im Fußbereich zwei Auswahlbereiche:
+
+<p><strong><img title="Search and Filter Options" src="pics/rm_filtering.png" alt="de/rm_filtering.png" /></strong></p>
+<ul>
+<li><strong>Lupe mit Suchbegriff </strong> (grün markierter Bereich)</li>
+<li><strong>Ansichten </strong> (rot markierter Bereich)</li>
+</ul>
+<p>Beide Methoden können kombiniert werden.</p>
+<h3>Lupe mit Suchbegriff</h3>
+<p>Mit der Lupe wird ein Kriterium ausgewählt, die Eingabe daneben dient als Suchwert. Die Liste zeigt damit nur Einträge, die dem Suchwert entsprechen.
+<br><strong><img title="Filtern der Erinnerung mit Begriffen" src="pics/rm_filteringICSitems.png" alt="de/rm_filtering.png" /></strong>
+<h3>Ansichten Selektor</h3>
+<p>Dies ermöglicht eine detailliertere Auswahl der in der ReminderFox Liste anzuzeigenden Ereignisse (Termine / Aufgaben). Es umfasst vordefinierte Zeitspannen, der Benutzer kann auch selbst definierte Selektionskriterien hinzufügen.
+
+<strong><img title="Ansichten (Zeitspannen und komplexe Kriterien) " src="pics/rm_filteringTime_Views.png" alt="de/rm_filteringTime_Views.png" /></strong></p>
+<h3>Zeitselektoren</h3>
+<p>Durch Öffnen des Menüs [1] werden die vordefinierten "Zeitselektoren" angeboten, wobei der erste Punkt <code>[Gewähltes Jahr]</code> die anzeigte Liste immer zurück auf die Anzeige aller Ereignisse des Jahr schaltet, das im Kalender gewählt wurde.
+Mit dem Menüelement <code> [Alle kommenden Termine] </code> vor dem Menütrenner werden nur Ereignisse ab 'Heute' angezeigt.
+<br>
+Nach dem Menütrenner befindet sich ein Unter-Menü <code>[Weitere Ansichten]</code>. Dies ist der Bereich, in dem der Benutzer komplexere Suchmethoden definiert und auswählt.
+<br><em>Hinweis:
+<br>Definition von Benutzer definierten 'Ansichten' und ihre Kriterien <a href="#ViewsDefinitions">(siehe unten)</a>.</em></p>
+<h3>Weitere Ansichten</h3>
+<p>(Untermenü)
+<br>
+Dieser Bereich [2] bietet die Möglichkeiten komplexer Auswahl in der jeweils angezeigten Liste (Termine oder Aufgaben/Listen).
+Sofern vom Benutzer noch keine eigenen Definitionen vorgenommen wurden, stehen einige Voreinstellungen zur Verfügung, z.B.:</p>
+<ul>
+<li><strong>neu:</strong> Datum="-1M"</li>
+<li><strong>Nächste Geburtstage</strong> Kategorie="Geburtstag";Datum="2W"</li>
+<li><strong>Mail/Senden sichern</strong> Beschreibung="Mail,Senden;Datum="-6M,2W"</li>
+</ul>
+<p><em>Hinweis:
+<br>Diese Liste kann mit dem 'Ansicht' Editor beliebig verändert, gelöscht oder erweitert werden <a href="#ViewsEditor">(siehe unten)</a>.</em></p>
+<h3>Auswahl einer Ansicht</h3>
+<p>Wird mit dem Untermenü eine Ansicht ausgewählt, wird diese im Menüfeld [2a] angezeigt und an die Liste der Zeiten angefügt [2b]. Hierdurch lässt sich schnell die zuletzt gewählte Ansicht aufrufen. Diese Voreinstellung bleibt auch nach dem Schließen und erneutem Öffnen der ReminderFox Liste erhalten.
+Der Name der ausgewählten Ansicht wird auch dem Titel der ReminderFox Liste hinzugefügt, z.B: <code> ReminderFox Ansicht [Mail/Senden sichern] </code></p>
+<h3>'Export/Versenden [xxxx]'</h3>
+<p>Dieser Menüpunkt ist nur vorhanden, wenn eine 'Ansicht' des Untermenüs ausgewählt wurde. Dieser Menüpunkt gestattet das Exportieren bzw. Versenden aller Ereignisse der jeweiligen 'Ansicht', d.h. es werden nur die in der Liste selektierten Ereignisse exportiert/versandt.
+In der Klammer [xxxx] wird der Name der ausgewählten 'Ansicht' angegeben.
+
+<br><em>Hinweis:</em>
+<ul>
+<li><em> Es werden hierbei <span style="text-decoration: underline;">alle</span> Ereignisse exportiert/versandt, auch ggf. verborgene (weil erledigt und ausgeblendet), ebenso hat eine Markierung / Selektion in der Liste keine Bedeutung.</em></li>
+<li><em>Ein 'selektives' Exportieren/Versenden von Erinnerungen ist möglich, wenn das Kontextmenü auf der Liste genutzt wird. </em></li>
+</ul>
+</p>
+<h2 id="ViewsDefinitions">Benutzer definierte 'Ansichten' - Definitionen</h2>
+<p>Mit 'Ansichten' wird die ReminderFox 'Liste' selektiert, d.h. nur ein Teil dargestellt. Eine 'Ansicht' wird bestimmt mit einem oder mehreren 'Kriterien'.
+Ein Kriterium bestimmt, ob eine Erinnerung in der dargestellten 'Ansicht', d.h. in der ReminderFox Liste enthalten ist.
+Ein Kriterium ist erfüllt, wenn sein 'Wert' in dem jeweiligen Erinnerungs-Attribute (BESCHREIBUNG, NOTIZ, KATEGORIEN, ORT oder DATUM) vorkommt.
+<br>
+Enthält eine 'Ansicht' mehrere Kriterien, werden diese als UND Verknüpfung gehandhabt, d.h. alle 'Kriterien' müssen erfüllt sein.
+<br>
+Ein Kriterium kann aus mehreren Werten bestehen, diese sind mit ODER verknüpft; d.h. um das Kriterium zu erfüllen muss nur einer der Werte in dem Attribut der Erinnerung vorkommen.</p>
+<h3>Ansichten</h3>
+<p>Ansichten können beliebig benannt werden. Doppelte Namen sind unzulässig. Die folgenden Zeichen dürfen nicht vorkommen: ( = : ; &gt; &lt; )</p>
+<h3>Kriterien einer Ansicht</h3>
+<p>Die Bestimmung eines 'Kriteriums' erfolgt mittels der Attribute BESCHREIBUNG, NOTIZ, KATEGORIEN, ORT oder DATUM wie sie für die Erstellung einer Erinnerung (Termin/Aufgabe) benutzt werden; diesen Attributen werden Werte zugeordnet.
+<br>
+Mit mehreren Werten (Komma getrennt) für ein Kriterium entsteht eine ODER Funktion.
+<br>Kriterium Werte, die mit einer Raute (#) anfangen verstehen sich als Negieren, d.h. dieser Wert darf nicht in der Termin-/Aufgabendefinition für das zugehörige Kriterium vorkommen. (Gilt nicht für DATUM)
+<br><span style="text-decoration: underline;">Beispiel</span>: <code>'Kategorie:#Projekt1'</code> -- für diese Ansicht wird kein Termin / Aufgabe mit diesem Kategoriewert angezeigt.
+<br>
+<span style="text-decoration: underline;">DATUM </span> - versteht sich als Zeitspanne, bestimmt mit den Anfangs- und Endwerten die in der Vergangenheit ('past') bzw. Zukunft ('future') liegen können.
+Die Werte sind als Tag(D), Woche(W), Monat(M) oder Jahr(Y) definiert.
+Wird nur ein Datumswert angegeben, so versteht dieser sich als "ab heute", d.h. ein Wert <code>'2W'</code> bedeutet: ab 'Heute' die nächsten 2 Wochen, <code>'-2W'</code> : bis 'Heute' beginnend vor 2 Wochen.
+<br>
+<span style="text-decoration: underline;">BESCHREIBUNG, NOTIZ und ORT </span> - werden als Freitext angegeben.
+<br>
+<span style="text-decoration: underline;">KATEGORIEN</span> - können wie beim Anlegen eines Termins / einer Aufgabe mit einen Menü zusammengestellt werden.
+
+<hr />
+
+<h2 id="ViewsEditor">'Ansichten' Editor</h2>
+<h3>Öffnen des Editors</h3>
+<p><strong><img title="'Ansichten' Editor" src="pics/rm_ViewEditorOpen.png" alt="de/rm_ViewEditorOpen.png" /></strong></p>
+
+<p>Der 'Ansichten' Editor wird im Untermenü der Ansichten aufgerufen.</p>
+<h3>'Ansichten' bearbeiten</h3>
+<p><strong><img title="'Ansichten' bearbeiten" src="pics/rm_ViewEditorViews.png" alt="de/rm_ViewEditorViews.png" /></strong></p>
+
+<p>Im linken Fenster werden die 'Ansichten' hinzugefügt oder gelöscht. Haben vorhandene 'Ansichten' bereits 'Kriterien', so zeigt der ToolTipText diese Argumente an, ohne dass sie angeklickten werden müssen.</p>
+<h3>'Kriterien' bearbeiten</h3>
+<p>Durch die Auswahl einer 'Ansicht' im linken Fenster werden die definierten 'Kriterien' im rechten Fenster angezeigt.
+Auch hier lassen sich 'Kriterien' hingefügen oder löschen.</p>
+
+<p><strong><img title="'Kategorien' bearbeiten" src="pics/rm_ViewEditorCriteriaCategories.png" alt="de/rm_ViewEditorCriteriaCategories.png" /></strong></p>
+
+<p>In jeder Zeile wird ein Kriterientyp bearbeitet. Wird eine Zeile aktiviert, so schaltet sich im unteren Bereich das passende Editierfeld ein, die vorstehende Darstellung bezieht sich auf "Kategorien".</p>
+<h3>Kriterien für DATUM (Datumsbereich)</h3>
+<p>Wie vorstehend gesagt haben Datumsdefinitionen ein oder zweit Werte. Der linke Wert bestimmt den "Zeitspanne Anfang",
+der rechte Wert das "Zeitspanne Ende". Für beide Datumsangaben kann die Zeitspanne in der Vergangenheit
+('past') oder in der Zukunft ('future') liegen. Wird ein Wert zu "0" angegeben, wird er ignoriert,
+es entsteht eine Zeitspanne mit Bezug auf 'Heute',
+d.h. bis/ab heute.</p>
+
+<p><strong><img title="'Datumsbereich' bearbeiten" src="pics/rm_ViewEditorCriteriaDate.png" alt="de/rm_ViewEditorCriteriaDate.png" /></strong></p>
+
+<p><span style="text-decoration: underline;">Beispiel</span></p>
+<p>Für die Ansicht "Mail/Senden sichern" ist eine Definition mit den Kriterien<code> Beschreibung:Mail,Senden;Datum:-6M,4W</code> angegeben mit der Absicht, die Erinnerungen zur Datensicherung zu exportieren.
+Mit der Definition werden alle Ereignisse ausgewählt, in deren Beschreibung 'Mail' ODER 'Senden' vorkommt UND in der Zeitspanne von heute "6 Monate, past" [1] zurück und "4 Wochen, future" [2] und [2a] in der Zukunft liegen; d.h. die Zeitangaben beziehen sich jeweils auf "Heute".
+Beide Datumsfelder zeigen als ToolTipText das jeweils resultierende Datum(hier <code>1.Juni 2010</code> und <code>29.Dezember 2010</code>).</p>
+<!-- ["reminderdialog", "Dialog fuer Termine/Aufgaben", "Anzeigen und Bearbeiten der Erinnerungen, Such- und Filterfunktionen"]-->
+
+</div>

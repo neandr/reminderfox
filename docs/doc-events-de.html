@@ -1,0 +1,98 @@
+<style /* format */ type="text/css">
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none; 
+  font-style:normal;  line-height: 1.5em;}
+  img {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  /* format */</style>
+
+<h1 id="doctitle" class="pagetitle" title="Ereignisse mit Datum/Zeit">Termine</h1>
+<table class="doc-toc">
+<tbody>
+<tr>
+<td>
+<div id="toctitle">
+<h2>Inhalt</h2>
+</div>
+<ul id="toc-ul">
+<li class="toclevel-1"><a href="#newevent"><span class="tocnumber">1</span> <span class="toctext">Termin anlegen</span></a></li>
+<li class="toclevel-1"><a href="#repeatCustom"><span class="tocnumber">2</span> <span class="toctext">Wiederholung von Terminen</span></a></li>
+<li class="toclevel-1"><a href="#more"><span class="tocnumber">3</span> <span class="toctext">Anzeige 'Mehr &gt;&gt;'</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+
+<div id="doc-contents"> <!-- ["events", "Termine", "Ereignisse mit Datum/Zeit"]-->
+
+<p>'Termine' sind Ereignisse, die einmalig oder wiederholt auftreten. ReminderFox ermöglicht Termine mit einer Benachrichtigung zu versehen, sodass rechtzeitig vor dem Termin eine Erinnerung erfolgt.
+<br>
+Durch die Funktion 'Täglich erinnern bis zur Beendigung' geht kein Termin verloren.<em>
+<blockquote>Siehe auch wie sich verschiedene Einstellungen für einen Termin nutzen lassen:
+</em></p>
+<a title="Beispiel  [faqdetails]" href="doc-faq-questions-de.html#exampleTaxpayment">Zahlungstermine</a>
+</blockquote>
+
+<h2 id="newevent" class="infoSection">Termin anlegen</h2>
+<p>Termine haben verschiedene Einstellungen, über die ihr Verhalten geändert werden kann.
+<br>
+Das erste Menüfeld ist bei Neuanlage   für "Termin hinzufügen" eingestellt. Soll aber statt dessen eine Aufgabe angelegt werden, so kann hier direkt die gewünschte Liste ausgewählt werden.</p>
+
+<p><strong><img title="Termin hinzufügen" src="pics/rmFx_addDate2.jpg" alt="de/rmFx_addDate2" /></strong></p>
+<ul>
+<li> <strong>Beschreibung</strong> - Dies ist der Titel des Ereignisses und wird in der Terminliste als Beschreibung angezeigt.
+Hier sind verschiedene Optionen zur Eingabe von Jahreszahlen möglich, die Reminderfox z.B. zu Geburtstag/Alter umrechnet.
+<blockquote><em>Siehe hierzu: Jahreszahlen</em></li></blockquote>
+<li> <strong>Notizen</strong> - Mit einem Klick auf das Notiz Symbol <strong><img title="Notizen icon" src="pics/notes.png" alt="" /></strong> wird der Bereich 'Notizen' ein- / ausgeschaltet. Hier kann beliebiger Text eingefügt werden. Diese Notizen werden auch in den Tooltip angezeigt, wenn der Mauszeiger über die Terminzeile in der Liste geführt wird.
+<blockquote><strong>Datum/Zeit</strong> in Notiz einfügen - Oft ist es sinnvoll für einen Termin neue Informationen mit dem aktuelle Datum hinzuzufügen. Dies lässt sich leicht bewerkstelligen:
+Den Cursor auf die gewünschte Position stellen und die Taste <strong>[F8]</strong> drücken, dies ergibt z.B.: [12.Dez 07 10:48]</blockquote>
+</li>
+<li> <strong>Zeit und Datum</strong> - Zunächst wird entschieden, ob der Termin ganztägig ist (z.B. Geburtstag) oder zu einer bestimmten Zeit (z.B. eine Verabredung) stattfinden soll. Bei ganztägigen Terminen ist die Uhrzeit nicht wählbar. Das Anfangs- und Enddatum wird durch die Menüs ausgewählt oder alternativ mit den Kalender Symbolen aufgerufen. Sowohl die Datumsangaben wie auch die Uhrzeiten können beliebig gewählt werden: so ist etwa die Zeit "16:32" möglich.</li>
+<li> <strong>Wiederholen</strong> - Ohne Haken ist der Termin einmalig, mit Haken kann die Wiederholung ausgewählt werden, hierzu stehen eine Reihe von Einstellungen zur Verfügung.<em>
+<blockquote>Siehe unten:  Wiederholungen von Erinnerungen</em></blockquote>
+</li>
+<li> <strong>Benachrichtigungsfenster</strong> - Hier kann eingestellt werden, dass vor dem eigentlichen Termin eine Benachrichtigung erfolgt. Diese Benachrichtigung kann zu jeder Minute, Stunde oder Tage vor dem Termin erfolgen. Die Eingabe erfolgt wieder     durch das Menü in vorbestimmten Schritten oder manuell mit beliebiger Angabe (z.B. 33 Minuten).</li>
+<li> <strong>Kategorien</strong> - diese dienen dazu, verschiedene Termine und Aufgaben unter einem Begriff zusammenzufassen.
+Pro Ereignis unterstützt Reminderfox die Eingabe mehrerer Kategorien, die durch Komma zu trennen sind. Kategorien zum Ereignis werden in das Feld eingegeben oder mit Hilfe der Menüschaltfläche 'category icon' ausgewählt und übernommen. Das Menüfenster zeigt zwei Abschnitte:
+<ul>
+<li> im oberen Bereich 'Standard-Kategorien'</li>
+<li> darunter 'Andere Kategorien'</li>
+</ul>
+Die 'Kategorien' werden mittels <a title=".. Einstellungen für 'Kategorien' [options]" href="doc-options-de.html#categories">Optionen: Kategorien</a> verwaltet.<em>
+<blockquote>Siehe auch:</em> <a title=".. einschränken der 'Listen' Anzeige -- besserer Überblick, auch für Exportieren oder zur Sicherung [list]" href="doc-reminderdialog-de.html#filtering">Filtern der Erinnerungen</a></blockquote>
+</li>
+<li> <strong>Wichtig</strong> - Dies ist vorgesehen für die Termine, die absolut nicht vergessen werden dürfen (z.B. der Geburtstag der Ehefrau). Diese Termine werden in roter Schrift in der Liste, in den Tooltip und in der Statuszeile angezeigt.</li>
+<li> <strong>Täglich erinnern bis zur Beendigung</strong> - Mit dieser Option wird der Termin solange wiederholt, bis er erledigt ist. D.h. sobald der Termin einmal angezeigt wurde, wird er an jedem folgenden Tag angezeigt bis er als "erledigt" markiert oder gelöscht wird. Dies ist hilfreich, um an Dinge erinnert zu werden, bis sie wirklich getan sind (z.B. eine bestimmte E-Mail zu beantworten).</li>
+</ul>
+<h2 id="repeatCustom" class="infoSection">Wiederholung von Terminen</h2>
+<p><strong>Wiederholen</strong> - Diese Einstellungen gestatten eine vielfältige Gestaltung von Wiederholungen von Terminen (bzw. entsprechend Aufgaben).
+Zunächst wird links der Haken gesetzt, wenn der Termin nicht einmalig sein soll. Dadurch wird daneben ein Menu aktiviert, das verschiedene Wiederholintervalle vorgibt:</p>
+<p><strong><img title="Wiederholungen" src="pics/rmFx_addRecur1.jpg" alt="de/rmFx_addRecur1.jp" /></strong></p>
+
+<ul>
+<li> <strong>Jährlich</strong> - Termin findet statt jedes Jahr am  gleichen Datum (z.B. Geburtstag)</li>
+<li> <strong>Jährlich nach Tag</strong> - Termin findet statt jedes Jahr am gleichen Wochentag (zweiter Montag im Dezember)</li>
+<li> <strong>Monatlich</strong> - Termin findet statt jeden Monat am gleichen Datum (z.B. Mietzahlung am 10. jedes Monats)</li>
+<li> <strong>Monatlich nach Tag</strong> - Termin findet statt jeden Monat am gleichen Wochentag.</li>
+<li> <strong>Wöchentlich</strong> - Termin findet statt jede Woche am gleichen Tag.</li>
+<li> <strong>Weitere ...</strong> - hier lassen sich weitere   Variationen für die Wiederholung einstellen:
+<p class="center"><strong><img title="weitere Wiederholungen" src="pics/rmFx_addRecur2.png" alt="de/rmFx_addRecur2.png" /></strong></p>
+</li>
+</ul>
+<p>Zusätzlich zum gewählten Grundinterval (erstes Menu, z.B.: '<strong>Monatlich nach Tag</strong>') kann zusätzlich das Intervall gewählt werden (hier '<strong>Alle 3 Monate</strong>').
+Im unteren Bereich wird eingestellt wie lange diese Terminfolge zu wiederholen ist, bzw. dass sie ohne zeitliche Begrenzung erfolgt.</p>
+
+<h2 id="more" class="infoSection">Anzeige 'Mehr &gt;&gt;'</h2>
+<p>Die Taste <strong>[ Mehr &gt;&gt; ]</strong> blendet weitere Eigenschaften eines Termins ein und schaltet sich auf <strong>[ &lt;&lt; Weniger ]</strong> um.
+Dieser Bereich wird auch automatisch eingeblendet, wenn ein Termin mit entsprechenden Eigenschaften versehen ist, z.B. Ort oder URL oder wenn der Termin für Einladungen und Termin Informationen verwendet wird.</p>
+<p><strong><img title="Mehr / Weniger Attribute" src="pics/rmFx_addDate_more.jpg" alt="de/rmFx_addDate_more" /></strong></p>
+
+<ul>
+<li> <strong>Ort</strong> - Zur Erinnerung kann eine Ortsangabe (Adresse) eingetragen werden. Mit dem Symbol <strong><img title="URL" style="margin:0" src="pics/url.png" alt="'url icon'" /></strong> rechts neben dem Eingabefeld ruft Reminderfox mit diesem Eintrag Google Maps auf, und zeigt den entsprechenden Kartenausschnitt mit der Adresse für den Termin.
+Wird hier eine vollständige Internetadresse angegebenen, so wird   diese (wie bei URL) mit dem Browser aufgerufen.</li>
+<li> <strong>URL</strong> - Ebenso kann in dem Feld [URL] eine beliebige Internet Adresse angegeben werden, die wieder mit dem Symbol <strong><img title="URL" style="margin:0" src="pics/url.png" alt="'url icon'" /></strong> rechts neben dem Eingabefeld im Browser aufrufbar ist.</li>
+</ul>
+
+<!-- ["events", "Termine", "Ereignisse mit Datum/Zeit"]--></div>

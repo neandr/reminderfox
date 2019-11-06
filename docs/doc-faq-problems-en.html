@@ -1,0 +1,112 @@
+<style /* format */ type="text/css">
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none; 
+  font-style:normal;  line-height: 1.5em;}
+  img {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  /* format */</style>
+
+<h1 id="doctitle" class="pagetitle">FAQ - Troubleshooting</h1>
+<table class="doc-toc">
+<tbody>
+<tr>
+<td>
+<div id="toctitle">
+<h2>Contents</h2>
+</div>
+<ul id="toc-ul">
+<li class="toclevel-1"><a href="#r1"><span class="tocnumber">1</span> <span class="toctext">I just installed ReminderFox. I don’t see any ribbon icon!</span></a></li>
+<li class="toclevel-1"><a href="#r2"><span class="tocnumber">2</span> <span class="toctext">I’m having trouble downloading the extension – I’m getting an error saying the xpi is corrupt or can not be downloaded.</span></a></li>
+<li class="toclevel-1"><a href="#r3"><span class="tocnumber">3</span> <span class="toctext">I’m using a non-default theme and some of the text in the drop-down controls are truncated.</span></a></li>
+<li class="toclevel-1"><a href="#r4"><span class="tocnumber">4</span> <span class="toctext">I can’t seem to synchronize to the network.</span></a></li>
+<li class="toclevel-1"><a href="#r5"><span class="tocnumber">5</span> <span class="toctext">I’ve lost my reminders! Can I retrieve a backup?</span></a></li>
+<li class="toclevel-1"><a href="#r6"><span class="tocnumber">6</span> <span class="toctext">If I uninstall/reinstall or upgrade ReminderFox, will I lose my existing reminders?</span></a></li>
+<li class="toclevel-1"><a href="#r7"><span class="tocnumber">7</span> <span class="toctext">Can I validate my calendar file to ensure that it is correct?</span></a></li>
+<li class="toclevel-1"><a href="#r8"><span class="tocnumber">8</span> <span class="toctext">ReminderFox is totally broken, and none of this helps. What now?</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="r1">I just installed ReminderFox. I don't see any ribbon icon!</h2>
+<p>
+
+Do you have your Firefox/Thunderbird status bar hidden? Reminderfox installs into the status bar by default. If you DO have your status bar showing, go to the ReminderFox options and click on the Display tab. Find the Display Placement option and toggle it to another location and hit apply. This should make the reminderfox ribbon appear.
+
+</div>
+<h2 id="r2">I'm having trouble downloading the extension - I'm getting an error saying the xpi is corrupt or can not be downloaded.</h2>
+<p>
+
+If you can't download or install this extension because of an "Invalid package error" or something similar, this is most likely due to the addons.mozilla.org website delay when a new version of the extension has been updated. It usually takes 30 minutes for the extension to be available from all of the mirror sites. Try downloading the extension again in 30 minutes.
+
+</p>
+<h2 id="r3">I'm using a non-default theme and some of the text in the drop-down controls are truncated.</h2>
+<p>
+
+Some themes seem to have problems with dynamically populated controls and the text appears truncated. The Noia theme has this problem as well, but was reportedly fixed in a later version (Noia 2.0 eXtreme, versions greater than 2.30). Try mentioning the problem to the particular theme author to see if it is something that can be fixed in the theme itself.
+
+</p>
+<h2 id="r4">I can't seem to synchronize to the network.</h2>
+<p>
+
+Check the <a href="documentation-user-guide-sharing-reminders.html">Sharing Reminders </a> section.
+
+</p>
+<h2 id="r5">I've lost my reminders! Can I retrieve a backup?</h2>
+<p>
+
+Reminderfox stores all reminder/todo's data and backups in one directory. With a typical installation that directory is part of the users "profile" directory.
+<p style="padding-left: 30px;"><em>Examples</em>  
+  See also <a title="in Options" href="documentation-user-guide-options-and-preferences.html#r6">in Options</a>.
+<br>Windows XP: <small><code>C:\Documents and Settings\Administrator\Application Data\Mozilla\Firefox\Profiles\{someRandomNumber}.default\reminderfox\</code></small>
+<br>Windows7:   <small><code>c:\Users\{username}\AppData\Roaming\Mozilla\Firefox\Profiles\{someRandomNumber}.default\reminderfox\</code></small>
+<br>Linux: <small><code>/home/{username}/.thunderbird/{someRandomNumber}.DefaultUser/</code></small></p>
+<p>The reminders and todos's are typically stored to that directory with a file named "reminderfox.ics". For that "reminderfox.ics" file automatic backups (snapshots for today and yesterday)  are kept with a <code>.bak1</code>, <code>.bak2</code>, or <code>.bak3</code> extension.</p>
+<p style="padding-left: 30px;"><em>Example</em>
+<code><small>c:\Users\{username}\AppData\Roaming\Mozilla\Firefox\Profiles\{someRandomNumber}.default\reminderfox\reminders.ics.bak1</small></code></p>
+
+<h4>Find an old / previous used "reminderfox.ics" file</h4>
+<p>Sometimes it's necessary to find a previous used <code>reminderfox.ics</code> file -- like in situations when a new profile for Firefox/Thunderbird has been defined, or where the Firefox/Thunderbird profile is defect or lost -- then it can help to search the disc for Reminderfox files like <code>reminderfox.ics</code> or just with <code>*.ics</code> or some of the backup files like <code>*.bak1</code>.
+
+To use a <code>reminderfox.ics</code> file found in an old profile, first check the file size and the date stamp. If a "good" version is found, copy that <code>reminderfox.ics</code> to your desktop (also for backup purpose) and then import it using the Reminderfox
+<a href="documentation-user-guide-options-and-preferences.html#r6">Options tab:File</a>.
+
+</p>
+<h2 id="r6">If I uninstall/reinstall or upgrade ReminderFox, will I lose my existing reminders?</h2>
+<p>
+
+No - your reminders file is not removed by default when you uninstall or upgrade. It is kept in your profile directory, so as long as you don't move to a new profile, your reminders will not be lost. Of course, it's always a good idea to keep a backup. You may want to first export your reminders to a backup file for safekeeping.
+
+</p>
+<h2 id="r7">Can I validate my calendar file to ensure that it is correct?</h2>
+<p>
+
+Yes, there are websites that provide ICS validation functionality. Here are a few of them:
+<a href="http://icalvalid.cloudapp.net/">http://icalvalid.cloudapp.net/</a>
+<a href="http://severinghaus.org/projects/icv/">http://severinghaus.org/projects/icv/</a>
+
+The validator will tell you if there are any errors in your calendar file. This is sometimes common when sharing your reminder file across several different calendar services, each of which can add their own metadata to your calendar file. Sometimes something erroneous can be written to the file and the validator will help spot that.
+
+</p>
+<h2 id="r8">ReminderFox is totally broken, and none of this helps. What now?</h2>
+<p>
+
+You may have found a bug. To see if any errors are occurring, turn on Error reporting in Firefox:
+<ul>
+<li>type "about:config" (without the quotes) into your addressbar and hit [enter] (In Thunderbird, go to <code>Options</code>--&gt;<code>Advanced</code>--&gt;<code>Config Editor</code>)</li>
+<li>type "javascript" into the filterbox and locate the <code>javascript.options.showInConsole</code> entry</li>
+<li>set the <code>javascript.options.showInConsole</code> entry to <code>true</code> (double clicking on the row should work)</li>
+<li>Change the value of <code>extensions.reminderFox.debug.loglevel</code> from <code>0</code> to <code>2</code></li>
+</ul>
+<p>Then, activate the Error Console by selecting the Firefox/Thunderbird menu: <code>Tools</code>--&gt;<code>Error Console</code>
+Try to reproduce your problem and see if any messages appear in the Error Console.
+These messages are extremely important in helping us figure out what is going wrong.
+Send us any helpful information via the
+<a href="https://groups.google.com/forum/#!forum/reminderfox">ReminderFox Group</a>.
+
+<br>
+Another possibility is that you may be experiencing an Extension Conflict. Sometimes, other extensions don't play nicely with ReminderFox. To see if this is the case, disable all other add-ons via the Tools --&gt; Add-Ons menu. Then, try to reproduce your problem. If the problem went away, there most likely exists a conflict. Try re-enabling your extensions one at a time, with a restart after each enablement, and see if you can isolate which add-on is fighting with ReminderFox. Extension Conflicts are nasty, and finding one is a huge win. We will definitely buy you a beer or tasty beverage of your choice if you find one, so please let us know on the
+<a href="https://groups.google.com/forum/#!forum/reminderfox">ReminderFox Group</a>.
+
+</p>

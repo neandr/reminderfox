@@ -1,0 +1,125 @@
+<style /* format */ type="text/css">
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none; 
+  font-style:normal;  line-height: 1.5em;}
+  img {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  /* format */</style>
+
+<h1 id="doctitle" class="pagetitle">User Guide - Options and Preferences</h1>
+<table class="doc-toc">
+<tbody>
+<tr>
+<td>
+<div id="toctitle">
+<h2>Contents</h2>
+</div>
+<ul id="toc-ul">
+<li class="toclevel-1"><a href="#r0"><span class="tocnumber">1</span> <span class="toctext">Display</span></a></li>
+<li class="toclevel-1"><a href="#r1"><span class="tocnumber">2</span> <span class="toctext">Tooltip</span></a></li>
+<li class="toclevel-1"><a href="#r2"><span class="tocnumber">3</span> <span class="toctext">Notifications</span></a></li>
+<li class="toclevel-1"><a href="#r3"><span class="tocnumber">4</span> <span class="toctext">List Display</span></a></li>
+<li class="toclevel-1"><a href="#r4"><span class="tocnumber">5</span> <span class="toctext">Defaults</span></a></li>
+<li class="toclevel-1"><a href="#r5"><span class="tocnumber">6</span> <span class="toctext">Lists</span></a></li>
+<li class="toclevel-1"><a href="#r6"><span class="tocnumber">7</span> <span class="toctext">File</span></a></li>
+<li class="toclevel-1"><a href="#r7"><span class="tocnumber">8</span> <span class="toctext">Network</span></a></li>
+<li class="toclevel-1"><a href="#r8"><span class="tocnumber">9</span> <span class="toctext">Categories</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>To bring up the ReminderFox Options dialog, right-click on the ribbon in the status bar and select 'Options...'. Alternatively, from the Tools menu, select 'ReminderFox'-&gt;'Options...'</p>
+<h2 id="r0">Display</h2>
+<p><a href="pics/rf-options1.jpg"><img title="ReminderFox Options" src="pics/rf-options1.jpg" alt="ReminderFox Options" /></a></p>
+
+<p>The Display tab allows you to change display options
+<ul>
+<li><strong>Display today's reminders in status bar</strong> - uncheck this if you don't want to show the text of today's reminders in the status bar.</li>
+<li><strong> Show reminders for the next <em>X</em> upcoming days</strong> - the number of days to look ahead and report on upcoming reminders for alerts and tooltips. (default: 15)</li>
+<li><strong> On double-click of status icon, edit... </strong> - Sets the action when double-clicking the reminder status icon. The default is to open up the Edit Reminders dialog. You can change this to open up to the ToDos tab instead.</li>
+<li><strong> Display Placement</strong> - Change this to modify where you want the ribbon status icon to be displayed (the status bar, the menu bar, etc).</li>
+</ul>
+</p>
+<p>You can also change the position that the icon resides:
+<ul>
+<li><strong>Always Last</strong> - the icon will appear in the last position of the display bar you selected</li>
+<li><strong>Specific Position</strong> - you can set a specific position number; the icon will appear on the display bar at that position.</li>
+</ul>
+</p>
+<h2 id="r1">Tooltip</h2>
+<p><a href="pics/rf-options2.jpg"><img title="ReminderFox Options" src="pics/rf-options2.jpg" alt="ReminderFox Options" /></a></p>
+
+<p>The Tooltip tab allows you to change what the the tooltip displays.
+<ul>
+<li><strong>Display reminders in tooltip</strong> - if this is checked, current and upcoming reminders will show in the reminder icon tooltip</li>
+<li><strong>Display ToDo's in tooltip</strong> - if this is checked, ToDo's (that are marked to show in the tooltip) will show in the reminder icon tooltip</li>
+<li><strong>Labels</strong>- You can customize the tooltip labels for Today's and Upcoming Reminders. Click on the Customize button for a list of available variables that will show the information in your tooltip. For instance, this label:<code>[shortDay] [shortMonth] [date]: [reminderDesc] ([time])</code>will result in:
+<br>
+<code>Tue Jun 21: Meeting with Johnson (2:30pm)</code>
+<br>
+You can also see the number of days left until the reminder occurs by using the [daysUntil] variable.
+<br>For example:
+<br>
+<code>[shortDay] [shortMonth] [date]: [reminderDesc] ([time]) -- in [daysUntil] days</code>
+<br>
+will result in:
+<br>
+<code>Thu Jun 23: Timmy's Birthday -- in 4 days</code>
+<br>
+(Note: at minimum, you must leave a space or a character between each variable, as two consecutive variables will not be properly parsed.)</li>
+</ul>
+</p>
+
+<h2 id="r2">Notifications</h2>
+<p><a href="pics/rf-options3.jpg"><img title="ReminderFox Options" src="pics/rf-options3.jpg" alt="ReminderFox Options" /></a></p>
+
+<p>The Notifications tab allows you to change the alert and notification options. The Show Alert Slider checkbox toggles whether the alerts are enabled or not.
+<ul>
+<li><strong>Show Alert Every <em>X</em> minutes</strong> - This is the number of minutes between alerts (default: 120)</li>
+<li><strong>Display</strong> - controls what the alerts show.</li>
+</ul>
+<ul>
+<li><strong>Show today's and upcoming reminders</strong> - show alerts for current and upcoming reminders</li>
+<li><strong>Show only today's reminders</strong> - only show alerts when there is a reminder occurring today</li>
+<li><strong>Show only upcoming reminders</strong> - only show alerts for upcoming reminders</li>
+</ul>
+<ul>
+<li><strong>Sounds</strong> -You can elect to play sounds when the alarm and alert slider shows up. You can use your default OS alert sound, or supply a custom .wav file.</li>
+</ul>
+</p>
+
+<h2 id="r3">List Display</h2>
+<p><img title="ReminderFox Options" src="pics/rf-options4.jpg" alt="ReminderFox Options" /></p>
+
+<p>The List Display tab controls the display options of the Reminder List.</p>
+
+<h2 id="r4">Defaults</h2>
+<p><img title="ReminderFox Options" src="pics/rf-options5.jpg" alt="ReminderFox Options" /></p>
+
+<p>The Defaults tab allows you to select the options that are set by default when creating new reminders. It also allows you to set the default preference to show or hide completed items in the list by default. This option can be temporarily overrode when viewing reminders via the Show/Hide Completed Items option in the List window's context menu.</p>
+
+<h2 id="r5">Lists</h2>
+<p><img title="ReminderFox Options" src="pics/rf-options6.jpg" alt="ReminderFox Options" /></p>
+<p>The Lists tab allows you to add and manage custom lists. These custom lists show up as separate tabs. For more details, see the Custom Lists section.</p>
+
+<h2 id="r6">File</h2>
+<p><a href="http://www.reminderfox.org/Reminderfox_images_rf-options7.jpg"><img title="ReminderFox Options" src="pics/rf-options7.jpg" alt="ReminderFox Options" width="475" height="429" /></a></p>
+<p>The File tab allows you to set the location of your reminder file, as well as importing and exporting. For details, go to the <a href="documentation-user-guide-sharing-reminders.html#r1">Importing and Exporting section</a>.</p>
+
+<h2 id="r7">Network</h2>
+<p><img title="ReminderFox Options" src="pics/rf-options8.jpg" alt="ReminderFox Options" /></p>
+<p>The Network tab allows you to set up your networking options. View Sharing reminders with other computers via the network for details.</p>
+
+<h2 id="r8">Categories</h2>
+<p>Categories are used to classify Reminders or ToDo's. If you are familiar with tags, categories are very similar.</p>
+<p><img title="Categories" src="pics/optionsCategories.JPG" alt="" /></p>
+
+<p>Categories are separated into tow groups, 'Default' and 'Other'.
+<ul>
+<li><strong>Default Categories</strong> - A list of frequently used categories, provided by default.</li>
+<li><strong>Other Categories</strong> - The list of categories that are currently present in your list of Reminders/ToDo's, that do not belong to the Default Categories. You may move these categories to the Default list by clicking 'View other categories'.</li>
+</ul>
+</p>
+</p>

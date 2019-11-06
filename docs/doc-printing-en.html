@@ -1,0 +1,397 @@
+<style /* format */ type="text/css">
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none; 
+  font-style:normal;  line-height: 1.5em;}
+  img {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  /* format */</style>
+
+<h2 class="pagetitle" id="doctitle" title="Printing - Agenda - Preview">Printing - Agenda - Preview</h2>
+<p>The "View and Print" of Reminders / ToDo's have been replaced with a more flexible method. As with previous version requesting a print will first show the page with the browser, or as an tab for Thunderbird. For the final print the Firefox/Thunderbird etc functions are used.The main advantage: the design of the print output can be modified outside of the extension code -- by users with some HTML/CSS experience. By default some templates are supplied and can be used right away.</p>
+
+<p>The Printing will be called on the Main List with the context menu using [Print / View]:</p>
+<p><img alt="printing_en.png" src="pics/printing_en.png" /></p>
+<ul>
+<li>select the rows on the list which has to be included for the print</li>
+<li>use the context menu with item "Print / View"</li>
+<li>from the sub-menu select a template/layout, the "All Events" is a good start to print all events or "Selected Events" to print only those selected with step 1</li>
+</ul>
+<p><em>(Note: short key is not implemented at the moment)</em></p>
+
+<p>Also an <strong>Agenda</strong> printing has been added, it can be selected from the [Print / View] context menu similar to the other print templates.
+<br><br>
+The Agenda print has the 'today' and 'upcoming' events and the 'Todo's' combined on one list.
+<br><br>
+Additionally a startup printing of the Agenda can be configured on the ReminderFox Options / Tooltip tab.</p>
+<p><a href="pics/agendaOptions.png"><img alt="agendaOptions.png" src="pics/agendaOptions-150x150.png" /></a></p>
+
+<h3 id="updateNote">New Printing Templates</h3>
+<p>ReminderFox comes with some templates for printing the Reminders/Todo's etc.The picture above shows four sections:
+<p>- Section 1: Agenda, for description see below
+<p>- Section 2: ReminderFox templates with 'All Events' and 'Selected Events', here a standard layout is used to show/print from Reminders/Todos or Lists</p>
+<p>- Section 3: 'Installation Details' (a short overview about the current installation) and 'Help' (calls this page);</p>
+<p>- Section 4: User templates, two templates with 'template[example]' and 'table[example]' are supplied.</p>
+<br>
+<p>Newer ReminderFox versions can add/update/replace the templates in section 1 ..3. Also the user can add or modify templates. The next section describes how to do.</p>
+
+<hr />
+
+<h2>Additional Print Layouts -- For Users with HTML/CSS knowledge</h2>
+<h3>1. How to modify or add Print Layouts</h3>
+<p>The layout is defined in a HTML/CSS structure and additional elements to access the data to be printed. Those definitions are stored in a file with an extension .XSL.</p>
+
+<p style="padding-left: 20px;"><small><span style="font-style: italic;">XSL stands for EXtensible Stylesheet Language, and is a style sheet language for XML documents. A good explanation can be found here: </span><a class="moz-txt-link-freetext" style="font-style: italic;" href="http://www.w3schools.com/xsl/default.asp">http://www.w3schools.com/xsl/default.asp</a></small>
+  <small><span style="font-style: italic;">
+  <br>
+  Maybe you use a special XML Editor like the </span><a style="font-style: italic;" href="http://xml-copy-editor.sourceforge.net/" target="_blank"> XML Copy Editor</a><span style="font-style: italic;"> which is available for Windows and Linux.
+  <br>
+It would support you with syntax checking etc.</span></small></p>
+<br>
+<p>The predefined templates (section 1 .. 3) are stored in the ReminderFox XPI profile directory. Additionally to these layouts ReminderFox supplies more pre-defined layouts.</p>
+<p><em>Note:
+  <br>These pre-defined layouts will be copied from the ReminderFox XPI directory to the ‘reminderfox’ users directory with the first use of the Print/View feature.</em></p>
+
+<p>New layouts/ .XSL files added to the 'reminderfox' directory will be shown immediately in the [Print / View] menu; each menu item has the last modified date/time of the layout.</p>
+<p>
+Print layout should only be modified in the users directory; copy before modification is recommended!
+<br><br>
+The XML/XSLT print processor is very rigid, most syntax errors will give a 'black' screen, but use the "Error Console" on the browser to get feedback about your errors ... or call back for help ... maybe we can get more templates that way!
+<br><br>
+Examples of the required directories on different systems:
+<br>
+<p><strong><span style="text-decoration: underline;">ReminderFox User directory</span></strong></p>
+
+<p><span style="text-decoration: underline;  font-family: monospace; font-size: 110%;">Linux</span><small> /media/DATA/_Mozilla/TB_gW/Profiles/ouh3uj2w.default/reminderfox/</small></p>
+
+<p><span style="text-decoration: underline;  font-family: monospace; font-size: 110%;">Windows</span><small> C:\Users\Guenter\AppData\Roaming\Mozilla\Firefox\Profiles\zu3hiox4.default\reminderfox\</small></span></p>
+
+<br>
+
+<p><strong><span style="text-decoration: underline;">ReminderFox XPI Printing Directory</span></strong>
+
+<p><span style="text-decoration: underline;  font-family: monospace; font-size: 110%;">Linux</span><small> /media/DATA/_Mozilla/TB_gW/Profiles/ouh3uj2w.default/extensions/{ada4b710-8346-4b82-8199-5de2b400a6ae}/defaults/printing/</small></p>
+
+<p><span style="text-decoration: underline;  font-family: monospace; font-size: 110%;">Windows</span><small> C:\Users\Guenter\AppData\Roaming\Mozilla\Firefox\Profiles\zu3hiox4.default\extensions\{ada4b710-8346-4b82-8199-5de2b400a6ae}\defaults\printing\</small></p>
+
+</p>
+
+<h3>2. Available Data items</h3>
+<p>Which data items of the selected events/todos on the main dialog list can be printed are easily shown with the file <span style="font-family: monospace; font-size: 90%;">current.xml</span>. This file is generated with each printing process and is stored in the ReminderFox XPI printing directory.</p>
+
+<h3>3. XML Datamodel</h3>
+<p>Using the "Print / View" from the context menu generates the <span style="font-family: monospace; font-size: 90%;">current.xml</span> file <span style="font-style: italic;">(see above)</span>. Opening that file in the browser will show all available data items.The structure is:
+<table style="text-align: left; width: 100%;" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td style="vertical-align: top; font-family: monospace;" colspan="3">&lt;general&gt;</td>
+<td style="vertical-align: top;"></td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;" width="30"></td>
+<td style="vertical-align: top; font-family: monospace;" colspan="2">&lt;remindertype&gt;</td>
+<td style="vertical-align: top;">"reminder" | "todos"</td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;"></td>
+<td style="vertical-align: top; font-family: monospace;" colspan="2">&lt;remindertitle&gt;</td>
+<td style="vertical-align: top;">localized type</td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;"></td>
+<td style="vertical-align: top; font-family: monospace;" colspan="2">&lt;date&gt;&lt;time&gt;</td>
+<td style="vertical-align: top;">gives the date/time the View/Print was generated</td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;"></td>
+<td style="vertical-align: top; font-family: monospace;" colspan="2">&lt;version&gt;</td>
+<td style="vertical-align: top;">used ReminderFox version</td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;"></td>
+<td style="vertical-align: top; font-family: monospace;" colspan="2">&lt;template&gt;</td>
+<td style="vertical-align: top;">dirctory of the used .XSL definition to generate the View/Print</td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;"></td>
+<td style="vertical-align: top; font-family: monospace;" colspan="2">&lt;xlsName&gt;</td>
+<td style="vertical-align: top;">file name of the used .XSL definition</td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;"></td>
+<td style="vertical-align: top; font-family: monospace;" colspan="2">&lt;app&gt;</td>
+<td style="vertical-align: top;">information of underlaying platform, application and country string</td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;" colspan="3"></td>
+</tr>
+<tr>
+<td style="font-family: monospace;"></td>
+<td style="vertical-align: top; font-family: monospace;" colspan="2">&lt;reminders&gt;</td>
+<td></td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;"></td>
+<td style="vertical-align: top; font-family: monospace;" width="30"></td>
+<td style="vertical-align: top;"><span style="font-family: monospace;">&lt;event&gt;</span></td>
+<td style="vertical-align: top;">multiple entries with content of the selected 'reminders' / 'todos' as indicated by &lt;remindertype&gt;</td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;"></td>
+<td style="vertical-align: top; font-family: monospace;" colspan="2">&lt;locale&gt;</td>
+<td style="vertical-align: top;">text strings to be used as descriptors for the printing (eg. Date, Priority, Location, ...)
+  <br>The strings are localized for currently used 'locale' version of the application</td>
+</tr>
+</tbody>
+</table>
+
+<h3>4. Date items</h3>
+<p>The different 'date' based items of an event or todo are converted to some preformatted elements, eg.: for the "Beginning Date" of an event it is:
+<table style="text-align: left; width: 100%;" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td style="vertical-align: top;"><strong>element</strong></td>
+<td style="vertical-align: top;"><strong>content and formatting</strong> (as defined with ReminderFox Options)</td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;">&lt;date&gt;</td>
+<td style="vertical-align: top;">formatted with setting of ReminderFox/Options/List Display 'Date and Time'</td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;">&lt;date_time&gt;</td>
+<td style="vertical-align: top;">formatted with [time]</td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;">&lt;date_shortDay&gt;</td>
+<td>'weekday' of date formatted with [shortDay]</td>
+</tr>
+<tr>
+<td style="vertical-align: top; font-family: monospace;">&lt;date_ref&gt;</td>
+<td style="vertical-align: top;">the JS value .getTime(), the number of millisec back to 01.01.1970 0:00:00</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>5. Icons</h3>
+<p>
+
+The printout can have some icons, same as they are used with the ReminderFox MainList display. With the template "default" those icons are used with the reminders/todos's at different positions (the second column or leading to Notes / URL)
+<table style="text-align: left; width: 100%;" border="0" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td style="vertical-align: top; text-align: center;"><span style="font-weight: bold;">Icon</span></td>
+<td style="vertical-align: top;"><span style="font-weight: bold;">HTML string</span></td>
+</tr>
+<tr>
+<td style="vertical-align: top; text-align: center;"><img alt="" src="pics/alarmbell.png" /></td>
+<td style="vertical-align: top; font-family: monospace;">&lt;img alt="" src="file:pics/alarmbell.png"/&gt;</td>
+</tr>
+<tr>
+<td style="vertical-align: top; text-align: center;"><img alt="" src="pics/alarmbellSnooze.png" /></td>
+<td style="vertical-align: top; font-family: monospace;">&lt;img alt="" src="file:pics/alarmbellSnooze.png"/&gt;</td>
+</tr>
+<tr>
+<td style="vertical-align: top; text-align: center;"><img alt="" src="pics/ribbon-red-small.png" /></td>
+<td style="vertical-align: top; font-family: monospace;">&lt;img alt="" src="file:pics/ribbon-red-small.png"/&gt;</td>
+</tr>
+<tr>
+<td style="vertical-align: top; text-align: center;"><img alt="" src="pics/ribbon-blue-small.png" /></td>
+<td style="vertical-align: top; font-family: monospace;">&lt;img alt="" src="file:pics/ribbon-blue-small.png"/&gt;</td>
+</tr>
+<tr>
+<td style="vertical-align: top; text-align: center;"><img alt="" src="pics/notes.png" /></td>
+<td style="vertical-align: top; font-family: monospace;">&lt;img alt="" src="file:pics/notes.png"/&gt;</td>
+</tr>
+<tr>
+<td style="vertical-align: top; text-align: center;"><img alt="" src="pics/mail.png" /></td>
+<td style="vertical-align: top; font-family: monospace;">&lt;img alt="" src="file:pics/mail.png"/&gt;</td>
+</tr>
+<tr>
+<td style="vertical-align: top; text-align: center;"><img alt="repeat.png" src="pics/repeat.png" /></td>
+<td style="vertical-align: top; font-family: monospace;">&lt;img alt="" src="file:pics/repeat.png"/&gt;</td>
+</tr>
+<tr>
+<td style="vertical-align: top; text-align: center;"><img style="width: 16px; height: 15px;" alt="" src="pics/@.png" /></td>
+<td style="vertical-align: top; font-family: monospace;">&lt;img alt="" src="file:pics/@.png"/&gt;</td>
+</tr>
+<tr>
+<td style="vertical-align: top; text-align: center;"><img style="width: 16px; height: 15px;" alt="" src="pics/location.png" /></td>
+<td style="vertical-align: top; font-family: monospace;">&lt;img alt="" src="file:pics/location.png"/&gt;</td>
+</tr>
+<tr>
+<td style="vertical-align: top; text-align: center;"><img style="width: 16px; height: 15px;" alt="" src="pics/category.png" /></td>
+<td style="vertical-align: top; font-family: monospace;">&lt;img alt="" src="file:pics/category.png"/&gt;</td>
+</tr>
+<tr>
+<td style="vertical-align: top; text-align: center;"><img style="width: 16px; height: 15px;" alt="" src="pics/iCal1.png" /></td>
+<td style="vertical-align: top; font-family: monospace;">&lt;img alt="" src="file:pics/iCal1.png"/&gt;</td>
+</tr>
+</tbody>
+</table>
+Those icons are stored in the directory
+
+<span style="font-family: monospace; font-size: 90%;"> ../Profiles/ == used profil == /extensions/{ada4b710-8346-4b82-8199-5de2b400a6ae}/defaults/printing/icons</span>
+
+<br>See "template[example].xsl" file for details.
+
+</p>
+<h3>6. Locale Strings</h3>
+<p>To include local language strings with the printout the following strings can be used.</p>
+
+<p>
+<table border="0" cellspacing="0"><colgroup width="151"></colgroup> <colgroup width="238"></colgroup>
+<tbody>
+<tr>
+<td align="left" height="17"><em><strong>localeString</strong></em></td>
+<td align="left"><em><strong>Description</strong></em></td>
+</tr>
+<tr>
+<td align="left" height="17">title</td>
+<td align="left">Print/Agenda title</td>
+</tr>
+<tr>
+<td align="left" height="17">reminders</td>
+<td align="left">reminders</td>
+</tr>
+<tr>
+<td align="left" height="17">todos</td>
+<td align="left">todos</td>
+</tr>
+<tr>
+<td align="left" height="17"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left" height="17">summary</td>
+<td align="left">Summary of reminder</td>
+</tr>
+<tr>
+<td align="left" height="17">notes</td>
+<td align="left">reminder notes</td>
+</tr>
+<tr>
+<td align="left" height="17">priority</td>
+<td align="left">reminder priority/importance</td>
+</tr>
+<tr>
+<td align="left" height="17">categories</td>
+<td align="left">reminder categories</td>
+</tr>
+<tr>
+<td align="left" height="17">allDayEvent</td>
+<td align="left">all day event</td>
+</tr>
+<tr>
+<td align="left" height="17">alarm</td>
+<td align="left">reminder alarm</td>
+</tr>
+<tr>
+<td align="left" height="17"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left" height="17">url</td>
+<td align="left">reminder url</td>
+</tr>
+<tr>
+<td align="left" height="17">location</td>
+<td align="left">reminder location</td>
+</tr>
+<tr>
+<td align="left" height="17"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td rowspan="1" colspan="2" align="left" height="17"><em>Date/time formated with local representation, see above  4. Date items</em></td>
+</tr>
+<tr>
+<td align="left" height="17">date</td>
+<td align="left">start date</td>
+</tr>
+<tr>
+<td align="left" height="17">endDate</td>
+<td align="left">end date</td>
+</tr>
+<tr>
+<td align="left" height="17">date_shortDay</td>
+<td align="left">start date short form:</td>
+</tr>
+<tr>
+<td align="left" height="17">endDate_shortDay</td>
+<td align="left">end date short form:</td>
+</tr>
+<tr>
+<td align="left" height="17"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left" height="17">date_time</td>
+<td align="left">start date time</td>
+</tr>
+<tr>
+<td align="left" height="17">endDate_time</td>
+<td align="left">end date time</td>
+</tr>
+<tr>
+<td align="left" height="17"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left" height="17">date_ref</td>
+<td align="left">start date reference</td>
+</tr>
+<tr>
+<td align="left" height="17">endDate_ref</td>
+<td align="left">end date reference</td>
+</tr>
+<tr>
+<td align="left" height="17"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left" height="17">durationTime</td>
+<td align="left">todo duration time</td>
+</tr>
+<tr>
+<td align="left" height="17"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left" height="17">completedDate</td>
+<td align="left">date the reminder is completed</td>
+</tr>
+<tr>
+<td align="left" height="17">todays</td>
+<td align="left">todays reminders</td>
+</tr>
+<tr>
+<td align="left" height="17">upcomings</td>
+<td align="left">upcomings reminders</td>
+</tr>
+<tr>
+<td align="left" height="17">todaysAndUpcomings</td>
+<td align="left">todays and upcomings reminders</td>
+</tr>
+</tbody>
+</table>
+<br>
+<strong><span style="text-decoration: underline;">Example:</span></strong>
+</p>
+
+<div style="margin-left: 15px; padding-left: 30px; font-family: monospace; font-size: 110%;">
+
+&lt;h3&gt;
+
+ReminderFox -- &lt;xsl:value-of select="general/locale/todaysAndUpcomings" /&gt;&amp;#160; &amp;#160;&lt;xsl:value-of select="general/locale/reminders" /&gt;
+
+&lt;/h3&gt;
+
+</div>
+<p>The US-English installation has:</p>
+
+<h3 style="padding-left: 30px;">ReminderFox -- Todays and Upcomings Reminders</h3>
+
+<p>For a German installation this gives:</p>
+
+<h3 style="padding-left: 30px;">ReminderFox -- Heutige und Kommende Termine</h3>

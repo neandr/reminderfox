@@ -1,0 +1,450 @@
+<style /* format */ type="text/css">
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none; 
+  font-style:normal;  line-height: 1.5em;}
+  img {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  /* format */</style>
+
+<h3 class="pagetitle" id="doctitle">User Guide - Remote Calendar (CalDAV)</h3>
+<table class="doc-toc">
+<tbody>
+<tr>
+<td>
+<div id="toctitle">
+<h3>Contents</h3>
+</div>
+<ul id="toc-ul">
+<li class="toclevel-1"><a href="#top"><span class="toctext">Reminderfox -- Sharing with Remote Calendars and Devices</span></a></li>
+<li class="toclevel-1"><span class="tocnumber">1. </span><a href="#start"><span class="toctext">Reminderfox with ‘Remote Calendars’</span></a></li>
+<li class="toclevel-1"><span class="tocnumber">2. </span><a href="#configure"><span class="toctext">Configure ‘Remote Calendar’ Accounts on Reminderfox</span></a></li>
+</ul>
+<ul id="toc-ul1">
+<li class="toclevel-1"><span class="tocnumber">2.1 </span><a href="#configureDefault"><span class="toctext"> Default Remote Calendar</span></a></li>
+<li class="toclevel-1"><span class="tocnumber">2.2 </span><a href="#accountAdd"><span class="toctext"> [ Add ] -- Define a new 'Remote Calendar'/CalDAV Account for Reminderfox</span></a></li>
+<li class="toclevel-1"><span class="tocnumber">2.3 </span><a href="#externalCalendar"><span class="toctext"> Define other / external CalDAV Calendars</span></a></li>
+<li class="toclevel-1"><span class="tocnumber">2.4 </span><a href="#accountChange"><span class="toctext"> Change / Delete an Account Definition</span></a></li>
+<li class="toclevel-1"><span class="tocnumber">2.5 </span><a href="#accountgooglev2"><span class="toctext"> Google Calendar with Authentication OAuth2</span></a></li>
+<li class="toclevel-1"><span class="tocnumber">2.6 </span><a href="#accountColor"><span class="toctext"> Background Color for Events on the Main List</span></a></li>
+</ul>
+<ul id="toc-ul">
+<li class="toclevel-1"><span class="tocnumber">3. </span><a href="#indicator"><span class="toctext">‘Remote Calendar’ indicator on Main Dialog List and Calendar</span></a></li>
+<li class="toclevel-1"><span class="tocnumber">4. </span><a href="#calendarSelector"><span class="toctext">Reminders with ‘Remote Calendar’/CalDAV Account</span></a></li>
+<li class="toclevel-1"><span class="tocnumber">5. </span><a href="#syncRemote"><span class="toctext">Sync your ‘Remote Calendar’ to see the actual status</span></a></li>
+<li class="toclevel-1"><span class="tocnumber">6. </span><a href="#features"><span class="toctext">‘Remote Calendar’/CalDAV Features supported</span></a></li>
+<li class="toclevel-1"><span class="tocnumber">7. </span><a href="#projectStatus"><span class="toctext">Reminderfox/CalDAV Project Status</span></a></li>
+</ul>
+<ul id="toc-ul">
+<li class="toclevel-1"><a href="#references"><span class="toctext">References</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="top">Reminderfox -- Sharing with Remote Calendars and Devices</h3>
+<p style="padding-left: 30px;">ReminderFox has long supported sharing/synchronizing reminders with other systems by uploading or downloading the entire calendar at a time. This method has been used by many Reminderfox users for a long time. It's configured with the Options tab:Network settings (or tab:Sync).</p>
+<br>
+<p style="padding-left: 30px;">Starting with ReminderFox 2.1, we have introduced a new method to synchronize on an "event-by-event" basis. This has the advantage it can by synchronized with other 'Remote Calendars' (such as Google Calendar) which often support synchronization with devices like iPhone/iPad or Android based phones or pads.
+The sync feature between Reminderfox and those 'Remote Calendars' uses a communication standard, called CalDAV. <em>For details see <a href="http://en.wikipedia.org/wiki/CalDAV" target="_blank">here</a> ).
+</em></p>
+<p style="padding-left: 30px;">Reminderfox working with 'Remote Calendars' is an <span style="text-decoration: underline;">alternative</span> sync method beside the classic file download protocol (like ftp) or sharing the ICS data file between Reminderfox and another application (like Lightning). So the user has to decide to use the classic method <span style="text-decoration: underline;">or</span> working with 'Remote Calendar' systems / CalDAV.</p>
+<p style="padding-left: 60px;"><em><span style="text-decoration: underline;"><strong>Note</strong></span></em></p>
+<p style="padding-left: 60px;"><em> With using the synchronization with 'Remote Calendars' the classic networking method will be switched off. This is because using both methods simultaneously could corrupt the reminder data. Also sharing the ICS data file with another calendar application (like Lightning) should be disabled; every calendar should use its own ICS data file. If a sync with Lightning is required, it should use CalDAV synchronisation also.</em></p>
+&nbsp;
+<h3 id="start">1. Reminderfox with 'Remote Calendars'</h3>
+<p style="padding-left: 30px;">First a service/server is required which supports the CalDAV synchronization protocol. The ReminderFox team has developed for and tested with several popular calendar services. The ReminderFox remote calendar settings provide initial settings to help users in connecting to these services, please see below.</p>
+<p style="padding-left: 30px;"><span style="text-decoration: underline;"><span style="color: #000000; text-decoration: underline;">Tested 'Remote Calendar'/CalDAV servers</span></span>
+For Reminderfox the following CalDAV servers have been tested successfully:</p>
+<p style="padding-left: 45px;"><a href="https://fruux.com"><img style="margin:0px" alt="" src="pics/fruux_logo.png" width="48" height="18" border="0" /></a><strong>, <a href="http://owncloud.org/" target="_blank">OwnCloud</a>, <a title="Radicale" href="http://radicale.org/" target="_blank">Radicale</a>, <a href="http://baikal-server.com/">Baïkal</a>, Google Calendar.</strong></p>
+<p style="padding-left: 30px;"><span style="text-decoration: underline;">
+Other CalDAV servers</span>
+It's recommend to start with one of the tested servers, however other CalDAV-based servers may work as well. It's planned to add more servers with future releases. To use other CalDAV servers the following dialogs have to be completed accordingly.</p>
+<p style="padding-left: 30px;"><span style="text-decoration: underline;">The CalDAV configuration</span></p>
+<p style="padding-left: 30px;">On the CalDAV server(s) the user has to define one or more accounts and those definitions are used to configure Reminderfox/CalDAV feature.</p>
+&nbsp;
+<p style="padding-left: 30px;"><a href="https://fruux.com"><img alt="" src="pics/fruux_logo.png" width="65" height="24" border="0" /></a>Reminderfox recommends this provider; it's free and their goal is :
+<span style="padding-left: 20px; color: #0000ff;">"We absolutely ♥ open standards! So with <strong><a href="http://en.wikipedia.org/wiki/CardDAV"><span style="color: #0000ff;">CardDAV</span></a></strong> and <strong><a href="http://en.wikipedia.org/wiki/CalDAV"><span style="color: #0000ff;">CalDAV</span></a></strong> you won't be locked in to any particular vendor."
+</span>
+.. so it matches with the Reminderfox's goal supporting open standards.</p>
+<p style="padding-left: 30px;"><a title="Join the fruux service" href="https://fruux.com/account/register" target="_blank">Join the fruux service</a>, log into your account and configure your calendars and tasks.</p>
+<p style="padding-left: 60px;"><img style="border: 0px none;" alt="" src="pics/fruux_calendars.png" width="469" height="318" border="0" /></p>
+<p style="padding-left: 60px;">After defining the calendar(s) find on the [Calendar] page the details like: Title and the number of events/tasks stored, see example:</p>
+<p style="padding-left: 80px;">-- 'Calendar', 3 events
+-- 'TeamCalendar', no events
+-- 'teamTasks', one Task/Todo</p>
+<p style="padding-left: 60px;">With configuring Reminderfox Remote Calendar you will find those details again. Initially all tasks collections will have a leading 't:', so the above shown 'teamTasks' will be shown on the Reminderfox configuration dialog with '<em>t:teamTasks</em>'</p>
+<p style="padding-left: 60px;">Also remember username and password to the fruux account. That's all you need here.</p>
+&nbsp;
+<p id="ownCloud" style="padding-left: 30px;"><strong>OwnCloud</strong></p>
+<p style="padding-left: 60px;">OwnCloud has the advantage of not requiring an external provider but rather maintaining all data in your own personal network. To achieve this <span style="text-decoration: underline;">OwnCloud server</span> has to be installed on the local computer network which could be a separate local/private server or a desktop / laptop computer as well.
+There is a broad base of operating systems for installing and running OwnCloud. Please refer to the <a href="http://doc.owncloud.org/server/4.5/admin_manual/installation.html" target="_blank">Administrator Documentation</a> how to install the OwnCloud server version.
+After installation of OwnCloud server, login to the account and make sure to select the "<strong>Calendar</strong>" -- see picture below.</p>
+<p style="padding-left: 60px;">On the Calendar tab a first calendar named "Default calendar" is already defined, additional calendars can be added with the button <strong><code>[New Calendar]<code></code></code></strong>.</p>
+
+<div style="margin-left: 60px;">
+<table width="870" border="0" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td rowspan="3" colspan="1" valign="top"><img class="alignleft" alt="" src="pics/ownCloud_calendar_1.png" width="551" height="215" /></td>
+<td valign="top">1. Select "Calendars", it opens the
+dialog "Choose active calendars". All defined calendars are shown.</td>
+</tr>
+<tr>
+<td valign="top">2. Clicking on the first icon for an
+calendar entry will show an additional textbox</td>
+</tr>
+<tr>
+<td valign="top">3. The additional textbox has the login
+string for that selected calendar.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="margin-left: 60px;"><span style="text-decoration: underline;"><em>Note</em></span>
+The piture shows at [3] <code>http://localhost/..</code> this is the address with using the browser on the same machine the OwnCloud server is installed.
+If your Reminderfox is installed on a different computer you need to have access between the OwnCloud server and the Reminderfox computer. Your login string may be something like
+<code>http://myPrivateSystem/OwnCloudServer/..</code></div>
+<div style="margin-left: 60px;"></div>
+<div style="margin-left: 60px;">OwnCloud also supports Todos/Tasks. Reminderfox has been tested with ownCloud 6.0.0a (stable). With that version select "Task" on the left sidebar.</div>
+&nbsp;
+<p id="radicale" style="padding-left: 30px;"><strong>Radicale</strong></p>
+<p style="padding-left: 60px;">The Radicale Project is a complete CalDAV (calendar) and CardDAV (contact) server solution.</p>
+<p style="padding-left: 60px;">Calendars are available for both local and remote access. Reminderfox made provision to easily setup a Radicale local  based calendar.</p>
+<p style="padding-left: 40px;"><span style="text-decoration: underline;"><em>Local Access:</em></span>
+Calendars used with Radicale stored to a local instance need to follow this configuration detail:</p>
+<p style="padding-left: 90px;"><a href="http://localhost:5232/">http://localhost:5232/</a>{userName}/{calendarName}.ics/</p>
+<p style="padding-left: 90px;">with</p>
+
+<ul style="padding-left: 90px;">
+<li>{userName}  the 'User Name' used with the Add dialog (see below)</li>
+<li>{calendarName} a name of your choice<em></em></li>
+</ul>
+<span style="padding-left: 60px; text-decoration: underline;">IMPORTANT:</span>
+<ol style="padding-left: 90px;">
+<li><em> To ensure correct calendar handling in Reminderfox this notation is mandatory!</em></li>
+<li>Make sure to have an extension <strong>.ics</strong> for your calendar name.</li>
+<li>Also the <strong>trailing slash</strong> is important!</li>
+</ol>
+&nbsp;
+<p style="padding-left: 60px;">To start with a new calendar on Radicale just point your browser to the URL build with the concept above, like this:
+<a href="http://localhost:5232/">http://localhost:5232/</a>fred/myCalendar.ics/.</p>
+<p style="padding-left: 60px;">That way during the Add Calendar dialog Reminderfox will offer the Radicale calendar with "myCalendar" for events and  "<em>t:myCalendar</em>" for Todo's/Tasks.</p>
+<p style="padding-left: 40px;"><em><span style="text-decoration: underline;">Remote Access</span></em>:
+For remote access of a calendar on an external server the address of that calendar is required. See also below.</p>
+&nbsp;
+<p id="Google" style="padding-left: 30px;"><strong>Google Calendar</strong></p>
+<p style="padding-left: 60px;"><strong><em>Note:</em></strong>
+<em>Google announced a different authentication starting Sept.2013. Reminderfox was updated for that authentication/Login.
+See <a href="#accountgooglev2">here</a> how to use that Google <em>authentication</em> (OAuth2) with Reminderfox, <em>please make sure to use Reminderfox version 2.1.4</em></em></p>
+<p style="padding-left: 60px;">Google supports the CalDAV Standard for events (only) which is the base for Reminderfox working with Remote Calendars.</p>
+<p style="padding-left: 60px;">Google Calendar uses the Google mail account login parameters to give access to the calendars; for each account it offers a <span style="text-decoration: underline;">Primary Calendar</span> and <span style="text-decoration: underline;">Group Calendars</span>.</p>
+<p style="padding-left: 60px;">For both calendar types the details can be found on a popup on the Goggle Calendar main page:</p>
+
+<div style="margin-left: 60px;">
+<table width="870" border="0" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td rowspan="6" colspan="1" valign="top"><a href="pics/gcalSetting.png"><img title="Click to enlarge picture" alt="" src="pics/gcalSetting-150x150.png" width="120" height="120" /></a></td>
+<td valign="top">Move down to "Calendar Address"</td>
+</tr>
+<tr>
+<td valign="top"></td>
+</tr>
+<tr>
+<td valign="top"></td>
+</tr>
+<tr>
+<td valign="top"></td>
+</tr>
+<tr>
+<td valign="top"></td>
+</tr>
+<tr>
+<td valign="top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+&nbsp;
+<h3 id="configure"><strong>2. Configure 'Remote Calendar' Accounts on Reminderfox</strong></h3>
+<p style="padding-left: 30px;">On Reminderfox the 'Remote Calendar' accounts will be defined on Reminderfox Options --&gt; tab:Sync.
+A typical configuration would look like this:</p>
+
+<div style="padding-left: 30px;">
+<table width="870" border="0" cellspacing="5" cellpadding="2">
+<tbody>
+<tr>
+<td valign="top" width="400"><a href="pics/remoteCalndr_Definition_fruux51.png"><img class="alignnone  wp-image-1201" title="remoteCalndr_Definition_fruux5" alt="" src="pics/remoteCalndr_Definition_fruux51.png" width="387" height="330" /></a></td>
+<td valign="top">On the Reminderfox Options page find <br> the tab:Sync --&gt; 'Remote Calendar' to show all configured calendars.
+  <br><br>The example <em>(click on it to enlarge) </em>shows the two fruux calendars
+  "Calendar" and "TeamCalendar" which were configured at the fruux account page.
+  <br><br>See the steps below how to configure it with Reminderfox.
+  <br><br><em>Note:
+The configuration of these fruux accounts on Reminderfox are shown below. Configuring for ownCloud, Radicale or Google Calendar are similar</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p style="padding-left: 60px;">On tab:'Remote Calendar' the configured calendars are shown row by row.
+The example has two rows with accounts, both accounts are "Active".
+<em>Note: For setting 'Active' see below -- it will be used to selectively enable/disable account activities</em></p>
+<p style="padding-left: 60px;">Each account row has:</p>
+<p style="padding-left: 90px;">-- a tic box to set the 'Active' status of that account,
+-- an account ID (eg. <code>T</code> ),
+-- the account title (<code>TeamCalendar (fruux)</code>,
+-- buttons for <strong><code>[Configure]</code></strong> and <strong><code>[Remove]</code></strong></p>
+<p style="padding-left: 60px;">Below the account list a button <strong><code>[Add]</code></strong> allows to configure more remote calendars.</p>
+
+<h3 id="configureDefault" style="padding-left: 30px;"><span style="text-decoration: underline;">2.1 Default Remote Calendar</span></h3>
+<p style="padding-left: 60px;">When adding a reminder with the Reminder "Add Dialog" at the top a menu lets the user select for which account that new reminder has to be stored. To simplify this a "Default Remote Calendar" can be selected. That default calendar will be preselected on the "Add Dialog", but any other account can be selected with the menu selector (<a href="#externalCalendar">see below 2.3</a>).
+On the "Edit Dialog" that selector will be set to the calendar location for the edited reminder.</p>
+
+<h3 id="accountAdd" style="padding-left: 30px;"><span style="text-decoration: underline;">
+2.2 [ Add ] -- Define a new 'Remote Calendar'/CalDAV Account for Reminderfox</span></h3>
+<p style="padding-left: 60px;">Some provisions have been made to easily configure the CalDAV server account settings within Reminderfox. Using the <strong><code>[Add]</code></strong> button on the tab:Sync the "Remote Calendar Account Definition" dialog is opened:</p>
+
+<div style="padding-left: 30px;">
+<table width="870" border="0" cellspacing="5" cellpadding="2">
+<tbody>
+<tr>
+<td valign="top" width="400"><a href="pics/remoteCalndr_Definition.png"><img class="alignnone wp-image-1192" title="Selector Remote Calendar template" alt="" src="pics/remoteCalndr_Definition.png" width="391" height="169" /></a></td>
+<td valign="top">The top selector gives access to the configuration templates for fruux,
+  ownCloud (local), Radicale (local), Google Calendar.
+  <br><br>The menu item [Other (Define your own)] is used for remote located calendars with ownCloud, Radicale or Baikal (<a href="#externalCalendar">see below 2.3</a>) or for other additional individual calendar systems.</td>
+</tr>
+<tr>
+<td valign="top"><a href="pics/remoteCalndr_Definition_fruux2.png"><img class="alignnone wp-image-1192" title="Selector Remote Calendar template" alt="" src="pics/remoteCalndr_Definition_fruux3.png" width="391" height="169" /></a></td>
+<td valign="top">Selecting a template enables the User Name and Password boxes; add those login details and press <strong><code>[Login]</code></strong>.
+  <br><br>Successful login fills in the "Selected Calendar" box a menu with all calendars and tasks/todos found for that account.</td>
+</tr>
+<tr>
+<td rowspan="1" colspan="2" valign="top">Our example shows the two calendars and one tasks we know from the fruux pages.
+Selecting one of the calendars/tasks will automatically retrieve details from the remote calendar system.</td>
+</tr>
+<tr>
+<td valign="top"><a href="pics/remoteCalndr_Definition_fruux3.png"><img class="alignnone wp-image-1192" title="Selector Remote Calendar template" alt="" src="pics/remoteCalndr_Definition_fruux3.png" width="391" height="169" /></a></td>
+<td valign="top">The remote calendar "TeamCalendar" has been successfully retrieved, there are no events stored.
+  <br><br>The second part shows a preselected name and an account ID.
+  <br><br>A color can be selected which is used for background color on the Reminderfox Main List (also see below). Only after a successful login and a non-duplicate ID the button <strong><code>[OK]</code></strong> is activated and that remote calendar is added to the list.If you get a notice about a duplicated ID the <strong><code>[OK]</code></strong> button will be disabled as well. Change that ID box entry (terminate with tab) and get the <strong><code>[OK]</code></strong> enabled to terminate the configuration.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="externalCalendar" style="padding-left: 30px;"><span style="text-decoration: underline;">2.3 Define other / external Calendar</span></h3>
+<div style="padding-left: 30px;">
+<table width="870" border="0" cellspacing="5" cellpadding="2">
+<tbody>
+<tr>
+<td valign="top"> <img class="alignnone wp-image-1192" title="External/Remote Calendar Definition" alt="" src="pics/addExternalCalendar1.png" width="391" height="166" /></td>
+<td valign="top">For external located calendars, e.g. with <strong>ownCloud, Radicale or Baikal</strong> the URL of the calendar can be entered with the menu selection<strong>
+[Other (define your own]</strong>
+
+<br><br>For the 'Selected Calendar' a preset for ownCloud will be shown, just overwrite it with the known calendar URL like this:
+<a href="http://calendarsystem.my_private_area.org/myname/calendar/calendar.ics/" target="_blank">http://calendarsystem.my_private_area.org/myname/calendar/</a>
+<br><br>
+Fill in 'User Name' and 'Password' and press [Login].
+<br><br>
+If Reminderfox finds that calendar, the dialog will change the URL textbox to a pulldown menu to offer the known Calendars or Todos/Tasks .. same as above shown with fruux.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 id="accountChange" style="padding-left: 30px;"><span style="text-decoration: underline;">2.4 Change / Delete an Account Definition</span></h3>
+<p style="padding-left: 60px;"><span style="text-decoration: underline;"><strong>Deleting</strong></span> a Remote Calendar with events stored for that Remote Calendar is not recommended. The user gets an alert and will be asked to acknowledge the deletion. The events will not be lost, but converted to 'local' events.</p>
+<p style="padding-left: 60px;"><span style="text-decoration: underline;"><strong>Changing</strong></span> Account details is limited possible with account name, password and background color only. The Acount ID can only be changed as long as no events have connection to that account / account ID.</p>
+<p style="padding-left: 60px;">Using the <strong><code>[Change]</code></strong> button on the "Remote Calendars" tab for an account opens the "Remote Calendar Account Definition" with limited access to the account attributes:</p>
+
+<div style="padding-left: 30px;">
+<table width="870" border="0" cellspacing="5" cellpadding="2">
+<tbody>
+<tr>
+<td valign="top" width="400"><a href="pics/remoteCalndr_Definition_change.png">
+<img class="alignnone wp-image-1192" title="Selector Remote Calendar template" alt="" src="pics/remoteCalndr_Definition_change.png" width="391" height="169" /> </a></td>
+<td valign="top">Any change has to be confirmed with the <strong><code>[OK]</code></strong> button which is only activated after a successful <strong><code>[Login]</code></strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="accountgooglev2" style="padding-left: 30px;"><span style="text-decoration: underline;">2.5 Google Calendar with Authentication OAuth2 </span> <small>(since Sept.2013)</small></h3>
+<p style="padding-left: 60px;">This Login method needs to generate a special login token. This is user specific and will be used once once to setup the login parameter. Take care to generate the token for the owner of the calendar you are going to configure the Reminderfox access.</p>
+<p style="padding-left: 60px;">As shown <a href="#accountAdd">above</a> open the Options / Sync tab and select <strong><code>[Add]</code></strong> to start configuring an account. Select "Google Calendar (V2)" with the top menu selector.</p>
+
+<div style="padding-left: 30px;">
+<table width="870" border="0" cellspacing="5" cellpadding="2">
+<tbody>
+<tr>
+<td valign="top" width="400"><a href="pics/calendar_gcalV2"><img class="alignnone wp-image-1192" title="Google Calendar (v2)" alt="" src="pics/calendar_gcalV2.png" width="533" height="207" /></a></td>
+<td valign="top">The top selector with template selection for Google Calendar (V2).
+  <br><br>Follow the instruction to <strong><code>[Request]</code></strong> the login token.For a preview of the web pages hover the cursor over the icons.
+  <br><br>After copied the token on the web page use the <strong><code>[Paste]</code></strong> button to hand over the token to Reminderfox.</td>
+</tr>
+<tr>
+<td valign="top"><a href="pics/calDAV_accountDef_gcal2_calendar1.png"><img class="alignnone wp-image-1192" title="Selector Remote Calendar template" alt="" src="pics/calDAV_accountDef_gcal2_calendar1.png" width="533" height="244" /></a></td>
+<td valign="top"><br><br>After pasting Reminderfox will call the Google Calendar 
+   and present all defined calendars for the user in the menu box next to
+   "Selected Calendar".
+   <br><br>Select the calendar of your choice and use <strong><code>[Login]</code></strong> for a first login and check about the remote events stored with that calendar.</td>
+</tr>
+<tr>
+<td colspan="2" valign="top">Our example shows a remote calendar "RmFx" which has
+  been successfully retrieved, there is one event stored.
+  <br><br>The second part shows a preselected name and an account ID.
+  <br><br>A color can be selected which is used for background color on the
+  Reminderfox Main List (also see below).
+
+  <br><br>Only after a successful login and a non-duplicate ID the button
+  <strong><code>[OK]</code></strong> is activated and that remote calendar is
+  added to the list. If you get a notice about a duplicated ID the
+   <strong><code>[OK]</code></strong> button will be disabled as well.
+   Change that ID box entry (terminate with tab) and you get the
+   <strong><code>[OK]</code></strong> enabled to terminate the configuration.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3 id="accountColor" style="padding-left: 30px;"><span style="text-decoration: underline;">2.6 Background Color for Events on the Main List</span></h3>
+<h4 style="padding-left: 30px;">Selecting a background color</h4>
+<p style="padding-left: 60px;">Reminderfox delivers six colors to be used for coloring the list rows for events with connection to a remote calendar.
+On the 'Remote Calendar Account Definition' dialog one of six preconfigured colors can be selected by clicking on one of the color boxes.</p>
+<p style="padding-left: 60px;">Using the very left box will clear a selected color.</p>
+
+<h4 id="changingBackgroundColor" style="padding-left: 30px;">Changing a background color definition</h4>
+<p style="padding-left: 60px;">Using the very right button the current color of a selected box can be changed. If that box is associated to a Remote Calendar the background colors of rows in the Main List will change also.</p>
+
+<div style="padding-left: 30px;">
+<table width="870" border="0" cellspacing="5" cellpadding="2">
+<tbody>
+<tr>
+<td valign="top" width="400"><a href="pics/remoteCalndr_colorSelector1.png"><img class="alignnone wp-image-1192" title="Selector Remote Calendar template" alt="" src="pics/remoteCalndr_colorSelector1.png" width="391" height="169" /></a></td>
+<td valign="top">First select the color box to be changed, then click the <strong><code>[Set Color]</code></strong> button.
+  <br><br>Select a color of your choice with clicking on the spectrum bar. The color will be filled into the selected box.The spectrum bar will be closed with moving the cursor out of it.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="BackgroundColorSatuartion" style="padding-left: 30px;">Changing background color saturation</h4>
+<p style="padding-left: 60px;"><em><span style="text-decoration: underline;">Advanced User Tip! </span></em>
+<em> The color saturation for the background colors can be changed using the Firefox/Thunderbird 'Preferences' settings, to make the overall colors on the spectrum lighter or darker.
+</em></p>
+<p style="padding-left: 80px;"><code>preferences name: extensions.reminderFox.calDAVcolorSaturation</code></p>
+<p style="padding-left: 80px;"><code>default value: 30</code></p>
+&nbsp;
+<h3 id="indicator"><strong>3. 'Remote Calendar' indicator on Main Dialog List and Calendar
+</strong></h3>
+<p style="padding-left: 30px;">On the Main Dialog List an additional column can be activated to show the 'Remote Calendar' account ID.
+The right side handle on the top row of the list opens a popup menu and the 'Remote Calendar' item can be selected.</p>
+
+<div style="padding-left: 30px;">
+<table width="80%" border="0" cellspacing="5" cellpadding="2">
+<tbody>
+<tr>
+<td valign="top"><img title="Enable list column icon" alt="" src="pics/calDAVListColumn1.png" width="245" height="284" /></td>
+<td valign="top"><img title="Account ID shown on List" alt="" src="pics/calDAVeventOnList.png" width="360" height="208" /></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p style="padding-left: 30px;">Also the Calendar day popup has the 'Remote Calendar'/CalDAV indicator:</p>
+<p style="padding-left: 60px;"><img alt="" src="pics/calDAVonCalendarDay.png" width="398" height="135" /></p>
+&nbsp;
+<h3 id="calendarSelector"><strong>4. Reminders with 'Remote Calendar'/CalDAV Account</strong></h3>
+<p style="padding-left: 30px;">Any normal method will work to define a new event/todo. The "Add/Edit" dialog now has a top menu selector to decide if the reminders is hold locally or also stored on a 'Remote Calendar' account:</p>
+<p style="padding-left: 60px;"><img alt="" src="pics/addEditDialogAccountSelection.png" width="359" height="294" /></p>
+<p style="padding-left: 30px;">For adding a new reminder the "Default Account" is preselected <em>(see above</em> [P] Privat), but any other account or one of the User Lists can be selected.</p>
+<p style="padding-left: 30px;">For editing an existing reminder the previously selected account for that reminder will be preselected.</p>
+<p style="padding-left: 30px;">The menu shows activated accounts only, the example only shows three remote calendar accounts, also four accounts have been defined (<em>see example screen above</em>).</p>
+<p style="padding-left: 30px;">All other "Add/Edit" dialog entries are the same as with standard usage.</p>
+&nbsp;
+<h3 id="syncRemote">5. Sync your 'Remote Calendar' to see the actual status</h3>
+<p style="padding-left: 30px;">After adding an event on Reminderfox that new event may not be found directly on the remote calendar system. You may need to make sure to 'Refresh' or cause the remote system to update (like changing the week etc).</p>
+
+<div style="margin-left: 60px;">
+<table width="80%" border="0" cellspacing="5" cellpadding="2">
+<tbody>
+<tr>
+<td valign="top"><strong>Google Calendar</strong></td>
+</tr>
+<tr>
+<td valign="top"><img alt="" src="pics/gcalRefresh.png" width="397" height="116" /></td>
+</tr>
+<tr>
+<td valign="top"><strong>ownCloud Calendar</strong></td>
+</tr>
+<tr>
+<td valign="top"><img alt="" src="pics/ownCloud_calendar_sync0.png" width="396" height="94" />
+  <br> Use the normal page reload</td>
+</tr>
+</tbody>
+</table>
+</div>
+&nbsp;
+<h3 id="features"><strong>6. 'Remote Calendar'/CalDAV Features supported</strong></h3>
+&nbsp;
+<h3 id="remoteSetup"><span style="text-decoration: underline;">6.1 'Remote Calendar'/CalDAV Account Setup/Synchronization</span></h3>
+<p style="padding-left: 30px;">The setup details described above are configured on Reminderfox Options --&gt; tab:Sync.
+Also the Foxy Menu is extended to work with the current implementation,
+see menu item <strong><code>[Sync Remote Calendar (CalDAV)]</code></strong></p>
+<p style="padding-left: 60px;"><img class="alignnone" alt="" src="pics/calDAVonFoxy1.png" width="481" height="230" /></p>
+<p style="padding-left: 30px;"><strong><code>[Sync Remote Calendar (CalDAV)]</code></strong> sub-menu:</p>
+
+<ul style="padding-left: 50px;">
+<li>Sync Setup/Edit : Open the Reminderfox Options --&gt; tab:Sync directly</li>
+<li>Sync first Help: Call this documentation page</li>
+<li>Sync All 'Active' Remote Calendar Accounts: This executes for all 'Active' Remote Calendar accounts a <em>download /sync of events </em>on those accounts/servers to Reminderfox</li>
+<li>With the last part a selective <em>download/sync</em> for each account will be executed.</li>
+</ul>
+<p style="padding-left: 30px;"><em>Notes: see also</em> 7. Reminderfox/CalDAV Project Status about synchronization.</p>
+&nbsp;
+<h3 id="autoSync"><span style="text-decoration: underline;"><strong>6.2 Automatic Sync with 'Remote Calendar'/CalDAV</strong></span></h3>
+<p style="padding-left: 30px;">The reminders stored in Reminderfox are synchronized with the 'active' Remote Calendars each time the Main Dialog is opened.</p>
+<p style="padding-left: 30px;">Also when the Main Dialog is shown using Cntrl R will reload the reminders and run a synchronization.</p>
+&nbsp;
+<h3 id="addReminder"><span style="text-decoration: underline;"><strong>6.3 Add/Edit and Delete Reminder/Event</strong></span></h3>
+<p style="padding-left: 30px;">The Reminder dialog for Add, Edit and Delete works as normal. As mentioned above the top menu selector will decide where the reminder is stored.</p>
+<p style="padding-left: 30px;"><em><strong><span style="text-decoration: underline;">Important Note</span></strong>
+The current version sends event/todo add/edit/delete directly to the Remote Calendar/CalDAV server!
+A<em>t the moment </em>the normal Reminderfox saving of events/todos with the extra <strong><code>[Save]</code></strong> and the <strong><code>[Undo]</code></strong> works only for the <span style="text-decoration: underline;">local</span> storage. So an <strong><code>[Undo]</code></strong> will not remove the 'locally unsaved' reminders  from the 'Remote Calendar'/CalDAV server.</em></p>
+&nbsp;
+<h3 id="moveReminder"><span style="text-decoration: underline;">6.4 Move Reminder</span></h3>
+<p style="padding-left: 30px;">For an existing event shown in the Main Dialog List the storage location can be changed. Opening the event (normal edit dialog) the top menu selector for the storage location can be changed. With closing the edit dialog the appropriated delete and add requests will change the location.
+This works for a single event only.</p>
+&nbsp;
+<h3 id="multipleReminders"><span style="text-decoration: underline;">6.5 Send Multiple Reminders
+</span></h3>
+<p style="padding-left: 30px;">The previous method is used to add/edit a single reminder with the normal dialog, so it supports sending that single reminder to a selected 'Remote Calendar'/CalDAV server.</p>
+<p style="padding-left: 30px;">'Local' reminders can also be sent to one dedicated 'Remote Calendar'/CalDAV server without using the "Edit" dialog.</p>
+
+<ul style="padding-left: 50px;">
+<li>Select one or multiple reminders on the Main Dialog List</li>
+<li>Open the context menu (right mouse click) on the Main Dialog List, move the cursor to <strong><code>[Sync to Remote Calendar]</code></strong>. That opens a submenu with the 'active' Remote Calendars. Selecting a calendar will send the reminder to that 'Remote Calendar'.</li>
+</ul>
+<p style="padding-left: 30px;"><em><span style="text-decoration: underline;">Note</span>:
+This updates reminders with the same Remote Calendar ID as the selected on the popup menu. Reminders with different ID will be ignored. See also '<a href="#moveReminder">Move Reminder</a>'.</em></p>
+&nbsp;
+<h3 id="projectStatus">7. Reminderfox/CalDAV Project Status</h3>
+<p style="padding-left: 30px;">Reminderfox 2.1 is the first version with 'Remote Calendars' support and it will continue to evolve and improve -- especially with help and feedback from the community! The current project status should be considered:</p>
+
+<ul style="padding-left: 50px;">
+<li>Since version 2.1.4 Reminderfox sync's with remote calendars/CalDAV supporting the RFC for VEVENTs/VTODOs.</li>
+<li>There is no timed download/sync, also with opening the Main Dialog a synchronization runs in background.</li>
+<li>Add/Edit/Delete of a single reminder for a 'Remote Calendar'/CalDAV account will be sent directly with closing the Reminderfox dialog. The normal store with the extra <strong><code>[Save]</code></strong> and the <strong><code>[Undo]</code></strong> works only for the <span style="text-decoration: underline;">local storage</span>. So an <strong><code>[Undo]</code></strong> will only remove the 'locally unsaved' reminder, but not remove it from the 'Remote Calendar'/CalDAV server.</li>
+</ul>
+<p style="padding-left: 30px;"><span style="text-decoration: underline;">Sync with Google Calendar</span></p>
+<p style="padding-left: 30px;">For sharing Reminderfox reminders with Google Calendar it's important to know:</p>
+
+<ul style="padding-left: 50px;">
+<li>"Important" attribute for events is not supported by Google Calendar.</li>
+<li>"Categories" attributes are not supported by Google Calendar also sync'd with calendars on Android devices.
+<em>When Reminderfox sync'd to Google Calendar, those attributes will be saved, so they can be restored after resync from Google Calendar.</em>
+<em></em></li>
+<li>Google Calendar only supports events with the RFC standard. Todos/Tasks sync is based on a proprietary format and not support by Reminderfox.</li>
+</ul>
+&nbsp;
+<h3 id="references">References</h3>
+<p style="padding-left: 30px;">The implementation is very much based on Evert Pot's SabreDAV <a href="https://code.google.com/p/sabredav/wiki/BuildingACalDAVClient" target="_blank">wiki page</a> -- very helpful and the real base for this feature set! A great applause to him!
+ </p>

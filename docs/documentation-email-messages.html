@@ -1,0 +1,91 @@
+<style /* format */ type="text/css">
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none; 
+  font-style:normal;  line-height: 1.5em;}
+  img {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  /* format */</style>
+
+<h1 id="doctitle" class="pagetitle">Email Integration - Messages</h1>
+<table class="doc-toc">
+<tbody>
+<tr>
+<td>
+<div id="toctitle">
+<h2>Contents</h2>
+</div>
+<ul id="toc-ul">
+<li class="toclevel-1"><a href="#r1"><span class="tocnumber">1</span> <span class="toctext">Installing</span></a></li>
+<li class="toclevel-1"><a href="#r2"><span class="tocnumber">2</span> <span class="toctext">Adding a reminder to an email</span></a></li>
+<li class="toclevel-1"><a href="#r3"><span class="tocnumber">3</span> <span class="toctext">Viewing an email attached to a reminder</span></a></li>
+<li class="toclevel-1"><a href="#r4"><span class="tocnumber">4</span> <span class="toctext">Open a reminder associated to an email</span></a></li>
+<li class="toclevel-1"><a href="#r5"><span class="tocnumber">5</span> <span class="toctext">Adding a reminder on send</span></a></li>
+<li class="toclevel-1"><a href="#r6"><span class="tocnumber">6</span> <span class="toctext">Replying to an email with an associated reminder</span></a></li>
+<li class="toclevel-1"><a href="#r7"><span class="tocnumber">7</span> <span class="toctext">Tagging and searching</span></a></li>
+<li class="toclevel-1"><a href="#r8"><span class="tocnumber">8</span> <span class="toctext">Webmail integration</span></a></li>
+<li class="toclevel-1"><a href="#r9"><span class="tocnumber">9</span> <span class="toctext">Address book Entries</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div id="doc-contents">
+<h2 id="r1">Installing</h2>
+<p>It is possible to install ReminderFox into any of the Mozilla-based email systems (Thunderbird/ Seamonkey). To install into Thunderbird, go to the <a href="https://addons.mozilla.org/en-US/thunderbird/addon/1191/">official ReminderFox download site</a>, click 'Download Now' and follow the instructions.</p>
+<h2 id="r2">Adding a reminder to an email</h2>
+<div>
+
+<p>ReminderFox offers integration with Mozilla email systems to attach a reminder to any email. This is useful when you have an email that you would like to come back to at a later date. For example, if you receive an email that is important, and you want to ensure that you follow-up to it a certain date, you can add a reminder for that email.
+<br>
+To create a reminder from an email, simply right-click on any email in the list, or inside of the email itself. From the context menu, select Add a Reminder.</p>
+
+<p><img title="Add Reminder From Context" src="pics/mailReminder.png" alt="en/mailReminder.png" /></p>
+
+<p>The Add Reminder window will come up pre-populated with the email details:</p>
+
+<p><img title="Add reminder for a mail message" src="pics/addReminder4mail.png" alt="en/addReminder4mail.png" /></p>
+
+<p>Note that this feature works for any message stored in the mail folders.
+<br>
+You can also select text inside of an email and when you select Add a Reminder from the context menu, the highlighted text will be included as part of the reminders notes. This is useful for quickly grabbing dates, times, and places from an email.
+</p>
+<p><img title="Pic text details from a mail message for the reminder" src="pics/addReminder4mailwdetails.png" alt="en/addReminder4mailwdetails.png" /></p>
+
+</div>
+<h2 id="r3">Viewing an email attached to a reminder</h2>
+<p>When a reminder has an email associated with it, it will show up in the list with a mail icon <img title="'Mail' icon" style="margin:0px" src="pics/mail.png" alt="en/mail.png" /> (you need to have the Mail column visible). You can click on a reminder's email icon to view its associated email (or select View Mail from the reminder context menu). Note that the email can still be displayed even if the message has been moved to another folder.</p>
+
+<p><img title="Reminder list with 'mail' column enabled" src="pics/rf-mailicon.jpg" alt="en/rf-mailicon.jpg" /></p>
+
+<h2 id="r4">Open a reminder associated to an email</h2>
+<p>After a reminder is created from an email, the email's label (color) is changed and it's tagged with <strong><tt>Reminderfox</tt></strong> to signify that a reminder is associated with it. This tag is removed when the reminder is deleted or completed.</p>
+
+<p><img title="Message context menu to open the reminder" src="pics/openReminder4msg.png" alt="en/openReminder4msg.png" /></p>
+<h2 id="r5">Adding a reminder on send</h2>
+<p>It is possible to associate a reminder with an email while sending it. To do this, use the special button <img title="'Send++' button" style="margin:0px" src="pics/sendwRm24.png" alt="en/sendwRm24.png" /> [Send++] .</div>
+<p>(This button may be hidden, use the Customize Toolbar feature to display it).<p>
+
+<p><img title=" 'Send++' button installed on 'Compose' toolbar" src="pics/mailSendplus.png" alt="en/mailSendplus.png" /></p>
+
+<p>[Send++] behaves like the normal "Send" button, but before sending the "Add Reminder" dialog will be opened so a reminder for the message to be send can be edited.</p>
+
+<h2 id="r6">Replying to an email with an associated reminder</h2>
+<p>If an email with an associated reminder is replied to, the reply will also contain a reference to this reminder. This reminder can be opened by right-clicking on the message and selecting 'Open the associated Reminderfox event' from the context menu.</p>
+<h2 id="r7">Tagging and Searching</h2>
+<p>You can set a set up a filter to match all messages that have an associated reminder, and then tag all of this messages for future searches. To do this, go to the Tools menu and select 'Message Filters...'. Create a filter that has 'References' that contain '@reminderfox'. Then, set the action to Tag the message with 'ReminderFox'.</p>
+
+<p><img title="Filter definition for 'Send++'" src="pics/reminderfoxFilter.png" alt="en/reminderfoxFilter.png" /></p>
+
+<p>Once you have this filter set up, it is easy to create a 'Search Folder' for messages with reminders. Select Edit-&gt;Find-&gt;Search Messages... and configure the Search Folder to match all References that contain @reminderfox.</p>
+
+<p><img title="Folder definition for 'Reminderfox' reference" src="pics/reminderfoxFolder.png" alt="en/reminderfoxFolder.png" /></p>
+
+<h2 id="r8">Webmail integration</h2>
+<p>In Firefox/Seamonkey if you view a message on a WEB-mail app (like Gmail/Yahoo)  via the context menu you can add a reminder.
+That way the message has a connection to Reminderfox. In your reminder list and on the edit dialog the reminder will show up marked with a mail icon. Click on that mail icon to jump to that message in Gmail/Yahoo mail.</p>
+
+<h2 id="r9">Address book Entries</h2>
+<p>Using the Address Book of Thunderbird/SeaMonkey, a reminder can be created for a specific card. Simply select the card, and from the context menu, select 'Add Reminder'</p>
+
+<p><img title="add Reminder for Addressbook card" src="pics/addReminder4ABcard.png" alt="en/addReminder4ABcard.png" /></p>

@@ -1,0 +1,61 @@
+<style /* DE format */ type="text/css">p {display: block; margin: 0 0 0 20px;
+  padding: 0 0 0 0;  border-left: none; 
+  font-style:normal;  line-height: 1.5em;}
+  /* DE format */</style>
+
+<h1 id="doctitle" class="pagetitle" title="Gibt es Probleme? Hier sind Antworten zu einigen Schwierigkeiten">Problemsituationen und Lösungen</h1>
+<table class="doc-toc">
+<tbody>
+<tr>
+<td>
+<div id="toctitle">
+<h2>Inhalt</h2>
+</div>
+<ul id="toc-ul">
+<li class="toclevel-1"><a title="Gibt es Probleme? Hier sind Antworten zu einigen Schwierigkeiten" href="#problems"><span class="tocnumber">1</span> <span class="toctext">Fehlersituationen</span></a></li>
+<li class="toclevel-1"><a href="#bowmissing"><span class="tocnumber">2</span> <span class="toctext">Reminderfox Schleife: Reminderfox installiert, aber keine Reminderfox Schleife?</span></a></li>
+<li class="toclevel-1"><a href="#download"><span class="tocnumber">3</span> <span class="toctext">Reminderfox Erweiterung herunterladen: Meldung die XPI-Datei sei korrupt oder kann nicht geladen werden.</span></a></li>
+<li class="toclevel-1"><a href="#theme"><span class="tocnumber">4</span> <span class="toctext">Nicht-standard gemäßes 'Theme' (Darstellungsart): einiges des Textes in den Menüs ist beschnitten.</span></a></li>
+<li class="toclevel-1"><a href="#network"><span class="tocnumber">5</span> <span class="toctext">Netzwerk: Erkennen das eine Synchronisation mit dem Netzwerk erfolgt.</span></a></li>
+<li class="toclevel-1"><a href="#backup"><span class="tocnumber">6</span> <span class="toctext">Sicherung der Termine: Wo ist eine Sicherung?</span></a></li>
+<li class="toclevel-1"><a href="#newinstall"><span class="tocnumber">7</span> <span class="toctext">Reminderfox Neuinstallation / neue Version: Gehen die Ereignisdaten verloren?</span></a></li>
+<li class="toclevel-1"><a href="#check"><span class="tocnumber">8</span> <span class="toctext">Kalenderdaten/-datei auf Richtigkeit überprüfen</span></a></li>
+<li class="toclevel-1"><a href="#errorlog"><span class="tocnumber">9</span> <span class="toctext">Andere Probleme: Detaillierte Fehlerberichte</span></a></li>
+
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+
+<div id="doc-contents"> <!-- ["problems", "Gibt es Probleme? Hier sind Antworten zu einigen Schwierigkeiten", "Problemsituationen und Lösungen"] -->
+<h2 id="problems" title="Gibt es Probleme? Hier sind Antworten zu einigen Schwierigkeiten">Fehlersituationen</h2>
+<p>Gibt es Probleme? Hier sind Antworten zu einigen Schwierigkeiten.</p>
+<h2 id="bowmissing">Reminderfox Schleife: Reminderfox installiert, aber keine Reminderfox Schleife?</h2>
+<p>Ist die Statusleiste in Firefox/Thunderbird angezeigt? Reminderfox installiert die Schleife per Voreinstellung in die Statusleiste. Wenn die Statusleiste nicht angezeigt wird, kann dies über Reminderfox Optionen, Tab 'Anzeige' zu einer anderen Position zugewiesen werden.</p>
+<h2 id="download">Reminderfox Erweiterung herunterladen: Meldung die XPI-Datei sei korrupt oder kann nicht geladen werden.</h2>
+<p>Wenn bei einem Download oder einer Installation diese Meldung "Invalid package error" (oder ähnlich) erscheint, könnte es sein, dass es eine Verzögerung mit der Seite addons.mozilla.org gibt.
+Wenn eine neue Version eingestellt wurde, dauert es gewöhnlich ca. 30 Minuten bis diese auf allen Spiegelsystemen zur Verfügung steht. Bitte den Vorgang nach 30 Minuten wiederholen.</p>
+<h2 id="theme">Nicht-standard gemäßes 'Theme' (Darstellungsart): einiges des Textes in den Menüs ist beschnitten.</h2>
+<p>Einige dieser Themen haben Schwierigkeiten mit dynamisch generierten Menüs und so wird der Text beschnitten. Das 'Noia' hat diese Problem ebenso, es soll aber in einer künftigen Version behoben sein (Noia 2.0 eXtreme, versions greater than 2.30). Versuchen sie diese Schwierigkeit direkt an den Autor des Thema zu senden, um prüfen zu lassen ob es direkt innerhalb der Theme-Definition behoben werden kann.</p>
+<h2 id="network">Netzwerk: Erkennen das eine Synchronisation mit dem Netzwerk erfolgt.</h2>
+<p><em>Siehe Abschnitt: Austauschen von Terminen und Aufgaben.</em></p>
+<h2 id="backup">Sicherung der Termine: Wo ist eine Sicherung?</h2>
+<p>Automatische Sicherungen der Termin Datei befindet sich in dem Reminderfox Profile Verzeichnis (Versionen von heute und gestern). Sie sind zu finden im Firefox oder Thunderbird Profil-Verzeichnis oder ggf. in dem vom Benutzer angegebenen Verzeichnis (siehe Option "Lokale Datei" )und haben Endungen wie .bak1, .bak2, or .bak3.
+<br><em>Zum Beispiel:</em>
+<code>C:\Documents and Settings\Administrator\ApplicationData\Mozilla\Firefox\Profiles\qf5aadhx.default\Reminderfox\reminders.ics.bak1</code></p>
+<h2 id="newinstall">Reminderfox Neuinstallation / neue Version: Gehen die Ereignisdaten verloren?</h2>
+<p>Nein - die Datei mit den Terminen/Ereignissen werden nicht durch eine Neuinstallation oder ein Einspielen einer neuen Version gelöscht. Sie bleiben im Profil- oder dem angegebenen Verzeichnis. Solange dieses nicht gewechselt wird, gehen sie nicht verloren. Natürlich ist es immer eine gute Idee die Datei separat zu sichern und aufzubewahren.
+<br><em>Siehe auch: <a title="Dateifunktionen für Erinnerungen und Einstellungen [options]" href="doc-options-de.html#files"> Einstellungen: Lokale Datei</a> </em></p>
+
+<h2 id="check">Kalenderdaten/-datei auf Richtigkeit überprüfen</h2>
+<p>
+Es gibt verschiedene Webseiten die hier Hilfe geben. Die folgenden lassen sich einfach bedienen:
+<blockquote>
+<a href="http://icalvalid.cloudapp.net/">http://icalvalid.cloudapp.net/</a>
+<a href="http://severinghaus.org/projects/icv/">http://severinghaus.org/projects/icv/</a>
+</blockquote>
+<p>Der Validator zeigt an wenn irgendwelche Fehler in der Datei bestehen. Das kommt insbesondere dann vor, wenn die Datei mit verschiedenen anderen Kalenderprogrammen abgeglichen wird, da jedes seine eigenen Metadaten hinzufügt. Manchmal wird fehlerhaftes hinzugefügt. Der Validator wird dies aufspüren.</p>
+<h2 id="errorlog">Andere Probleme: Detaillierte Fehlerberichte</h2>
+<p>Detaillierte Informationen zur Fehlerbehebung können ggf. mittels der Reminderfox Logging Option erzeugt werden. Hierzu wird der Konfigurationseditor aufgerufen (im Firefox, in die Adressleiste 'about:config' eintragen; in Thunderbird, Extras --&gt;Tab 'Erweitert' --&gt; Tab 'Allgemein' und dort 'Konfiguration bearbeiten'). Ändern des Wertes extensions.Reminderfox.debug.loglevel von <strong>0</strong> zu <strong>2</strong>. Jetzt kann bei einem Problem mit Reminderfox folgendes gemacht werden: im Firefox/Thunderbird Menü Extras --&gt; Javascript Console aufrufen und dort nach hilfreichen Meldungen suchen. Diese mittels Reminderfox Mailing List oder auch per bug report an die Autoren senden.</p>
+<!-- END infoSection ========== --></div

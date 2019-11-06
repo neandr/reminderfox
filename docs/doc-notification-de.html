@@ -1,0 +1,89 @@
+<style /* format */ type="text/css">
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none;
+  font-style:normal;  line-height: 1.5em;}
+  img {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  /* format */</style>
+
+<h1 id="doctitle" class="pagetitle" title="Benachrichtung / Meldung / Alarm">Benachrichtungen</h1>
+
+
+<table class="doc-toc">
+<tbody>
+<tr>
+<td>
+<div id="toctitle">
+<h2>Inhalt</h2>
+</div>
+<ul id="toc-ul">
+<li class="toclevel-1"><a href="#notification"><span class="tocnumber">1</span> <span class="toctext">Benachrichtungen</span></a></li>
+<li class="toclevel-1"><a href="#statusbar"><span class="tocnumber">2</span> <span class="toctext">Statusleiste</span></a></li>
+<li class="toclevel-1"><a href="#alarms"><span class="tocnumber">3</span> <span class="toctext">Alarme</span></a></li>
+<li class="toclevel-1"><a href="#quickalarm"><span class="tocnumber">4</span> <span class="toctext">Sofort Alarm</span></a></li>
+
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+
+<div id="doc-contents"> <!-- ["notification", "Benachrichtungen ",  "Benachrichtung / Meldung / Alarm"] -->
+
+<h2 id="notification" title="Benachrichtung / Meldung / Alarm">Benachrichtungen / Alarme</h2>
+<p>Termine und Aufgaben, die in Reminderfox  gespeichert sind, lösen auf unterschiedliche Art Hinweise für den Benutzer aus. In der Statusbarleiste werden anstehende oder fällige  Termine angezeigt, von dort aus zeigen Tooltips eine Übersicht  über anstehende Termine oder Aufgaben. In der MS Windows-Umgebung erfolgt in einstellbaren Zeitintervallen ein Fenster mit Meldungen zu den Ereignissen.
+Benachrichtigungen über Termine erfolgt auch mittels  Dialogfenstern. In diesen läßt sich direkt bestimmen wie mit  der Meldung / dem Termin zu verfahren ist.
+
+Neben den beschriebenen Terminen, stellt Reminderfox auch ein Alarmsystem für kurzfristige Ereignisse zur Verfügung.
+Diese sogenannten <a href="doc-notification-de.html/#quickalarm"> 'Sofort' Alarme</a>, die <ins> nicht</ins> in  der Liste gespeichert werden, exisitieren auch nur während der  aktuellen Sitzung.</p>
+<h2 id="statusbar">Statusleiste</h2>
+<p>Reminderfox nutzt die Statusleiste der Hostanwendung (Firefox, Thunderbird, etc)  für verschiedene Funktionen:
+<ul>
+<li><strong>Meldungen</strong> - die Anzeige des Reminderfox Schleifensymbols mit ggf. aktuellen Meldungen.
+  Wenn für den laufenden Tag ein Ereignis vorhanden ist, erscheint dieses auf der Statusleiste.
+  Je nach Status des  Ereignisses ändert sich die Farbe der Schleife.
+<br><strong><img title="heutiges Ereignis" src="pics/bow.png" alt="de/bow.png" /></strong>
+ Rot:  Es gibt ein Ereignis für den laufenden Tag.
+<br><strong><img title="kommendes Ereignis" src="pics/upcomingReminderBow.png" alt="de/upcomingReminderBow.png" /></strong>
+ Blau: Ein bevorstehendes Ereignis.
+<br><strong><img title="kein anstehendes Ereignis" src="pics/noReminderBow.png" alt="de/noReminderBow.png" /></strong>
+ Grau: Gibt es keine bevorstehenden Ereignisse.
+</li>
+<li><strong>Hinweisliste (Tooltips)</strong> - Wird der Mauszeiger über die Schleife geführt, so wird eine Hinweisliste -- die sogenannte  Tooltipliste -- mit den laufenden und kommenden Ereignissen angezeigt.
+Zusätzlich kann man einstellen, dass eine Liste der laufenden und kommenden Ereignisse periodisch eingeblendet wird (nur mit Windows).
+<em>siehe auch: <a title="Einstellungen zu Tooltips  [faqdetails]" href="doc-options-de.html/#Tooltip">Einstellungen: Tooltip</a> </em></li>
+<li><strong> Kontextmenu</strong> - zum Aufruf verschiedener Funktionen
+<em>siehe <strong>contextmenu [$$$]</strong></em></li>
+<li><strong>'Drag and Drop'</strong> - zur Aktivierung bestimmter Vorgänge  wie Termine anzulegen oder Einladungen zu bearbeiten
+<em>siehe <a title="Einladungen als Erinnerungen speichern  [ical]" href="doc-ical-de.html"> Einladungen [iCal]</a> </em></li>
+</ul>
+</p>
+<h2 id="alarms">Alarme</h2>
+<p>Normale Benachrichtigungen werden aus der Listeder eingegebenen Termine mit den dort jeweils für die Benachrichtigung ausgewählten Zeitpunkt erzeugt. Dies kann so eingestellt werden, dass die Benachrichtigung vor dem Ereignis oder genu zu dem Ereignistermin erscheint.
+
+<br><br>
+Zu dem vorbestimmten Zeitpunkt wird ein entsprechender Benachrichtigungsdialog angezeigt:
+<p><img title="Alarm" src="pics/rmFx_alarm1.png" alt="de/rmFx_alarm1.png" /></p>
+<p><img title="mehrere Alarme" src="pics/rmFx_alarm3.png" alt="de/rmFx_alarm2.png" /></p>
+<p>Sind mehrere Alarme aufgelaufen, so werden sie in Tabs's angezeigt.
+Diese Benachrichtigung kann einfach bestätigt werden oder es werden verschiedene andere Optionen aus einem Menü gewählt:</p>
+<p>
+<ul>
+<li><strong>Später erinnern</strong> - Dies verschiebt die Benachrichtigung auf einen späteren Zeitpunkt. Die Zeit kann durch direkte Eingabe oder  über das Menü gewählt werden.
+Anschließend die Taste [Später erinnern] anklicken. Damit wird das Benachrichtungsfenster vorerst geschlossen und öffnet sich nach Ablauf dieser Zeit erneut.</li>
+<li><strong>Als erledigt markieren</strong> - dies markiert das Ereignis  als erledigt und schließt das Fenster.</li>
+<li><strong>Löschen</strong> - dies löscht das Ereignis und schließt das Fenster.</li>
+<li><strong>Öffnen</strong>... - dies öffnet dieses Ereignis im Ereignislisten-Dialog zur weiteren Bearbeitung.</li>
+</ul>
+</p>
+<h2 id="quickalarm">Sofort-Alarm</h2>
+<p>"Sofort" Alarme/Benachrichtigungen werden mittels der Schleife auf  der Statusleiste angelegt. Dies erlaubt es, eine Benachrichtigung zu erstellen für etwas, das sich kurzfristig ereignet. Beispiel: für einen erforderlichen Rückruf: "Tel.Erinnerung" in 15 Minuten. <br>Achtung, dies sind "flüchtige"  Termine, die nicht zur Terminliste hinzugefügt werden!</p>
+<p>Ein Beispiel für eine Termin Benachrichtung in 15 Minuten:
+<p><strong> <img title="1.Alarm" src="pics/rmFx_qAlarm1.png" alt="de/rmFx_qAlarm1.jpg" /></strong></p>
+</p>
+<p>Nach 15 Minuten erscheint dieses Fenster:
+<p><img title="2.Alarm" src="pics/rmFx_qAlarm2.png" alt="de/rmFx_qAlarm2.jpg" /></p>
+</p>
+<p>Dies kann nun mit "Später erinnern" verzögert oder mit OK einfach bestätigt und gelöscht werden.</p>
+</div> <!-- id="doc-contents" -->
