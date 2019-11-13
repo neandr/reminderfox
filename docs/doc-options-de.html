@@ -1,257 +1,492 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <style /* format */ type="text/css">
+  body {
+    /* margin-right: 30%; */
+    font-family: /*Verdana,*/ Arial, sans-serif;
+  }
   p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none;
   font-style:normal;  line-height: 1.5em;}
   img {
     margin-top: 5px;
     margin-bottom: 15px;
   }
-  /* format */</style>
+  /* format */
+</style>
 
-<h1 id="doctitle" class="pagetitle" title="Menüs, Status/Toolbar, Einstellungen (Optionen)">Bedienung und Einstellungen / Optionen</h1>
-<table class="doc-toc">
-<tbody>
-<tr>
-<td>
-<div id="toctitle">
-<h2>Inhalt</h2>
-</div>
-<ul id="toc-ul">
-<li class="toclevel-1"><a href="#userinterface"><span class="tocnumber">1</span> <span class="toctext">ReminderFox Menü Funktionen</span></a></li>
-<li class="toclevel-1"><a href="#statusbarmenu"><span class="tocnumber">2</span> <span class="toctext">Statusbar Menü</span></a></li>
-<!-- <li class="toclevel-1"><a href="#toolbarmenu"><span class="tocnumber">3</span> <span class="toctext">Toolbar Menü</span></a></li> -->
-<li class="toclevel-1"><a href="#toolbaricons"><span class="tocnumber">4</span> <span class="toctext">ReminderFox Symbole auf dem Toolbar</span></a></li>
-<li class="toclevel-1"><a href="#options"><span class="tocnumber">5</span> <span class="toctext">Einstellungen (Optionen)</span></a></li>
-<li class="toclevel-1"><a href="#display"><span class="tocnumber">6</span> <span class="toctext">Anzeige</span></a></li>
-<li class="toclevel-1"><a href="#Tooltip"><span class="tocnumber">7</span> <span class="toctext">Tooltip</span></a></li>
-<li class="toclevel-1"><a href="#notifications"><span class="tocnumber">7</span> <span class="toctext">Benachrichtigungen</span></a></li>
-<li class="toclevel-1"><a href="#listDisplay"><span class="tocnumber">8</span> <span class="toctext">Übersichtsanzeigen</span></a></li>
-<li class="toclevel-1"><a href="#defaults"><span class="tocnumber">9</span> <span class="toctext">Terminstandards</span></a></li>
-<li class="toclevel-1"><a href="#lists"><span class="tocnumber">10</span> <span class="toctext">Listen</span></a></li>
-<li class="toclevel-1"><a href="#files"><span class="tocnumber">11</span> <span class="toctext">Lokale Datei</span></a></li>
-<li class="toclevel-1"><a href="#network"><span class="tocnumber">12</span> <span class="toctext">Netzwerk</span></a></li>
-<li class="toclevel-1"><a href="#categories"><span class="tocnumber">13</span> <span class="toctext">Kategorien</span></a></li>
-</ul>
-</td>
-</tr>
-</tbody>
+<h3 id="doctitle" class="pagetitle"
+  title="Menüs, Status/Toolbar, Einstellungen (Optionen)">
+  <a href="doc-1-de.html"><img src="pics/foxy-head.png" align="middle" alt="" /></a>
+  Optionen -- Bedienung und Einstellungen</h3>
+
+  <p>Die Anpassung der zahlreichen Reminderfox Funktionen erfolgt mit
+    dem 'Optionen/Einstellungen' Dialog.</p>
+  <p>
+    Alle Konfigurationen und Einstellungen sind auf Registerkarten (Tabs) organisiert,
+    die folgenden Abschnitte beschreiben jeden Tab.
+  </p>
+  <br>
+  <p>
+    Zum Öffnen dieses Dialogs bietet Reminderfox verschiedene Möglichkeiten:
+    <br>
+
+    <ul style="padding-left: 30px;">
+      <li>in der Thunderbird Hauptmenüleiste verwenden Sie das Foxy-Kontextmenü</li>
+      <li>das Foxy-Menü im Reminderfox-Hauptmenü</li>
+      <li>Wählen Sie in der Hauptmenüleiste der Anwendung (Thunderbird) mit dem Menü
+        "Extras" die Option "ReminderFox" --&gt; "Optionen...".</li>
+    </ul>
+  </p>
+
+
+<table style="padding-left: 30px;">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <h3>Inhalt</h3>
+        </div>
+        <ul>
+          <li><a href="#general">Generelles</a></li>
+          <ul>
+            <li><a href="#files"> Termine/Aufgaben Datei [ICS]</a></li>
+            <li><a href="#backup"> Sichern/wieder herstellen</a></li>
+            <li><a href="#calendarDefaults">Kalender Grundeinstellung</a></li>
+          </ul>
+          <li><a href="#system">System/Zugriff</a></li>
+          <li><a href="#dialog">Hauptdialog</a></li>
+          <li><a href="#standards">Terminstandards</a></li>
+          <ul>
+            <li><a href="#categories">Kategorien</a></li>
+          </ul>
+          <li><a href="#notifications">Benachrichtigungen</a></li>
+          <li><a href="#alarms">Alarme</a></li>
+          <li><a href="#lists">Listen</a></li>
+          <li><a href="#sync">Sync/Netzwerk</a></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
 </table>
 
-<div id="doc-contents"> <!-- ["options", "Menüs, Status/Toolbar, Einstellungen (Optionen)",  "ReminderFox Bedienung und Einstellungen"] -->
-
-
-<h2 id="userinterface" title="Funktionen aufrufen">ReminderFox Menü Funktionen</h2>
-<p>Zur Bedienung der vielfältigen ReminderFox Funktionen stehen an unterschiedlichen Stellen Menüpunkt zur Verfügung. Teilweise können diese über die Einstellungen den Bedürfnissen des Benutzers durch ihn angepasst selbst werden.</p>
-
-<h2 id="toolbaricons">ReminderFox Symbole auf dem Toolbar der Hostanwendung</h2>
-<p><strong><img title="Toolbar Kontextmenü" src="pics/rmFx_toolbar_menu.png" alt="de/rmFx_toolbar_menu.jpg" /></strong></p>
-<p>Im Bild sind ReminderFox Symbole zu sehen (roter Rahmen).
-  ReminderFox bietet verschiedene Symbole, die auf Toolbars installiert werden    können:
-<ul>
-<li><strong>Kalender </strong> - Aufruf der Monatsübersicht (wie in der ReminderFox Liste mit markierten Tagen, die Termine haben) mit der Möglichkeit durch Auswahl eines Tages direkt einen neuen Termin/Aufgabe anzulegen.</li>
-<li><strong>Tatzensymbol - </strong> öffnet eine Übersicht der anstehenden   Termine und Aufgaben</li>
-<li><strong>Schleife - </strong> öffnet den Dialog zum Anlegen eines neunen Termins mit der Vorbelegung des aktuellen Tages</li>
-<li><strong>Uhr - </strong>öffnet den Dialog zum Anlegen eines 'Kurz'-Alarmes</li>
-</ul>
-<p>Eine Anleitung zur Installation von Symbolen auf den Leisten siehe  <em>Siehe  <a href="doc-faq-questions-de.html#menu"> hier. </a></em></p>
-
-<h2 id="statusbarmenu">Statusbar Menü</h2>
-<p>Der Statusbar der Hostanwendung (Firefox, Thunderbird) wird benutzt zur Anzeige anstehender Termine, aber auch um andere Funktionen des ReminderFox aufzurufen:<p>
-  <strong><img title="StatusBar Kontextmenü" src="pics/rm_statusbar_menu.jpg" alt="de/rm_statusbar_menu.jpg" /></strong></p>
-
-<p>Der obere Teil bietet Funktionen zum Aufruf des ReminderFox Dialoges, das Hinzufügen von Erinnerungen, die Sofort-Alarmfunktion und das Ein-/Ausschalten der Benachrichtigungen.
-Die letzte genannte Funktion ist hilfreich, um Alarme oder das Benachrichtigungsfenster zu unterdrücken -- z.B bei Bildschirmpräsentationen. Das Inaktivschalten wird durch die graue Anzeige der Schrift und der Schleife sichtbar.
-
-<br>Der untere Teil bietet:</p>
-<ul>
-<li><strong>Einstellungen (Optionen)</strong> - <em>siehe  <a href="#options">Optionen </a></em></li>
-<li><strong>Homepage besuchen</strong> - Aufruf zu ReminderFox im Internet http://reminderfox.mozdev.org/</li>
-<li><strong>Hilfe</strong> - Direkter Aufruf zu diesen 'ReminderFox Info'</li>
-<li><strong>Über ReminderFox ... </strong> - Mit diesem Aufruf werden nicht nur Informationen zu den Autoren usw. gegeben, sondern auch die Möglichkeit angeboten ein E-Mail zu schreiben, um Hilfe oder Vorschläge an die Autoren zu senden. Dabei werden Informationen über die ReminderFox Installation angefügt, was oftmals die Hilfe erleichert!</li>
-</ul>
-
-<h2 id="options" title="Anpassen der ReminderFox Funktionen">Einstellungen (Optionen)</h2>
-<p>Mit einer Reihe von Optionen kann ReminderFox entsprechend den Neigungen des Benutzers eingestellt werden.
-Diese Optionen werden u.a. aufgerufen mit dem Kontextmenü auf dem ReminderFox Schleifen Symbol auf dem Statusbar.
-<br>Im folgenden werden die einzelnen Fenster/Tabulatoren dargestellt/besprochen.</p>
+<div>
+  <!-- ["options", "Menüs, Status/Toolbar, Einstellungen (Optionen)",  "ReminderFox Bedienung und Einstellungen"] -->
 
 <div style="margin-left:20px">
-<h3  id="general">Generelle Einstellungen</h3 >
-<p><strong><img style="width:50%" title="Anzeige" src="pics/options-1-general-de.png" alt="de/rmFx_optDisplay.jpg" /></strong></p>
+  <h3 id="general">1. Generelle Einstellungen</h3>
+  <p><strong><img style="width:50%" title="Anzeige" src="pics/options-1-general-de.png" alt="de/rmFx_optDisplay.jpg" /></strong></p>
+
+  <h4 id="files">1.1 Reminderfox Daten [ICS]</h4>
+
+  <p>Die Termine und Erinnerungen speichert Reminderfox in einer "ICS" Datei. Die individullen Einstellungen, also wie der Benutzer seinen Reminderfox handhabt, werden in einer weiteren Datei angelegt.</p>
+  <p>Der standardmäßige Ablageort der Dateien ist im Benutzerprofil. Die "ICS" Datei kann aber nach Belieben verschoben werden, hierfür ist die Eingabe im Bereich "Reminderfox Daten".
+    <br>Wird "Standard" aktiert, so erfolgt die Speicherung im Benutzerprofil, sonst lässt sich ein beliebiger anderen Speicherplatz wählen.</p>
+
+  <h4>Speicherort für ReminderFox Dateien</h4>
+  <p>Mit der Schaltfläche [Import/Export] öffnet sich ein zusätzliches Fenster. Dort können die "ICS" Termin/Aufgaben Daten sowie in einem extra Teil die Reminderfox Einstellungen importiert und exportiert werden.</p>
+
+  <p><strong><img title="Dateien" style="width:60%" src="pics/options-1-importexport-de.png" alt="de/options-1-importexport-de.png" /></strong></p>
+
+  <ul>
+    <li><strong>Termine und Aufgaben importieren/exportieren</strong> - Dies ist gedacht zur Datensicherung und zum Austausch mit anderen Kalenderprogrammen oder anderen Reminderfox Installationen, siehe auch <a title="Hinweise zum Austauschen  [exchanging]"
+        href="doc-exchanging-de.html"> Austauschen von Terminen und Aufgaben</a>
+      <p><em><strong>Wichtig:</strong> Nach Aufruf [Importieren ..] wird gefragt, ob die neuen Daten hinzugefügt oder alle bestehenden überschrieben werden sollen.</em>
+        Das Exportieren betrifft alle vorhandenen Termine und Erinnerungen.</p>
+    </li>
+  </ul>
+  <ul>
+    <li><strong>Einstellungen importieren/exportieren</strong> - Dies ist zur Datensicherung des Bereiches 'Optionen/Einstellungen' gedacht.
+      Eine andere Anwendung ist der Übertrag auf einen anderen Rechner mit ReminderFox, um dort die gleichen Einstellungen zu erhalten.</li>
+  </ul>
+
+  <h4 id="backup">1.2 Daten sichern/wieder herstellen</h4>
+  <p>
+    Reminderfox speichert automatisch Backup-Versionen Ihrer Erinnerungen.
+    Diese Backups werden neben der Datei gespeichert, in der Ihre Erinnerungsdaten gespeichert sind. Die Sicherungsdateien
+    haben die Erweiterung <code>.bak1 ...bak3</code>.
+    <br>
+    Es ist eine gute Idee, eigene Backups zu erstellen; ein Backup mindestens einmal
+    im Monat durchzuführen, ist eine gute Praxis.</p>
+  <table width="800" border="0" cellspacing="5" cellpadding="2">
+    <tbody>
+      <tr>
+        <td valign="top">
+          <p style="padding-left: 10px;">
+            <img title="Backup Reminders" alt="" src="pics/optionsBackup.png" width="400px" />
+          </p>
+        </td>
+        <td valign="top">
+          Wählen Sie den ersten Link, um Ihr eigenes Backup zu starten. Es öffnet sich ein
+          Verzeichnis/Datei-Dialog, so dass Sie einen anderen Speicherort / Speichergerät
+          (USB-Stick) auswählen können. Der zweite Link ermöglicht es Ihnen,
+          nach einer zuvor gespeicherten Sicherungsdatei zur Wiederherstellung zu suchen.</td>
+      </tr>
+    </tbody>
+  </table>
 
 
-<h4>Speicherort für ReminderFox Dateien</h4>
-<p>Die Termine und Erinnerungen speichert Reminderfox in einer "ICS" Datei. Die individullen Einstellungen, also wie der Benutzer seinen Reminderfox handhabt, werden in einer weiteren Datei angelegt.</p>
-<p>Der standardmäßige Ablageort der Dateien ist im Benutzerprofil. Die "ICS" Datei kann aber nach Belieben verschoben werden, hierfür ist die Eingabe im Bereich "Reminderfox Daten".
-<br>Wird "Standard" aktiert, so erfolgt die Speicherung im Benutzerprofil, sonst lässt sich ein beliebiger anderen Speicherplatz wählen.</p>
+  <h4 id="calendarDefaults" style="padding-left: 20px;">1.3 Kalender Grundeinstellung</h4>
 
+  <h4 style="padding-left: 30px;"><strong>Datum Format</strong></h4>
+  <p>Das Datumsformat läßt sich in Reminderfox vielfältig ändern. Drücken Sie die
+    Menütaste (siehe unten), um einen weiteren Dialog zu öffnen.
+    Verwenden Sie es wie im Tooltip gezeigt.
 
-<p><em>Hinweis: Wird ReminderFox in mehreren   Anwendungen (z.B. Firefox, Thunderbird) installiert, so können  durch die Angabe derselben Datei dieselben Daten in allen Anwendungen   genutzt werden.</em></p>
+    <img title="General" alt="" src="pics/optionsGeneralDateFormat1.png" width="465" height="283" />
+  </p>
 
-<h4 id="files">Reminderfox Dateien Sicherung</h4>
-<p>Mit der Schaltfläche [Import/Export] öffnet sich ein zusätzliches Fenster. Dort können die "ICS" Termin/Aufgaben Daten sowie in einem extra Teil die Reminderfox Einstellungen importiert und exportiert werden.</p>
-
-<p><strong><img title="Dateien" src="pics/options-1-importexport-de.png" alt="de/options-1-importexport-de.png" /></strong></p>
-
-<ul>
-<li><strong>Termine und Aufgaben importieren/exportieren</strong> - Dies ist gedacht zur Datensicherung und zum Austausch mit anderen Kalenderprogrammen oder anderen Reminderfox Installationen, siehe auch <a title="Hinweise zum Austauschen  [exchanging]" href="doc-exchanging-de.html"> Austauschen von Terminen und Aufgaben</a>
-<p><em><strong>Wichtig:</strong> Nach Aufruf   [Importieren ..] wird gefragt, ob die neuen Daten hinzugefügt oder  alle bestehenden überschrieben werden sollen.</em>
-Das Exportieren betrifft alle vorhandenen Termine und Erinnerungen.</p>
-
-</li>
-</ul>
-<ul>
-<li><strong>Einstellungen importieren/exportieren</strong> - Dies ist zur Datensicherung des Bereiches 'Optionen/Einstellungen' gedacht.
-Eine andere Anwendung ist der Übertrag auf einen anderen Rechner mit ReminderFox, um dort die gleichen Einstellungen zu erhalten.</li>
-</ul>
-
-<h4 id="files">Kalender Grundeinstellungen</h4>
-<p>Kalender- und Datumsformate in der Liste, den Dialogen etc werden hier zentral eingestellt.
-<br>Sollen mehrere Monate im rechten Kalender dargestellt werden, so wird die Anzahl unter "Anzahl der Kalendermonate" angegeben, empfohlen sind drei.
-</p>
-
+  <h4 style="padding-left: 30px;"><strong>Zeit Format</strong></h4>
+  <p style="padding-left: 40px;">Einstellung als 24-h oder als AM/PM Notation.</p>
+  &nbsp;
+  <h4 style="padding-left: 30px;"><strong>Erster  Tag der Woche, </strong><strong>Wochen Nummer </strong><em>
+    und</em><strong> Nummer des Kalender Monats</strong></h4>
+  <div style="padding-left: 30px;">
+    <table width="670" border="0" cellspacing="5" cellpadding="2">
+      <tbody>
+        <tr>
+          <td valign="top" width="250"><a href="pics/calendarWidget3Months.png">
+            <img class="alignnone  wp-image-1201" title="3-month Calendar" alt=""
+            src="pics/calendarWidget3Months.png" width="221" height="420" /></a>
+          </td>
+          <td valign="top">Diese Werte beziehen sich auf den Kalenderteil des Hauptmenüs
+            oder wenn der Minikalender mit dem Kalendersymbol in der Hauptmenüleiste
+            aufgerufen wird (siehe rote Markierung).
+            <br><br>
+            <em>Note:  Um das Kalendersymbol zur Hauptmenüleiste hinzuzufügen, siehe
+              <a href="doc-faq-questions-de.html#menu">hier</a></em></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
 </div>
 
-<h3  id="system">System / Zugriff</h3 >
+  <h3 id="system">2. System / Zugriff</h3>
 
-<p><strong><img style="width:50%" title="Tooltip Einstellungen" src="pics/options-2-system-de.png" alt="de/rmFx_optTooltip.jpg" /></strong></p>
-
-
-<h3  id="dialog">Hauptdialog</h3 >
-<p><strong><img style="width:50%" title="Einstellungen für Hostsystem" src="pics/options-3-dialog-de.png" alt="de/options-3-dialog.jpg" /></strong></p>
-
-<ul>
-<li><strong>Anzeigeeinstellungen</strong>
-<ul>
-<li>Heutige Termine in der Statusleiste anzeigen: aktiviert: Termine werden neben dem Schleifen-Symbol angezeigt.</li>
-<li>Bestimmen welche Liste (Termine oder Aufgaben) beim Klick auf das Schleifen-Symbol geöffnet wird.</li>
-</ul>
-</li>
-</ul>
-
-<ul>
-<li><strong> Platzierung der Anzeige</strong>
-Festlegen an welcher Stelle das Schleifen-Symbol angezeigt wird (auf der Statusleiste, der Mailleiste, etc).
-Auch die Position innerhalb der festgelegten Leiste lässt sich ändern:
-<ul>
-<li> <strong>Immer zuletzt</strong> - das Symbol wird an der letzten Position auf der Leiste angezeigt</li>
-<li> <strong>Genaue Position</strong> - eine bestimmte Position, an der das Symbol auf der Leiste angezeigt wird.</li>
-</ul>
-</li>
-</ul>
-
-<h3  id="reminders">Erinnerungen</h3 >
-<p><strong><img style="width:50%" title="Einstellungen für Erinnerungen" src="pics/options-4-reminders-de.png" alt="de/options-3-reminders.jpg" /></strong></p>
+  <p>Reminderfox ist als AddOn integriert in Thunderbird.
+  Dieser Tab konfiguriert den Zugriff von Reminderfox aus Thunderbird.
 
 
-<h3  id="notifications">Benachrichtigungen</h3 >
-<p>Für jeden Termin oder jede Aufgabe kann eine    'Benachrichtigung' festgelegt werden. Diese Benachrichtigung wird   entsprechend der eingestellten Zeit vor dem Termin als  'Benachrichtigungsfenster' angezeigt. (Siehe Eingabe von    Terminen/Aufgaben)
-Diese Benachrichtigung wird wiederholt, bis sie abgeschaltet, der Termin    gelöscht oder als erledigt markiert wird.
-<p><strong><img style="width:50%" title="Benachrichtigungen einstellen" src="pics/options-5-notifications-de.png" alt="de/notifications.jpg" /></strong></p>
-<p>Mit diesem Tab 'Benachrichtigungen' kann das Verhalten der  Benachrichtigungen eingestellt werden.</p>
-<p>
+  <h3 id="accessRmFx" style="padding-left: 20px;">2.1 Zugriff auf Reminderfox von Thunderbird</h3>
+    <p style="padding-left: 30px;">Um den auf Thunderbird installierten Reminderfox mit seinem
+      Hauptdialog zu öffnen gibt es verschiedene Methoden.
+      Die bequemste Methode bietet das <starke>'Foxy' </stark> Icon auf einer der Thunderbird Menüleisten.
+    </p>
 
-  <p><strong>'Tooltip'</strong> ist ein Hinweisbereich, in dem   laufende und kommende Ereignisse angezeigt werden.
-  Die Anzeige der 'Tooltip' erfolgt unterschiedlich:
-  </p><ul>
-  <li>periodisch nach einem einstellbaren Zeitabstand </li>
-  <li>indem der Mauszeiger über das Schleifen-Symbol auf der Statusleiste geführt wird.</li>
-  </ul>
   <p>
-  Mit den Optionen 'Tooltip' wird eingestellt, was wie angezeigt  werden soll:
+  <table width="848" border="0" cellspacing="5" cellpadding="2">
+    <tbody>
+      <tr>
+        <td valign="top" width="400">
+          <a href="pics/optionsSystem.png">
+            <img class="alignnone  wp-image-1201" title="Add/Subscribe Context Menu"
+            alt="" src="pics/optionsSystem.png" width="80%" /></a></td>
+        <td valign="top">
+          Im Einstellungsabschnitt <strong>'Reminderfox auf TB'</strong> sind
+ hat      die Steuerelemente für das <starke>Foxy-Symbol</stark>.
+          Es kann mit dem normalen "Anpassen" auf den verschiedenen Menüleisten
+          platziert / entfernt werden.
+          <br><br>
+          Die Ticbox neben "Show Foxy-Icon" kontrolliert ob das 'Foxy' MenüIcon
+          eingeschaltet ist.
+          <br><br>
+          Das Symbol 'Foxy' kann ein zusätzliches Abzeichen/Badge anzeigen.
+          Das im Konfigurations Pulldown-Menü bietet sich die Möglichkeit, auszuwählen
+          welche Details angezeigt werden: Heute und/oder in Kommende.
+          <br><br>Alternativ kann auch der aktuelle Erinnerungstext bis zu einer ausgewählten
+          Länge konfiguriert werden.
+          <br>Die Auswahl einer Textlänge von 0 würde den Text ausblenden.
+
+          <br> <em> Hinwies:</em>
+
+          <em>Das Deaktivieren der Ticbox wird die Status-/Addonleiste nicht ausblenden,
+            so dass sie für andere Zwecke nicht ausgeblendet wird. </em>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </p>
+
+  <h3 id="webEmail">2.2 Reminders für E-Mail</h3>
+  <p>Beim Arbeiten mit Webseiten oder E-Mails ist es hilfreich,
+    Erinnerungen/Todos zu generieren, damit ein einfacher Rückruf möglich ist.
+  <br>
+  Mit Hilfe von Erinnerungen für E-Mail-Nachrichten ist es möglich, eine Nachricht mit
+  einer Erinnerung aus dem Reminderfox heraus zu öffnen, siehe auch
+  <a href="doc-email-de.html">E-Mail Integration</a>.
+
+  <table width="800" border="0" cellspacing="5" cellpadding="2">
+    <tbody>
+      <tr>
+        <td valign="top" width="400">
+          <a href="pics/addSubscribeContextMenu.png">
+            <img title="Add/Subscribe Context Menu"
+              src="pics/addSubscribeContextMenu.png"
+              alt="" width="269" height="267" /></a></td>
+        <td valign="top">How to work on messages can be found on
+          <a href="doc-addsubscribe-en.html">Add/Subscribe Reminders</a>
+          Auf dem Tab:System (Thunderbird) -- siehe oben -- kann diese
+          Funktion ein- und ausgeschaltet werden. Je nach Einstellung wird der
+          Kontextmenüpunkt [Hinzufügen/Abonnieren mit Reminderfox] in der
+          E-Mail-Nachricht angezeigt.</td>
+      </tr>
+    </tbody>
+  </table>
+  </p>
+
+  <h3>2.3 Agenda/Printing</h3>
+  <p> Für Details zum Drucken und Anzeigen einer Agenda siehe <a href="doc-printing-de.html">hier.</a>
+  Das Drucken ist über das Kontextmenü auf der Hauptliste möglich.
+  <br>
+  Mit der oben gezeigten Ticbox kann der Benutzer das Öffnen einer Agenda auf einer
+  separaten Registerkarte von Firefox oder Thunderbird aktivieren.
+  Bei Bedarf werden die normalen Systemgriffe verwendet, um diese Seite zu drucken.
+
   </p>
 
 
-<ul>
-<li><strong>Benachrichtigungen einblenden</strong> bestimmt, ob  Hinweise erfolgen sollen oder nicht.</li>
-<li><strong>Anzeigen</strong> bestimmt, was angezeigt werden soll:
-<p>&gt; <code>[heutige und kommende]</code>, <code>[nur heutige]</code> oder <code>[nur künftige]</code> Termine
-&gt; in welchem Minutentakt die Benachrichtigungen wiederholt werden sollen</p>
-</li>
-<li><strong>Akustische Hinweise</strong> - Hier kann ein Klang gewählt werden, der zusammen mit der Anzeige abgespielt wird. Es kann der vom Betriebssystem vorgegebene Klang oder eine andere .wav  Datei ausgewählt werden.</li>
-</ul>
-</p>
-
-<ul>
-<li><strong>Termine im Tooltip anzeigen</strong> - ist dies  gewählt, werden heutige und kommende Termine im Tooltip angezeigt.</li>
-<li><strong>Aufgaben im Tooltip anzeigen</strong> - ist dies gewählt, werden Aufgaben, die so markiert sind, im Tooltip angezeigt.</li>
-<li>Um die Anzeige übersichtlich zu halten, wird eine entsprechende Anzahl von Tagen gewählt, für die die  Ereignisse gezeigt werden sollen.</li>
-<li><strong>Darstellung</strong> - Die Tooltip Beschriftung  für heutige und künftige Termine lässt sich hier einstellen. Mit der Taste [Anpassen] wird eine Liste der möglichen Einstellungen angezeigt. Diese sind in das Eingabefeld "Darstellungsformat" wie gewünscht zu übertragen.</li>
-</ul>
-<p>So z.B. ergibt diese Eingabe <strong><code>[shortDay]   [date].[shortMonth]: [reminderDesc] ([time])</code></strong>
-die folgende Anzeige: <strong><code>Di 21.Jun: Treffen mit Schmidt  (14:30)</code></strong>.
-<br>
-Ebenso kann die Anzahl der Tage bis zum Termin angegeben werden:    <strong><code> [shortDay] [date].[shortMonth]:  [reminderDesc] ([time]) -- in [daysUntil] Tagen</code></strong>
-<br>Dies ergibt: <strong><code>Di 23.Jun: Timmy's Geburtstag --     in 4 Tagen</code></strong>
-</p>
-<p><em> Hinweis: Leerzeichen und andere Zeichen    werden wie angegeben übernommen! </em></p>
+  <h3 id="dialog">3. Hauptdialog</h3>
+  <p><strong><img style="width:50%" title="Einstellungen für Hostsystem"
+    src="pics/options-3-dialog-de.png" alt="de/options-3-dialog.jpg" /></strong></p>
 
 
-<h3  id="alarm">Alarme</h3 >
-<p><strong><img style="width:50%" title="Einstellungen für Alarme" src="pics/options-6-alarms-de.png" alt="de/options-6-alarms.jpg" /></strong></p>
+  <h4 id="textSize" style="padding-left: 20px;">3.1 Hauptdialog Einstellungen</h4>
 
-
-<h3  id="lists">Listen</h3 >
-<p>Neben 'Terminen' und 'Aufgaben' bietet Reminderfox die Anlage individueller 'Listen'.
-   Diese Listen könnten beinhalten: Projektereignisse, Filmlisten/Alben (mit Erscheinungsdatum),
-   Einkaufslisten oder was auch immer in einer Liste zusammen gefasst werden kann.
-   <br>Dies ist für Leute gedacht, die gerne mit Listen arbeiten.
-   <bR>Individuelle Listen sind identisch zur Aufgabenliste. Somit gelten alle Optionen und Einstellungen genauso. Mit dem Kontextmenü können Einträge sowohl innerhalb einer Liste als auch in jede andere Liste verschoben werden.
-</p>
-
-<p><strong><img style="width:50%" title="Listen" src="pics/options-7-lists-de.png" alt="de/options-7-lists.jpg" /></strong></p>
-
-
-<br>
-<p>In diesem Tab erfolgt die Verwaltung der individuellen Listen.</p>
-
-  <p>Mit dem Aufruf werden die Namen der bereits vorhandenen Listen 	angezeigt.
-  Über die Schaltflächen ist ein Bearbeiten der Listen möglich:
-  </p>
 
   <ul>
-  <li> Mit [Hinzufügen] wird ein Dialog 	geöffnet (siehe nächster Abschnitt 'Subscription'), mit dem 	eine neue Liste angelegt wird. Der Name für diese Liste lässt sich frei wählen, er dient auch zur Benennung des Tab in der Reminderfox Liste.</li>
-  <li>[Bearbeiten] ermöglicht nur den Name einer bestehenden Liste zu ändern.</li>
-  <li>Listen löschen erfolgt nach dem Aktivieren der Zeile mit dem Listennamen und der Taste [Entfernen].
-  <br><em>Hinweis: Damit werden auch alle Einträge dieser Liste gelöscht!</em>
-  </li>
-  <li>Die Listenreihenfolge kann geändert werden durch die Tasten [Nach oben] und [Nach unten].</li>
-</ul>
+    <li><i>Anzeigeeinstellungen</i><br>
+      <ul>
+        <li>Heutige Termine in der Statusleiste anzeigen: aktiviert: Termine werden neben dem Schleifen-Symbol angezeigt.</li>
+        <li>Bestimmen welche Liste (Termine oder Aufgaben) beim Klick auf das Schleifen-Symbol geöffnet wird.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><i> Platzierung der Anzeige</i><br>
+      Festlegen an welcher Stelle das Schleifen-Symbol angezeigt wird (auf der Statusleiste, der Mailleiste, etc).
+      Auch die Position innerhalb der festgelegten Leiste lässt sich ändern:
+      <ul>
+        <li> <strong>Immer zuletzt</strong> - das Symbol wird an der letzten Position auf der Leiste angezeigt</li>
+        <li> <strong>Genaue Position</strong> - eine bestimmte Position, an der das Symbol auf der Leiste angezeigt wird.</li>
+      </ul>
+    </li>
+  </ul>
 
 
-<h3  id="network">Sync (Netzwerk / Remote Kalender)</h3 >
+  <h4 id="textSize" style="padding-left: 20px;">3.2 Termine mit Wiederholung</h4>
 
-<p><em>Siehe auch: Austauschen von Terminen und    Aufgaben. </em>
-<p><strong><img style="width:50%" title="Netzwerk" src="pics/options-8-sync-de.png" alt="de/options-8-sync-de.jpg" /></strong></p>
-<ul>
-<li><strong>Synchronisations-Adresse</strong> - Das erforderliche Protokoll (http/https/ftp) wird aus dem Menü ausgewählt und  die Adresse im vorgesehenen Feld eingegeben. Wichtig ist, dass die Adresse mit einem Dateinamen endet. Außerdem wird der Benutzername und das Passwort zum Zugriff auf den Server eingeben. Dann  [Importieren] auswählen, um Daten vom Server zu laden oder [Exportieren], um sie auf den Server zu schreiben.</li>
-<li><strong>Automatische Synchronisation</strong> Hiermit wird bestimmt, dass ReminderFox die Synchronisation selbstständig vornimmt.</li>
-</ul>
+  <h4 id="textSize" style="padding-left: 20px;">3.3 Layout Einstellungen</h4>
+  <ul><li><i>Default Text Size</i></li></ul>
+    <p style="padding-left: 40px;">Reminderfox features a variable text size concept with simple key operations. A default text size for the Reminderfox Dialog can be defined with the setting of ''Default Text Size", a typical value is <strong>12</strong>
+      px.
+      Once the Reminderfox Dialog is opened use the following keys to change the text size on "Main List" and the "Calendar" separately</p>
 
-<hr/>
+    <div style="padding-left: 60px;">
+      <table border="0" cellspacing="2" cellpadding="2">
+        <tbody>
+          <tr>
+            <td width="200">
+              <pre>[ Cntrl ] [ + ] [ - ] [ # ]</pre>
+            </td>
+            <td>
+              <pre>Change the size for <strong>Calendar</strong></pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>[ Alt ]   [ + ] [ - ] [ # ]</pre>
+            </td>
+            <td>
+              <pre>Change the size for <strong>List</strong></pre>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <pre>[ # ] = <strong>Reset</strong> to default text size</pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="padding-left: 40px;">Both settings are stored when closing the ReminderFox Dialog
+      and will be reused with next start.</p>
 
-<h3  id="categories">Kategorien</h3 >
-<p>Kategorien sind ein Mittel die Termine und Aufgaben in  gewünschte Sachgruppen zusammenzufassen. So ist es leicht   möglich in den ReminderFox Listen die Termine und Aufgaben nach     diesen Begriffen zu filtern.</p>
-<p>Das Bearbeiten der 'Kategorien' erfolgt im Bereich  Optionen/Einstellungen mit dem Tab 'Kategorien'.
-<p><strong><img title="Kategorien" src="pics/rmFx_optCategories.png" alt="de/rmFx_optCategories.png" /></strong></p>
-<p>Unterschieden werden 'Standard Kategorien' und 'Andere  Kategorien':</p>
-<p>
-<ul>
-<li><strong>Standard-Kategorien</strong> - oder häufig verwendete: sie stehen bei der Bearbeitung von Terminen und Aufgaben für das Eingabefeld Kategorie über eine  Menüschaltfläche zur Verfügung.
-<p>Hier in den Optionen lassen sich die Standard-Kategorien mit [Hinzufügen], [Bearbeiten], [Löschen] bearbeiten oder für die Kategorie-Menüauswahl in der Reihenfolge verschieben.</p>
-</li>
-<li><strong>Andere Kategorien</strong> sind solche, die in den gespeicherten Terminen und Aufgaben vorkommen, aber nicht als 'Standard' definiert sind.
-Mit dem Menüpunkt [Andere Kategorien ...] wird die Liste dieser  vorhandenen Kategorien aufgerufen. Von dort können Einträge  zu den Standard-Kategorien verschoben werden. So läßt sich eine individuelle Liste mit 'Standard-Kategorien' zusammenstellen.</li>
-</ul>
-</p>
-<!-- id="doc-contents" --></div>
+    <ul><li><i>Öffnen der Listen/</i></li></ul>
 
-<hr/>
+    <p style="padding-left: 40px;">
+      Um einen
+      besseren Zugriff auf die Listen für Termine, Aufgaben oder den Benutzerlisten zu erhalten,
+      kann eigestellt werden, dass das Auswahlmenü schon öffnet, wenn der
+      Mauszeiger über die Schaltfläche bewegt wird.
 
-<h3  id="defaults">Terminstandards</h3 >
-<p>
-<p><strong><img title="Terminstandards" src="pics/rmFx_optDefault.pngxxxx" alt="de/rmFx_optDefault.jpgxxxx" /></strong></p>
-<ul>
-<li><strong> Voreinstellungen für neue Termine</strong> - Diese Eingaben bestimmen die Vorgaben für neu anzulegende Termine.</li>
-<li><strong>Voreinstellungen für erledigte Ereignisse</strong> - In den Listendarstellungen werden erledigte Ereignisse (Termine und/oder Aufgaben) angezeigt, aber durchgestrichen. Mit der Option 'Erledigte Ereignisse ausblenden' wird bestimmt, dass diese Ereignisse nicht angezeigt werden. Über das Listen Kontextmenü kann diese generelle Option während der  augenblicklichen Anzeige der Liste aufgehoben werden.</li>
-</ul>
+    </p>
+
+
+
+
+  <h3 id="standards">4. Terminstandards</h3>
+  <p><strong><img style="width:50%" title="Einstellungen für Erinnerungen" src="pics/options-4-reminders-de.png" alt="de/options-3-reminders.jpg" /></strong></p>
+
+  <p>
+    <ul>
+      <li><strong> Voreinstellungen für neue Termine</strong> - Diese Eingaben bestimmen die Vorgaben für neu anzulegende Termine.</li>
+      <li><strong>Voreinstellungen für erledigte Ereignisse</strong> - In den Listendarstellungen werden erledigte Ereignisse (Termine und/oder Aufgaben) angezeigt, aber durchgestrichen. Mit der Option 'Erledigte Ereignisse ausblenden' wird bestimmt,
+        dass diese Ereignisse nicht angezeigt werden. Über das Listen Kontextmenü kann diese generelle Option während der augenblicklichen Anzeige der Liste aufgehoben werden.</li>
+    </ul>
+
+    <h4 id="categories" style="padding-left: 20px;">Kategorien</h4>
+    <p>Kategorien sind ein Mittel die Termine und Aufgaben in gewünschte Sachgruppen zusammenzufassen.
+      So ist es leicht möglich in den ReminderFox Listen die Termine und Aufgaben nach diesen Begriffen zu filtern.</p>
+    <p>Anlegen/Löschen der 'Kategorien' erfolgt in einem Dialogfenster über ein Icon
+      <img title="Kategorien" style="margin:0px" src="pics/category.png" />, das direkt
+      bei der Bearbeitung eines Termines/Aufgabe aufgerufen wird.
+      Auch im Bereich Optionen/Einstellungen auf dem Tab 'Erinnerungen' ist dieses Dialogfenster zugänglich.
+      <p><strong><img title="Kategorien" style="width:60%" src="pics/rmFx_optCategories.png"
+        alt="de/rmFx_optCategories.png" /></strong></p>
+      <p>Unterschieden werden 'Standard Kategorien' und 'Andere Kategorien':</p>
+      <p>
+        <ul>
+          <li><strong>Standard-Kategorien</strong> - oder häufig verwendete: sie stehen bei der
+             Bearbeitung von Terminen und Aufgaben für das Eingabefeld Kategorie über eine
+             Menüschaltfläche zur Verfügung.
+            <p>Hier in den Optionen lassen sich die Standard-Kategorien mit [Hinzufügen],
+              [Bearbeiten], [Löschen] bearbeiten oder für die Kategorie-Menüauswahl
+              in der Reihenfolge verschieben.</p>
+          </li>
+          <li><strong>Andere Kategorien</strong> sind solche, die in den gespeicherten
+            Terminen und Aufgaben vorkommen, aber nicht als 'Standard' definiert sind.
+            Mit dem Menüpunkt [Andere Kategorien ...] wird die Liste dieser
+            vorhandenen Kategorien aufgerufen. Von dort können Einträge zu den
+            Standard-Kategorien verschoben werden. So läßt sich eine individuelle
+            Liste mit 'Standard-Kategorien'
+            zusammenstellen.</li>
+        </ul>
+      </p>
+
+
+  <h3 id="notifications">5. Benachrichtigungen</h3>
+  <p>Für jeden Termin oder jede Aufgabe kann eine 'Benachrichtigung' festgelegt werden.
+    Diese Benachrichtigung wird entsprechend der eingestellten Zeit vor dem Termin
+    als 'Benachrichtigungsfenster' angezeigt. (Siehe Eingabe von Terminen/Aufgaben)
+    <br>Diese Benachrichtigung wird wiederholt, bis sie abgeschaltet, der Termin gelöscht oder als erledigt markiert wird.
+    <p><strong><img style="width:50%" title="Benachrichtigungen einstellen" src="pics/options-5-notifications-de.png"
+      alt="de/notifications.jpg" /></strong></p>
+    <p>Mit diesem Tab 'Benachrichtigungen' kann das Verhalten der Benachrichtigungen eingestellt werden.</p>
+
+    <h4 id="foxyTooltip" style="padding-left: 20px;">5.1 'Foxy' Tooltip</h4>
+
+      <p><strong>'Tooltip'</strong> ist ein Hinweisbereich, in dem laufende und kommende Ereignisse angezeigt werden.
+        Die Anzeige der 'Tooltip' erfolgt, indem der Mauszeiger über das 'Foxy' Symbol auf der Thunderbird
+        Menuleiste geführt wird.</p>
+
+      <p>
+        Mit den Kontrollboxen eingestellt, was angezeigt werden soll:
+      </p>
+      <ul>
+        <li><i>Termine im Tooltip anzeigen</i> - ist dies gewählt, werden heutige und kommende Termine im Tooltip angezeigt.</li>
+        <li><i>Aufgaben im Tooltip anzeigen</i> - ist dies gewählt, werden Aufgaben, die so markiert sind, im Tooltip angezeigt.</li>
+        <li>Um die Anzeige übersichtlich zu halten, wird eine entsprechende Anzahl von Tagen gewählt, für die die Ereignisse gezeigt werden sollen.</li>
+        <li><i>Format </i> - Die Tooltip Beschriftung für heutige und künftige Termine lässt sich hier einstellen. Mit der Taste [Anpassen] wird eine Liste der möglichen Einstellungen angezeigt. Diese sind in das Eingabefeld
+          "Darstellungsformat" wie gewünscht zu übertragen.</li>
+      </ul>
+      <p style="padding-left: 40px;">So z.B. ergibt diese Eingabe <strong><code>[shortDay] [date].[shortMonth]: [reminderDesc] ([time])</code></strong>
+        die folgende Anzeige: <strong><code>Di 21.Jun: Treffen mit Schmidt (14:30)</code></strong>.
+        <br>
+        Ebenso kann die Anzahl der Tage bis zum Termin angegeben werden: <strong><code> [shortDay] [date].[shortMonth]: [reminderDesc] ([time]) -- in [daysUntil] Tagen</code></strong>
+        <br>Dies ergibt: <strong><code>Di 23.Jun: Timmy's Geburtstag -- in 4 Tagen</code></strong>
+      </p>
+      <p style="padding-left: 40px;"><em> Hinweis: Leerzeichen und andere Zeichen werden wie angegeben übernommen! </em></p>
+
+    <h4 id="foxyNotification" style="padding-left: 20px;">5.2 'Foxy' Benachrichtigungen</h4>
+      <ul>
+        <li><i>Benachrichtigungen einblenden</i> -- die Tic-Box bestimmt, ob Hinweise erfolgen sollen oder nicht.</li>
+        <li><i>Anzeigen</i> -- bestimmt, was angezeigt werden soll:
+          <p>&gt; <code>[heutige und kommende]</code>, <code>[nur heutige]</code> oder <code>[nur künftige]</code> Termine
+            &gt; in welchem Minutentakt die Benachrichtigungen wiederholt werden sollen</p>
+        </li>
+
+        <li><i>Positioninierung der Hinweise</i> -- das Anzeigen des Dialogfenster kann je nach Belieben in einer der
+        Ecken des Bildschirmes angeordnetet werden</li>
+        <br><br>
+
+        <li><i>Akustische Hinweise</i> - Auswahl des Klang, der zusammen mit
+          der Anzeige abgespielt wird, z.B. der vom Betriebssystem vorgegebene Klang
+          oder eine andere ausgewählte .wav Datei</li>
+      </ul>
+
+
+    <h3 id="alarms">6. Alarme</h3>
+    <p><strong><img style="width:50%" title="Einstellungen für Alarme"
+      src="pics/options-6-alarms-de.png" alt="de/options-6-alarms.jpg" /></strong></p>
+
+
+    <h3 id="lists">7. Listen</h3>
+    <p>Neben 'Terminen' und 'Aufgaben' bietet Reminderfox die Anlage individueller 'Listen'.
+      Diese Listen könnten beinhalten: Projektereignisse, Filmlisten/Alben (mit Erscheinungsdatum),
+      Einkaufslisten oder was auch immer in einer Liste zusammen gefasst werden kann.
+      <br>Dies ist für Leute gedacht, die gerne mit Listen arbeiten.
+      <bR>Individuelle Listen sind identisch zur Aufgabenliste. Somit gelten alle Optionen und Einstellungen genauso. Mit dem Kontextmenü können Einträge sowohl innerhalb einer Liste als auch in jede andere Liste verschoben werden.
+    </p>
+
+    <p><strong><img style="width:50%" title="Listen" src="pics/options-7-lists-de.png"
+      alt="de/options-7-lists.jpg" /></strong></p>
+
+    <br>
+    <p>In diesem Tab erfolgt die Verwaltung der individuellen Listen.</p>
+
+    <p>Mit dem Aufruf werden die Namen der bereits vorhandenen Listen angezeigt.
+      Über die Schaltflächen ist ein Bearbeiten der Listen möglich:
+    </p>
+
+    <ul>
+      <li> Mit [Hinzufügen] wird ein Dialog geöffnet (siehe nächster Abschnitt 'Subscription'), mit dem eine neue Liste angelegt wird. Der Name für diese Liste lässt sich frei wählen, er dient auch zur Benennung des Tab in der Reminderfox Liste.</li>
+      <li>[Bearbeiten] ermöglicht nur den Name einer bestehenden Liste zu ändern.</li>
+      <li>Listen löschen erfolgt nach dem Aktivieren der Zeile mit dem Listennamen und der Taste [Entfernen].
+        <br><em>Hinweis: Damit werden auch alle Einträge dieser Liste gelöscht!</em>
+      </li>
+      <li>Die Listenreihenfolge kann geändert werden durch die Tasten [Nach oben] und [Nach unten].</li>
+    </ul>
+
+
+    <h3 id="sync">8. Sync (Netzwerk / Remote Kalender)</h3>
+    <p><a href="pics/options-8-sync-de.png"><strong><img style="width:50%" title="Netzwerk" src="pics/options-8-sync-de.png" alt="de/options-8-sync-de.jpg" /></strong></a></p>
+    <p><em>Siehe auch: <a href="doc-ical-en.html">Austauschen von Terminen und Aufgaben.</a> </em></p>
+
+    <div style="padding-left: 60px;">
+    <table width="670" border="0" cellspacing="5" cellpadding="2">
+    <tbody>
+
+      <tr>
+      <td valign="top">
+      <h3>8.1 Externe Kalender (CalDAV)</h3>
+      -- die empfohlene Methode Reminderfox mit anderen Kalender
+      Sytemen Google Calendar oder Diensten wie fruux.com zu synchronisieren.
+
+      <td valign="top" width="350">
+      <p style="padding-left: 20px;">
+        <a href="pics/optionsSync_calendars.png">
+          <img title="Remote Calendars" alt="" style="width:150px"
+          src="pics/optionsSync_calendars.png" /></a></p>
+      </td>
+      </tr>
+    <tr>
+    <td valign="top">
+    <h3><strong>8.2 Remote Server (ftp/WebDAV)</strong></h3>
+    -- klassiche Methode zum Laden von Termindaten aus Netzwerken mittels
+    ftp oder WebDAV Methoden
+
+    <td valign="top" width="350">
+    <p style="padding-left: 20px;">
+      <a href="pics/optionsSync_server.png">
+        <img title="Remote Server" alt="" style="width:150px"
+        src="pics/optionsSync_server.png" /></a></p>
+    </td>
+    </tr>
+
+    </tbody>
+    </table>
+    </div>
+
+
+  </div>

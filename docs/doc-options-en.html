@@ -1,52 +1,72 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<style /* format */ type="text/css">
+  body {
+    /* margin-right: 30%; */
+    font-family: /*Verdana,*/ Arial, sans-serif;
+  }
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none;
+  font-style:normal;  line-height: 1.5em;}
+  img {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  /* format */
+</style>
 
-<h2 class="pagetitle" id="doctitle">Options - Configure your Reminderfox</h2>
-<table class="doc-toc">
-<tbody>
-<tr>
-<td>
-<div id="toctitle">
-<h2>Contents</h2>
-</div>
-<ul id="toc-ul">
-<li>1. <a href="#general">General</a>
-<ul id="toc-ul1">
-<li>1.1 <a href="#data">Reminderfox Data</a></li>
-<li>1.2 <a href="#backup">Backup your reminders</a></li>
-<li>1.3 <a href="#calendarDefaults">Calendar Defaults</a></li>
-<li>1.4 <a href="#layoutDefaults">Layout Defaults</a></li>
-</ul>
-</li>
-<li>2. <a href="#system"> System</a></li>
-<li>3. <a href="#dialog"> Dialog</a></li>
-<li>4. <a href="#addEdit"> Add/Edit</a></li>
-<li>5. <a href="#notifications"> Notifications</a></li>
-<li>6. <a href="#alarms"> Alarms</a></li>
-<li>7. <a href="#lists"> Lists</a></li>
-<li>8. <a href="#sync"> Sync</a></li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+<h3 class="pagetitle" id="doctitle">
+  <a href="doc-1-en.html"><img src="pics/foxy-head.png" align="middle" alt="" /></a>
+  Options - Configure your Reminderfox</h3>
+
 <div style="padding-left: 30px;">
-<h3>Options Tabs</h3>
-The dialog <strong>Configure your Reminderfox</strong> let you control how Reminder works for your needs and flavours.
-To open the dialog Reminderfox provides some different menu items on different places:
-<ul style="padding-left: 30px;">
-<li>on the application's main menu bar use the Foxy context menu</li>
-<li>the Foxy menu on the Reminderfox Main Dialog</li>
-<li type="_moz">with showing the Status-Bar/Addon-Bar on the context menu</li>
-<li type="_moz">on the application's main menu bar with the "Tools" menu, select ‘ReminderFox’--&gt;’Options…’</li>
-</ul>
-All configurations and settings are organized on tabs, the following paragraphs describe each tab.
+
+  The dialog <strong>Configure your Reminderfox</strong> let you control how Reminder works for your needs and flavours.
+  To open the dialog Reminderfox provides some different menu items on different places:
+  <ul style="padding-left: 30px;">
+    <li>on the application's main menu bar use the Foxy context menu</li>
+    <li>the Foxy menu on the Reminderfox Main Dialog</li>
+    <li>on the application's main menu bar with the "Tools" menu, select ‘ReminderFox’--&gt;’Options…’</li>
+  </ul>
+  All configurations and settings are organized on tabs, the following paragraphs describe each tab.
 
 </div>
+
+<table style="padding-left: 30px;">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <h3>Contents</h3>
+        </div>
+        <ol>
+          <li><a href="#general">General</a>
+            <ul>
+              <li>1 <a href="#files">Reminderfox Data</a></li>
+              <li>2 <a href="#backup">Backup your reminders</a></li>
+              <li>3 <a href="#calendarDefaults">Calendar Defaults</a></li>
+              <li>4 <a href="#layoutDefaults">Layout Defaults</a></li>
+            </ul>
+          </li>
+          <li> <a href="#system"> System</a></li>
+          <li> <a href="#dialog"> Dialog</a></li>
+          <li> <a href="#standards"> Add/Edit</a></li>
+
+          <li> <a href="#notifications"> Notifications</a></li>
+          <li> <a href="#alarms"> Alarms</a></li>
+          <li> <a href="#lists"> Lists</a></li>
+          <li> <a href="#sync"> Sync</a></li>
+        </ol>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br><br>
 
 <h3 id="general">1. General</h3>
 <p style="padding-left: 30px;">Basic settings for Reminderfox on this tab: like the storage location of the reminders and also access Import/Export them as well as restoring from the backup Reminderfox writes frequently.</p>
 <p style="padding-left: 60px;"><a href="pics/optionsGeneral.png"><img title="General" alt="" src="pics/optionsGeneral.png" width="398" height="366" /></a></p>
 
-<h3 id="data" style="padding-left: 20px;">1.1 Reminderfox Data</h3>
+<h3 id="files" style="padding-left: 20px;">1.1 Reminderfox Data</h3>
 <p style="padding-left: 40px;">This section allows you to set the location of your file which holds the reminders, as well as importing and exporting.</p>
 <p style="padding-left: 40px;">The reminder data is stored in an ICS data file. By default it's located in the profile directory, the "Use Default" box is enabled. Alternatively the data file can by placed at any other location. The textbox and button [Browse]  <span style="background: #ffff00;">[1]</span> can be use to change the storage location.</p>
 <p style="padding-left: 60px;"><a href="pics/optionsImExport.png"><img title="General" alt="" src="pics/optionsImExport.png" width="459" height="148" /></a></p>
@@ -71,25 +91,29 @@ All configurations and settings are organized on tabs, the following paragraphs 
 <p style="padding-left: 40px;"><code>[Import/Export]</code> <span style="background: #ffff00;">[2]</span> opens a menu to work with reminder data or with the "preferences" of Reminderfox.</p>
 <p style="padding-left: 40px;">The reminder import/export is useful for backing up your reminders as well as sharing them with other profiles, computers, or calendar services. Only iCalendar (ics) files are supported for importing and exporting.</p>
 <p style="padding-left: 70px;">See also <em><a href="addsubscribe.html#importData">Add/Subscribe Reminders</a></em></p>
-&nbsp;
-<div style="padding-left: 30px;">
-<h3 id="backup">1.2 Backup your Reminders</h3>
-Reminderfox automatically stores backup versions of your reminders.
-Those backups are stored alongside the file your reminder data is stored. The backup files are named with extension  <code> .bak1 .. .bak3</code>
 
-It's a good idea to make your own backups; taking a backup a least once a month is a good practice.
-<table width="800" border="0" cellspacing="5" cellpadding="2">
-<tbody>
-<tr>
-<td valign="top">
-<p style="padding-left: 10px;"><a href="pics/optionsBackup.png"><img title="Backup Reminders" alt="" src="pics/optionsBackup.png" width="519" height="146" /></a></p>
-</td>
-<td valign="top">Select the first link to start your own backup. It will open an directory/file dialog so you can select a different location / storage device (USB stick).The second link will let you search for a previous stored backup file for restoring.</td>
-</tr>
-</tbody>
-</table>
-</div>
-&nbsp;
+
+<div style="padding-left: 30px;">
+
+  <h3 id="backup">1.2 Backup your Reminders</h3>
+  Reminderfox automatically stores backup versions of your reminders.
+  Those backups are stored alongside the file your reminder data is stored. The backup files are named with extension  <code> .bak1 .. .bak3</code>
+
+  It's a good idea to make your own backups; taking a backup a least once a month is a good practice.
+  <table width="800" border="0" cellspacing="5" cellpadding="2">
+    <tbody>
+      <tr>
+        <td valign="top">
+          <p style="padding-left: 10px;"><a href="pics/optionsBackup.png"><img title="Backup Reminders" alt="" src="pics/optionsBackup.png" width="519" height="146" /></a></p>
+        </td>
+        <td valign="top">Select the first link to start your own backup. It will open an directory/file dialog so you can select a different location / storage device (USB stick).The second link will let you search for a previous stored backup file
+          for restoring.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+
 <h3 id="calendarDefaults" style="padding-left: 20px;">1.3 Calendar Defaults</h3>
 <h4 style="padding-left: 30px;"><strong>Date Format</strong></h4>
 <p style="padding-left: 40px;">To change the date format Reminderfox a wide range is provided, press the menu button (see below) to open an additional dialog. Use it as shown with the tooltip .</p>
@@ -114,7 +138,8 @@ It's a good idea to make your own backups; taking a backup a least once a month 
 </tbody>
 </table>
 </div>
-&nbsp;
+
+
 <h3 id="layoutDefaults" style="padding-left: 20px;">1.4 Layout Defaults</h3>
 <h4 id="textSize" style="padding-left: 30px;">Default Text Size</h4>
 <p style="padding-left: 40px;">Reminderfox features a variable text size concept with simple key operations. A default text size for the Reminderfox Dialog can be defined with the setting of ''Default Text Size", a typical value is <strong>12</strong> px.
@@ -151,7 +176,6 @@ Once the Reminderfox Dialog is opened use the following keys to change the text 
 <p style="padding-left: 40px;">Both settings are stored when closing the ReminderFox Dialog and will be reused with next start.</p>
 
 <h4 style="padding-left: 30px;">Main List Defaults</h4>
-<p style="padding-left: 40px;">The features for "Use only single button bar" is discussed <a href="documentation-user-guide-main-reminderfox-window.html#mainmenu">here.</a></p>
 <p style="padding-left: 40px;">"Open Reminders/ToDos Menu on Mouse hover" will give a better access to switch between Reminders and Todos or the User Lists, when the mouse pointer is moved over the button the selection menu will popup.</p>
 &nbsp;
 
@@ -161,146 +185,166 @@ Once the Reminderfox Dialog is opened use the following keys to change the text 
 <p style="padding-left: 30px;">Reminderfox is integrated with it's host application (Firefox or Thunderbird). This tab has settings for a fast status overview and easy access of Reminderfox.
 See also additional methods for Printing and work with WEB pages or mail messages.</p>
 
-<h3 id="accessRmFx" style="padding-left: 20px;">2.1 Access Reminderfox on Firefox / Thunderbird</h3>
-<p style="padding-left: 30px;">Reminderfox installed on Firefox / Thunderbird has different methods to open the main dialog (mentioned above).
-The most convenient method is the <strong>Foxy Icon</strong> on one of the Firefox/Thunderbird menu bars. Another method is offered with the <strong>Foxy Bow</strong> typically placed on the applications Status-/Addon bar.</p>
-&nbsp;
-<div style="padding-left: 30px;">
-<table width="800" border="0" cellspacing="5" cellpadding="2">
-<tbody>
-<tr>
-<td valign="top" width="400"><a href="pics/systemMainScreen.png"><img class="alignnone  wp-image-1201" title="Main Dialog with SmartFoxy and bow" alt="" src="pics/systemMainScreen.png" width="500" height="397" /></a></td>
-<td valign="top">With a click on <strong>Foxy Icon</strong> or the <strong>Foxy Bow</strong> the Reminderfox Main Dialog is opened to show by default the Main List with events or todos and the Calendar.
-<br style="text-decoration: underline;" />The <strong>Foxy Icon</strong> can hold a <em>badge</em> with one or two number or none. The number represent the count of reminders:<strong> </strong>
-<strong>-- Today's</strong> first number
-<strong> -- Upcoming</strong> second number
-The <em>badge</em> has a <strong>yellow</strong> <strong>background</strong> but changes to <strong>red</strong> with important reminders.The<strong> Foxy Bow</strong> shows the status and a text string with today's reminders.How to configure it see below.</td>
-</tr>
-</tbody>
-</table>
-The <strong>Foxy Bow</strong> on the status/addon bar will indicate reminders. If there is a reminder for the current day, it will appear on the status bar. The color of the bow icon changes, according to the status of reminders.
-<ul>
-<li><img alt="Red ribbon" src="pics/todayReminder.png" />  If there is a reminder for the current day, the bow is red.</li>
-<li><img alt="Blue ribbon" src="pics/upcomingReminderBow.png" width="36" height="18" />If there are upcoming reminders, the bow is blue.</li>
-<li><img alt="Greyed ribbon" src="pics/noReminderBow.png" width="36" height="18" />If there are no current or upcoming reminders, the bow will be greyed out.</li>
-</ul>
-</div>
-&nbsp;
-<p style="padding-left: 30px;"><em><strong>Tab is labeled with Firefox or Thunderbird</strong></em></p>
 
-<div style="padding-left: 40px;">
+<h3 id="accessRmFx" style="padding-left: 20px;">2.1 Access Reminderfox on Thunderbird</h3>
+  <p style="padding-left: 30px;">Reminderfox installed on Thunderbird has different methods
+    to open the main dialog.
+    The most convenient method is the <strong>Foxy Icon</strong> on one of the
+    Thunderbird menu bars.
+  </p>
+
+<p>
 <table width="848" border="0" cellspacing="5" cellpadding="2">
-<tbody>
-<tr>
-<td valign="top" width="400"><a href="pics/optionsSystem.png"><img class="alignnone  wp-image-1201" title="Add/Subscribe Context Menu" alt="" src="pics/optionsSystem.png" width="555" height="486" /></a></td>
-<td valign="top">
-<h3><strong>Access Reminderfox on .. FX/TB</strong></h3>
-has the controls for the <strong>Foxy Icon</strong> and the <strong>Foxy Bow</strong>
-<strong>Foxy Icon </strong>can be placed / removed with normal "Customize" found on the different application bars.
+  <tbody>
+    <tr>
+      <td valign="top" width="400">
+        <a href="pics/optionsSystem.png">
+          <img class="alignnone  wp-image-1201" title="Add/Subscribe Context Menu" alt="" src="pics/optionsSystem.png" width="80%" /></a></td>
+      <td valign="top">
+        The section <strong>'Reminderfox on TB'</strong>
+        has the controls for the <strong>Foxy Icon</strong>.
+        It can be placed / removed with normal "Customize" found on the different
+        application bars.
+        <br><br>
+        The ticbox beside "Show Foxy-Icon" is used to enabled/disable the
+        appearence.
+        <br><br>
+        The 'Foxy' icon can display an addional badge. The pulldown menu
+        gives the choice which details will be shown, todays and/or upcominf reminders.
+        Alternatively the today's reminder text up to a selected length can de configured.
+        Selecting a text length of 0 would hide the text.
 
-The ticbox beside "Enabling on the main menu" is used to enabled/disable the appearence.
+        <br> <em> Note:</em>
 
-The <strong>Foxy Bow</strong> isn't a normal toolbar button. With the pulldown menu the  placement on the system tabs can be selected. Also the placement on that bar can be set.
-
-Together with the bow a <strong>text</strong> holding the today's reminder can be shown. The length of the text can be limited here. A length of 0 would hide the text.
-
-<em>Note:</em>
-
-<em>Disabling the ticbox will not hide the Status-/Addon bar, so it's not hidden for other usage </em>
-
-&nbsp;</td>
-</tr>
-</tbody>
+        <em>Disabling the ticbox will not hide the Status-/Addon bar, so it's not hidden for other usage </em>
+      </td>
+    </tr>
+  </tbody>
 </table>
-</div>
-&nbsp;
-<div style="padding-left: 40px;">
-<h3>2.2 Agenda/Printing</h3>
-For details about printing and showing an Agenda  see <a href="doc-printing-en.html">here.</a> Printing is available with the context menu on Main List.
+</p>
 
-With the ticbox  shown above the user can enable an Agenda to be opened on a separate tab of Firefox or Thunderbird. If required the normal system handles are used to print that page.
-
-&nbsp;
-<h3 id="webEmail">2.3 Reminders for WEB-Pages and E-Mail</h3>
-Working with web pages or emails (Thunderbird or web mailer like Google Mail) it's helpful to generate reminders/todos so an easy recall is possible.
-
+<h3 id="webEmail">2.2 Reminders for WEB-Pages and E-Mail</h3>
+<p>Working with web pages or emails (Thunderbird or web mailer like Google Mail) it's helpful to
+   generate reminders/todos so an easy recall is possible.
+<br>
 Using reminders for mail messages, it's possible to open a message with a reminder from within Reminderfox, see also <a href="documentation-email-messages.html">EMail Integration</a>
-<table width="800" border="0" cellspacing="5" cellpadding="2">
-<tbody>
-<tr>
-<td valign="top" width="400"><a href="pics/addSubscribeContextMenu.png"><img class="alignnone  wp-image-1201" title="Add/Subscribe Context Menu" alt="" src="pics/addSubscribeContextMenu.png" width="269" height="267" /></a></td>
-<td valign="top">How to work on web pages or messages can be found on <a href="addsubscribe.html">Add/Subscribe Reminders</a>
-On the tab:System (Firefox/Thunderbird) -- see above -- this feature can be enabled/disabled. Based on the setting the context menu item [Add/Subscribe with Reminderfox] will be shown on the web page or the mail message.</td>
-</tr>
-</tbody>
-</table>
-</div>
-&nbsp;
 
-&nbsp;
+<table width="800" border="0" cellspacing="5" cellpadding="2">
+  <tbody>
+    <tr>
+      <td valign="top" width="400">
+        <a href="pics/addSubscribeContextMenu.png">
+        <img title="Add/Subscribe Context Menu"
+          src="pics/addSubscribeContextMenu.png"
+          alt=""   width="269" height="267" /></a></td>
+
+      <td valign="top">How to work on web pages or messages can be found on
+        <a href="doc-addsubscribe-en.html">Add/Subscribe Reminders</a>
+        On the tab:System (Firefox/Thunderbird) -- see above -- this feature
+        can be enabled/disabled. Based on the setting the context menu item
+        [Add/Subscribe with Reminderfox] will be shown on the web page or the mail message.</td>
+    </tr>
+  </tbody>
+</table>
+</p>
+
+<h3>2.3 Agenda/Printing</h3>
+<p> For details about printing and showing an Agenda  see <a href="doc-printing-en.html">here.</a>
+Printing is available with the context menu on Main List.
+<br>
+With the ticbox  shown above the user can enable an Agenda to be opened on a separate tab of Firefox or Thunderbird.
+If required the normal system handles are used to print that page.
+</p>
 
 <hr />
 
 <h3 id="dialog">3. Dialog</h3>
-<p style="padding-left: 60px;"><a href="pics/doc-options-en.png"><img title="Dialog" alt="" src="pics/doc-options-en.png" width="498" height="458" /></a></p>
+<p style="padding-left: 60px;">
+  <a href="pics/options-3-dialog-de.png"><img title="Dialog" alt="" style="width:50%"
+  src="pics/options-3-dialog-de.png" /></a></p>
 
 
 <hr />
 
-<h3 id="addEdit">4. Add/Edit</h3>
-<p style="padding-left: 60px;"><a href="pics/optionsAddEdit.png"><img title="Add/Edit" alt="" src="pics/optionsAddEdit.png" width="498" height="458" /></a></p>
+<h3 id="standards">4. Add/Edit Defaults</h3>
+<p style="padding-left: 60px;">
+  <a href="pics/optionsAddEdit.png"><img title="Add/Edit" alt=""  style="width:50%"
+    src="pics/optionsAddEdit.png" /></a></p>
 
 
 <hr />
 
 <h3 id="notifications">5. Notifications</h3>
-<p style="padding-left: 60px;"><a href="pics/optionsNotifications.png"><img title="Notifications" alt="" src="pics/optionsNotifications.png" width="498" height="458" /></a></p>
-<p style="padding-left: 60px;"><a href="pics/optionsLabel.png"><img title="Notifications" alt="" src="pics/optionsLabel.png" width="394" height="374" /></a></p>
+<p style="padding-left: 60px;">
+  <a href="pics/optionsNotifications.png">
+    <img title="Notifications" alt="" src="pics/optionsNotifications.png"
+     style="width:50%" /></a></p>
+<p style="padding-left: 60px;"><a href="pics/optionsLabel.png">
+  <img title="Notifications" alt="" src="pics/optionsLabel.png"
+   style="width:50%" /></a></p>
 
 
 <hr />
 
 <h3 id="alarms">6. Alarms</h3>
-<p style="padding-left: 60px;"><a href="pics/optionsAlarms.png"><img title="Alarms" alt="" src="pics/optionsAlarms.png" width="498" height="458" /></a></p>
+<p style="padding-left: 60px;">
+  <a href="pics/optionsAlarms.png"><img title="Alarms" alt=""  style="width:50%"
+    src="pics/optionsAlarms.png" " /></a></p>
 
 
 <hr />
 
 <h3 id="lists">7. Lists</h3>
-<p style="padding-left: 60px;"><a href="pics/optionsLists.png"><img title="Lists" alt="" src="pics/optionsLists.png" width="498" height="458" /></a></p>
+<p style="padding-left: 60px;">
+  <a href="pics/optionsLists.png">
+    <img title="Lists" alt="" src="pics/optionsLists.png"  style="width:50%" /></a></p>
 
 
 <hr />
 
 <h3 id="sync">8. Sync</h3>
-<em><strong>Tab formerly called "Network"</strong></em>
-<p style="padding-left: 60px;"><a href="pics/optionsSync_about.png"><img title="Sync About" alt="" src="pics/optionsSync_about.png" width="498" height="458" /></a></p>
+<p style="padding-left: 60px;">
+  <a href="pics/optionsSync_about.png">
+    <img title="Sync About" alt=""  style="width:50%"
+    src="pics/optionsSync_about.png" /></a></p>
 <p style="padding-left: 60px;">As described above Reminderfox offers two different methods to work with external systems:</p>
 
 <div style="padding-left: 60px;">
 <table width="670" border="0" cellspacing="5" cellpadding="2">
 <tbody>
-<tr>
-<td valign="top">
-<h3><strong>8.1 Remote Server</strong></h3>
--- formally labeled with "Network"
 
-Please see <a href="documentation-user-guide-options-and-preferences.html#r7">here for details</a></td>
-<td valign="top" width="350">
-<p style="padding-left: 20px;"><a href="pics/optionsSync_server.png"><img title="Remote Server" alt="" src="pics/optionsSync_serverThumb.png" /></a></p>
-</td>
-</tr>
-<tr>
-<td valign="top">
-<h3>8.2 Remote Calendar</h3>
--- an additional method to support synchronize Reminderfox with other calendars like Google Calendar or services like fruux.com
+  <tr>
+  <td valign="top">
+  <h3>8.1 Sharing with Remote Calendars (CalDAV)</h3>
+  -- an additional method to support synchronize Reminderfox with other calendars like
+  Google Calendar or services like fruux.com
 
-Please see <a href="doc-ical-en.html">here for details</a></td>
-<td valign="top" width="350">
-<p style="padding-left: 20px;"><a href="pics/optionsSync_calendars.png"><img title="Remote Calendars" alt="" src="pics/optionsSync_calendarsThumb.png" /></a></p>
-</td>
-</tr>
+  <td valign="top" width="350">
+  <p style="padding-left: 20px;">
+    <a href="pics/optionsSync_calendars.png">
+      <img title="Remote Calendars" alt="" style="width:150px"
+      src="pics/optionsSync_calendars.png" /></a></p>
+  </td>
+  </tr>
+
+  <tr>
+  <td valign="top">
+  <h3><strong>8.2 Remote Server (ftp/WebDAV)</strong></h3>
+  -- formally labeled with "Network"
+
+  <td valign="top" width="350">
+  <p style="padding-left: 20px;">
+    <a href="pics/optionsSync_server.png">
+      <img title="Remote Server" alt="" style="width:150px"
+      src="pics/optionsSync_server.png" /></a></p>
+  </td>
+  </tr>
+
+
 </tbody>
 </table>
 </div>
+
+<p style="padding-left: 60px;"><em>See also: <a href="doc-ical-en.html">Sharing with Remote Calendars (CalDAV)</a> </em></p>
+<br>
 <p style="padding-left: 60px;"><strong><em>Important: Please be aware only one method a time can be enabled.</em></strong></p>

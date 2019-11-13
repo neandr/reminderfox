@@ -1,0 +1,167 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<style /* DE format */ type="text/css">
+  body {
+    /* margin-right: 30%; */
+    font-family: /*Verdana,*/ Arial, sans-serif;
+  }
+  p {display: block; margin: 0 0 0 20px;
+  padding: 0 0 0 0;  border-left: none;
+  font-style:normal;  line-height: 1.5em;}
+  /* DE format */
+</style>
+
+<h2 class="pagetitle" id="doctitle">
+  <a href="doc-1-en.html"><img src="pics/foxy-head.png" align="middle" alt="" /></a>
+  Sharing Reminders</h2>
+
+  <p>Reminderfox works with the standardized ICS data format for calendars, which is defined in RFC 2445:
+      <blockquote><em>[iCAL] - specifies a core specification of objects, data types,
+        properties and property parameters.</em></blockquote>
+  <p>Reminderfox only supports this format for sharing with other calendar applications.</p>
+
+<table style="padding-left: 30px;">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <h3>Contents</h3>
+        </div>
+        <ul>
+          <li><a href="#exchangeEvents">Importing and Exporting Reminders and ToDo's</a></li>
+          <li><a href="#network">Sharing with other calendars</a>
+            <ul id="toc-ul1">
+    <!--          <li><a href="#shareEvents">ReminderFox in both Firefox and Thunderbird and share the same set of reminders</a></li>  -->
+              <li><a href="#sbSync">Sunbird/Mozilla Calendar/Lightning</a></li>
+              <li><a href="#googleSync">Google Calendar</a></li>
+    <!--          <li><a href="#r3">Microsoft Outlook</a></li>  -->
+            </ul>
+          </li>
+          <li><a href="#ftp">Sharing reminders with other computers via the network</a>
+            <ul>
+              <li><a href="#ftp">Synchronization with FTP or WebDAV (HTTP/HTTPS) server</a></li>
+              <li><a href="#ftpproblem">Problems with automatic Synchronization with FTP or WebDAV (HTTP/HTTPS) server</a></li>
+            </ul>
+          </li>
+          <li><a href="#deviceSync">Sync with PDAs and SmartPhones</a></li>
+    <!--      <li><a href="#r12">Sharing with DropBox</a></li>   -->
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div>
+  <h3 id="exchangeEvents">Importing and Exporting Reminders and ToDo's</h3>
+  <div>
+
+    Exporting and Importing is useful for backing up your reminders as well as sharing them with other profiles, computers, or calendar services. Only iCalendar (ics) files are supported for importing and exporting.
+
+    You can import or export Reminders and ToDo's via the ReminderFox Options dialog. When importing reminders, you can either overwrite your current existing reminders, or add the imported reminders to your existing list of reminders (sort of like
+    merging). This allows for you to import common shared lists of reminders for multiple people who share a pool of reminders such as family members (birthdays, etc).
+    <p style="padding-left: 30px;"><em>See details: <a href="doc-options-en.html">Configure your Reminderfox --&gt; General</a></em></p>
+
+  </div>
+  <h3 id="r2">Sharing with other calendars</h3>
+  <div style="padding-left: 30px;">
+
+    You can share reminders with most any Calendar program that supports the iCalendar/iCal format.
+     Most calendar programs allow you to import files to get your calendar data from one
+     program to another.
+<!--
+    <h3 id="shareEvents">ReminderFox in Firefox / Thunderbird / Seamonkey and share the same set of reminders</h3>
+    You can do this by changing the Options to use the same file from both programs. From one instance of ReminderFox, go to the Options and then go to the File tab. Copy the ReminderFox File Location (you may need to first uncheck Use Default). Now
+    go to your second instance of ReminderFox, go to the Options and then go to the File tab. Uncheck 'Use Default' and then paste in the file location you had previously copied. Now both programs are pointing to the same file, so any changes made
+    in one program will be reflected in the other.
+-->
+    <h3 id="sbSync">Thunderbird/Lightning Calendar</h3>
+    ReminderFox and Lightning/Thunderbird can be configured so both show the actual calendar.
+
+    For this with Lightning a calendar has to be defined with ICS data file storage. That file location will be used with ReminderFox also, see <a href="doc-options-en.html#data">Options --&gt; General </a>
+
+    <h3 id="googleSync">Google Calendar</h3>
+    See the <a href="doc-ical-en.html">Remote Calendars</a> for full details.
+
+<!--
+    <h3 id="r3">Microsoft Outlook</h3>
+    If Outlook exports with the standard ICS format, it should be possible to import the data into ReminderFox.
+    The export format varied with different versions, also not all iCal attributes have been supported by Outlook.
+
+    <em>Notes (please for details):</em>
+    <ul>
+      <li>Outlook-Todos does not support 'Recurring' and  'Categories'</li>
+      <li>more ??</li>
+    </ul>
+  </div>
+-->
+
+  <h3 id="network">Sharing reminders with other computers via the network</h3>
+  <div style="padding-left: 30px;">
+
+    You can share your reminders via the network. You can easily share reminders with other instances of ReminderFox - for example, to use the same list of reminders between your computers at work and at home.
+
+    <em>Note: Starting with version 2.1, a new <strong>Remote Calendars</strong> feature has been added, allowing you to synchronize your reminders with providers like Google Calendar and fruux.  See the <a href="doc-ical-en.html">Remote Calendars</a>
+      for full details.</em>
+
+    <div style="padding-left: 20px;">
+      <h3 id="ftp">Synchronization with FTP or WebDAV (HTTP/HTTPS) server</h3>
+      You can use any FTP or WebDAV (HTTP/HTTPS) server to store your reminders.
+      If you do not have any servers available for sharing, there are a number of
+      freely available services, such as iCal Exchange (icalx.com).
+
+      Select the protocol from the drop down (http/https/fttp) and then enter in
+       your address in the address text field. Make sure that your address
+       ends in a filename. Enter in your username and password needed to access
+       your server (if required). You can then press Import to download
+       your events from the remote server, or Export to upload your
+      reminders to the remote server.
+<!--
+      Here's an example of a network setup using iCal Exchange:
+      <p class="center"><img alt="network setup" src="pics/networksetup.jpg" /></p>
+-->
+      <h3 id="ftpsync">Automatic Synchronization with FTP or WebDAV (HTTP/HTTPS) server</h3>
+      If you enable the Automatic Synchronize Reminders With Network option,
+      your local reminders and ToDo's will automatically be kept in synch
+      with your remote reminders.
+
+      Whenever you make any changes to your reminder list, your reminders
+      will automatically be uploaded to your remote server. And when any
+      changes are made to the remote reminders, they will automatically be
+      downloaded to your local machine. Your
+      remote reminders are checked to see if there are new changes
+      whenever you view your list of reminders as well as when your
+      start ReminderFox and once an hour after that.
+
+      <h3 id="ftpproblem">Problems with network synchronization</h3>
+      Make sure your address is written properly (http:// or ftp:// should
+      <strong>not</strong> be part of the text of your address - they are
+      selected in the drop-down box before the address). Make sure that your
+       address ends with a filename
+      (example: reminders.ics). Also, some servers do not accept
+      files with certain extensions (like .ics), so try changing your
+      filename to end in another extension (example: reminders.txt).
+      Also, make sure that you can access your server via FTP
+      or HTTP outside of ReminderFox to ensure that the server is
+      properly accepting requests in normal circumstances. Also if the address
+      you are synchronizing to is another calendar service, you should make
+      sure that they support downloading and
+      uploading from other calendar programs.
+    </div>
+  </div>
+
+  <h3 id="deviceSync">Sync with PDAs and SmartPhones</h3>
+  <div style="padding-left: 30px;">
+    With the use of a Remote Calendar system it's possible. see  also
+     <a href="doc-ical-en.html">Remote Calendars</a>
+  </div>
+
+<!--
+  <h3 id="r12">Sharing with DropBox</h3>
+  <div style="padding-left: 30px;">ReminderFox stores all of its data in a file called by default "reminderfox.ics". To see the location of this file, go to the Tools menu at the top of Firefox and select ReminderFox --&gt;Options. On the first tab
+    'Genral'  uncheck 'Use Default' and note the path to the "reminderfox.ics" file. Browse to that file on your computer and make a copy of it for a backup. Then, copy it to your DropBox. Next, go back to the 'File' tab, uncheck 'Use Default' and
+    point ReminderFox to the reminderfox.ics in your DropBox folder. Do the same on your other computer(s).</div>
+  <div style="padding-left: 30px;"></div>
+  <div style="padding-left: 50px;"><em><strong>Important Note</strong>: The use of one location and giving access from different computers isn't recommended. Because every accessing computer can read/write at any time there may be an access conflict
+      with loosing data. Please check for other method like</em> <a href="doc-ical-en.html">Remote Calendars</a></div>
+-->
+
+</div>

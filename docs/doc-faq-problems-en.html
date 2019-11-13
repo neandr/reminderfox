@@ -1,5 +1,10 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <style /* format */ type="text/css">
-  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none; 
+  body {
+    /* margin-right: 30%; */
+    font-family: /*Verdana,*/ Arial, sans-serif;
+  }
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none;
   font-style:normal;  line-height: 1.5em;}
   img {
     margin-top: 5px;
@@ -7,58 +12,64 @@
   }
   /* format */</style>
 
-<h1 id="doctitle" class="pagetitle">FAQ - Troubleshooting</h1>
-<table class="doc-toc">
-<tbody>
-<tr>
-<td>
-<div id="toctitle">
-<h2>Contents</h2>
-</div>
-<ul id="toc-ul">
-<li class="toclevel-1"><a href="#r1"><span class="tocnumber">1</span> <span class="toctext">I just installed ReminderFox. I don’t see any ribbon icon!</span></a></li>
-<li class="toclevel-1"><a href="#r2"><span class="tocnumber">2</span> <span class="toctext">I’m having trouble downloading the extension – I’m getting an error saying the xpi is corrupt or can not be downloaded.</span></a></li>
-<li class="toclevel-1"><a href="#r3"><span class="tocnumber">3</span> <span class="toctext">I’m using a non-default theme and some of the text in the drop-down controls are truncated.</span></a></li>
-<li class="toclevel-1"><a href="#r4"><span class="tocnumber">4</span> <span class="toctext">I can’t seem to synchronize to the network.</span></a></li>
-<li class="toclevel-1"><a href="#r5"><span class="tocnumber">5</span> <span class="toctext">I’ve lost my reminders! Can I retrieve a backup?</span></a></li>
-<li class="toclevel-1"><a href="#r6"><span class="tocnumber">6</span> <span class="toctext">If I uninstall/reinstall or upgrade ReminderFox, will I lose my existing reminders?</span></a></li>
-<li class="toclevel-1"><a href="#r7"><span class="tocnumber">7</span> <span class="toctext">Can I validate my calendar file to ensure that it is correct?</span></a></li>
-<li class="toclevel-1"><a href="#r8"><span class="tocnumber">8</span> <span class="toctext">ReminderFox is totally broken, and none of this helps. What now?</span></a></li>
-</ul>
-</td>
-</tr>
-</tbody>
+<h2 id="doctitle" class="pagetitle">
+  <a href="doc-1-en.html"><img src="pics/foxy-head.png" align="middle" alt="" /></a>
+  FAQ - Troubleshooting</h2>
+
+  <table style="padding-left: 30px;">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <h3>Contents</h3>
+        </div>
+        <ol>
+          <li><a href="#r1"> I just installed ReminderFox. I don’t see any ribbon icon!</a></li>
+          <li><a href="#r2"> I’m having trouble downloading the extension – I’m getting an error saying the xpi is corrupt or can not be downloaded.</a></li>
+          <li><a href="#r3"> I’m using a non-default theme and some of the text in the drop-down controls are truncated.</a></li>
+          <li><a href="#r4"> I can’t seem to synchronize to the network.</a></li>
+          <li><a href="#r5"> I’ve lost my reminders! Can I retrieve a backup?</a></li>
+          <li><a href="#r6"> If I uninstall/reinstall or upgrade ReminderFox, will I lose my existing reminders?</a></li>
+          <li><a href="#r7"> Can I validate my calendar file to ensure that it is correct?</a></li>
+          <li><a href="#r8"> ReminderFox is totally broken, and none of this helps. What now?</a></li>
+        </ol>
+      </td>
+    </tr>
+  </tbody>
 </table>
-<h2 id="r1">I just installed ReminderFox. I don't see any ribbon icon!</h2>
+
+<h3 id="r1">I just installed ReminderFox. I don't see any ribbon icon!</h3>
 <p>
 
 Do you have your Firefox/Thunderbird status bar hidden? Reminderfox installs into the status bar by default. If you DO have your status bar showing, go to the ReminderFox options and click on the Display tab. Find the Display Placement option and toggle it to another location and hit apply. This should make the reminderfox ribbon appear.
 
 </div>
-<h2 id="r2">I'm having trouble downloading the extension - I'm getting an error saying the xpi is corrupt or can not be downloaded.</h2>
+<h3 id="r2">I'm having trouble downloading the extension - I'm getting an error saying the xpi is corrupt or can not be downloaded.</h3>
 <p>
 
 If you can't download or install this extension because of an "Invalid package error" or something similar, this is most likely due to the addons.mozilla.org website delay when a new version of the extension has been updated. It usually takes 30 minutes for the extension to be available from all of the mirror sites. Try downloading the extension again in 30 minutes.
 
 </p>
-<h2 id="r3">I'm using a non-default theme and some of the text in the drop-down controls are truncated.</h2>
+<h3 id="r3">I'm using a non-default theme and some of the text in the drop-down controls are truncated.</h3>
 <p>
 
 Some themes seem to have problems with dynamically populated controls and the text appears truncated. The Noia theme has this problem as well, but was reportedly fixed in a later version (Noia 2.0 eXtreme, versions greater than 2.30). Try mentioning the problem to the particular theme author to see if it is something that can be fixed in the theme itself.
 
 </p>
-<h2 id="r4">I can't seem to synchronize to the network.</h2>
+<h3 id="r4">I can't seem to synchronize to the network.</h3>
 <p>
 
-Check the <a href="documentation-user-guide-sharing-reminders.html">Sharing Reminders </a> section.
+  Check the <a href="documentation-user-guide-sharing-reminders.html">Sharing Reminders </a> section.
+<br>  Check the <a href="doc-exchanging-de.html">Sharing Reminders (de)</a> section.
 
 </p>
-<h2 id="r5">I've lost my reminders! Can I retrieve a backup?</h2>
+<h3 id="r5">I've lost my reminders! Can I retrieve a backup?</h3>
 <p>
 
 Reminderfox stores all reminder/todo's data and backups in one directory. With a typical installation that directory is part of the users "profile" directory.
 <p style="padding-left: 30px;"><em>Examples</em>  
   See also <a title="in Options" href="documentation-user-guide-options-and-preferences.html#r6">in Options</a>.
+<br>  See also <a title="in Options" href="doc-options-en.html#r6">in Options</a>.
 <br>Windows XP: <small><code>C:\Documents and Settings\Administrator\Application Data\Mozilla\Firefox\Profiles\{someRandomNumber}.default\reminderfox\</code></small>
 <br>Windows7:   <small><code>c:\Users\{username}\AppData\Roaming\Mozilla\Firefox\Profiles\{someRandomNumber}.default\reminderfox\</code></small>
 <br>Linux: <small><code>/home/{username}/.thunderbird/{someRandomNumber}.DefaultUser/</code></small></p>
@@ -71,15 +82,16 @@ Reminderfox stores all reminder/todo's data and backups in one directory. With a
 
 To use a <code>reminderfox.ics</code> file found in an old profile, first check the file size and the date stamp. If a "good" version is found, copy that <code>reminderfox.ics</code> to your desktop (also for backup purpose) and then import it using the Reminderfox
 <a href="documentation-user-guide-options-and-preferences.html#r6">Options tab:File</a>.
+<br><a href="doc-options-en.html#r6">Options tab:File</a>.
 
 </p>
-<h2 id="r6">If I uninstall/reinstall or upgrade ReminderFox, will I lose my existing reminders?</h2>
+<h3 id="r6">If I uninstall/reinstall or upgrade ReminderFox, will I lose my existing reminders?</h3>
 <p>
 
 No - your reminders file is not removed by default when you uninstall or upgrade. It is kept in your profile directory, so as long as you don't move to a new profile, your reminders will not be lost. Of course, it's always a good idea to keep a backup. You may want to first export your reminders to a backup file for safekeeping.
 
 </p>
-<h2 id="r7">Can I validate my calendar file to ensure that it is correct?</h2>
+<h3 id="r7">Can I validate my calendar file to ensure that it is correct?</h3>
 <p>
 
 Yes, there are websites that provide ICS validation functionality. Here are a few of them:
@@ -89,7 +101,7 @@ Yes, there are websites that provide ICS validation functionality. Here are a fe
 The validator will tell you if there are any errors in your calendar file. This is sometimes common when sharing your reminder file across several different calendar services, each of which can add their own metadata to your calendar file. Sometimes something erroneous can be written to the file and the validator will help spot that.
 
 </p>
-<h2 id="r8">ReminderFox is totally broken, and none of this helps. What now?</h2>
+<h3 id="r8">ReminderFox is totally broken, and none of this helps. What now?</h3>
 <p>
 
 You may have found a bug. To see if any errors are occurring, turn on Error reporting in Firefox:

@@ -1,0 +1,747 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<style /* format */ type="text/css">
+  body {
+    margin-right: 30%;
+    font-family: /*Verdana,*/ Arial, sans-serif;
+  }
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none;
+  font-style:normal;  line-height: 1.5em;}
+  img {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  /* format */
+</style>
+
+<h3 id="layout" class="pagetitle" title="Overview" >
+  <a href="doc-1-en.html"><img src="pics/foxy-head.png" align="middle" alt="" /></a>
+  ReminderFox - Overview</h3>
+
+
+<p>ReminderFox opens with the 'Main Dialog' and presents:
+  <br>-- a List with Reminders/Todo's
+  <br>-- a Calendar with 3 Month view
+  <br>-- the Main Menubar for further operation
+</p>
+<br>
+<p><img style="width: 438px;" src="pics/remindersMainDialog.png" alt="mainDialog" /></p>
+
+
+<table style="padding-left: 30px;">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <h3>Contents</h3>
+        </div>
+
+        <ul>
+          <li><a href="#mainmenu">Menu of the 'Main Dialog'</a>
+          </li>
+          <li><a href="#mainmenu">'Main Dialog' Menu Bar</a>
+            <ul id="toc-ul1">
+              <li><a href="#FoxyMenu">'Foxy’ Menu</a></li>
+              <li><a href="#RemindersTodosList">Reminders/Todos/List</a></li>
+              <li><a href="#FilterButton">Search Text / Filter/Views</a></li>
+              <li><a href="#DateSelector">Date Selector</a></li>
+              <li><a href="#Right_side_buttons">Undo / Save Buttons</a></li>
+            </ul>
+          </li>
+          <li><a href="#Calendar_Widget">Calendar</a>
+            <ul id="toc-ul1">
+              <li><a href="#Week_Header">Week Header Box</a></li>
+              <li><a href="#Month_Box">Month Box</a></li>
+            </ul>
+          </li>
+
+          <br>
+          <li><a href="#mainList">Main Dialog - List handles</a></li>
+          <ul id="toc-ul1">
+            <li><a href="#listcol">List Columns</a></li>
+            <li><a href="#context">List Lines Context menu</a></li>
+          </ul>
+          <br>
+
+          <li><a href="#Keys">Keys</a></li>
+          <li><a href="#textSize">Text and Calendar Size</a></li>
+
+          <br>
+
+          <li> <a href="#FoxyIconOnApp">Reminderfox Access from Thunderbird Menubar</a> </li>
+          <li> <a href="#Feedback">Feedback</a></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!--
+<p>
+<em>Note:
+  <br>-- The <a href="#textSize">text size</a> can be set individually for the "List" and "Calendar"
+  <br>-- <a href="#Keys">key commands</a> are available for various functions</em>
+</p>
+-->
+
+<h3 id="mainmenu">Menu Bar of the  ‘Main Dialog’</h3>
+<p>The main menu bar provides the main access options for all reminders and tasks:</p>
+<p>The controls of the menu are:
+<ul>
+  <li>
+    <a href="#FoxyMenu">'Foxy' Menu</a>
+  </li>
+  <li>
+    Add new reminders and Tasks/Todo's
+  </li>
+  <li>
+    <a href="#RemindersTodosList">Reminders</a>
+    (pop-up menu to call up appointments, tasks or the user lists)
+  </li>
+  <li>
+    <a href="#FilterButton">Text search / Filter/Views</a>
+  </li>
+  <li>
+    <a href="#DateSelector">Date Selector</a><a href="#Date_Selector"> </a>
+  </li>
+  <li>
+    <a href="#Right_side_buttons">Buttons right</a> with [Undo] and [Save].
+  </li>
+</ul>
+
+
+<h4 style="margin-left: 5px;">  ‣ <a name="FoxyMenu"></a>'Foxy' Menu</h4>
+<p>Click the Foxy to open a popup menu with
+  <img style="width: 400px; float:left; margin-right:20px" title="foxy_ContextMenu.png"
+  src="pics/FoxyMenuLayout-de.png" alt="FoxyMenuLayout.png" />
+
+<p>
+  <ul>
+    <li>Find<em> (same as Cntrl f) -- find event by text string</em></li>
+    <li>Quick Alarm ... <em> (opens a sub menu) </em><em> </em></li>
+    <li>Suspend Alerts and Alarms ... <em>(disable Alarms and Popups)</em> </li>
+    <li>Sync Remote Calendar/CalDAV -- <em>open sub menu for CalDAV</em>  </li>
+    <li>Open Options Dialog ... -- <em>customize your Reminderfox</em></li>
+    <li>Sicherung und Wiederherstellung -- <em>(Termine/Aufgaben sichern)</em></li>
+    <li>Reminderfox NEWS -- <em>(Anzeigen aktueller Informationen)</em></li>
+    <li>Help -- <em>(Open Standard ReminderFox Documentation)</em></li>
+    <li>Reminderfox Forum-- <em>(Verbindung zur Unterstützungsanfrage)</em></li>
+    <li>About ReminderFox...</li>
+  </ul>
+</p>
+
+
+<h3 id="RemindersTodosList" style="clear:both"><a name="RemindersTodosList"></a>Reminders/Todos/List</h3>
+<div style="margin-left: 30px;">
+<table style="text-align: left; width: 800px;" border="0" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td style="vertical-align: top; width: 400px;"><img alt="reminderListMenu1.png" src="pics/reminderListMenu1.png" width="303" height="108" /></td>
+<td style="vertical-align: top;">The [Reminders] button opens a menu with all event lists: (Reminders, ToDos, and User Lists).After the selection the button label will change accordingly. An Options setting is available to open the menu by just hovering the cursor over the the button (see Options --&gt; General)</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><img alt="optionListMenu.png" src="pics/optionListMenu.png" width="314" height="69" /></td>
+<td style="vertical-align: top;">The last entry to the menu is used for a direct call to Options / List to manage the User Lists.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+<h3><a name="FilterButton"></a>Search Text / Filter/Views</h3>
+<p>
+  <table style="text-align: left; width: 800px;" border="0" cellspacing="2" cellpadding="2">
+    <tbody>
+      <tr>
+        <td style="vertical-align: top; width: 400px;"><img alt="filterButton.png" src="pics/filterButton.png" width="368" height="94" /></td>
+        <td style="vertical-align: top;">The Spyglass button will show/hide the "Search Text / Filter/Views" box.</td>
+      </tr>
+    </tbody>
+  </table>
+</p>
+
+<p>The "SearchText / Filter/View" box opens with the "Main List/Calendar" layout
+  on the Main Menu Bar beside the spyglass, with the "Calendar only"
+  layout in a separate line below the Main Menu Bar :</p>
+
+<img alt="searchTextFilter.png" src="pics/searchTextFilter.png" width="551" />
+
+<p>"SearchText / Filter/View" has two helpful search / filter functions:
+<br>
+The left <strong><span style="text-decoration: underline;">Text box</span></strong>
+is for search all events which meets an entered text string. The search is
+done on the events attributes:<br> <em>Description, Categories, Notes, Location or
+all of these</em>.
+<br>
+The search will be executed with each character entered.
+<br>
+The Main Dialog header will be changed appropriated (bold/blue), and the spyglass icon
+is changed. Also the spyglass has a tooltiptext to show the selection/entry.
+So the user is remembered about the search entry.
+The string is cleared with the blue button.
+</p>
+<br>
+<p>The right<strong> <span style="text-decoration: underline;">Filter/View pull down menu</span>
+</strong> has two parts:</p>
+<ol>
+<li><em> First 7 menu items</em><br>
+Used to select all events in given date ranges: <em>All events in the selected year,
+selected month, selected week, selected day, next week, next two weeks and
+all upcoming events</em>.</li>
+
+<li><em>The '<strong>Views</strong></em>'<br>
+This part of the menu offers a flexible, configurable filter mechanism with
+multiple attributes giving a greater flexibility.
+'Views' also preselects/filters the events to be displayed in the List and
+Calendar. By default some definitions are provided:</li>
+</ol>
+
+</p>
+<p>
+<table style="text-align: left;" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td style="vertical-align: top;" width="200">Upcoming Birthday</td>
+<td style="vertical-align: top;">Summary:Birthday;DATE:1M;</td>
+<td style="vertical-align: top;">All birthdays of the next month</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Holidays</td>
+<td style="vertical-align: top;">CATEGORIES:Holiday;</td>
+<td style="vertical-align: top;">Only reminders with 'Category' Holiday</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Mailed reminders</td>
+<td style="vertical-align: top;">SUMMARY:Mail,Send;DATE:-6M,4W;</td>
+<td style="vertical-align: top;">Reminders with 'Mail' or 'Send' in the 'Summary/Description' AND with start date from 6 month in the past to 4 weeks in the future -- this is related to 'today'</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">All Reminders (all years)</td>
+<td style="vertical-align: top;">DATE:-99Y,99Y;</td>
+<td style="vertical-align: top;">This is a *<em>not recommended</em>* for normal use! It's only to help showing reminders 99 year in the past and in the future. Can degraded the performance!</td>
+</tr>
+</tbody>
+</table>
+</p>
+
+
+<p>For details how to interpret a 'View' and how to setup those to meet your
+  requirements, see the "<strong>
+  <a title="View Editor Description" href="doc-view-editor-en.html">View Editor</a>".</strong>
+<br>
+With selecting a Filter/View menu item the <strong>Reminderfox Dialog Title</strong> will reflect that selection, eg. "Reminderfox [Selected Week]".
+<br><br>
+<strong>Closing  Filter /Views Menu</strong>
+
+The 'Spyglass' is used to open/close the "Search / Filter/View" handles. Closing will NOT reset to "all" events. The Dialog Titel, the List Header and the modified spyglass will remember about the setting.
+Also closing the Reminderfox Main Dialog will remember the "SearchText / Filter/View" box status (open/close) and will return to that status with reopen the Main Dialog.</td>
+</p>
+
+
+<h3><a name="DateSelector"></a>Date Selector</h3>
+<p>The 'Date Selector' controls the year / month shown in the Calendar and the
+   Reminder/Todo/List.</p>
+<p>
+  <table style="text-align: left; " border="0" cellspacing="2" cellpadding="2">
+    <tbody>
+      <tr>
+        <td style="vertical-align: top;">
+          <img alt="dateSelector1.png" src="pics/dateSelector1.png" width="389" height="285" /></td>
+        <td style="vertical-align: top;">A mouse click on the Date Selector opens a small
+          panel with [Today] and [OK] buttons and a selection box.
+          <br>The right mouse click on the Date Selector sets the year / month to "Today"
+          -- the same as using the key ".", see also Key functions.
+          <br>That selection box allows to set any date.
+          Select day, month or year and increase/decrease with button right to them.
+          Using the very right button will open an additional calendar widget.
+          Either way changes the date.
+          <br>[OK] will take that as the 'selected' date.</td>
+      </tr>
+    </tbody>
+  </table>
+</p>
+
+
+<h3><a name="Right_side_buttons"></a>Undo / Save Buttons</h3>
+<p>Both buttons are disabled as long as no new events has been entered
+  <span style="text-decoration: underline;">and/or</span>
+  no event has been edited and the buttons have not been used.
+<br><br>
+<strong style="font-weight: bold;">[Undo] Button </strong>
+<p>
+  <table style="text-align: left; " border="0" cellspacing="2" cellpadding="2">
+    <tbody>
+      <tr>
+        <td style="vertical-align: top; width: 400px;"><img style="width: 345px; height: 126px;" alt="revertButtonTTT2.png" src="pics/revertButtonTTT2.png" /></td>
+        <td style="vertical-align: top;"><br>The 'Undo' button is a revert function for <span style="text-decoration: underline;"><strong>all</strong></span> new and changed events. Using it - after confirmation - all unsaved changes will be lost --
+          all of them!</td>
+      </tr>
+    </tbody>
+  </table>
+  <strong> [Save] Save Button</strong>
+  <table style="text-align: left; " border="0" cellspacing="2" cellpadding="2">
+    <tbody>
+      <tr>
+        <td style="vertical-align: top; width: 400px;"><strong><img style="width: 387px; height: 122px;" alt="okButtonTTT2.png" src="pics/okButtonTTT2.png" /> </strong></td>
+        <td style="vertical-align: top;">All new and changed events will be stored to the ICS data file. The dialog will NOT be closed.</td>
+      </tr>
+    </tbody>
+  </table>
+</p>
+
+<h3>Closing Reminderfox Dialog</h3>
+
+<p>With closing the dialog all unsaved events will be saved. For closing the
+  Remindefox main dialog the normal window/dialog close button is used
+  (marked above with red circle). With other operating systems or themes
+  that dialog button can be found on the left side (as with Apple OSX).
+  Closing the dialog will remember the dialog size and position,
+  the text size and the Search Text / Filter/Views.
+  Those values will be restored when reopened.
+<br>
+<em>Note: currently with Linux/Ubuntu doesn't works for the dialog position.</em>
+
+</p>
+
+
+<hr><br><br>
+
+<h3><a name="Keys"></a>Keys</h3>
+<p>
+<table border="0" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td width="200">[ Cntrl ] [ t ]</td>
+<td>change main dialog layout: Calendar --&gt; MainList and Calendar --&gt; MailList</td>
+</tr>
+<tr>
+<td>[ Cntrl ] [ l ]</td>
+<td>change list: Reminder --&gt; Todo --&gt; List --&gt;</td>
+</tr>
+<tr>
+<td>[Page up] [Page down]</td>
+<td>change 'selected month'</td>
+</tr>
+<tr>
+<td>[ . ]</td>
+<td>go to Today</td>
+</tr>
+<tr>
+<td>[ Cntrl ] [ c ]</td>
+<td>hide / unhide completed events</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>[ Cntrl ] [ q ] or [ Cntrl ] [ shift ] [ ? ]</td>
+<td>toggle the Spyglass with "Search Text / Filter/View"</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>[ Cntrl ] [ f ]</td>
+<td>open search / filter dialog<small> </small></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>[ Cntrl ] [ r ]</td>
+<td>reload current ICS data file; helpful to sync with remote system (Lightning, Dropbox)</td>
+</tr>
+</tbody>
+</table>
+</p>
+
+<h3><a name="textSize"></a>Text and Calendar Size</h3>
+<p>
+
+The new layout of the Calendar also features a variable size concept. That is achieved with changing the text size.
+
+Additionally also the text size of the List can be changed. For both -- the "Main List" and the "Calendar" -- the modes are:</p>
+<p style="padding-left: 60px;">
+<table border="0" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td width="200">
+<pre>[ Cntrl ] [ + ] [ - ] [ # ]</pre>
+</td>
+<td>
+<pre>Change the size for <strong>Calendar</strong></pre>
+</td>
+</tr>
+<tr>
+<td>
+<pre>[ Alt ]   [ + ] [ - ] [ # ]</pre>
+</td>
+<td>
+<pre>Change the size for <strong>List</strong></pre>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre>[ # ] = <strong>Reset</strong> to default text size</pre>
+</td>
+</tr>
+</tbody>
+</table>
+</p>
+<p>Both settings are stored when closing the Reminderfox Dialog and will be reused with next start.
+
+The default text size can be defined on Reminderfox Options tab "General".
+
+
+<h3><a name="Calendar_Widget"></a>Calendar</h3>
+<p>
+  <table style="text-align: left; " border="0" cellspacing="2" cellpadding="2">
+    <tbody>
+      <tr>
+        <td style="vertical-align: top;">
+          <h3><img src="pics/OverviewCalendar2.png" alt="OverviewCalendar1.png" /></h3>
+        </td>
+        <td style="vertical-align: top;">
+          <br><br>The calendar is part of the main dialog, but can also be called up individually
+          <a href="#FoxyIconOnApp"> (see buttons on the menu bar box)</a>.
+
+          <br><br>
+          The "Calendar" has a Year Box, a
+          <a href="#Week_Header">Week Header Box</a> und der
+          <a href="#Month_Box">Month Box</a>.
+          <br><br>
+          If the main dialog box is scaled too small, not all month boxes fit into the
+          dialog box and additional navigation handles appear at the top and bottom.
+          <br>
+          This navigation does not affect the weekly heading, so it always remains
+          on the screen.</td>
+      </tr>
+    </tbody>
+  </table>
+</p>
+
+<h4 style="margin-left: 5px;">  ‣ <a name="Week_Header"></a>Week Header Box</h4>
+<div style="margin-left: 30px;">Week days labeling (eg. SUN MON .. SAT) is en-/disabled with Reminderfox Options tab: "General".</div>
+<div style="margin-left: 30px;"></div>
+<div style="margin-left: 30px;">Select "Base / US" scheme or "ISO8601 / European" format.</div>
+<div style="margin-left: 30px;"></div>
+<div style="margin-left: 30px;">The first day of a week can be selected also with mouse click on the day header label (MON .. SUN)</div>
+&nbsp;
+<h4 style="margin-left: 5px;">  ‣ <a name="Month_Box"></a>Month Box</h4>
+<div style="margin-left: 30px;">The Calendar displays a number of months<big><span style="font-family: monospace; font-size: 70%;">.</span></big></div>
+<div style="margin-left: 30px;"></div>
+<div style="margin-left: 30px;">Each month is displayed with <a href="#Month_Header">Month Header</a>, a grid with the weeks of the month.</div>
+<div style="margin-left: 30px;"></div>
+<div style="margin-left: 30px;">If the week numbering is enabled (see Reminderfox Options tab: "General") the first box column shows the week number.</div>
+
+
+<h4 style="margin-left: 5px;">  ‣ <a name="Month_Header"></a>Month Header</h4>
+  <p>
+    Mouse click on the first and last month header box changes the months to be displayed.
+    These method allows to scroll the months in both directions, also changing the year boundary.
+  </p>
+
+  <p style="float:left">
+    <img style="width: 337px; height: 107px; float:left" src="pics/monthFirst1.png" alt="monthFirst1.png" />
+    Click on the arrow on the first month header will show the previous month.
+  </p>
+  <br> <br>
+  <p>
+    <img style="width: 311px; height: 135px; float:left" src="pics/monthNext1.png" alt="monthNext1.png" />
+    Click on the arrow on the last month header will show the next month.
+    <br><br>
+    <em>Note: <br>
+      In this picture below the week #26 row (June 25 -- July 1) an arrowscrollbox is shown.
+      That's because all of the content for the months doesn't fit to the dialog. Moving
+      the cursor over the arrowscrollbox will scroll the content.</em>
+  </p>
+
+  <br>
+
+
+<h4 style="margin-left: 5px;">  ‣ <a name="Day_Box"></a>Day Box in Month Grid</h4>
+<div style="margin-left: 30px;">
+
+Days of the month are grouped by weeks; if enabled the week number is shown in the first column. Days not belonging to the month in the box will be shown with light gray numbers and are not selectable.Days of the month will be shown with black numbers as long as there are not special events/attributes:
+<ul>
+<li>bold text: actual day (today)</li>
+<li>red text: day has important event</li>
+<li>light gray text: belongs to previous/next month</li>
+<li>day with event(s) has yellow background</li>
+<li>day with completed event has gray background</li>
+</ul>
+</div>
+<div style="margin-left: 30px;">
+
+Days without events:
+<ul>
+<li>No day panel is shown.</li>
+<li>Click on the day will select that day as the "Selected Day".</li>
+<li>Right mouse click will open the "Add Event" dialog.</li>
+</ul>
+Day with events:
+<ul>
+<li>Mouse hovering over day opens pops up a <a href="#Day_Content_Box">Day Content Box</a>.</li>
+</ul>
+The "Selected Day" with events will be displayed differently in 'Calendar only' mode or 'MainList / Calendar':
+<div style="margin-left: 40px;"><span style="text-decoration: underline;">'Calendar' only </span>This mode is shown at the beginning of this document. Other than with MainList/Calendar there are benefits:</div>
+<ul style="margin-left: 40px;">
+<li>column of the 'Selected day' is expanded</li>
+<li>selected day box shows the <a href="#Day_Content_Box">Day Content Box</a></li>
+<li>the events have a context menu to allow different actions</li>
+</ul>
+<div style="margin-left: 40px;"><span style="text-decoration: underline;">'MainList / Calendar'</span></div>
+<ul style="margin-left: 40px;">
+<li>selected day has black boarders</li>
+<li>hovering the mouse cursor over the day boxes <span style="text-decoration: underline;">with</span> events will show the <a href="#Day_Content_Box">Day Content Box</a> for that day</li>
+</ul>
+</div>
+
+<h4 style="margin-left: 5px;">  ‣ <a name="Day_Content_Box"></a>Day Content Box</h4>
+<div style="margin-left: 40px;">
+
+The 'Day Content Box' will be shown with
+<ul>
+<li>hovering the cursor over a day of the month grid <span style="text-decoration: underline;">with</span> events on that day or</li>
+<li>in 'Calendar only' mode as content for the 'Selected Day'.</li>
+</ul>
+That box have two parts:
+<ul>
+<li>Day Header shows the week day and the day date - formatted as set with Reminderfox Options --&gt; List Display.Click on the day header will open a "Add Event" dialog to add a new event.</li>
+</ul>
+<ul>
+<li><a href="#Day_Event">Day Event Box</a> which holds all items of an event of the day. If the day has multiple events, there are multiple day event boxes.</li>
+</ul>
+</div>
+
+<h4 style="margin-left: 5px;">  ‣ <a name="Day_Event"></a>Day Event Box</h4>
+<div style="margin-left: 30px;">
+<table style="text-align: left; " border="0" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td style="vertical-align: top; width: 280px;"><img style="width: 262px; height: 188px;" alt="dayEventSelection.png" src="pics/dayEventSelection.png" /></td>
+<td style="vertical-align: top;">This day content box has multiple events, the cursor was hovered over the second. The color changed to show it's selected.Here the cursor was moved over the summary. Another mouse click would open that event for editing.</td>
+</tr>
+</tbody>
+</table>
+Details of the event are shown on separate lines:
+
+</div>
+<ul style="margin-left: 40px;">
+<li>line 1 -- Day and Time <em>shown only if</em>
+<ul>
+<li>the event has start/end time -- so it's not a whole day event</li>
+<li>multi day event -- in that case start and end days are displayed</li>
+</ul>
+</li>
+<li>line 2 -- Icon / Summary line <em> always shown</em>
+<ul>
+<li>leading icons for special attributes (see also <a href="#Event_Icons">Event Icons</a>)</li>
+<li>event summary
+<ul>
+<li>Text attributes are: -- red: important -- strike thru: completed</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>line 3 -- Date completed <em> line shown only if valid </em><em> </em></li>
+<li>line 4 and following <em> line(s) shown only if valid</em>
+<ul>
+<li>location -- mouse click on the link goes to Goggle Maps</li>
+<li>URL -- mouse click on the link goes to web page</li>
+</ul>
+</li>
+</ul>
+<div style="margin-left: 30px;">On the Event Box a context menu offers: Add, Edit, Copy, Delete, Complete, Send/Export</div>
+
+
+<h4 style="margin-left: 5px;">  ‣ <a name="Event_Icons"></a>Event Icons</h4>
+<div style="margin-left: 30px;">
+
+Events with certain attributes are displayed with icons in front of the event summary:
+<div style="margin-left: 40px;">
+
+<img style="width: 234px; height: 110px;" alt="hoverIconOnEvent.png" src="pics/hoverIconOnEvent.png" /> Hover over or click the mouse on the icon to get specific actions:
+<table style="text-align: left; width: 534px; height: 207px;" border="0" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td style="text-align: center;"><img style="width: 10px; height: 12px;" alt="notes.png" src="pics/notes.png" /></td>
+<td style="vertical-align: top;">Notes</td>
+<td style="vertical-align: top;">show notes text</td>
+</tr>
+<tr>
+<td style="text-align: center;"><img style="width: 20px; height: 19px;" alt="category.png" src="pics/category.png" /></td>
+<td style="vertical-align: top;">Categories</td>
+<td style="vertical-align: top;">show event categories</td>
+</tr>
+<tr>
+<td style="text-align: center;"><img style="width: 16px; height: 10px;" alt="mail.png" src="pics/mail.png" /></td>
+<td style="vertical-align: top;">Mail</td>
+<td style="vertical-align: top;">open mail message</td>
+</tr>
+<tr>
+<td style="text-align: center;"><img style="width: 12px; height: 15px;" alt="alarmbell.png" src="pics/alarmbell.png" /></td>
+<td style="vertical-align: top;">Alarm with Snooze</td>
+<td style="vertical-align: top;">show alaram setting</td>
+</tr>
+<tr>
+<td style="text-align: center;"><img style="width: 32px; height: 16px;" alt="bow.png" src="pics/bow.png" /></td>
+<td style="vertical-align: top;">Remind until completed</td>
+<td style="vertical-align: top;">show status of event</td>
+</tr>
+<tr>
+<td style="text-align: center;"><img style="width: 16px; height: 16px;" alt="repeat.png" src="pics/repeat.png" /></td>
+<td style="vertical-align: top;">Repeating event</td>
+<td style="vertical-align: top;">show repeating details</td>
+</tr>
+<tr>
+<td style="text-align: center;"><img style="width: 14px; height: 14px;" alt="tooltip.png" src="pics/tooltip.png" /></td>
+<td style="vertical-align: top;">Show in tooltip text</td>
+<td style="vertical-align: top;"><em>for Todos/User Lists</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<hr><br><br>
+
+<h3 id="mainList">Main Dialog List Handles</h3>
+
+<h4 id="listcol" style="padding-left: 15px;"> ‣ Main Dialog - List Columns</h4>
+  <p>Reminders or Todo's display on the Main List are shown with it's defined attributes, all organized in columns. Most columns are hidden by default. You can view and add additional columns by clicking the column chooser
+    in the top-right of your column header.</p>
+
+  <p style="float:left">
+    <img title="Use the column chooser to show all available columns" alt="en/showColumns.png"
+    src="pics/showColumns.png" width="237" height="266" style="margin-right:20px" />
+  </p>
+
+  <ul>
+    <li><strong>Time</strong> - shows you what time an event occurs, or <code>all day</code> if it's an all day event</li>
+    <li><strong>Date Completed</strong> - shows the date that a reminder was completed on</li>
+    <li><strong>Repeat</strong> - shows a brief text explaining what kind of repeat option is set for the reminder (weekly, monthly, yearly, etc)</li>
+    <li><strong>Complete</strong> - shows a checkbox icon if a reminder has been completed. You can directly interact with this column to toggle the completed status of a reminder.</li>
+    <li><strong>Notes</strong> - shows a note icon if the reminder has an associated note containing more information</li>
+    <li><strong>Remind Daily Until Completed</strong> - shows a ribbon icon if the reminder has been set to <code>Remind Daily Until Completed</code>. The ribbon will be blue if this option has been set but the reminder date is still in the
+      future. The ribbon will be red if the reminder date has passed and
+      the reminder is now overdue.</li>
+    <li><strong>Alarm</strong> - shows an alarm icon if the reminder has an alarm set. Hovering over the alarm icon will show you the alarm details.</li>
+    <li><strong>Mail</strong> - shows a mail icon if this reminder is associated with an email (Thunderbird only).</li>
+    <li><strong>Remote Calendar</strong> - if use a reminder which is connected to a remote calendar will have an icon and a id-letter</li>
+  </ul>
+
+  <p>You can show and hide any columns that you want. You can also move the columns to any position you like by dragging the column header to where you want. Several columns allow you to manipulate the reminder by
+    clicking in the column. Clicking the <code>Complete</code> columns toggles a reminder's Complete status; clicking in the <code>Remind Daily Until Complete</code> column toggles that option on or off, and clicking on the mail icon will open
+    up the email associated with that reminder in Thunderbird.
+  </p>
+
+  <h4 id="context" style="padding-left: 15px;"> ‣ Main Dialog - List Context Menu</h4>
+  <p>A right-mouse-click on a reminder on the Main List brings up a context menu to select a number of options:
+  </p>
+
+    <p style="float:left">
+    <img title="Edit Context Menu" alt="en/editcontext.png" src="pics/editcontext.png"
+    width="283" height="320" style="margin-right:20px"/>
+  </p>
+
+  <p>
+    <ul>
+      <li><strong>Edit Reminder</strong> - Allows you to edit all of the properties of the reminder.</li>
+      <li><strong>Delete Reminder</strong> - Deletes the reminder from your list. If it is a repeating reminder, you will be prompted whether you want to delete all instances or just the current selected (and previous) instance.</li>
+      <li><strong>Move to List</strong> - Moves the selected reminder to any other list, such as the ToDo list or any custom list.</li>
+      <li><strong>Important</strong> Toggles the reminder's important status. This is for those extra-special events that you can't miss, like your wife's birthday. These reminders will show up highlighted in red in the Reminders list, as well
+        as in the tooltip and status bar.</li>
+      <li><strong>Complete</strong> - Reminders can be marked as Completed. This is useful for reminders that you finish with and no longer wish to be reminded about in the tooltip or in the status bar. example: if you have a reminder to "Pay
+        phone bill" and you pay it early, then you can mark it as Complete and it will not show up in the upcoming reminders. The completed status resets after the date has passed so the reminder will show up again the following year.</li>
+      <li><strong>Remind Daily Until Completed</strong> - This option causes the reminder to continue to remind you until it has been completed. This means that once a reminder occurs, it will continue to show up each following day until such
+        time as you mark the reminder as 'Completed' (via the context menu). This is useful for things where you want to keep reminding yourself until you actually do it, like "remember to call Mom". Once a reminder has been completed, you can
+        mark it as Complete from the context menu (or untoggle the Remind Daily Until Completed).</li>
+      <li><strong>Find</strong> - allows you to search for a reminder containing specific text</li>
+      <li><strong>Hide All Repeat Reminders</strong> - Hides all repeating instances of repeating reminders, and only shows one instance (the next upcoming instance). This option overrides your global preferences and only takes affect while
+        viewing the current window.</li>
+      <li><strong>Show All Reminders</strong> - This will show all reminders in your list. This option
+        overrides your global preferences and only takes affect while viewing the current window.</li>
+      <li><strong>Hide Completed Items</strong> - This hides all reminders that have been marked complete. This option overrides your global preferences and only takes affect while viewing the current window.</li>
+      <li><strong>View as HTML</strong> - this displays your current list of reminders in a browser window. This can be used to print your reminders.</li>
+    </ul>
+
+  </p>
+
+<hr><br><br>
+
+<h3><a name="FoxyIconOnApp"></a>Reminderfox Access from Thunderbird Menubar</h3>
+  <p>
+    For easy access to Reminderfox from within Thunderbird the Reminderfox installation
+    adds some buttons at different places.
+  </p>
+
+<h4 style="margin-left: 5px;"> ‣ Buttons on Thunderbird Menu Bars </h4>
+  <p>
+    <a href="pics/appRmFxButtons.png">
+      <img style="float: left; width: 50%; margin-right: 10px;"
+      alt="appRmFxButtons.png" src="pics/appRmFxButtons.png" /></a>
+  </p>
+
+  <p>
+    The Thunderbird menu bar has added three different icon to work
+    with Reminderfox. Here they are placed left to the Thunderbird Hamburger menu.
+    <br><em>Note: See how to
+      <a href="doc-faq-questions-en.html#menu">add menu icons </a>to the menu bar</em>
+  </p>
+
+  <p style="clear:both">
+      The three Reminderfox buttons are:
+    <ul>
+      <li><strong>Foxy Icon</strong>:
+        <p>
+          The 'Foxy' Icon is the most important and frequently used button
+          to work with Reminderfox. For that it's automatically placed on the
+          Thunderbird main menu bar a the very first startup of Reminderfox.
+          Also -- if the user don't need it -- it can be removed.
+        </p>
+        <ul>
+          <li>Dialog: Click the icon will open the Reminderfox Main Dialog </li>
+
+          <li>Badge: The Foxy Icon can hold a badge with one or two number or none.
+            The numbers represent the count of reminders:
+            first:Today's, second:Upcoming
+            <br> The badge has a yellow background but changes to red with important reminders.
+          </li>
+
+          <li>Tooltip: Hovering the cursor over the 'Foxy' icon will open the tooltips with
+            the Today's, Upcoming Reminders and ToDo's</li>
+
+            <em>See also
+              <a title="See on &quot;Configure your Reminderfox&quot; for setting details"
+              href="doc-options-en.html#accessRmFx"> Options to configure 'Foxy' Icon</a></em>
+        </ul>
+        <br>
+      <li><strong>Calendar Icon</strong>: can be used to open a 3-month calendar which shows
+        the relevant reminders. This is a method to works with reminders without
+        opening the Reminderfox Dialog. Any addition or change will be added to
+        the ICS data model as well as to the Reminderfox Dialog if open.
+        This mode is limited to Reminders.</li>
+        <br>
+      <li><strong>Bow</strong>: Open the 'Add Reminder' dialog directly to add a new reminder/event
+        to the ICS data model.</li>
+    </ul>
+  </p>
+
+
+<br><br><hr>
+
+<h3 style="text-decoration: underline;"><a name="Feedback"></a>Feedback</h3>
+<div style="margin-left: 40px;">
+<table style="text-align: left; width: 800px;" border="0" cellspacing="2" cellpadding="2">
+<tbody>
+<tr>
+<td style="vertical-align: top;"><img alt="feedback.png" src="pics/feedback.png" width="296" height="273" /></td>
+<td style="vertical-align: top;">Please use the "About Reminderfox" dialog and one of the mailto links</td>
+</tr>
+</tbody>
+</table>
+</div>

@@ -1,5 +1,10 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <style /* format */ type="text/css">
-  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none; 
+  body {
+    /* margin-right: 30%; */
+    font-family: /*Verdana,*/ Arial, sans-serif;
+  }
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none;
   font-style:normal;  line-height: 1.5em;}
   img {
     margin-top: 5px;
@@ -7,42 +12,46 @@
   }
   /* format */</style>
 
-<h1 id="doctitle" class="pagetitle" title="Mozilla E-Mail und Reminderfox zusammen nutzen">Erinnerungen für E-Mails</h1>
+<h3 id="doctitle" class="pagetitle" title="Mozilla E-Mail und Reminderfox zusammen nutzen">
+  <a href="doc-1-de.html"><img src="pics/foxy-head.png" align="middle" alt="" /></a>
+  Erinnerungen/Termine für E-Mails</h3>
 
-<table class="doc-toc">
-<tbody>
-<tr>
-<td>
-<div id="toctitle">
-<h2>Inhalt</h2>
-</div>
-<ul id="toc-ul">
-<li class="toclevel-1"><a href="#mailevents"><span class="tocnumber">1</span> <span class="toctext">Erinnerungen für Nachrichten</span></a></li>
-<li class="toclevel-1"><a href="#mailOpen"><span class="tocnumber">2</span> <span class="toctext">Öffnen eines E-Mails für eine Reminderfox Erinnerung</span></a></li>
-<li class="toclevel-1"><a href="#eventShow"><span class="tocnumber">3</span> <span class="toctext">Anzeige einer Erinnerung für ein E-Mail</span></a></li>
-<li class="toclevel-1"><a href="#mailFollow"><span class="tocnumber">4</span> <span class="toctext">E-Mail Vorgangsverfolgung</span></a></li>
-<li class="toclevel-1"><a href="#mailsend"><span class="tocnumber">5</span> <span class="toctext">Mail senden und Termin anlegen</span></a></li>
-<li class="toclevel-1"><a href="#sendreply"><span class="tocnumber">6</span> <span class="toctext">Antwort auf Mails, die mit 'Senden++' verschickt wurden</span></a></li>
-<li class="toclevel-1"><a href="#filterandfolder"><span class="tocnumber">7</span> <span class="toctext">Filter und Suchordner</span></a></li>
-<li class="toclevel-1"><a href="#filter"><span class="tocnumber">8</span> <span class="toctext">Filter</span></a></li>
-<li class="toclevel-1"><a href="#searchfolder"><span class="tocnumber">9</span> <span class="toctext">Suchordner</span></a></li>
-</ul>
-</td>
-</tr>
-</tbody>
+  <p>Für die Mailanwendungen (Thunderbird, SeaMonkey) bietet Reminderfox verschiedene Möglichkeiten
+    die Erinnerungsfunktionen zu nutzen:
+  <ul>
+  <li>um an eine beliebige Nachricht in den <a href="#mailevents">Mail-Ordnern </a>zu erinnern</li>
+  <li>für eine <a title="Erinnerungen für E-Mail [mail]" href="#mailFollow"> Mail-Vorgangsverfolgung</a></li>
+  <li>Erinnerungen für <a title="Erinnerungen für Kontakte [mail]" href="doc-contacts-de.html#ABentry">
+    Einträge im Adressbuch</a> zu erstellen</li>
+  </ul>
+  </p>
+
+<table style="padding-left: 30px;">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <h3>Inhalt</h3>
+        </div>
+        <ul>
+          <li><a href="#mailevents">Erinnerungen für Nachrichten</a></li>
+          <li><a href="#mailOpen">Öffnen eines E-Mails für eine Reminderfox Erinnerung</a></li>
+          <li><a href="#eventShow">Anzeige einer Erinnerung für ein E-Mail</a></li>
+          <li><a href="#mailFollow">E-Mail Vorgangsverfolgung</a></li>
+          <li><a href="#mailsend">Mail senden und Termin anlegen</a></li>
+          <li><a href="#sendreply">Antwort auf Mails, die mit 'Senden++' verschickt wurden</a></li>
+          <li><a href="#filterandfolder">Filter und Suchordner</a></li>
+          <li><a href="#filter">Filter</a></li>
+          <li><a href="#searchfolder">Suchordner</a></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
 </table>
 
-<div id="doc-contents"> <!-- ["mail", "Mozilla E-Mail und Reminderfox zusammen nutzen", "Erinnerungen für E-Mails"]-->
+<div> <!-- ["mail", "Mozilla E-Mail und Reminderfox zusammen nutzen", "Erinnerungen für E-Mails"]-->
 
-
-<p>Für die Mozilla basierende Mailanwendungen (Thunderbird, SeaMonkey, Postbox) bietet Reminderfox verschiedene Möglichkeiten die Erinnerungsfunktionen zu nutzen:
-<ul>
-<li>um an eine beliebige Nachricht in den <a href="#mailevents">Mail-Ordnern </a>zu erinnern</li>
-<li>für eine <a title="Erinnerungen für E-Mail [mail]" href="#mailFollow"> Mail-Vorgangsverfolgung</a></li>
-<li>Erinnerungen für <a title="Erinnerungen für Kontakte [mail]" href="doc-extras-de.html#ABentry"> Einträge im Adressbuch</a> zu erstellen</li>
-</ul>
-</p>
-<h2 id="mailevents">Erinnerungen für Nachrichten</h2>
+<h3  id="mailevents">Erinnerungen für Nachrichten</h3 >
 <p>Für jedes Mail in den Mail-Ordnern bietet Reminderfox die Möglichkeit, eine Erinnerung anzulegen. So kann z.B. für ein wichtiges E-Mail ein Termin gesetzt werden, um es zu einem späteren Zeitpunkt wieder zu bearbeiten (Wiedervorlage).</p>
 <p>
 <p><strong><img title="Termin hinzufügen" src="pics/rmFx_mailContext.jpg" alt="de/RmFx_mailContext.jpg" /></strong></p>
@@ -55,26 +64,34 @@ Das Fenster 'Termin hinzufügen' wird bereits mit einigen Informationen des E-Ma
 <p>Nachdem die Erinnerung mit den vorstehend beschriebenen Funktionen angelegt wurde, wird dies auch in dem Mail Ordner deutlich, das E-Mails ist farbig und mit dem Schlagwort ('Tag') <strong><tt>Reminderfox</tt></strong> markiert:
 <p><img title="Hinwesi auf E-Mail" src="pics/rmFx_mailLabel.jpg" alt="pics/rmFx_mailLabel.jpg" /></p>
 <p>Wird in Reminderfox die Erinnerung gelöscht oder als erledigt gekennzeichnet, wird die Kennzeichnung des Mails zurückgesetzt</p>
-<h2 id="mailOpen">Öffnen eines E-Mails für eine Reminderfox Erinnerung</h2>
-<p>In der Reminderfox Liste oder angezeigten Benachrichtigungen wird ein E-Mail Icon <strong><img title="Mail" src="pics/mailIcon.png" alt="'Mail'" /> </strong> angezeigt wenn für die Erinnerung ein zugehöriges E-Mail exsistiert.</p>
+<h3  id="mailOpen">Öffnen eines E-Mails für eine Reminderfox Erinnerung</h3 >
+<p>In der Reminderfox Liste oder angezeigten Benachrichtigungen wird ein E-Mail Icon <strong><img title="Mail"
+  style="margin:0px" src="pics/mailIcon.png" alt="'Mail'" /> </strong> angezeigt wenn
+  für die Erinnerung ein zugehöriges E-Mail exsistiert.</p>
 <p><img title="mailicon" src="pics/rf-mailicon.jpg" alt="de/RmFx_mailIconList.jpg" /></p>
 <p>Durch Doppelklick auf das Symbol wird das E-Mail aufgerufen und in einem neuen Tabulator bzw. neuem Fenster angezeigt. Der Aufruf des E-Mail ist sogar möglich, wenn es zwischenzeitlich in einen anderen Ordner verschoben wurde, z.B. vom Eingangskorb in den Ordner 'Ablage'.
 Beim beschriebenen Aufruf des E-Mail wird der Ordner geöffnet, in dem das Mail gespeichert ist.</p>
-<h2 id="eventShow">Anzeige einer Erinnerung für ein E-Mail</h2>
+<h3  id="eventShow">Anzeige einer Erinnerung für ein E-Mail</h3 >
 <p>Wurde für ein E-Mail eine Reminderfox Erinnerung angelegt (das E-Mail ist farblich und mit <strong><tt>Reminderfox</tt></strong> gekennzeichnet), ermöglicht ein Kontextmenüpunkt die zugehörige Erinnerung direkt zu öffnen:
 <p>
 <p><strong><img title="Send++Menu" src="pics/rmFx_Send++Menu.png" alt="de/RmFx_Send++Menu.png" /></strong>
-<br><em>Hinweis: Der Menüpunkt ist nur aktiv, wenn eine zugehörige Erinnerung in der eigenen Reminderfox Liste enthalten ist.</em></p>
-</p>
-<strong> </strong></p>
-<h2 id="mailFollow">Mail-Vorgangsverfolgung</h2>
+<br><em>Hinweis: Der Menüpunkt ist nur aktiv, wenn eine zugehörige Erinnerung in der
+  eigenen Reminderfox Liste enthalten ist.</em></p>
+
+<h3  id="mailFollow">Mail-Vorgangsverfolgung</h3 >
 <p>Reminderfox ermöglicht eine einfache Vorgangskontrolle mit E-Mails. Hierbei wird sowohl eine Erinnerung in der Reminderfox Liste angelegt, als auch das zu versendende Mail automatisch mit einer Referenz versehen. Dies verknüpft das gesandte E-Mail mit einer Erinnerung.
 Für eine eingehende E-Mail Antwort kann dann ggf. direkt die Reminderfox Erinnerung zur weiteren Bearbeitung geöffnet werden.Dies setzt allerdings voraus, das die Antwort mit der Funktion "Antworten" erstellt wurde.</p>
-<h2 id="mailsend">Mail senden und Termin anlegen</h2>
+
+<h3  id="mailsend">Mail senden und Termin anlegen</h3 >
 <p>Zunächst wird ein E-Mail verfasst -- wie üblich durch Aufruf des Fensters "Verfassen: ..." oder durch Öffnen einer Vorlage oder eines Entwurfes.
-<p>Für das Senden wird jedoch das zusätzliche Symbol <strong><img title="Senden++" src="pics/rmFx_SendwRm24.png" alt="de/RmFx_SendwRm24.png" /></strong>[Senden ++] auf der Symbolleiste des Fensters [Verfassen: ...] genutzt.</p>
+<p>Für das Senden wird jedoch das zusätzliche Symbol <strong><img title="Senden++" src="pics/rmFx_SendwRm24.png"
+style="margin:0px" alt="de/RmFx_SendwRm24.png" /></strong>[Senden ++] auf der Symbolleiste des Fensters [Verfassen: ...] genutzt.</p>
 <p><strong><img title=" Send++" src="pics/rmFx_mailSendplus.jpg" alt="de/RmFx_mailSendplus.jpg" /></strong></p>
-<p><strong>[Senden ++]</strong> entspricht dem normalen "Senden", vor dem eigentlichen Senden wird jedoch eine Reminderfox Erinnerung angelegt.
+
+
+<h4 style="padding-left: 15px;"> ‣ [Senden ++]</h4>
+<p>
+  Entspricht dem normalen "Senden", vor dem eigentlichen Senden wird jedoch eine Reminderfox Erinnerung angelegt.
 Beim Aufrufen wird ein Reminderfox Fenster "Termin hinzufügen" geöffnet, es enthält bereits verschiedene Mail-Informationen wie den "Betreff", Versandinformationen (Absender, Empfänger, Datum) und ggf. die eingestellte "Wichtigkeit" des Mails.
 Wird die Bearbeitung des Termins mit [OK] abgeschlossen, erfolgt der Versand und die Speicherung der Erinnerung, gekennzeichnet mit [Senden++].
 Außerdem wird die Kopie der gesendeten Nachricht in den Ordner "Gesendet" mit einem Bezug auf die Reminderfox Erinnerung gespeichert. Für die gespeicherte Kopie auch wird ein Kontextmenüpunkt zum direkten Öffnen der Reminderfox Erinnerung aktiviert: <strong> <a title="Hinweise [faqdetails]" href="#eventShow"> Anzeigen einer Erinnerung für ein E-Mail</a> </strong>
@@ -96,20 +113,23 @@ In der Liste der Nachrichten mit dem rechten Mauszeiger auf die Nachrichten wird
 </li>
 </ul>
 </p>
-<h2 id="sendreply">Antwort auf Mails, die mit [Senden++] verschickt wurden</h2>
+<h3  id="sendreply">Antwort auf Mails, die mit [Senden++] verschickt wurden</h3 >
 <p>Wenn der Empfänger des Mails, das mit [Senden ++] versendet wurde, die Funktion "Antworten" benutzt, bleibt die Referenz zu dem angelegten Reminderfox Termin erhalten.
 So ist eine leichte Verbindung zwischen der Antwort und dem Eintrag in der Reminderfox Liste möglich.
 Auch hier wird bei geöffnetem Mail oder mit der markierten Zeile der Mailliste das o.g. Kontextmenü <a title="Hinweise [faqdetails]" href="#eventShow"> Öffne die zugehörige Reminderfox Erinnerung</a> aktiviert und ermöglicht das direkte Öffnen.</p>
-<h2 id="filterandfolder">Filter und Suchordner</h2>
+<h3  id="filterandfolder">Filter und Suchordner</h3 >
 <p>Die [Senden++] Funktion versieht die gesendete Nachricht mit einem Referenzelement im sog. Mailkopf. Dies Element kann genutzt werden, um mit den Thunderbird Funktionen "Filtern" und "Suchordner" Nachrichten die mit [Senden++] bearbeitet wurden hervorzuheben.
-<em><h3 id="filter">Filter</h3></em>
+
+
+  <em><h4 id="filter" style="padding-left: 15px;"> ‣ Filter</h4></em>
 <p>Über das Hauptmenü mittels "Extras" --&gt; "Filter.." wird die Bedingung und die auszuführende Aktion eingegeben:
 Es wird in den "References" nach 'Reminderfox' gesucht. Ist dies vorhanden, wird das "Schlagwort" <tt><strong>'Reminderfox'</strong></tt> hinzugefügt.</p>
 <p><strong><img title="Send++ Filter" src="pics/rmFx_Send++Filter.png" alt="de/RmFx_Send++Filter.png" /></strong>
 <br><em>Hinweise:
 - Das Bedingungselement "References" ist ggf. mittels des Punktes [Anpassen ..] hinzuzufügen.
 - Für "References" ist <strong>'Reminderfox'</strong> zwingend, während als Schlagwort ein beliebiges Element aus der Liste gewählt werden kann.</em></p>
-<em><h3 id="searchfolder">Suchordner</h3></em>
+
+<em><h4 id="searchfolder" style="padding-left: 15px;"> ‣ Suchordner</h4></em>
 <p>Für die einzelnen Mail-Accounts können 'Suchordner' angelegt werden. Diese zeigen jedes eingehende Mail mit einem "References" Eintrag 'Reminderfox' unmittelbar an.</p>
 <p><strong><img title="Send++ Folder" src="pics/rmFx_Send++Folder.png" alt="de/RmFx_Send++Folder.png" /></strong></p>
 <p>Ein Suchordner wird angelegt im Hauptmenü mittels "Bearbeiten" --&gt; "Suchen" --&gt; "Nachrichten suchen..". Dort über die Schaltfläche "Als virtuellen Ordner speichern ..." die Bedingungen usw. eingeben:</p>
@@ -117,4 +137,4 @@ Es wird in den "References" nach 'Reminderfox' gesucht. Ist dies vorhanden, wird
 <p><em>Hinweise:
 - Auch hier ist für "References" der Eintrag <strong>'Reminderfox'</strong> zwingend.
 - Für IMAP Accounts kann die optionale Online-Suche aktiviert werden. Das Hinzufügen des Schlagwortes erfolgt nur beim Empfangen der Nachricht, nicht aber nachträglich!</em></p>
-<!-- id="doc-contents"--> </div>
+<!----> </div>

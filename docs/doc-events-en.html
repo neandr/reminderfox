@@ -1,0 +1,129 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<style /* format */ type="text/css">
+  body {
+    /* margin-right: 30%; */
+    font-family: /*Verdana,*/ Arial, sans-serif;
+  }
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none;
+  font-style:normal;  line-height: 1.5em;}
+  img {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  /* format */</style>
+
+<h2 id="doctitle" class="pagetitle" title="Reminders/Events">
+    <a href="doc-1-en.html"><img src="pics/foxy-head.png" align="middle" alt="" /></a>
+    Reminders/Events</h2>
+
+<table style="padding-left: 30px;">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <h3>Contents</h3>
+        </div>
+        <ul>
+          <li><a href="#addReminder">Adding Reminders</a></li>
+          <li><a href="#r1">Reminder Settings</a></li>
+          <li><a href="#repeatCustom">Reminder Repeating</a></li>
+          <li><a href="#more">More Button</a></li>
+          <li><a href="#editEvents">Edit Reminders</a></li>
+
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<div>
+  <h3 id="addReminder">Adding Reminders</h3>
+  <p>To add a new reminder to ReminderFox, use the 'Add Reminder' dialog. This dialog is brought up by first surfacing the main ReminderFox window by clicking on the ribbon in the status bar. Then, click the 'Add Reminder' button. Alternatively, you
+    may right-click on the ribbon and select 'Add Reminder...'.</p>
+
+  <h3 id="r1">Reminder Settings</h3>
+  <p>Reminders have a number of different options that can be set to change their behavior.</p>
+
+  <p><img src="pics/addReminder.png" alt="Add a Reminder" /></p>
+  <ul>
+    <li><strong>Description</strong> - This is the description of the reminder which shows up in your reminder list.</li>
+    <li><strong>Notes</strong> - If you click the Notes icon button, you can enter in additional notes for your reminder. These notes will show will also show up in the reminder tooltip when you hover over the item in the list. Tip: Add the current
+      time to a Note by pressing F8.</li>
+    <li><strong>Date</strong> - Set the date you want the reminder to occur. You can enter in any starting date. Note that you can also double click any date on the calendar widget to add a reminder for that date.</li>
+    <li><strong>Time</strong> - You can choose to have your reminder occur All Day (such as a birthday) or at a particular time (such as an appointment). If you uncheck the <code>All Day</code> option you can enter a specific time. You can select
+      any time from the populated pull down list that contains the most common times. You can also type any time directly into the Time textbox for more specific times (example: 8:33 AM)</li>
+    <li><strong>Repeat</strong> - Leave this unchecked for one-off, non-repeating reminders -- example: "Return library book". If you check this option, then you can select the frequency you want for your reminder.
+      Learn about about the <a href="#repeatCustom">Repeat
+        Options</a>.</li>
+  </ul>
+  <ul>
+    <li><strong>Show alarm popup</strong> - Check this option if you want to have a reminder notification alert you at a specified time prior to the event. You can select to have an alarm popup any number of minutes, hours, or days
+      before the reminder occurs. You can select any time from the pre-populated list of common times or directly enter any number into the textbox for more specific entries (37 minutes).</li>
+    <li><strong>Categories</strong> - Categories are used to associate to descriptive attributes to reminders. You can specify multiple categories per reminder separated by commas. The categories can be entered manually or selected by using the
+      drop-down menu. Choose from the provided categories or define your own categories by selecting 'Manage Categories'.
+      Learn more about <a href="doc-options-de.html#categories">Categories</a></li>
+    <li><strong>Important</strong> - This is for those extra-special events that you can't miss, like your wife's birthday. These reminders will show up highlighted in red in the Reminders list, as well as in the tooltip and status bar.</li>
+    <li><strong>Remind Daily Until Completed</strong> - This option causes the reminder to continue to remind you until it has been completed. This means that once a reminder occurs, it will continue to show up each following day until such time as
+      you mark the reminder as <code>Completed</code> or delete it. This is useful for things where you want to keep reminding yourself until you actually do it, like "remember to call Mom".</li>
+  </ul>
+
+  <h3 id="repeatCustom">Reminder Repeating</h3>
+  <p>The 'Add Reminder' dialog provides an extremely flexible way of specifying repeating reminders. Use the 'Repeat' drop-down to specify the frequency of the reminder.<img title="Repeating options" src="pics/repeat1.png" alt="Repeating options" />
+    <ul>
+      <li><strong>Yearly</strong> - this event happens on the same date every year (like a birthday)</li>
+      <li><strong>Yearly by day</strong> - this event happens on the same day every year such as Mother's Day (Second Sunday of May)</li>
+      <li><strong>Monthly</strong> - this event happens on the same date every month (like a rent payment on the 30th of each month)</li>
+      <li><strong>Monthly by day</strong> - this event happens on the same day every month.</li>
+      <li><strong>Weekly</strong> - this event happens on the same day every week</li>
+      <li><strong>Biweekly</strong> - Alternating - this event happens every other week</li>
+      <li><strong>Custom </strong> - Select 'Click here for more repeat options...' to to specify any frequency that does not fit into the above categories. This option is extremely powerful, allowing for things such as 'Repeat on the 16th of the
+        month, every three months, until August 16th, 2010. <img title="Repeat Custom options" src="pics/repeatCustom.png" alt="Repeat Custom" /></li>
+    </ul>
+  </p>
+
+  <h3 id="more">More Button</h3>
+  <p>Click the 'More&gt;&gt;' button to reveal some advanced options.</p>
+  <p><img title="More button clicked" src="pics/addReminder_more.png" alt="addReminder_more.png" /></p>
+  <ul>
+    <li><strong>Location</strong> - The location of an event meeting can be entered into the 'Event' textbox. The icon <img title="'Location' icon" style="margin:0px" src="pics/url.png" alt="en/url.png" /> to the right of the location will open a
+      Google Map of the specified location when clicked.</li>
+    <li><strong>URL</strong> - A URL can be entered into the URL textbox. Clicking the icon <strong><img title="URL icon" style="margin:0px" src="pics/url.png" alt="en/url.png" /></strong> to the right of the textbox will open this URL in Firefox.</li>
+  </ul>
+
+  <h3 id="editEvents">Edit Reminders</h3>
+  <p>Ein Klick auf eine Zeile in der Termin/Aufgaben Liste öffnet das Bearbeitungsfenster.
+    Dies ist faktisch gleich dem Fenster zum Hinzufügen eines neuen Termins/Aufgabe.
+    Der Termin wird angezeigt und es sind nun alle vorher gewählten Optionen änderbar.
+  </p>
+
+  <p> Das Kontextmenü einer Zeile in der Termin/Aufgaben Liste stellt eine Reihe
+    von Bearbeitungen zur Verfügung:</p>
+
+  <p><strong><img title=" rmFx_Context1" src="pics/rmFx_Context1.jpg" alt=" rmFx_Context1" /></strong></p>
+  <ul>
+    <li><strong>Termin bearbeiten</strong> - Ermöglicht, die Eigenschaften der Termine zu ändern.</li>
+    <li><strong>Termin löschen</strong> - Löscht den Termin aus der Liste. Wenn es ein Termin mit Wiederholung ist, wird abgefragt, ob diese einzelne und die vorherigen Vorkommen (Instanzen) oder der gesamte Terminfolge gelöscht werden soll.</li>
+    <li><strong>In eine Liste verschieben</strong> - Verschiebt den gewählten Termin in jede andere Liste -- Aufgaben oder individuelle Listen.</li>
+    <li><strong>Wichtig</strong> - Umschalten der Bedeutung des Termins. Dies ist vorsehen für außergewöhnliche Ereignisse, die keinesfalls vergessen werden dürfen, z.B. der Geburtstag der Ehefrau. Diese Termine werden in der Terminliste, im Tooltip
+      und in der Statusleiste rot hervorgehoben.</li>
+    <li><strong>Beendet</strong> - Termine können als erledigt markiert werden. Diese werden dann nicht mehr in den Tooltip oder in der Statusleiste angezeigt.<em>Beispiel: für einen Termin "Telefonrechnung bezahlen": wird vor dem Termin bezahlt,
+        dann
+        kann durch dieses Attribut markiert werden, dass es erledigt ist. Dadurch wird es nicht mehr in den "kommenden Terminen" angezeigt. Dieser "Erledigt"-Status gilt nur für diesen bearbeiteten Termin, so dass kommende Termine dieser Terminfolge
+        z.B. im nächsten Monat wieder angezeigt werden.</em></li>
+    <li><strong>Täglich erinnern bis zur Beendigung</strong> - Mit dieser Option wird der Termin solange wiederholt bis er erledigt ist. D.h. sobald der Termin einmal angezeigt wurde, wird er an jedem folgenden Tag angezeigt bis er als "erledigt"
+      markiert oder gelöscht wird. So wird man an Dinge erinnert bis sie wirklich getan sind (z.B. eine bestimmte Mail zu beantworten). Sobald die Aktion erledigt ist, wird der Termin mit Hilfe des Kontextmenüs oder in der Liste durch Umschalten als
+      erledigt markiert.</li>
+    <li><strong>Suchen</strong> - hiermit kann nach einem Termin mit einem bestimmten Text gesucht werden.
+      <blockquote><em>Siehe auch</em> <a href="doc-reminderdialog-de.html#filtering">Filtern /Suchen der Ereignisse</a></blockquote>
+    </li>
+    <li><strong>Terminfolgen ausblenden</strong> - Zeigt für alle Terminfolgen nur den nächst kommenden Termin. *\</li>
+    <li><strong>Terminfolgen anzeigen</strong> - Zeigt für alle Terminfolgen alle Termine in der Liste an. *\</li>
+    <li><strong>Verberge erledigte Termine</strong> - Dies verbirgt alle Termine, die als "Erledigt" markiert sind.*\<em>*
+        Hinweis:
+        Dies ist nur gültig während der augenblicklichen Anzeige der Liste.
+        Siehe auch <a title="Anpassen der Anzeigen [faqdetails]" href="doc-options-de.html#defaults"> Options: Terminstandards</a> für generelle Vorgabe</em></li>
+    <li><strong>Anzeigen und Drucken</strong> - Dies zeigt die Liste der Termine in einem Browser-Fenster in HTML Darstellung an. Mit Hilfe der Browser-Druckfunktionen lassen sich so die Listen ausdrucken.</li>
+    <li><strong>Termin senden ..</strong> - Hiermit können Termine per Mail versandt werden.
+      <br><em>Siehe hierzu <a title="Beschreibungen [exchanging]" href="doc-exchanging-de.html"> Austausch von Terminen und Aufgaben</a> </em></li>
+  </ul>

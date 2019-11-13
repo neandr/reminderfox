@@ -1,58 +1,65 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <style /* format */ type="text/css">
-  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none; 
+  body {
+    /* margin-right: 30%; */
+    font-family: /*Verdana,*/ Arial, sans-serif;
+  }
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none;
   font-style:normal;  line-height: 1.5em;}
   img {
     margin-top: 5px;
     margin-bottom: 15px;
   }
-  /* format */</style>
+  /* format */
+</style>
 
-<h3 class="pagetitle" id="doctitle">User Guide - Remote Calendar (CalDAV)</h3>
-<table class="doc-toc">
-<tbody>
-<tr>
-<td>
-<div id="toctitle">
-<h3>Contents</h3>
-</div>
-<ul id="toc-ul">
-<li class="toclevel-1"><a href="#top"><span class="toctext">Reminderfox -- Sharing with Remote Calendars and Devices</span></a></li>
-<li class="toclevel-1"><span class="tocnumber">1. </span><a href="#start"><span class="toctext">Reminderfox with ‘Remote Calendars’</span></a></li>
-<li class="toclevel-1"><span class="tocnumber">2. </span><a href="#configure"><span class="toctext">Configure ‘Remote Calendar’ Accounts on Reminderfox</span></a></li>
-</ul>
-<ul id="toc-ul1">
-<li class="toclevel-1"><span class="tocnumber">2.1 </span><a href="#configureDefault"><span class="toctext"> Default Remote Calendar</span></a></li>
-<li class="toclevel-1"><span class="tocnumber">2.2 </span><a href="#accountAdd"><span class="toctext"> [ Add ] -- Define a new 'Remote Calendar'/CalDAV Account for Reminderfox</span></a></li>
-<li class="toclevel-1"><span class="tocnumber">2.3 </span><a href="#externalCalendar"><span class="toctext"> Define other / external CalDAV Calendars</span></a></li>
-<li class="toclevel-1"><span class="tocnumber">2.4 </span><a href="#accountChange"><span class="toctext"> Change / Delete an Account Definition</span></a></li>
-<li class="toclevel-1"><span class="tocnumber">2.5 </span><a href="#accountgooglev2"><span class="toctext"> Google Calendar with Authentication OAuth2</span></a></li>
-<li class="toclevel-1"><span class="tocnumber">2.6 </span><a href="#accountColor"><span class="toctext"> Background Color for Events on the Main List</span></a></li>
-</ul>
-<ul id="toc-ul">
-<li class="toclevel-1"><span class="tocnumber">3. </span><a href="#indicator"><span class="toctext">‘Remote Calendar’ indicator on Main Dialog List and Calendar</span></a></li>
-<li class="toclevel-1"><span class="tocnumber">4. </span><a href="#calendarSelector"><span class="toctext">Reminders with ‘Remote Calendar’/CalDAV Account</span></a></li>
-<li class="toclevel-1"><span class="tocnumber">5. </span><a href="#syncRemote"><span class="toctext">Sync your ‘Remote Calendar’ to see the actual status</span></a></li>
-<li class="toclevel-1"><span class="tocnumber">6. </span><a href="#features"><span class="toctext">‘Remote Calendar’/CalDAV Features supported</span></a></li>
-<li class="toclevel-1"><span class="tocnumber">7. </span><a href="#projectStatus"><span class="toctext">Reminderfox/CalDAV Project Status</span></a></li>
-</ul>
-<ul id="toc-ul">
-<li class="toclevel-1"><a href="#references"><span class="toctext">References</span></a></li>
-</ul>
-</td>
-</tr>
-</tbody>
+<h3 class="pagetitle" id="doctitle">
+  <a href="doc-1-en.html"><img src="pics/foxy-head.png" align="middle" alt="" /></a>
+  Sharing with Remote Calendars  (CalDAV)</h3>
+
+  <p style="padding-left: 30px;">ReminderFox has long supported sharing/synchronizing reminders with other systems by uploading or downloading the entire calendar at a time. This method has been used by many Reminderfox users for a long time. It's configured with the Options tab:Network settings (or tab:Sync).</p>
+  <br>
+  <p style="padding-left: 30px;">Starting with ReminderFox 2.1, we have introduced a new method to synchronize on an "event-by-event" basis. This has the advantage it can by synchronized with other 'Remote Calendars' (such as Google Calendar) which often support synchronization with devices like iPhone/iPad or Android based phones or pads.
+  The sync feature between Reminderfox and those 'Remote Calendars' uses a communication standard, called CalDAV. <em>For details see <a href="http://en.wikipedia.org/wiki/CalDAV" target="_blank">here</a> ).
+  </em></p>
+  <p style="padding-left: 30px;">Reminderfox working with 'Remote Calendars' is an <span style="text-decoration: underline;">alternative</span> sync method beside the classic file download protocol (like ftp) or sharing the ICS data file between Reminderfox and another application (like Lightning). So the user has to decide to use the classic method <span style="text-decoration: underline;">or</span> working with 'Remote Calendar' systems / CalDAV.</p>
+  <p style="padding-left: 60px;"><em><span style="text-decoration: underline;"><strong>Note</strong></span></em></p>
+  <p style="padding-left: 60px;"><em> With using the synchronization with 'Remote Calendars' the classic networking method will be switched off. This is because using both methods simultaneously could corrupt the reminder data. Also sharing the ICS data file with another calendar application (like Lightning) should be disabled; every calendar should use its own ICS data file. If a sync with Lightning is required, it should use CalDAV synchronisation also.</em></p>
+
+<table style="padding-left: 30px;">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <h3>Content</h3>
+        </div>
+        <ul>
+          <li>1. <a href="#start">Reminderfox with ‘Remote Calendars’</a></li>
+          <li>2. <a href="#configure">Configure ‘Remote Calendar’ Accounts on Reminderfox</a></li>
+
+        <ul id="toc-ul1">
+          <li>2.1 <a href="#configureDefault"> Default Remote Calendar</a></li>
+          <li>2.2 <a href="#accountAdd"> [ Add ] -- Define a new 'Remote Calendar'/CalDAV Account for Reminderfox</a></li>
+          <li>2.3 <a href="#externalCalendar"> Define other / external CalDAV Calendars</a></li>
+          <li>2.4 <a href="#accountChange"> Change / Delete an Account Definition</a></li>
+          <li>2.5 <a href="#accountgooglev2"> Google Calendar with Authentication OAuth2</a></li>
+          <li>2.6 <a href="#accountColor"> Background Color for Events on the Main List</a></li>
+        </ul>
+
+          <li>3. <a href="#indicator">‘Remote Calendar’ indicator on Main Dialog List and Calendar</a></li>
+          <li>4. <a href="#calendarSelector">Reminders with ‘Remote Calendar’/CalDAV Account</a></li>
+          <li>5. <a href="#syncRemote">Sync your ‘Remote Calendar’ to see the actual status</a></li>
+          <li>6. <a href="#features">‘Remote Calendar’/CalDAV Features supported</a></li>
+          <li>7. <a href="#projectStatus">Reminderfox/CalDAV Project Status</a></li>
+
+          <li><a href="#references">References</a></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
 </table>
 
-<h3 id="top">Reminderfox -- Sharing with Remote Calendars and Devices</h3>
-<p style="padding-left: 30px;">ReminderFox has long supported sharing/synchronizing reminders with other systems by uploading or downloading the entire calendar at a time. This method has been used by many Reminderfox users for a long time. It's configured with the Options tab:Network settings (or tab:Sync).</p>
-<br>
-<p style="padding-left: 30px;">Starting with ReminderFox 2.1, we have introduced a new method to synchronize on an "event-by-event" basis. This has the advantage it can by synchronized with other 'Remote Calendars' (such as Google Calendar) which often support synchronization with devices like iPhone/iPad or Android based phones or pads.
-The sync feature between Reminderfox and those 'Remote Calendars' uses a communication standard, called CalDAV. <em>For details see <a href="http://en.wikipedia.org/wiki/CalDAV" target="_blank">here</a> ).
-</em></p>
-<p style="padding-left: 30px;">Reminderfox working with 'Remote Calendars' is an <span style="text-decoration: underline;">alternative</span> sync method beside the classic file download protocol (like ftp) or sharing the ICS data file between Reminderfox and another application (like Lightning). So the user has to decide to use the classic method <span style="text-decoration: underline;">or</span> working with 'Remote Calendar' systems / CalDAV.</p>
-<p style="padding-left: 60px;"><em><span style="text-decoration: underline;"><strong>Note</strong></span></em></p>
-<p style="padding-left: 60px;"><em> With using the synchronization with 'Remote Calendars' the classic networking method will be switched off. This is because using both methods simultaneously could corrupt the reminder data. Also sharing the ICS data file with another calendar application (like Lightning) should be disabled; every calendar should use its own ICS data file. If a sync with Lightning is required, it should use CalDAV synchronisation also.</em></p>
-&nbsp;
+
 <h3 id="start">1. Reminderfox with 'Remote Calendars'</h3>
 <p style="padding-left: 30px;">First a service/server is required which supports the CalDAV synchronization protocol. The ReminderFox team has developed for and tested with several popular calendar services. The ReminderFox remote calendar settings provide initial settings to help users in connecting to these services, please see below.</p>
 <p style="padding-left: 30px;"><span style="text-decoration: underline;"><span style="color: #000000; text-decoration: underline;">Tested 'Remote Calendar'/CalDAV servers</span></span>

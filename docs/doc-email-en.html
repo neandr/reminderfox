@@ -1,0 +1,107 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<style /* format */ type="text/css">
+  body {
+    margin-right: 30%;
+    font-family: /*Verdana,*/ Arial, sans-serif;
+  }
+  p {display: block; margin: 0 0 0 20px; padding: 0 0 0 0;  border-left: none;
+  font-style:normal;  line-height: 1.5em;}
+  img {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  /* format */</style>
+
+<h2 id="doctitle" class="pagetitle">
+  <a href="doc-1-en.html"><img src="pics/foxy-head.png" align="middle" alt="" /></a>
+  Reminder/Events with Mail Messages</h2>
+
+  <table style="padding-left: 30px;">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <h3 >Contents</h3>
+        </div>
+        <ul>
+          <li><a href="#mailevents">Adding a reminder to an email</a></li>
+          <li><a href="#mailOpen">Viewing an email attached to a reminder</a></li>
+          <li><a href="#eventShow">Open a reminder associated to an email</a></li>
+          <li><a href="#mailsend">Adding a reminder on send</a></li>
+          <li><a href="#sendreply">Replying to an email with an associated reminder</a></li>
+          <li><a href="#searchfolder">Tagging and searching</a></li>
+
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div>
+
+  <h3  id="mailevents">Adding a reminder to an email</h3>
+  <div>
+    <p>ReminderFox offers integration with Mozilla email systems to attach a reminder to any email. This is useful when you have an email that you would like to come back to at a later date. For example, if you receive an email that is important,
+      and you want to ensure that you follow-up to it a certain date, you can add a reminder for that email.
+      <br>
+      To create a reminder from an email, simply right-click on any email in the list, or inside of the email itself. From the context menu, select Add a Reminder.</p>
+
+    <p><img title="Add Reminder From Context" src="pics/mailReminder.png" alt="en/mailReminder.png" /></p>
+
+    <p>The Add Reminder window will come up pre-populated with the email details:</p>
+
+    <p><img title="Add reminder for a mail message" src="pics/addReminder4mail.png" alt="en/addReminder4mail.png" /></p>
+
+    <p>Note that this feature works for any message stored in the mail folders.
+      <br>
+      You can also select text inside of an email and when you select Add a Reminder from the context menu, the highlighted text will be included as part of the reminders notes. This is useful for quickly grabbing dates, times, and places from an
+      email.
+    </p>
+    <p><img title="Pic text details from a mail message for the reminder" src="pics/addReminder4mailwdetails.png" alt="en/addReminder4mailwdetails.png" /></p>
+
+  </div>
+
+  <h3  id="mailOpen">Viewing an email attached to a reminder</h3>
+  <p>When a reminder has an email associated with it, it will show up in the list with a mail icon <img title="'Mail' icon" style="margin:0px" src="pics/mail.png" alt="en/mail.png" /> (you need to have the Mail column visible). You can click on a
+    reminder's email icon to view its associated email (or select View Mail from the reminder context menu). Note that the email can still be displayed even if the message has been moved to another folder.</p>
+
+  <p><img title="Reminder list with 'mail' column enabled" src="pics/rf-mailicon.jpg" alt="en/rf-mailicon.jpg" /></p>
+
+  <h3  id="eventShow">Open a reminder associated to an email</h3>
+  <p>After a reminder is created from an email, the email's label (color) is changed and it's tagged with <strong><tt>Reminderfox</tt></strong> to signify that a reminder is associated with it. This tag is removed when the reminder is deleted or
+    completed.</p>
+
+  <p><img title="Message context menu to open the reminder" src="pics/openReminder4msg.png" alt="en/openReminder4msg.png" /></p>
+  <h3  id="mailsend">Adding a reminder on send</h3>
+  <p>It is possible to associate a reminder with an email while sending it. To do this, use the special button
+    <img title="'Send++' button" style="margin:0px" src="pics/sendwRm24.png" alt="en/sendwRm24.png" /> [Send++] .</p>
+  <p>(This button may be hidden, use the Customize Toolbar feature to display it).</p>
+
+  <p><img title=" 'Send++' button installed on 'Compose' toolbar" src="pics/mailSendplus.png" alt="en/mailSendplus.png" /></p>
+
+  <p><b>[Send++]</b> behaves like the normal "Send" button, but before sending the "Add Reminder"
+    dialog will be opened so a reminder for the message to be send can be edited.</p>
+
+  <h3  id="sendreply">Replying to an email with an associated reminder</h3>
+  <p>If an email with an associated reminder is replied to, the reply will also contain a
+    reference to this reminder. This reminder can be opened by right-clicking on the message
+    and selecting 'Open the associated Reminderfox event' from the
+    context menu.</p>
+
+  <h3  id="searchfolder">Tagging and Searching</h3>
+  <p>You can set a set up a filter to match all messages that have an associated reminder,
+    and then tag all of this messages for future searches. To do this, go to the Tools
+    menu and select 'Message Filters...'. Create a filter that has
+    'References' that contain '@reminderfox'. Then, set the action to Tag the
+    message with 'ReminderFox'.</p>
+
+  <p><img title="Filter definition for 'Send++'" src="pics/reminderfoxFilter.png"
+    alt="en/reminderfoxFilter.png" /></p>
+
+  <p>Once you have this filter set up, it is easy to create a 'Search Folder' for
+    messages with reminders. Select Edit-&gt;Find-&gt;Search Messages... and
+    configure the Search Folder to match all References that contain @reminderfox.</p>
+
+  <p><img title="Folder definition for 'Reminderfox' reference" src="pics/reminderfoxFolder.png" alt="en/reminderfoxFolder.png" /></p>
+
+</div>

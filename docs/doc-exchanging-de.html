@@ -1,96 +1,145 @@
-<style /* DE format */ type="text/css">p {display: block; margin: 0 0 0 20px;
-  padding: 0 0 0 0;  border-left: none; 
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<style /* DE format */ type="text/css">
+  body {
+    /* margin-right: 30%; */
+    font-family: /*Verdana,*/ Arial, sans-serif;
+  }
+  p {display: block; margin: 0 0 0 20px;
+  padding: 0 0 0 0;  border-left: none;
   font-style:normal;  line-height: 1.5em;}
-  /* DE format */</style>
+  /* DE format */
+</style>
 
-<h1 id="doctitle" class="pagetitle" title="Nutzen der ReminderFox Eingaben mit anderen Kalendern und Geräten">Austauschen
-von Terminen und Aufgaben</h1>
-<table class="doc-toc">
-<tbody>
-<tr>
-<td>
-<div id="toctitle">
-<h2>Inhalt</h2>
-</div>
-<ul id="toc-ul">
-<li class="toclevel-1"><a href="#exchanging"><span class="tocnumber">1</span> <span class="toctext">Austauschen von Terminen und Aufgaben</span></a></li>
-<li class="toclevel-1"><a href="#exchangeEvents"><span class="tocnumber">2</span> <span class="toctext">Importieren und Exportieren von Terminen und Aufgaben</span></a></li>
-<li class="toclevel-1"><a href="#shareEvents"><span class="tocnumber">3</span> <span class="toctext">Reminderfox Daten in Firefox/Thunderbird gemeinsam nutzen</span></a></li>
-<li class="toclevel-1"><a href="#network"><span class="tocnumber">4</span> <span class="toctext">Austausch von Terminen mit anderen Computern im Netzwerk</span></a></li>
-<li class="toclevel-1"><a href="#autoSync"><span class="tocnumber">5</span> <span class="toctext">Automatische Synchronisation</span></a></li>
-<li class="toclevel-1"><a href="#problemSync"><span class="tocnumber">6</span> <span class="toctext">Probleme mit Netzwerk Synchronisation</span></a></li>
-<li class="toclevel-1"><a href="#importing"><span class="tocnumber">7</span> <span class="toctext">Arbeiten mit anderen Kalendern</span></a></li>
-<li class="toclevel-1"><a href="#sbSync"><span class="tocnumber">8</span> <span class="toctext">Lightning/Mozilla Kalender</span></a></li>
-<li class="toclevel-1"><a href="#googleSync"><span class="tocnumber">9</span> <span class="toctext">Arbeiten mit Google Calendar</span></a></li>
-<li class="toclevel-1"><a href="#deviceSync"><span class="tocnumber">10</span> <span class="toctext">Mit PDA/Smartphone/iPod synchronisieren</span></a></li>
-<li class="toclevel-1"><a href="#DropBox"><span class="tocnumber">11</span> <span class="toctext">DropBox oder ähnlich</span></a></li>
-</ul>
-</td>
-</tr>
-</tbody>
+<h3 id="doctitle" class="pagetitle"
+  title="Nutzen der ReminderFox Eingaben mit anderen Kalendern und Geräten">
+  <a href="doc-1-de.html"><img src="pics/foxy-head.png" align="middle" alt="" /></a>
+  Austauschen von Terminen und Aufgaben</h3>
+
+  <!-- ["exchanging",  "Austauschen von Terminen und Aufgaben",  "Nutzen der ReminderFox Eingaben mit anderen Kalendern und Ger?ten"]-->
+  <!-- <h3 id="exchanging" title="Nutzen der ReminderFox Eingaben mit anderen Kalendern und Geräten">Austauschen von Terminen und Aufgaben</h3>  -->
+  <p>Reminderfox arbeitet mit dem standardisierten ICS Datenformat für Kalender,
+    das in der RFC 2445 definiert ist:
+  <blockquote><em>[iCAL] - specifies a core specification of objects, data types, properties and property parameters.</em></blockquote>
+  <p>Reminderfox unterstützt nur dieses Format für den Austausch mit anderen Kalenderanwendung.</p>
+
+<table style="padding-left: 30px;">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <h3>Inhalt</h3>
+        </div>
+        <ul>
+          <!--      <li> <a href="#exchanging">Austauschen von Terminen und Aufgaben</a></li>  -->
+          <li> <a href="#exchangeEvents">Importieren und Exportieren von Terminen und Aufgaben</a></li>
+    <!--      <li> <a href="#shareEvents">Reminderfox Daten in Thunderbird gemeinsam nutzen</a></li>  -->
+          <li> <a href="#ftp">Austausch von Terminen mit anderen Computern im Netzwerk</a></li>
+          <li> <a href="#ftpsync">Automatische Synchronisation (FTP / WebDAV)</a></li>
+          <li> <a href="#ftpproblem">Probleme mit Netzwerk Synchronisation</a></li>
+          <li> <a href="#importing">Arbeiten mit anderen Kalendern</a></li>
+          <li> <a href="#sbSync">Lightning/Mozilla Kalender</a></li>
+          <li> <a href="#googleSync">Arbeiten mit Google Calendar</a></li>
+          <li> <a href="#deviceSync">Mit PDA/Smartphone/iPod synchronisieren</a></li>
+          <!--      <li> <a href="#DropBox">DropBox oder ähnlich</a></li>  -->
+        </ul>
+      </td>
+    </tr>
+  </tbody>
 </table>
-<div id="doc-contents">
 
-<!-- ["exchanging",  "Austauschen von Terminen und Aufgaben",  "Nutzen der ReminderFox Eingaben mit anderen Kalendern und Ger?ten"]-->
-<h2 id="exchanging" title="Nutzen der ReminderFox Eingaben mit anderen Kalendern und Geräten">Austauschen von Terminen und Aufgaben</h2>
-<p>Reminderfox arbeitet mit dem standardisierten ICS Datenformat für Kalender, das in der RFC 2445 definiert ist.
-<blockquote><em>[iCAL] - specifies a core specification of objects, data types, properties and property parameters.</em></blockquote>
-<p>Reminderfox unterstützt nur dieses Format für den Austausch mit anderen Kalenderanwendung.</p>
-<h2 id="exchangeEvents">Importieren und Exportieren von Terminen und Aufgaben</h2>
-<blockquote><em>Siehe auch:</em> <a title="Termine als Einladungen [ical]" href="doc-ical-de.html"> Einladungen [iCal]</a></blockquote>
-<p>Importieren und Exportieren ist sinnvoll für Datensicherung, als auch zum Austausch mit anderen Profilen, Computern oder Kalenderdiensten.
+<div>
 
-Import/Export von Terminen und Aufgaben erfolgt über den Reminderfox Dialog 'Einstellungen'. Beim Importieren können bestehende Daten überschrieben werden oder die importierten Daten werden zur bestehenden Liste hinzugefügt. Letzteres erlaubt das Importieren von gemeinsamen Terminen mehrerer Leute oder auch von Feiertagen sowie Daten von z.B. Schulferien aus veröffentlichen Internetseiten <a href="http://www.sunbird-kalender.de/">www.sunbird-kalender.de/</a></p>
-<h2 id="shareEvents">Reminderfox Daten in Firefox/Thunderbird/Seamonkey gemeinsam nutzen</h2>
-<p>Dies ist möglich, wenn die Option der Reminder-Datei in beiden Programmen gleich gesetzt wird:</p>
-<ul>
-<li>In einem System, in dem Reminderfox installiert ist, über die Einstellungen den Tab 'Lokale Datei' aufrufen.</li>
-<li>Die Dateiangabe kopieren (ev. vorher den Haken bei Vorgabe löschen).</li>
-<li>Nun in dem anderen System an gleicher Stelle (Einstellungen --&gt; Tab 'Lokale Datei') ebenfalls den Haken für Vorgabe löschen und die Dateiangabe des ersten Systems einfügen.</li>
-<li>Nun zeigen beide Systeme auf dieselbe Datei und alle Änderungen von Terminen und Aufgaben gelten für beide Systeme.</li>
-</ul>
-<h2 id="network">Austausch von Terminen mit anderen Computern im Netzwerk</h2>
-<p>Termine können über ein Netzwerk mit anderen Systemen ausgetauscht werden. So ist auch der Austausch mit anderen Reminderfox Installationen möglich - z.B. um die gleiche Liste von Terminen sowohl auf dem Rechner im Betrieb und auch Zuhause zur Verfügung zu haben.
-Um die Termine dort zu speichern, ist ein FTP oder WebDAV (HTTP/HTTPS) Zugang erforderlich. Sollte kein eigener Server zum Austausch zur Verfügung stehen, so sind mehrere freie Dienste verfügbar wie z.B. iCal Exchange (icalx.com).</p>
-<h2 id="autoSync">Automatische Synchronisation</h2>
-<p>Ist in den Einstellungen  'Netzwerk' --&gt; 'Automatische Synchronisation' ausgewählt, so werden die lokalen Termine und Aufgaben automatisch mit dem Computer im Netzwerk synchronisiert. Sobald Änderungen in der Terminliste erfolgen, werden diese automatisch an den Netzwerk-Computer übertragen. Genauso werden Änderungen auf dem Netzwerk-Computer zum lokalen Rechner übertragen. Die 'Netzwerk' Termine werden immer dann auf Änderungen geprüft, wenn die Liste der Termine angezeigt wird. Das gleiche erfolgt beim Start von Reminderfox und danach stündlich.</p>
-<h2 id="problemSync" class="infoSection">Probleme mit Netzwerk Synchronisation</h2>
-<ul>
-<li>Es ist sicher zu stellen, dass die Adresse richtig geschrieben wird.</li>
-<li>Die Adresse endet mit dem Dateinamen, z.B. reminders.ics. Manche Server akzeptieren keine Dateinamen, die eine Endung wie .ics haben. Ggf. den Dateinamen ändern zu reminders.txt.</li>
-<li>Ggf. prüfen ob der FTP oder HTTP Zugriff außerhalb von Reminderfox funktioniert.</li>
-<li>Voraussetzung für das Synchronisieren ist, dass der andere Dienst das Synchronisieren mit fremden Kalender Programmen überhaupt zulässt.</li>
-</ul>
-<h2 id="importing">Arbeiten mit anderen Kalendern</h2>
-<p>Der Austausch von Terminen zwischen Reminderfox und anderen Kalenderprogrammen ist möglich, wenn diese das "iCal" Format (ICS-Dateien) unterstützen. Die meisten Kalender Programme erlauben das Importieren von ICS-Dateien, um Kalender Daten auszutauschen.
-Von einigen Diensten wurde berichtet, dass ein Austausch mit Reminderfox möglich ist. Dies sind:</p>
-<ul>
-<li>Memotoo</li>
-<li>Zimbra</li>
-<li>iCal Exchange</li>
-</ul>
-<blockquote><em>Hinweis: Vorsicht ist angezeigt beim Austausch und der Synchronisation mit anderen Diensten. In jedem Fall empfiehlt es sich die eigene Datei vorher zu sichern!
+  <h3 id="exchangeEvents">Importieren und Exportieren von Terminen und Aufgaben</h3>
+  <blockquote><em>Siehe auch:</em> <a title="Sharing [ical]"
+    href="doc-ical-en.html"> Austauch von Terminen [iCal] (en)</a></blockquote>
+  <p>Importieren und Exportieren ist sinnvoll für Datensicherung, als auch zum Austausch mit
+    anderen Profilen, Computern oder Kalenderdiensten.
+    <br><br>
+    Import/Export von Terminen und Aufgaben erfolgt über den Reminderfox Dialog 'Einstellungen/Optionen'.
+    Beim Importieren können bestehende Daten überschrieben werden oder die importierten
+    Daten werden zur bestehenden Liste hinzugefügt. Letzteres erlaubt
+    das Importieren von gemeinsamen Terminen mehrerer Leute oder auch von Feiertagen
+    sowie Daten von z.B. Schulferien aus veröffentlichen Internetseiten
+    </p>
+<!--
+  <h3 id="shareEvents">Reminderfox Daten in Firefox/Thunderbird/Seamonkey gemeinsam nutzen</h3>
+  <p>Dies ist möglich, wenn die Option der Reminder-Datei in beiden Programmen gleich gesetzt wird:</p>
+  <ul>
+    <li>In einem System, in dem Reminderfox installiert ist, über die Einstellungen den Tab 'Lokale Datei' aufrufen.</li>
+    <li>Die Dateiangabe kopieren (ev. vorher den Haken bei Vorgabe löschen).</li>
+    <li>Nun in dem anderen System an gleicher Stelle (Einstellungen --&gt; Tab 'Lokale Datei') ebenfalls den Haken für Vorgabe löschen und die Dateiangabe des ersten Systems einfügen.</li>
+    <li>Nun zeigen beide Systeme auf dieselbe Datei und alle Änderungen von Terminen und Aufgaben gelten für beide Systeme.</li>
+  </ul>
+-->
+  <h3 id="ftp">Austausch von Terminen mit anderen Computern im Netzwerk</h3>
+  <p>Termine können über ein Netzwerk mit anderen Systemen ausgetauscht werden. So ist auch der Austausch mit anderen Reminderfox Installationen möglich - z.B. um die gleiche Liste von Terminen sowohl auf dem Rechner im Betrieb und auch Zuhause zur
+    Verfügung zu haben.
+    Um die Termine dort zu speichern, ist ein FTP oder WebDAV (HTTP/HTTPS) Zugang erforderlich. Sollte kein eigener Server zum Austausch zur Verfügung stehen, so sind mehrere freie Dienste verfügbar wie z.B. iCal Exchange (icalx.com).</p>
 
-</em></blockquote>
-<h2 id="sbSync">Lightning Kalender</h2>
-<p>ReminderFox und Lightning/Thunderbird können so zusammen verwendet werden, dass beide Kalender den aktuellen Stand anzeigen. Hierzu wird in Lightning ein Kalender mit der Speicherung als ICS Daten eingerichtet. Dieser Speicherort wird für ReminderFox ebenso eingestellt.</p>
-<h2 id="googleSync" title="Synchronisieren und Einladungen">Google Calendar</h2>
-<p>Google Calendar und ReminderFox können nur beschränkt zusammen betrieben werden. Dies, da Google Calender keine Änderungen der Termine durch ReminderFox zuläßt.</p>
+  <h3 id="ftpsync">Automatische Synchronisation</h3>
+  <p>Ist in den Einstellungen  'Netzwerk' --&gt; 'Automatische Synchronisation' ausgewählt,
+    so werden die lokalen Termine und Aufgaben automatisch mit dem Computer im Netzwerk
+    synchronisiert. Sobald Änderungen in der Terminliste erfolgen, werden diese
+    automatisch an den Netzwerk-Computer übertragen. Genauso werden Änderungen auf
+    dem Netzwerk-Computer zum lokalen Rechner übertragen. Die 'Netzwerk' Termine
+    werden immer dann auf Änderungen geprüft, wenn die Liste der Termine angezeigt
+    wird. Das gleiche erfolgt beim Start von Reminderfox und danach stündlich.</p>
 
-<p><span style="text-decoration: underline;">ReminderFox als 'Anzeige' für Google Kalender</span></p>
-<p>Die Netzwerkfähigkeit von ReminderFox ermöglicht das Lesen und Anzeigen von Terminen, die im Google Kalender eingegeben wurden. Aber es ist NICHT möglich Termine in ReminderFox einzugeben und sich diese im Google Kalender anzeigen zu lassen.
-In diesem Szenario müssen alle Termine in den Google Kalender eingegeben werden. ReminderFox dient dann <span style="text-decoration: underline;">nur</span> zur Anzeige dieser Termine! Wichtig ist außerdem zu wissen, dass Termine, die in ReminderFox eingegeben werden, nicht nur NICHT im Google Kalender angezeigt werden, sondern dass diese durch die Synchronisation auch wieder von der ReminderFox Liste gelöscht werden!
-Wie diese 'Anzeige' zu konfigurieren ist, wird <em> <a href="../documentation-de-gcalsync#viewer">hier</a></em> erläutert.</p>
+  <h3 id="problemSync" class="infoSection">Probleme mit Netzwerk Synchronisation</h3>
+  <ul>
+    <li>Es ist sicher zu stellen, dass die Adresse richtig geschrieben wird.</li>
+    <li>Die Adresse endet mit dem Dateinamen, z.B. reminders.ics. Manche Server
+      akzeptieren keine Dateinamen, die eine Endung wie .ics haben. Ggf. den
+      Dateinamen ändern zu reminders.txt.</li>
+    <li>Ggf. prüfen ob der FTP oder HTTP Zugriff außerhalb von Reminderfox funktioniert.</li>
+    <li>Voraussetzung für das Synchronisieren ist, dass der andere Dienst
+      das Synchronisieren mit fremden Kalender Programmen überhaupt zulässt.</li>
+  </ul>
 
-<p><span style="text-decoration: underline;">Arbeiten mit Einladungen</span></p>
-<p>Im Email von Google Kalender empfangene Einladungen können wie üblich zur ReminderFox Terminliste hinzugefügt werden. <em>Siehe auch <a title="  [ical]" href="doc-ical-de.html">Senden/Empfangen von Einladungen</a> </em>
-Allerdings akzeptiert Google Kalender Einladungsbestätigungen nur von Google Kalender. Dies ist kein Problem von Reminderfox.</p>
+  <h3 id="importing">Arbeiten mit anderen Kalendern</h3>
+  <p>Der Austausch von Terminen zwischen Reminderfox und anderen Kalenderprogrammen
+    ist möglich, wenn diese das "iCal" Format (ICS-Dateien) unterstützen.
+    Die meisten Kalender Programme erlauben das Importieren von ICS-Dateien,
+    um Kalender Daten auszutauschen.
+    Von einigen Diensten wurde berichtet, dass ein Austausch mit Reminderfox
+    möglich ist. Dies sind:</p>
+  <ul>
+    <li>Memotoo</li>
+    <li>Zimbra</li>
+    <li>iCal Exchange</li>
+  </ul>
+  <blockquote><em>Hinweis: Vorsicht ist angezeigt beim Austausch und der
+      Synchronisation mit anderen Diensten. In jedem Fall empfiehlt es
+      sich die eigene Datei vorher zu sichern!
+    </em></blockquote>
 
-<h2 id="deviceSync">Mit PDA/Smartphone/iPad synchronisieren</h2>
-<p>Reminderfox arbeitet mit dem ICS-Format und speichert alle Daten in einer lokalen Datei, siehe <a title="Termine und Aufgaben gespeichert in ICS Dateien [options]" href="doc-options-de.html#files"> Einstellungen: Lokale Datei</a>
-Diese Datei lässt sich zur Synchronisation mit üblichen Geräten verwenden.</p>
+  <h3 id="sbSync">Lightning Kalender</h3>
+  <p>ReminderFox und Lightning/Thunderbird können so zusammen verwendet werden, dass beide Kalender den aktuellen Stand anzeigen. Hierzu wird in Lightning ein Kalender mit der Speicherung als ICS Daten eingerichtet. Dieser Speicherort wird für
+    ReminderFox ebenso eingestellt.</p>
 
-<h2 id="DropBox">DropBox oder ähnlich</h2>
+  <h3 id="googleSync" title="Synchronisieren und Einladungen">Google Calendar</h3>
+  <p>Google Calendar und ReminderFox können nur beschränkt zusammen betrieben werden. Dies, da Google Calender keine Änderungen der Termine durch ReminderFox zuläßt.</p>
+
+  <p><span style="text-decoration: underline;">ReminderFox als 'Anzeige' für Google Kalender</span></p>
+  <p>Die Netzwerkfähigkeit von ReminderFox ermöglicht das Lesen und Anzeigen von Terminen, die im Google Kalender eingegeben wurden. Aber es ist NICHT möglich Termine in ReminderFox einzugeben und sich diese im Google Kalender anzeigen zu lassen.
+    In diesem Szenario müssen alle Termine in den Google Kalender eingegeben werden. ReminderFox dient dann <span style="text-decoration: underline;">nur</span> zur Anzeige dieser Termine! Wichtig ist außerdem zu wissen, dass Termine, die in
+    ReminderFox eingegeben werden, nicht nur NICHT im Google Kalender angezeigt werden, sondern dass diese durch die Synchronisation auch wieder von der ReminderFox Liste gelöscht werden!
+    Wie diese 'Anzeige' zu konfigurieren ist, wird <em> <a href="../documentation-de-gcalsync#viewer">hier</a></em> erläutert.</p>
+
+  <p><span style="text-decoration: underline;">Arbeiten mit Einladungen</span></p>
+  <p>Im Email von Google Kalender empfangene Einladungen können wie üblich zur ReminderFox Terminliste hinzugefügt werden. <em>Siehe auch <a title="  [ical]" href="doc-ical-de.html">Senden/Empfangen von Einladungen</a> </em>
+    Allerdings akzeptiert Google Kalender Einladungsbestätigungen nur von Google Kalender. Dies ist kein Problem von Reminderfox.</p>
+
+  <h3 id="deviceSync">Mit PDA/Smartphone/iPad synchronisieren</h3>
+  <div style="padding-left: 30px;">
+    Mit der Verwendung eines Remote Calendar Systems ist es möglich. Siehe auch
+     <a href="doc-ical-de.html">Remote Calendars</a>
+  </div>
+
+
+
+  <!--
+<h3 id="DropBox">DropBox oder ähnlich</h3>
 <p>ReminderFox speichert alle Termin-/Aufgabendaten in einer Datei, z.B. "reminderfox.ics". Der Speicherort kann beliebig ausgewählt werden. Normalerweise liegt er auf der lokalen Platte des Rechners/Laptops. Genauso kann diese Datei auch im Internet liegen z.B DropBox (oder einem anderen Cloud Computing Speicher).
 
 Die aktuelle Lage der "reminderfox.ics" Datei ist zu finden auf der Seiten der Einstellungen, dort den Reiter "Lokale Datei" wählen. Soll DropBox als Speicherort verwendet werden, so ist unter "Speicherort für die ReminderFox-Datei" anzugeben, wo die Datei im <em>lokalen</em> DropBox Verzeichnis liegt, zB:
@@ -99,7 +148,7 @@ Die aktuelle Lage der "reminderfox.ics" Datei ist zu finden auf der Seiten der E
 Wird die DropBox Lokation für einen anderen Computer  freigegeben, so kann dort der Zugang zur "reminderfox.ics" Datei ebenfalls eingerichtet werden. Änderungen an der Datei werden unmittelbar am jeweils anderen Computer sichtbar.
 
 <em><strong>Vorsicht:</strong></em> Es kann zum Überschreiben von lokalen Änderungen an den Terminen/Aufgaben kommen, wenn gleichzeitig an beiden Computern mit der gleichen Datei gearbeitet wird.
-
-<!--   id="doc-contents" -->
+-->
+  <!--   -->
 
 </div>
