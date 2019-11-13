@@ -132,8 +132,30 @@ Wären die Termininformationen mit der Funktion 'Importieren' eingelesen, so mü
 <h3 id="further">Was kann ich tun? Weitere Fragen, Kommentare, Verbesserungen, Fehler</h3>
 <p>Der beste Weg zu weitergehender Unterstützung ist es, ein Mail an die Autoren zu senden. Das Kontextmenü auf der Statusleiste (oder auf dem Foxy Symbol im ReminderFox Dialog) bietet hierzu eine einfache Hilfe: der Eintrag <code>Über ReminderFox ..</code> öffnet ein Fenster.
 Dort steht unter <b>News & Support</b> ein Aufruf zum Senden eines E-Mail zur Verfügung. Dabei wird das E-Mail mit relevanten Informationen zur Installation geöffnet.</p>
-<p>Alternativ kann auch direkt ein E-Mail gesendet werden mit: <a href="mailto:reminderfox+msgappr@googlegroups.com">"ReminderFox Mail Liste"</a>. Bitte die verwendete Anwendung (Thunderbird, Firefox o.ä) und die ReminderFox Version angeben.</p>
+<p>Alternativ kann auch direkt ein E-Mail gesendet werden mit:
+<a id="request"> E-Mail Anfrage</a>
+<br>
+  Bitte die verwendete Anwendung (Thunderbird, Firefox o.ä) und die ReminderFox Version angeben.</p>
 <h3 id="pawsymbol">Was bedeutet das Reminderfox Symbol?</h3>
 <p>Es ist der Fußabdruck eines Fuchses mit einer Schleife. Es ist eine übliche Praxis von Vergesslichen sich eine Schleife um den Finger zu wickeln (oder sich einen Knoten ins Taschentuch zu machen) um sich daran zu erinnern, das etwas zu erledigen ist. Also die Schleife um die Fuchspfote gewickelt, steht für Erinnerung.</p>
 
-<!----> </div>
+</div>
+
+
+
+<script type="text/javascript">
+  var setupMailto = function() {
+  var ms = new Date().getTime().toString().substring(10,13);
+  var recip = encodeURIComponent("reminderfox@googlegroups.com");
+  var mSubject = encodeURIComponent("ReminderFox Request/Feedback ");
+  mSubject = mSubject + " #" + ms + " .. ";
+  var msg = "... Please set a descriptive 'Subject' for your request  ... ";
+  msg += "\n\n___________________________________________________________\n";
+  msg += "This relates to ReminderFox installed on: ";
+  var mBody = (encodeURIComponent(msg) + navigator.userAgent);
+  document.getElementById("request").setAttribute(
+      "href",
+  "mailto:" + recip + "?" + "subject=" + mSubject
+  + decodeURIComponent("%26") + "body=" + mBody);}
+  window.onload = setupMailto;
+</script>

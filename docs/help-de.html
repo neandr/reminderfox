@@ -58,6 +58,7 @@ Informationen ihrer Installation angefügt.
   msg += "\n\n___________________________________________________________\n";
   msg += "This relates to ReminderFox installed on: ";
   var mBody = (encodeURIComponent(msg) + navigator.userAgent);
+
   document.getElementById("request").setAttribute(
       "href",
   "mailto:" + recip + "?" + "subject=" + mSubject
