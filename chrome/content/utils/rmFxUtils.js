@@ -3107,7 +3107,7 @@ reminderfox.go4news = {
 //------------------------------------------------------------------------------
 	currentNewsDate : "",
 	currentNews : "--",
-	urlNews: "https://neandr.github.io/reminderfox/rmFXnews.html",
+	urlNews: "https://neandr.github.io/reminderfox/rmFXnews",
 
 
 	/**
