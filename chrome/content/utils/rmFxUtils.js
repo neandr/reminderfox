@@ -3107,7 +3107,8 @@ reminderfox.go4news = {
 //------------------------------------------------------------------------------
 	currentNewsDate : "",
 	currentNews : "--",
-	urlNews: "https://neandr.github.io/reminderfox/rmFXnews",
+  urlNews: "https://neandr.github.io/reminderfox/rmFXnews",
+  urlNewsLink: "",
 
 
 	/**
@@ -3134,7 +3135,8 @@ reminderfox.go4news = {
 			msg = "Reminderfox NEWS   Not new:  " + this.currentNewsDate;
 			reminderfox.core.getPreferenceValue(reminderfox.consts.NEWS, false);
 		}
-		console.log(msg);
+		console.log(msg, "  NewsStamp:", newsStamp);  //XXX
+
 		return
 	},
 
