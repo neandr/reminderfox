@@ -91,8 +91,8 @@ function reminderFox_loadOptions() {
 	var enableContextMenus = reminderfox.core.getPreferenceValue(reminderfox.consts.ENABLE_CONTEXT_MENUS, true);
 	document.getElementById("reminderFox-enableContextMenu").setAttribute("checked", enableContextMenus);
 
-	var disableLegacyMenus = reminderfox.core.getPreferenceValue(reminderfox.consts.ISLEGACY, false);
-	document.getElementById("reminderFox-disableLegacy").setAttribute("checked", disableLegacyMenus);
+	//var disableLegacyMenus = reminderfox.core.getPreferenceValue(reminderfox.consts.ISLEGACY, false);
+	//document.getElementById("reminderFox-disableLegacy").setAttribute("checked", disableLegacyMenus);
 
 	var disablePanelTabMenu = reminderfox.core.getPreferenceValue(reminderfox.consts.ONHOVER, false);
 	document.getElementById("reminderFox-panelTabHover").setAttribute("checked", disablePanelTabMenu);
@@ -760,8 +760,8 @@ function reminderFox_updateOptions() {
 		rmFXelementIsTrue("reminderFox-enableContextMenu"));
 
 
-	var disableLegacyMenus = document.getElementById("reminderFox-disableLegacy").getAttribute("checked");
-	reminderfox.core.setPreferenceValue(reminderfox.consts.ISLEGACY, disableLegacyMenus);
+	//var disableLegacyMenus = document.getElementById("reminderFox-disableLegacy").getAttribute("checked");
+	//reminderfox.core.setPreferenceValue(reminderfox.consts.ISLEGACY, disableLegacyMenus);
 
 	var disablePanelTabMenu = document.getElementById("reminderFox-panelTabHover").getAttribute("checked");
 	reminderfox.core.setPreferenceValue(reminderfox.consts.ONHOVER, disablePanelTabMenu);

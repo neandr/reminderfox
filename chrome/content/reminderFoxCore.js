@@ -19,9 +19,10 @@ reminderfox.consts.MIGRATED_PREF_VERSION                = "2.1.6.6";  // update 
 
 reminderfox.consts.SUPPORT                              = "reminderfox@googlegroups.com";
 
-reminderfox.consts.REMINDER_FOX_PAGE_URL                = "http://www.reminderfox.org";
-reminderfox.consts.REMINDER_FOX_WELCOME_UPDATE_PAGE_URL = "http://www.reminderfox.org/update";
-reminderfox.consts.REMINDER_FOX_WELCOME_PAGE_URL        = "http://www.reminderfox.org/welcome-to-reminderfox";
+reminderfox.consts.REMINDER_FOX_PAGE_URL                = "https://neandr.github.io/reminderfox/";
+//reminderfox.consts.REMINDER_FOX_PAGE_URL                = "http://www.reminderfox.org";
+//reminderfox.consts.REMINDER_FOX_WELCOME_UPDATE_PAGE_URL = "http://www.reminderfox.org/update";
+//reminderfox.consts.REMINDER_FOX_WELCOME_PAGE_URL        = "http://www.reminderfox.org/welcome-to-reminderfox";
 
 
 reminderfox.consts.PRIORITY_NORMAL = null; // default
@@ -176,7 +177,7 @@ reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS_DEFAULT = true;
 reminderfox.consts.INTERVAL_TIMER = "intervalTimer"; // INT
 reminderfox.consts.INTERVAL_TIMER_INKREMENT = 300000;    // default time value:  1 hour= 3600000  30 min = 1800000  5 min = 300000
 
-reminderfox.consts.ISLEGACY = "isLegacy"; // BOOL
+//reminderfox.consts.ISLEGACY = "isLegacy"; // BOOL
 
 reminderfox.consts.KEY_SHORTCUT_ADD = "keyboard.shortcut.addEvent"; // CHAR
 reminderfox.consts.KEY_SHORTCUT_ADD_DEFAULT = "accel shift y";
@@ -469,7 +470,7 @@ reminderfox.core.initUserPrefsArray= function() {
     reminderfox._prefsUser[reminderfox.consts.HIDE_FOX_PAW] = reminderfox._prefsTYPE.BOOL;
     reminderfox._prefsUser[reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS] = reminderfox._prefsTYPE.BOOL;
     reminderfox._prefsUser[reminderfox.consts.INTERVAL_TIMER] = reminderfox._prefsTYPE.INT;
-    reminderfox._prefsUser[reminderfox.consts.ISLEGACY] = reminderfox._prefsTYPE.BOOL;
+//    reminderfox._prefsUser[reminderfox.consts.ISLEGACY] = reminderfox._prefsTYPE.BOOL;
     reminderfox._prefsUser[reminderfox.consts.KEY_SHORTCUT_ADD] = reminderfox._prefsTYPE.CHAR;
     reminderfox._prefsUser[reminderfox.consts.KEY_SHORTCUT_OPEN] = reminderfox._prefsTYPE.CHAR;
 
@@ -6483,7 +6484,7 @@ reminderfox.core.updateMainDialog= function (currentReminder, oldTabName, newTab
 reminderfox.core.storeOrUpdate= function(lastEvent) {
 
     var topWindow = reminderfox.util.getWindow("window:reminderFoxEdit");
-    if (reminderfox.calendar.layout.status == -1) {  //	layout.status -1  is from FX/TB Main Menu icon all
+    if (reminderfox.calendar.layout .status == -1) {  //	layout.status -1  is from FX/TB Main Menu icon all
 
         if (!topWindow) reminderfox.core.writeOutRemindersAndTodos(false);
         if (topWindow) {

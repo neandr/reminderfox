@@ -33,7 +33,7 @@ reminderfox.calendar.drawList = true;
 // Calendar :           id="rmFx_layout0"
 // List and Calendar :  id="rmFx_layout1"
 // List :               id="rmFx_layout2"
-reminderfox.calendar.layout.status = 0;				// current layout
+//reminderfox.calendar.layout.status = 0;				// current layout
 
 
 /**
@@ -49,12 +49,12 @@ reminderfox.calendar.layout.status = 0;				// current layout
  */
 reminderfox.calendar.layout.Setup= function () {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var layout = document.documentElement.attributes.layout.value;
+	// var layout = document.documentElement.attributes.layout.value;
 
-	if (layout == -1 || layout > 2 || layout == "" || !layout) {
+	//if (layout == -1 || layout > 2 || layout == "" || !layout) {
 		layout = 1;
-		document.documentElement.attributes.layout.value = 1;
-	}
+	//	document.documentElement.attributes.layout.value = 1;
+	//}
 
 	document.getElementById("reminderfox-calendar-box-widget").setAttribute('style', 'font-size:' +
 		document.documentElement.attributes.textSize.value + 'px');
@@ -62,18 +62,18 @@ reminderfox.calendar.layout.Setup= function () {
 	document.getElementById("rmFx-MainDialog-List-Calendar").setAttribute('style', 'font-size:' +
 		document.documentElement.attributes.textSizeList.value + 'px');
 
-	reminderfox.calendar.layout.status = layout;
-	reminderfox.calendar.layout.menuChange(layout);
-	reminderfox.calendar.layout.menuSelect();
+//60+	reminderfox.calendar.layout.status = layout;
+//60+	reminderfox.calendar.layout.menuChange(layout);
+
 
 	// remember persistant values for 'small' and 'wide' layout
-	var id = "WIDE";
-	if (layout == 0) id = "SMALL";
+	//var id = "WIDE";
+	//if (layout == 0) id = "SMALL";
 
-	document.documentElement.attributes[id+"_width"].value = document.documentElement.attributes.width.value;
-	document.documentElement.attributes[id+"_height"].value = document.documentElement.attributes.height.value;
+	document.documentElement.attributes["WIDE_width"].value = document.documentElement.attributes.width.value;
+	document.documentElement.attributes["WIDE_height"].value = document.documentElement.attributes.height.value;
 
-	reminderfox.calendar.layout.XY();
+//60+	reminderfox.calendar.layout.XY();
 
 	reminderfox.calendar.setDay();
 };
@@ -82,6 +82,7 @@ reminderfox.calendar.layout.Setup= function () {
 /*
  * 	Set persistant values for 'small' and 'wide' layout
  */
+/*//60+
 reminderfox.calendar.layout.Set= function (layout) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	if (reminderfox.calendar.layout.status == layout) return;
@@ -95,9 +96,9 @@ reminderfox.calendar.layout.Set= function (layout) {
 	document.documentElement.attributes.layout.value = layout;
 	reminderfox.calendar.layout.status = +layout;
 };
+--------------------*/
 
-
-
+/*//60+
 reminderfox.calendar.layout.XY= function () { // used only for debugging
 //------------------------------------------------------------------------------
 	var docu = document.documentElement;
@@ -111,8 +112,8 @@ reminderfox.calendar.layout.XY= function () { // used only for debugging
 		"\n   mozInnerScreenY:" +window.mozInnerScreenY + "  screenY" + window.screenY;
 	reminderfox.util.Logger('calndrGrid', logMsg);
 };
-
-
+--------------*/
+/*//60+
 reminderfox.calendar.layout.Save= function (layout) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var id = "WIDE";
@@ -132,10 +133,10 @@ reminderfox.calendar.layout.Save= function (layout) {
 	//	docu.attributes.lxX.value = window.mozInnerScreenX - window.screenX;
 	//	docu.attributes.lxY.value = window.mozInnerScreenY - window.screenY;
 	}
-----*/
+----* /
 //reminderfox.util.Logger('calndrLayout', '.calendar.layout.SAVE   ' + '\n    layout : '+ layout);
 };
-
+------------*/
 
 /**
  *   Change 'layout'
@@ -143,6 +144,7 @@ reminderfox.calendar.layout.Save= function (layout) {
  *     'Calendar and List'
  *     'List'
  */
+/*//60+
 reminderfox.calendar.layout.change= function (newLayout) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	reminderfox.calendar.ui.panelClose();
@@ -166,18 +168,19 @@ reminderfox.calendar.layout.change= function (newLayout) {
 	}
 	reminderfox.calendar.filter.close();
 	setTimeout(function () {
-		reminderfox.calendar.layout.Set(layout);
+//60+		reminderfox.calendar.layout.Set(layout);
 		reminderfox.calendar.ui.selectDay(); // hold the grid
 		reminderfox.calendar.layout.menuChange(layout);
 	}, 10);
 };
-
+-------------*/
 
 /*
  *   Change mainMenu buttons based on 'layout'
  *     'Calendar only'
  *     'Calendar and List' or 'List'
  */
+/*60+
 reminderfox.calendar.layout.menuChange= function (layout) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	reminderfox.calendar.layout.updateFoxy(layout);
@@ -209,29 +212,8 @@ reminderfox.calendar.layout.menuChange= function (layout) {
 	}
 	reminderfox.view.setFilterTitel();
 };
-
-
-/*
- * Set the actual tic mark for the selected Layout
- */
-reminderfox.calendar.layout.menuSelect= function () {
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var layout = reminderfox.calendar.layout.status;
-
-	if (layout == -1 || layout > 2 || layout == "" || !layout) {
-		layout = 1;
-		document.documentElement.attributes.layout.value = 1;
-	}
-	reminderfox.calendar.layout.status = layout;
-
-	var len = document.getElementById("calendar-layout-popup").children.length;
-	for (var i=0; i < len; i++) {
-		document.getElementById("rmFx_layout" + i).removeAttribute("checked");
-	}
-	document.getElementById("rmFx_layout" + layout).setAttribute("checked", true);
-};
-
-
+---------*/
+/*60+
 reminderfox.calendar.layout.updateFoxy = function(layout) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// if switching to calendar, we never want foxy as space is at a premium
@@ -253,7 +235,7 @@ reminderfox.calendar.layout.updateFoxy = function(layout) {
 		}
 	}
 };
-
+-------------*/
 
 // **************** calendar.ui. ***********************************************
 
@@ -276,7 +258,7 @@ reminderfox.calendar.ui.eventMenus= function(xThis, xEvent, numDate){
 //	var instanceDate = reminderfox.date.getDateObject(xThis.getAttribute('numDate'));
 	var instanceDate = reminderfox.date.getDateObject(numDate);
 
-	var layout = reminderfox.calendar.layout.status;
+	var layout = 1; // reminderfox.calendar.layout.status;
 
 	if (xEvent.button == 2) { // was context menu ..
 
@@ -410,7 +392,7 @@ reminderfox.calendar.ui.eventContext= function (mode, xThis, selectedDate) {
 
 	var isTodo = !reminderfox_isReminderTabSelected();
 
-	var noStore = (reminderfox.calendar.layout.status == -1) ? false : true;  // layout.status -1  is from FX/TB Main Menu icon all
+	var noStore = false; //60+ (reminderfox.calendar.layout.status == -1) ? false : true;  // layout.status -1  is from FX/TB Main Menu icon all
 
 	if ((reminderfox.calendar.selectedEvents != null) && (reminderfox.calendar.selectedEvents[0] != null))
 		reminderfox.calendar.selectedEvents[0].instanceDate = selectedEventDate;
@@ -502,7 +484,7 @@ var newDayBox;
 	if (widget != null) {
 		reminderfox.calendar.layout.status = -1;  // layout.status -1  is from FX/TB Main Menu icon all
 	}
-	var layout = +reminderfox.calendar.layout.status;
+	var layout = 1;  //60+ +reminderfox.calendar.layout.status;
 
 	if (reminderfox.datePicker.gSelectedDate == null) reminderfox.datePicker.gSelectedDate = new Date();
 
@@ -634,7 +616,7 @@ reminderfox.calendar.ui.mouseDayOnGrid= function(xThis, xEvent) {
 
 	if (reminderfox.calendar.drawGrid == false) return;
 
-	var layout = +reminderfox.calendar.layout.status;
+	var layout = 1;  //60+ +reminderfox.calendar.layout.status;
 	var a = xThis.id.lastIndexOf('-');
 	var selectedDateNum = xThis.id.substring(a+1);
 
@@ -736,7 +718,7 @@ reminderfox.calendar.ui.mouseDayOnGrid= function(xThis, xEvent) {
  */
 reminderfox.calendar.ui.selectDayOnCalndr= function(selectedDate) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var layout = +reminderfox.calendar.layout.status;
+	var layout = 1;  //60+   +reminderfox.calendar.layout.status;
 
 	var oldDateNum = reminderfox.date.getDateNum(reminderfox.datePicker.gSelectedDate);
 	var selectedDateNum = reminderfox.date.getDateNum(selectedDate);
@@ -821,7 +803,7 @@ reminderfox.calendar.ui.selectDayOnCalndr= function(selectedDate) {
  */
 reminderfox.calendar.ui.redrawCalendarGrid= function (changeToDate) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var layout = reminderfox.calendar.layout.status;
+	var layout = 1;  //60+   reminderfox.calendar.layout.status;
 
 	if (changeToDate == null) changeToDate = reminderfox.calendar.numDateFirstMonth;
 
@@ -920,12 +902,11 @@ reminderfox.calendar.ui.openByMessageID= function (xThis) {
  */
 reminderfox.calendar.filter.toggle= function(mode) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//reminderfox.util.Logger('filtering', '.calendar.filter    mode: ' + mode);
+reminderfox.util.Logger('filtering', '.calendar.filter    mode: ' + mode);
 	reminderfox.calendar.ui.panelClose();
 	var spyglass = document.getElementById("rmFx-search-spyglass");
 	var spyglassStatus = spyglass.getAttribute('status');
 
-	var mode4Open;
 	if ((mode == null) && (spyglassStatus == 'closed')) mode = 'open';
 	if ((mode == null) && (spyglassStatus == 'open')) mode = 'close';
 
@@ -966,7 +947,8 @@ reminderfox.calendar.filter.close= function () {
 reminderfox.calendar.filter.build= function () {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //reminderfox.util.Logger('filtering', '.calendar.filter.build     ');
-	var wideOsmall = (+reminderfox.calendar.layout.status == 0) ? "Small" : "Wide";
+  //var wideOsmall = (+reminderfox.calendar.layout.status == 0) ? "Small" : "Wide";
+  var wideOsmall = "Wide";
 
 	var spyglass = document.getElementById("rmFx-search-spyglass");
 	var searchAndFilter = document.getElementById("rmFx-SearchAndFilter-"+ wideOsmall);
@@ -990,9 +972,19 @@ reminderfox.calendar.filter.build= function () {
 
 	sBox.setAttribute("tooltiptext", reminderfox.string("rf.search.textitems.title"));
 
-	var sText = document.createElement("text");
-	sText.setAttribute("id", "rmFx-searchText");
-	sBox.appendChild(sText);
+  var sText = document.createElement("textbox");
+  sText.setAttribute("id", "rmFx-searchText");
+  sBox.appendChild(sText);
+
+  /* /60+ */
+    var sButton = document.createElement("toolbarbutton");
+    sButton.setAttribute("id", "rmFx-textSearch-clearbutton");
+    sButton.setAttribute("class", "rmFx-textSearch-clearbutton");
+    sButton.setAttribute("onclick", "reminderfox.search.textSearchBoxClear();");
+    sButton.setAttribute("tooltiptext", "Clear Search Test.");
+
+    sBox.appendChild(sButton);
+
 	sfBox.appendChild(sBox);
 
 	// build the "Filters/Views Box"
@@ -1039,9 +1031,10 @@ reminderfox.calendar.filter.build= function () {
 
 	if (reminderfox.view.views.Label[0] != null) {
 
-		var m1 = document.createElement("menuseparator");
-		m1.setAttribute("id", "filtersViewsLast");
-		elem1.appendChild(m1);
+    var m1 = document.createElement("hr");
+    m1.setAttribute("id", "viewsManageSeparator");
+    m1.setAttribute("style", "border-top-width: 1px;border-top-style: solid;");
+    elem1.appendChild(m1);
 
 		var j = 0;
 		while (reminderfox.view.views.Label[j] != null) {
@@ -1053,7 +1046,7 @@ reminderfox.calendar.filter.build= function () {
 		//		m1.addEventListener("command", function() {reminderfox.view.Set(this);},false);
 
 				m1.setAttribute("label", reminderfox.view.views.Label[j]);
-				m1.setAttribute("value", reminderfox.view.views.Items[j]);
+        m1.setAttribute("value", reminderfox.view.views.Items[j]);
 
 				// tooltiptext  displays the 'value' of this 'View'
 				// need to change from 'general' to 'local' Criteria
@@ -1068,8 +1061,14 @@ reminderfox.calendar.filter.build= function () {
 		}
 
 	}
-	var m2 = document.createElement("menuseparator");
-		m2.setAttribute("id", "viewsManageSeparator");
+
+// <hr xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+// id="viewsManageSeparator"
+// style="border-top-width: 1px;border-top-style: solid;"/>
+
+	var m2 = document.createElement("hr");
+  m2.setAttribute("id", "viewsManageSeparator");
+  m2.setAttribute("style", "border-top-width: 1px;border-top-style: solid;");
 	elem1.appendChild(m2);
 
 	// add the 'View Editor'
@@ -1081,6 +1080,8 @@ reminderfox.calendar.filter.build= function () {
 		m3.setAttribute("label", reminderfox.view.tttEditor);
 		m3.setAttribute("value", "vEditor");
 		m3.setAttribute("tooltiptext", reminderfox.view.tttEdit);
+
+    m3.setAttribute("style", "border-top-width: 1px;border-top-style: solid;");
 	elem1.appendChild(m3);
 
 	searchAndFilter.appendChild(sfBox);

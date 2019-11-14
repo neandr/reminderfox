@@ -78,6 +78,7 @@ if (!reminderfox.search) reminderfox.search = {};
  * set textbox to menuItem label, clearButton set to gray
  * clear searchText string
  */
+/*60+ ---------------
 reminderfox.search.textSearchMenuChange= function(xThis){
 //------------------------------------------------------------------------------
 	reminderfox.search.textSearchType = xThis.value;
@@ -94,9 +95,10 @@ reminderfox.search.textSearchMenuChange= function(xThis){
 	reminderfox.search.textSearchString = "";
 	reminderfox.search.HighlightHeader(reminderfox.search.textSearchType);
 	refillLists();
-	reminderfox.search.advanceFocus();
+	document.commandDispatcher.advanceFocus()
 	return true;
 };
+---------------*/
 
 
 /**
@@ -105,8 +107,9 @@ reminderfox.search.textSearchMenuChange= function(xThis){
 reminderfox.search.textSearchBoxClear= function(){
 //-----------------------------------------------------------------------------
 	document.getElementById('rmFx-textSearch-clearbutton').setAttribute('clearButtonShown', false);
-	document.getElementById('rmFx-searchText-box').value = reminderfox.search.textSearchLabel;
-	document.getElementById('rmFx-searchText-box').style.color = "gray";
+  document.getElementById('rmFx-searchText').value = "";
+  document.getElementById('rmFx-searchText').setAttribute('placeholder', 'Enter Filter Text'); //reminderfox.search.textSearchLabel;
+  document.getElementById('rmFx-searchText').style.color = "gray";
 
 	var spyglass = document.getElementById("rmFx-search-spyglass");
 	spyglass.setAttribute('tooltiptext', reminderfox.string("rf.calendar.menu.toggleSearchFilter"));
@@ -115,30 +118,14 @@ reminderfox.search.textSearchBoxClear= function(){
 	reminderfox.search.textSearchString = "";
 	reminderfox.search.HighlightHeader();
 	refillLists();
-	reminderfox.search.advanceFocus();
-};
-
-
-reminderfox.search.advanceFocus= function() {
-//------------------------------------------------------------------------------
-	document.commandDispatcher.advanceFocus();   // 2.1.6  to remove focus from textbox
-/*----
-	// if we are in calendar mode, focus on add-event (icon-only button)
-	// tfm: for some reason isLegacy means "use single bar".  Not sure why.
-	if (reminderfox.core.isLegacy ) {
-		document.getElementById("reminderfox-calendar-add-event").focus();
-	}
-	// otherwise focus on bottom Add Event button
-	else {
-		document.getElementById("reminderfox-calendar-add").focus();
-	}
----------*/
+	document.commandDispatcher.advanceFocus();
 };
 
 
 /**
  * set the selected menu item  by menuNo
  */
+/*60+
 reminderfox.search.searchTextMenuItem= function(menuNo){
 //------------------------------------------------------------------------------
 	var menu = document.getElementById('rmFx-searchText-menuItems');
@@ -153,24 +140,23 @@ reminderfox.search.searchTextMenuItem= function(menuNo){
 	menuItems[menuNo].setAttribute('checked', 'true');
 	reminderfox.search.textSearchLabel = menuItems[menuNo].label;
 };
-
+------------*/
 
 
 reminderfox.search.searchTextSpyglass= function(menuNo){
 //------------------------------------------------------------------------------
 	if (reminderfox.search.showFilters == false) return;
 
-	reminderfox.search.textSearchType = (menuNo != null) ? menuNo : 0;
-	reminderfox.search.searchTextMenuItem (menuNo);
+	reminderfox.search.textSearchType = 4;
 
-	var menuPopup = document.getElementById('rmFx-search-popup');
-	var searchBox = document.getElementById('rmFx-searchText-box');
-	searchBox.value = menuPopup.children[menuNo].attributes.label.value;
+	var searchBox = document.getElementById('rmFx-searchText');
+  searchBox.value = "";
+  searchBox.setAttribute("placeholder", "Enter Filter Text");
 	searchBox.style.color = "gray";
 
 	if (reminderfox.search.textSearchString != "") {
 		searchBox.value = reminderfox.search.textSearchString;
-		document.getElementById('rmFx-searchText-box').style.color = "blue";
+		document.getElementById('rmFx-searchText').style.color = "blue";
 		document.getElementById('rmFx-textSearch-clearbutton').setAttribute('clearButtonShown', true);
 
 		var spyglass = document.getElementById("rmFx-search-spyglass");
@@ -189,6 +175,8 @@ reminderfox.search.searchTextSpyglass= function(menuNo){
  */
 reminderfox.search.HighlightHeader= function(menuNo){
 //------------------------------------------------------------------------------
+  /* 60+ */ menuNo = reminderfox.search.SEARCH_ITEMS_ALL_INDEX;
+
 	var rmColumnLabels = ["descColLabel", "catColLabel", "notesColLabel"];
 	if (!reminderfox_isReminderTabSelected())
 		rmColumnLabels = ["todoDescColLabel", "todoCatColLabel", "todoNotesColLabel"];
@@ -201,9 +189,11 @@ reminderfox.search.HighlightHeader= function(menuNo){
 			colLabel.setAttribute("style", "color:black; font-weight:normal");
 		}
 	}
-	if (menuNo != null) {	// if null only delete the blue headers
+	//60+   if (menuNo != null) {	// if null only delete the blue headers
 		// color list-column-header for corresponding selected displayMenu/menuNo item
 		if (reminderfox.search.isTextSearch()) {
+
+      /*-----------
 			if (menuNo != reminderfox.search.SEARCH_ITEMS_ALL_INDEX) {
 				colLabel = document.getElementById(rmColumnLabels[menuNo]);
 				if (colLabel != null) {
@@ -211,6 +201,7 @@ reminderfox.search.HighlightHeader= function(menuNo){
 				}
 			}
 			else {
+      ---------*/
 				// highlight them all
 				for (var j = 0; j < rmColumnLabels.length; j++) {
 					colLabel = document.getElementById(rmColumnLabels[j]);
@@ -219,8 +210,8 @@ reminderfox.search.HighlightHeader= function(menuNo){
 					}
 				}
 			}
-		}
-	}
+//		}
+//	}
 };
 
 
@@ -260,7 +251,7 @@ reminderfox.search.onSearchKeyPress= function(event){
 reminderfox.search.onSearchKeyUp= function(event){
 //------------------------------------------------------------------------------
 	var SEARCHBAR_WAIT_DELAY = 250;
-		var desc = document.getElementById("rmFx-searchText-box");
+		var desc = document.getElementById("rmFx-searchText");
 		reminderfox.search.textSearchString = desc.value;
 
 	if (event.keyCode == 13) { // if 'return' pressed, filter the view immediately
@@ -317,6 +308,7 @@ reminderfox.search.onSearchInput= function(){
 				// cursor earlier in their text string.  Mabye this is used in cal-only
 				// mode?
 				//reminderfox.search.searchTextSpyglass (reminderfox.search.textSearchType);
+        document.getElementById('rmFx-searchText').style.color = "blue";
 				reminderfox.search.HighlightHeader(reminderfox.search.textSearchType);
 
 				refillLists();
@@ -581,10 +573,10 @@ function rmFx_mainDialogLoad(restartSkip){
 	if (addContext != null) addContext.addEventListener("popupshowing", reminderfox.util.popupCheckMenus, false);
 
 	// get prefs for showing Legacy design
-	var isLegacy = reminderfox.core.getPreferenceValue (reminderfox.consts.ISLEGACY, false);
+	//var isLegacy = reminderfox.core.getPreferenceValue (reminderfox.consts.ISLEGACY, false);
 
-	document.getElementById("bottomButtonBox").setAttribute('hidden', isLegacy);
-	document.getElementById("reminderfox-calendar-add-event").setAttribute('hidden', !isLegacy);
+	//document.getElementById("bottomButtonBox").setAttribute('hidden', isLegacy);
+	//document.getElementById("reminderfox-calendar-add-event").setAttribute('hidden', !isLegacy);
 
 	var defaultfilterEvents = reminderfox.core.getPreferenceValue(reminderfox.consts.FILTER_EVENTS_DEFAULT, 0);
 	var defaultfilterLists = reminderfox.core.getPreferenceValue(reminderfox.consts.FILTER_LISTS_DEFAULT, 0);
@@ -771,7 +763,7 @@ function rmFx_mainDialogLoad(restartSkip){
 		}
 	}
 	reminderFox_updateFoxyBadge();
-	reminderfox.search.advanceFocus();
+	document.commandDispatcher.advanceFocus()
 
 	// start sync in background for Remote Calendars
 	reminderfox.online.status('rmFx_CalDAV_updatePending','')
@@ -864,11 +856,11 @@ function repopulateListForYear(oldYear, newYear){
 function fillList(fillReminders, fillTodoList){
 	// don't go for fillList if no List is shown
 
-var logMsg = "fillList   layout:" + document.documentElement.attributes.layout.value +
+var logMsg = "fillList  " +
 	"  reminders:" + fillReminders + "  todos:" + fillTodoList;  //XXXdebug
 reminderfox.util.Logger('calndrGrid', logMsg);
 
-	if (document.documentElement.attributes.layout.value == 0) return;    // Calendar only mode
+	// if (document.documentElement.attributes.layout.value == 0) return;    // Calendar only mode
 
 	var i;
 	if (fillReminders) {
@@ -1079,7 +1071,7 @@ function doFind(){
 
 function findReminder(){
 
-	if (reminderfox.calendar.layout.status == 0) return; //gWCalndr just disable with Calendar ONLY!
+	//if (reminderfox.calendar.layout.status == 0) return; //gWCalndr just disable with Calendar ONLY!
 
 	var i;
 	var item;
@@ -1828,7 +1820,7 @@ function reminderFox_getStartAndEndDates(filtersTypeIndex, useToday, showAll) {
  */
 function createUIListItemReminder(baseReminder){
 	// don't go if no List is shown
-	if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
+	//if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
 
 	var lastListIndex = 0;
 	var once = document.getElementById("occurrence");
@@ -2277,12 +2269,12 @@ function eventMatchesFilterText(reminder, rmSearchText, currentSearchItemValue){
 	var searchItems = ["summary", "categories", "notes", "location", "ALL"];
 
 	try { //  'try'	to skip for invalid 'Item' description
-		if (currentSearchItemValue == reminderfox.search.SEARCH_ITEMS_ALL_INDEX) {
+		//* 60+ */if (currentSearchItemValue == reminderfox.search.SEARCH_ITEMS_ALL_INDEX) {
 
 			var found = false;
 			for (var i = 0; !found && i < searchItems.length; i++) {
-				if (i != reminderfox.search.SEARCH_ITEMS_ALL_INDEX) {
-					if (reminder[searchItems[i]] != null) { // no match
+		//		if (i != reminderfox.search.SEARCH_ITEMS_ALL_INDEX) {
+					if (reminder[searchItems[i]] != null) {
 						var attributeValue = reminder[searchItems[i]].toLowerCase();
 						if (searchItems[i] == "categories") {
 							attributeValue = reminderfox.util.unEscapeCommas(attributeValue);
@@ -2291,12 +2283,13 @@ function eventMatchesFilterText(reminder, rmSearchText, currentSearchItemValue){
 							found = true;
 						}
 					}
-				}
+		//		}
 			}
 			if (!found) {
 				return false; // no matches
 			}
-		}
+	//	}
+    /*---------
 		else {
 			if (reminder[searchItems[currentSearchItemValue]] == null) { // no match
 				return false;
@@ -2309,6 +2302,7 @@ function eventMatchesFilterText(reminder, rmSearchText, currentSearchItemValue){
 				return false;
 			}
 		}
+    -------*/
 	}
 	catch (e) {
 		return
@@ -2333,7 +2327,7 @@ function rmFx_checkFiltered (reminder) {
 
 function createUIListReminderItemSorted(reminder, todaysDate){
 //	if (document.documentElement.attributes.layout.value == 0) return;    // Calendar only mode
-	if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
+	// if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
 
 	if (!rmFx_checkFiltered (reminder)) return;
 
@@ -2661,7 +2655,7 @@ function reminderFox_downloadSubscribedCalendarCallback(statustxtString, actionI
 
 function createUIListItemTodo(todo, sort, todaysDate, addToArray){
 //	if (document.documentElement.attributes.layout.value == 0) return;    // Calendar only mode
-	if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
+	// if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
 
 	var tree;
 	var treeSelection
@@ -2959,7 +2953,7 @@ function createUIListItemTodo(todo, sort, todaysDate, addToArray){
 
 function createUIListItemTodoAtIndex(todo, index){
 //	if (document.documentElement.attributes.layout.value == 0) return;    // Calendar only mode
-	if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
+//	if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
 
 	var tree;
 	var treeSelection
@@ -3219,6 +3213,7 @@ function highlightClosestUpcomingReminder(currentDate, info, lastReminder){
  * ensureRowIsVisible in a scroll pane / tree
  */
 function findHighLight(whichTree, foundIndex, treeLength){
+  return;   //gW_60++
 	if (foundIndex != -1) {
 		var tree = document.getElementById(whichTree);
 		var boxobject = tree.boxObject;
@@ -3352,7 +3347,7 @@ function highlightTodo(){
 function removeUIListItemReminder(reminder, treeChildren){
 	// don't with no Main List displayed
 
-	if (reminderfox.util.layoutStatus() < 1)  return;
+	//60+  if (reminderfox.util.layoutStatus() < 1)  return;
 
 	if (treeChildren == null) {
 		treeChildren = reminderfox_isReminderTabSelected()
@@ -5336,7 +5331,7 @@ function getOriginEventDate() {
 
 
 function selectReminderById(reminderID, list){
-	if (reminderfox.calendar.layout.status == -1) return; // call from menu icon
+//	if (reminderfox.calendar.layout.status == -1) return; // call from menu icon
 	var treeName =  (list == null) ? "reminderTree" : "todoTree";
 	var treeChildren = (list == null) ? document.getElementById("treechildren") : document.getElementById("todo_treechildren");;
 
@@ -5365,7 +5360,7 @@ function selectReminderById(reminderID, list){
 
 
 function selectTodoById(todoListName, reminderID){
-	if (reminderfox.calendar.layout.status == -1) return; // call from menu icon
+//	if (reminderfox.calendar.layout.status == -1) return; // call from menu icon
 
 	var tabList = document.getElementById("rmFx-tabList");
 
@@ -5554,7 +5549,7 @@ function updateInListReminder(reminder){
 
 //	reminderfox.calendar.dateArray.EventUpdate (reminder.date);
 
-	if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
+//	if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
 
 	var currentSelectedDate = reminderfox.datePicker.gSelectedDate
 

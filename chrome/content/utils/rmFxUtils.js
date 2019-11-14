@@ -1930,6 +1930,10 @@ reminderfox.util.addMultipleEvents= function (newEvents, newTodos) {
 // *****************************************************************************
 reminderfox.util.openURL= function(UrlToGoTo, pageIdentifier){
 //------------------------------------------------------------------------------
+  if ( pageIdentifier == null ) {
+    pageIdentifier = 'reminderfox_infoPage';
+  }
+
 	if ("@mozilla.org/messenger;1" in Cc) {
 		var messenger = Cc["@mozilla.org/messenger;1"].createInstance()
 			.QueryInterface(Ci.nsIMessenger);
@@ -1943,136 +1947,38 @@ reminderfox.util.openURL= function(UrlToGoTo, pageIdentifier){
 			reminderfox.util.PromptAlert (msgString);
 		}
 	}
-	else {  // --- Firefox part ---
-		// display on browser tab, if it's known reuse it
-		if ( pageIdentifier == null ) {
-			pageIdentifier = 'reminderfox_infoPage';
-		}
-		reminderfox.util.openAndReuseOneTabPerAttribute(pageIdentifier, UrlToGoTo);
-	}
 };
-
-
-//rf.faqURL= http://www.reminderfox.org/documentation
-//rf.printingUser=http://www.reminderfox.org/printing/
-
-//rf.faqURL=http://www.reminderfox.org/documentation-german/
-//rf.printingUser=http://www.reminderfox.org/printing-de/
-
-
-reminderfox.util.launchHelp= function(whichHelp){
-
-	if ((whichHelp === "") || (!whichHelp)) {
-		reminderfox.util.docRmFX(reminderfox.string("rf.faqURL"));
-	} else {
-		reminderfox.util.docRmFX(reminderfox.string(whichHelp));
-	}
-};
-
-reminderfox.util.launchForum= function(whichHelp){
-
-}
 
 
 reminderfox.util.docRmFX= function(UrlToGoTo){
 //------------------------------------------------------------------------------
-//reminderfox.util.Logger('ALERT', "  .util.docRmFX  UrlToGoTo  >" + UrlToGoTo + "<");
+  if (UrlToGoTo == "forum") {
+    UrlToGoTo = "https://groups.google.com/forum/#!forum/reminderfox"
+  } else {
 
-	if ((UrlToGoTo === "") || (!UrlToGoTo)) {
-		UrlToGoTo = (reminderfox.consts.REMINDER_FOX_PAGE_URL + "/");
-	}
+    if ((UrlToGoTo === "") || (!UrlToGoTo)) {
+      UrlToGoTo = "index.html";  //home page for documentation
+    } else {
+      // link may point to #Anchor
+      // split it out and append behind .html
+      let urlAnchor = UrlToGoTo.split('#');
+      UrlToGoTo = urlAnchor[0];
+      let anchor = ((urlAnchor[1]||"") == "") ? "" : ("#" + urlAnchor[1]);
 
-	if (UrlToGoTo == "forum") {
-		UrlToGoTo = "https://groups.google.com/forum/#!forum/reminderfox"
-	} else {
-	if (UrlToGoTo.indexOf(reminderfox.consts.REMINDER_FOX_PAGE_URL) == -1)
-		UrlToGoTo = reminderfox.consts.REMINDER_FOX_PAGE_URL +"/" + UrlToGoTo;
-	}
+      if (rmFxDocs[UrlToGoTo].split(',').indexOf(navigator.language) != -1) {
+        UrlToGoTo = UrlToGoTo + "-" + navigator.language + ".html";
+      } else {
+        UrlToGoTo = UrlToGoTo + "-en" + ".html";
+      }
+      UrlToGoTo = UrlToGoTo + anchor;
+    }
 
-	if ("@mozilla.org/messenger;1" in Cc) {
+    if (UrlToGoTo.indexOf(reminderfox.consts.REMINDER_FOX_PAGE_URL) == -1)
+      UrlToGoTo = "file:///home/guenter/git/rmFx_60/docs/" +  UrlToGoTo;
 
-	//	var url = reminderfox.util.encodeUTF8 (UrlToGoTo);
-		var url = (UrlToGoTo);
-
-		var tabmail = document.getElementById("tabmail");
-		if (!tabmail) {
-			// Try opening new tabs in an existing 3pane window
-			var mail3PaneWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
-					.getService(Ci.nsIWindowMediator)
-					.getMostRecentWindow("mail:3pane");
-			if (mail3PaneWindow) {
-				tabmail = mail3PaneWindow.document.getElementById("tabmail");
-				mail3PaneWindow.focus();
-			}
-		}
-
-		if (tabmail) {
-			// because we want the "reuse" the same tab, but tabmail hasn't (???)
-			// a reuse mode, the 'contentTab' will be closed before open with the new url
-			tabmail.selectTabByMode('contentTab');
-			var tIndex = tabmail.tabContainer.selectedIndex;
-			var tType = tabmail.tabContainer.selectedItem.getAttribute('type');		// = [string] "folder"
-
-			if (tType != "contentTab")
-				tabmail.openTab("contentTab", {contentPage: url, clickHandler: "http://www.reminderfox.org/"});
-
-			else {
-				var aTab = tabmail.tabInfo[tIndex].browser.contentDocument.location;
-				aTab.href = url;
-			}
-		}
-		else {
-			window.openDialog("chrome://messenger/content/", "_blank", "chrome,dialog=no,all", null,
-				{ tabType: "contentTab", tabParams: {contentPage: url} });
-		}
-		return;
-	}
-	else {  // --- Firefox part ---
-		// display on browser tab, if it's known reuse it
-		reminderfox.util.openAndReuseOneTabPerAttribute('reminderfox_infoPage', UrlToGoTo);
-	}
-};
-
-reminderfox.util.openAndReuseOneTabPerAttribute= function(attrName, url) {
-//------------------------------------------------------------------------------
-	var tabbrowser;
-
-	var wm = Cc["@mozilla.org/appshell/window-mediator;1"]
-					.getService(Ci.nsIWindowMediator);
-	for (var found = false, index = 0, tabbrowser = wm.getEnumerator('navigator:browser').getNext().gBrowser;
-		index < tabbrowser.tabContainer.childNodes.length && !found;
-		index++) {
-
-		// Get the next tab
-		var currentTab = tabbrowser.tabContainer.childNodes[index];
-
-		// Does this tab contain our custom attribute?
-		if (currentTab.hasAttribute(attrName)) {
-
-		// Yes--select and focus it.
-			tabbrowser.selectedTab = currentTab;
-
-			// Focus *this* browser window in case another one is currently focused
-			tabbrowser.ownerDocument.defaultView.focus();
-			tabbrowser.ownerDocument.defaultView.openUILink(url);
-			found = true;
-		}
-	}
-
-	if (!found) {
-		var browserEnumerator = wm.getEnumerator("navigator:browser");
-		tabbrowser = browserEnumerator.getNext().gBrowser;
-
-		// Create tab
-		var newTab = tabbrowser.addTab(url);
-		newTab.setAttribute(attrName, "xyz");
-
-		// Focus tab
-		tabbrowser.selectedTab = newTab;
-
-		// Focus *this* browser window in case another one is currently focused
-		tabbrowser.ownerDocument.defaultView.focus();
-	}
+      //UrlToGoTo = reminderfox.consts.REMINDER_FOX_PAGE_URL + "/" + UrlToGoTo;
+  }
+  reminderfox.util.openURL(UrlToGoTo);
 };
 
 
@@ -2192,9 +2098,6 @@ console.trace();
 		var msg = "[[" + Components.stack.caller.filename + "  # " +
 		Components.stack.caller.lineNumber + "]]";
 		this.loggedAt = msg;
-
-		console.log("//gW ####  dispatch  id:", id, "\n   caller: \n");
-		console.trace();
 
 		switch (id) {
 			// *** XUL calls for dispachting and optional  fct call ***
@@ -3058,7 +2961,7 @@ function reminderfox_isReminderTabSelected(){
 	return isReminder;
 }
 
-
+/*60+
 reminderfox.util.layoutStatus= function () {
 //-----------------------------------------
 	var status = -1;
@@ -3069,7 +2972,7 @@ reminderfox.util.layoutStatus= function () {
 	}
 	return status;
 };
-
+------------*/
 
 /*
  * Open a panel with a picture with hovering over a image/thumb picture.
@@ -3689,13 +3592,3 @@ reminderfox.util.listItemMoveDown=function(_list) {
 		_box.selectedIndex = _index + 1;
 	}
 }
-
-reminderfox.util.testing=function(){
-
-	console.log("******* entry for testing ********");
-
-	var x =0;
-
-	console.log("******* testing done ********");
-
-};

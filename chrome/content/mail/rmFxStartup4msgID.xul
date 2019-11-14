@@ -21,7 +21,7 @@
 	<groupbox align="center" orient="horizontal">
 		<vbox>
 			<image src="chrome://reminderfox/skin/images/foxy-small.png"
-				onclick="reminderfox.util.docRmFX();" />
+				onclick="reminderfox.util.docRmFX(doc-1);" />
 		</vbox>
 		<vbox>
 			<text id="rmFx_msg1" value="" />

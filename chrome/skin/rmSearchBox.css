@@ -5,7 +5,6 @@
 }
 
 #rmFx-searchText-box {
-	-moz-binding: url("chrome://reminderfox/content/searchbar/rmSearch.xml#searchbar");
 	width: 150px !important;
 }
 

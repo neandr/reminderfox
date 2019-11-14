@@ -284,9 +284,9 @@
 
 <!-- Suspend Alerts and Alarms dialog -->
 <!ENTITY rf.suspendalarms.dialog.title   "Alarme und Hinweise aussetzen">
-<!ENTITY rf.suspendalarms.dialog.label  "Alarme und Hinweise werden ausgesetzt.">   
-<!ENTITY rf.suspendalarms.resume.label  "Alarme und Hinweise wieder aktivieren in">  
-<!ENTITY rf.suspendalarms.resume.time.info  "Wieder aktivieren um">  
+<!ENTITY rf.suspendalarms.dialog.label  "Alarme und Hinweise werden ausgesetzt.">
+<!ENTITY rf.suspendalarms.resume.label  "Alarme und Hinweise wieder aktivieren in">
+<!ENTITY rf.suspendalarms.resume.time.info  "Wieder aktivieren um">
 
 
 <!-- Quick Alarm dialog -->
@@ -298,7 +298,7 @@
 
 <!-- Options dialog -->
 
-<!ENTITY rf.options.title.label "&rf.name;-Einstellungen">
+<!ENTITY rf.options.title.label "&rf.name; Einstellungen">
 <!ENTITY rf.options.tab.General "Generelles">
 <!ENTITY rf.options.tab.Access "Zugriff">
 <!ENTITY rf.options.tab.Dialog "Hauptdialog">
@@ -343,7 +343,7 @@
 <!ENTITY rf.printing.agenda.openatstart "Agenda beim Start der Anwendung anzeigen">
 
 <!--ENTITY rf.options.display.listsetup.label  "Listen und Kalender Einstellungen"-->
-<!ENTITY rf.options.display.singlemenu.label  "Nur eine Tastenleiste verwenden">  
+<!ENTITY rf.options.display.singlemenu.label  "Nur eine Tastenleiste verwenden">
 <!ENTITY rf.options.display.singlemenu.infoTTT  "Alle Schaltflächen befinden sich auf einer Menüleiste oberhalb der Liste; die OK Taste wird nicht gezeigt">
 <!ENTITY rf.options.display.nummonthdisplayed  "Anzahl der angezeigten Kalendermonate">
 <!--ENTITY rf.options.display.nummonth.help "Auswahl: 1 oder größer, typisch 3. Die Anzeige von vielen Monaten schränkt die Arbeitsgeschindigkeit ein!"-->

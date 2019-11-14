@@ -33,18 +33,16 @@
 			<separator class="thin" />
 
 			<text value="&rf.about.homepage.label;" style="font-weight: bold;" />
-			<text value="http://www.reminderfox.org/" class="url"
+			<text value="https://neandr.github.io/reminderfox/" class="url"
 				onclick="reminderfox.util.docRmFX(); window.close();" />
 			<separator class="thin" />
 
 			<text value="&rf.about.createdby.label;" style="font-weight: bold;" />
-			<text value="Daniel Lee" class="url"
-				onclick="reminderfox.util.docRmFX(); window.close();" />
+			<text value="Daniel Lee"  />
 			<separator class="thin" />
 
 			<text value="&rf.about.developers.label;" style="font-weight: bold;" />
-			<text value="Tom Mutdosch" class="url"
-				onclick="reminderfox.core.Send2List('tommut@gmail.com'); window.close();" />
+			<text value="Tom Mutdosch"  />
 			<separator class="thin" />
 
 			<text value="&rf.about.contributor.label;" style="font-weight: bold;" />
@@ -52,12 +50,13 @@
 				onclick="reminderfox.core.Send2List('gneandr@web.de'); window.close();" />
 			<separator class="thin" />
 
+    <!--
 			<text value="&rf.about.support.label;" style="font-weight: bold;" />
 			<text value="reminderfox@mozdev.org" class="url" id="supportPage"
 				onclick="reminderfox.core.Send2List(null); window.close();" />
 
 			<separator class="thin" />
-
+    -->
 			<text value="Reminderfox Forum / Support / Feedback" style="font-weight: bold;"
 				class="url" id="forumPage"
 				onclick="reminderfox.util.docRmFX('forum'); window.close();" />

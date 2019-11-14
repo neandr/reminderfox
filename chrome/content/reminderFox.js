@@ -2567,8 +2567,6 @@ reminderfox.overlay.start_postInit= function() {
         ignoreFirstRun = true;
     }
 
-	console.log("//gW ####  .overlay.start_postInit   oldVersionNumber:", oldVersionNumber);
-
     // load the default preferences (only the very first time that reminderfox is started; not each new window)
     var windowEnumerator =  reminderfox.core.getWindowEnumerator();
     if (windowEnumerator.hasMoreElements()) {

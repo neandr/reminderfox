@@ -18,6 +18,8 @@
 		windowtype="window:reminderfox.view.ManageDialog">
 
 	<script type="application/x-javascript" src="chrome://reminderfox/content/utils/rmFxUtils.js" />
+  <script type="application/x-javascript" src="chrome://reminderfox/content/doclist.js" />
+
 	<script type="application/x-javascript" src="chrome://reminderfox/content/addReminderDialog.js" />
 	<script type="application/x-javascript" src="chrome://reminderfox/content/reminderfox.js" />
 	<script type="application/x-javascript" src="chrome://reminderfox/content/reminderFoxCore.js" />
@@ -154,8 +156,8 @@
 		<spacer flex="100" />
 		<label id="optionslabel" align="center" class="small-margin, text-link"
 			value="&rf.views.learn.link.text;"
-			onclick="reminderfox.util.docRmFX('documentation-user-guide-main-reminderfox-window/#r5' );"
-			crop="end" />
+			crop="end"
+      onclick="reminderfox.util.docRmFX('doc-view-editor' );"/>
 	</hbox>
 	<hbox id="reminderFox-options-footer" class="reminderFox-footer3"
 		align="center" />

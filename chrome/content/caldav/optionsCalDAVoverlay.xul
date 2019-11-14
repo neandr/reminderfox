@@ -5,7 +5,7 @@
 <?xml-stylesheet href="chrome://reminderfox/skin/toolbar.css"  type="text/css"?>
 
 <!-- DTD Files -->
-<!DOCTYPE window 
+<!DOCTYPE window
 [
 	<!ENTITY % dtd2 SYSTEM "chrome://reminderfox/locale/reminderfox.dtd" > %dtd2;
 ]>
@@ -16,6 +16,8 @@
 	<script type="application/x-javascript" src="chrome://reminderfox/content/caldav/calDAVrequester.js" />
 	<script type="application/x-javascript" src="chrome://reminderfox/content/caldav/calDAVcalls.js" />
 	<script type="application/x-javascript" src="chrome://reminderfox/content/utils/HTTP.js" />
+
+  <script type="application/x-javascript" src="chrome://reminderfox/content/doclist.js" />
 
 	<vbox id="reminderFoxNetworkTab">
 
@@ -46,7 +48,7 @@
 						<spacer flex="1"/>
 						<label align="center" class="reminderfox-moreLabel" bold="true"
 							tooltiptext="&rf.caldav.desc6;"
-							onclick="reminderfox.util.docRmFX('remote-calendar-n/');" 
+							onclick="reminderfox.util.docRmFX('doc-ical');"
 							value="&rf.main.help.label; ..." />
 					</hbox>
 
@@ -130,8 +132,8 @@
 
 								<spacer flex="1" />
 								<label align="center" class="reminderfox-moreLabel" bold="true"
-									onclick="reminderfox.util.docRmFX('remote-calendar-n/#configure');" 
-									value="&rf.main.help.label; ..." tooltiptext="&rf.caldav.options.docu;"/>
+									value="&rf.main.help.label; ..." tooltiptext="&rf.caldav.options.docu;"
+                  onclick="reminderfox.util.docRmFX('doc-ical');"/>  <!-- /#configure');" -->
 							</hbox>
 						</vbox>
 
@@ -223,20 +225,20 @@
 				isNew:  true,
 				accounts :      this.calDAVaccounts
 			};
-			window.openDialog("chrome://reminderfox/content/caldav/calDAVedit.xul", 
+			window.openDialog("chrome://reminderfox/content/caldav/calDAVedit.xul",
 				"reminderFox-editServer", "chrome,resizable,modal", callOptions);
 
-			if (!((callOptions.ID == "%%") || (callOptions.ID == "?"))) 
+			if (!((callOptions.ID == "%%") || (callOptions.ID == "?")))
 				rmFx_calDAV_AddAccount (this.calDAVaccounts, callOptions.ID, callOptions);
 
-			// check if only one remote calendar, if yes, acitvate it as the default 
+			// check if only one remote calendar, if yes, acitvate it as the default
 			// for adding new events
 			rmFx_CalDAV_accountDefault_Selecting("");
 		}
 
 		/**
 		 *  Open the CalDAV Setup/Edit dialog
-		 *  @param {object} xthis: account definition passed with edit or null 
+		 *  @param {object} xthis: account definition passed with edit or null
 		 *  @param {object} newCalendar: if no first param a new calendar is defined
 		 */
 		function rmFx_calDAV_Configure(xthis) {
@@ -261,7 +263,7 @@
 				accounts :      this.calDAVaccounts
 			};
 
-			window.openDialog("chrome://reminderfox/content/caldav/calDAVedit.xul", 
+			window.openDialog("chrome://reminderfox/content/caldav/calDAVedit.xul",
 				"reminderFox-editServer", "chrome,resizable,modal", callOptions);
 
 			// check if 'Cancel'  was selected
@@ -276,9 +278,9 @@
 			elem.querySelector(".calDAV_Active").checked = callOptions.Active;
 
 			var aColor = (callOptions.calendarColor);
-			elem.querySelector("#calDAV_COLOR").setAttribute("style", 
+			elem.querySelector("#calDAV_COLOR").setAttribute("style",
 				"background-color:" + aColor + ";border: green 1px solid;");
-			elem.querySelector("#calDAV_COLOR").setAttribute('tooltiptext', 
+			elem.querySelector("#calDAV_COLOR").setAttribute('tooltiptext',
 				"Account Color: " + aColor + " (Based on remote calendar)");
 			elem.querySelector("#calDAV_COLOR").setAttribute('calendarColor', aColor);
 
@@ -304,7 +306,7 @@
 			var calendarName = elem.querySelector(".calDAV_Name").value;
 			var calendarID   = elem.querySelector(".calDAV_ID").value;
 
-			// check if unsaved events --> ask user to save them before hand 
+			// check if unsaved events --> ask user to save them before hand
 			if (reminderfox.core.checkModified()) return;
 
 			var msg = reminderfox.string("rf.calDav.edit.remove.msg");
@@ -377,7 +379,7 @@
 		var nextAccount, style, tboxName, button;
 
 		if (newAccount) {nextAccount = newAccount;}
-		else { 
+		else {
 			nextAccount = accounts[accountID];
 		}
 
@@ -425,7 +427,7 @@
 					var calDAVbadge = document.createElement("image");
 					bbox.appendChild(calDAVbadge);
 						calDAVbadge.setAttribute("class", "rmFx-calDAV-share24");
-		
+
 					var calDAVlabel = document.createElement("label");
 					stack.appendChild(calDAVlabel);
 						calDAVlabel.setAttribute("id", 'calDAV_ID');
@@ -440,7 +442,7 @@
 
 						var aColor = (nextAccount.calendarColor);
 						newBox.setAttribute("style", "background-color:" + aColor + ";border: green 1px solid;");
-						newBox.setAttribute('tooltiptext', 
+						newBox.setAttribute('tooltiptext',
 							"Account Color: " + aColor + " (Based on remote calendar)");
 						newBox.setAttribute("calendarColor", aColor);
 
@@ -496,13 +498,13 @@
 			var accountHasEvents = false;
 			for (var name in nextAccount) {
 				switch (name) {
-					case 'ID': 
-					case 'Typ': 
-					case 'Active': 
+					case 'ID':
+					case 'Typ':
+					case 'Active':
 					case 'Name':
-					case 'Url': 
-					case 'Login': 
-					case 'CTag': 
+					case 'Url':
+					case 'Login':
+					case 'CTag':
 					case 'Color':
 					case 'calendarColor': break;
 

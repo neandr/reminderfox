@@ -25,19 +25,19 @@
 	onkeypress="" onclick="" onblur="" width="800" height="500"
 
 	screenX="100" screenY="50" WIDE_width="800" WIDE_height="500"
-	WIDE_screenX="400" WIDE_screenY="10" SMALL_width="400" SMALL_height="500"
-	SMALL_screenX="600" SMALL_screenY="100" lxX="0" lxY="0" layout="1"
+	WIDE_screenX="400" WIDE_screenY="10"
+	lxX="0" lxY="0"
 	textSize="16" textSizeList="12" tab="0"
 	textFilter="0" viewsFilterEvents="0" viewsFilterLists="0"
 
 	persist="screenX screenY width height
-		tab layout textSize textSizeList
-		SMALL_width SMALL_height SMALL_screenX SMALL_screenY
-		WIDE_width WIDE_height WIDE_screenX WIDE_screenY lxX lxY
+		tab textSize textSizeList
+		WIDE_width WIDE_height lxX lxY
 		textFilter viewsFilterEvents viewsFilterLists">
 
 
 	<script type="application/x-javascript" src="chrome://reminderfox/content/utils/rmFxUtils.js" />
+  <script type="application/x-javascript" src="chrome://reminderfox/content/doclist.js" />
 
 	<script type="application/x-javascript" src="chrome://reminderfox/content/reminderFoxCore.js" />
 	<script type="application/x-javascript" src="chrome://reminderfox/content/reminderFox.js" />
@@ -70,6 +70,7 @@
 	<script type="application/x-javascript" src="chrome://reminderfox/content/caldav/calDAVrequester.js" />
 	<script type="application/x-javascript" src="chrome://reminderfox/content/caldav/calDAVcalls.js" />
 
+  <script type="application/x-javascript" src="chrome://reminderfox/content/doclist.js" />
 
 	<keyset id="reminderFoxKeys">
 		<key keycode="VK_ESCAPE" oncommand="window.close();" />
@@ -79,8 +80,10 @@
 		<key id="key_removeMonth" keycode="VK_PAGE_DOWN"
 			oncommand="reminderfox.calendar.ui.selectMonth(event, 1);" />
 
-		<key id="key_layout" key="l" modifiers="accel"
+	<!--	<key id="key_layout" key="l" modifiers="accel"
 			oncommand="reminderfox.calendar.layout.change();" />
+  -->
+
 		<key id="key_tabs" key="t" modifiers="accel" oncommand="rmFx_advanceTab();" />
 
 		<key id="key_today" key="."
@@ -133,19 +136,6 @@
 
 			<menupopup id="calendar-foxy-panel" onpopupshowing="reminderfox.overlay.activateOptionsContext(event);">
 
-				<menu id="calendar-layout-menu" label="&rf.calendar.layout.menu;"
-					oncommand="reminderfox.calendar.layout.menuSelect();">
-					<menupopup id="calendar-layout-popup">
-						<menuitem label="&rf.calendar.layout.ListCalendar;" id="rmFx_layout1"
-							oncommand="reminderfox.calendar.layout.change(1);" type="radio" />
-						<menuitem label="&rf.calendar.layout.List;" id="rmFx_layout2"
-							oncommand="reminderfox.calendar.layout.change(2);" type="radio" />
-						<menuitem label="&rf.calendar.layout.Calendar;" id="rmFx_layout0"
-							oncommand="reminderfox.calendar.layout.change(0);" type="radio" />
-					</menupopup>
-				</menu>
-
-				<menuseparator />
 				<menuitem label="&rf.add.reminders.context.find.label;" id="calendar-foxy-contextmenu-find"
 					onclick="doFind();reminderfox.calendar.ui.panelClose(); "
 					key="key_find" />
@@ -165,7 +155,8 @@
 					id="reminderfox-options-contextmenu-suspendAlerts"
 					onclick="reminderfox.overlay.toggleShowAlert();reminderfox.calendar.ui.panelClose(); " />
 
-				<menuseparator />
+        <hr style="border-top-width: 1px;border-top-style: solid;" />
+
 
 				<!-- ************* CalDAV ************* -->
 				<menu id="calDAV_accounts_menu" label="&rf.caldav.sync.support;">
@@ -178,22 +169,18 @@
 						<menuitem label="&rf.caldav.sync.help;"
 							tooltiptext="&rf.caldav.sync.help.status;"
 							type="radio"
-							onclick="reminderfox.util.docRmFX('remote-calendar-n/');" />	<!-- $$$_locale  NEW web address for 'Remote Calendar' Help ! -->
-
-						<menuseparator id="calDAVaccountSeparator1" />
+							onclick="reminderfox.util.docRmFX('doc-ical');" />
 
 						<menuitem id="rmFx_syncCalDAV" label="&rf.caldav.sync.all;"
 							onclick="rmFx_CalDAV_SyncActiveAccounts();"
 							type="radio" />
 							<!-- image="chrome://reminderfox/skin/images/icon_share_20w.png" -->
 
-						<menuseparator id="calDAVaccountSeparator2" />
-						<!-- menuitems for accounts added with rmFx_CalDAV_AccountSelect()
-							in calDAVcalls.js -->
+            <hr id="calDAVaccountSeparator2"
+              style="border-top-width: 1px;border-top-style: solid;" />
+
 					</menupopup>
 				</menu>
-
-				<menuseparator />
 
 				<menuitem
 					onclick="reminderfox.overlay.openOptionsDialog();reminderfox.calendar.ui.panelClose(); "
@@ -211,13 +198,13 @@
 					</menupopup>
 				</menu>
 
-				<menuseparator />
+        <hr style="border-top-width: 1px;border-top-style: solid;" />
 
 				<menuitem label="Reminderfox NEWS" id="reminderfox-news-open"
 					onclick="reminderfox.go4news.callNews();" />
 
 				<menuitem label="&rf.main.help.label;"
-					onclick="reminderfox.util.launchHelp();reminderfox.calendar.ui.panelClose(); "
+					onclick="reminderfox.util.docRmFX(doc-1);reminderfox.calendar.ui.panelClose(); "
 					tooltiptext="&rf.calendar.menu.options.docu;" />
 
 				<menuitem label="Reminderfox Forum / Support / Feedback"
@@ -257,7 +244,7 @@
 
 
 			<!-- 'userLists' .. will be build with /addReminderDialog.js rmFx_mainDialogLoad() -->
-			<menuseparator />
+      <hr style="border-top-width: 1px;border-top-style: solid;" />
 
 			<label id="rmFx_editLists" class="rmFx_panelItem"
 				value="&rf.calendar.menu.options.userlists;" onclick="reminderfox.overlay.openOptionsDialog('todoLists');" />
@@ -276,7 +263,7 @@
 				tooltiptext="&rf.calendar.menu.toggleSearchFilter;" />
 
 			<hbox id="rmFx-SearchAndFilter-Wide" flex="1">
-				<!--hbox id="rmFx-SearchTextAndFilter-Box" / -->
+				<hbox id="rmFx-SearchTextAndFilter-Box"/>
 			</hbox>
 
 
@@ -444,7 +431,7 @@
 							<menuitem id="reminderfox-calendar-addReminder" label="&rf.add.addReminder.addbutton.label;"
 								oncommand="reminderOrTodoAdd()" />
 
-							<menuseparator />
+                <hr style="border-top-width: 1px;border-top-style: solid;" />
 
 							<menuitem id="treechildren-contextmenu-edit" label="&rf.add.reminders.context.edit.label;"
 								oncommand="reminderOrTodoEdit()" />
@@ -457,7 +444,7 @@
 								<menupopup id="treechildren-contextmenu-moveReminderToList-popup">
 								</menupopup>
 							</menu>
-							<menuseparator />
+              <hr style="border-top-width: 1px;border-top-style: solid;" />
 
 							<!-- calDAV menu for individual sync a calendar-->
 							<menu id="treechildren-contextmenu-calDAV" label="&rf.caldav.calendar.syncto;">
@@ -466,7 +453,8 @@
 								</menupopup>
 							</menu>
 
-							<menuseparator id="treechildren-contextmenu-calDAV-separator" />
+              <hr id="treechildren-contextmenu-calDAV-separator"
+                style="border-top-width: 1px;border-top-style: solid;" />
 
 							<menuitem id="treechildren-contextmenu-important"
 								label="&rf.add.reminders.context.important.label;" type="checkbox"
@@ -477,7 +465,8 @@
 							<menuitem id="treechildren-contextmenu-remindUntilComplete"
 								label="&rf.add.reminders.context.remindUntilCompleted.label;"
 								type="checkbox" autocheck="false" oncommand="toggleRemindUntilCompleted()" />
-							<menuseparator />
+                <hr style="border-top-width: 1px;border-top-style: solid;" />
+
 							<menuitem id="treechildren-contextmenu-find" label="&rf.add.reminders.context.find.label;"
 								oncommand="doFind()" key="key_find" />
 							<menuitem id="treechildren-contextmenu-find"
@@ -497,7 +486,7 @@
 
 									<menuitem id="agendaXML" class="printXMLsystem" label="&rf.add.reminders.context.print.agenda.label;"
 										value="Agenda.xsl" oncommand="reminderfox_xmlPrint(this, 'XPI');" />
-									<menuseparator class="printXMLsystem" />
+									<hr class="printXMLsystem" />
 
 									<menuitem id="agendaXML1" class="printXMLsystem"
 										label="&rf.add.reminders.context.print.all;" value="Events(All).xsl"
@@ -506,15 +495,16 @@
 										label="&rf.add.reminders.context.print.selected;" value="Events(Selected).xsl"
 										oncommand="reminderfox_xmlPrint(this, 'XPI');" />
 
-									<menuseparator class="printXMLsystem" />
+                  <hr class="printXMLsystem" style="border-top-width: 1px;border-top-style: solid;" />
+
 									<menuitem id="agendaXML3" class="printXMLsystem"
 										label="&rf.add.reminders.context.print.installation;" value="Installation_Details.xsl"
 										oncommand="reminderfox_xmlPrint(this, 'XPI');" />
 
 									<menuitem label="&rf.main.help.label;" class="printXMLsystem"
-										onclick="reminderfox.util.launchHelp('rf.printingUser');reminderfox.calendar.ui.panelClose(); "
+										onclick="reminderfox.util.docRmFX('doc-printing');reminderfox.calendar.ui.panelClose(); "
 										tooltiptext="&rf.add.reminders.context.print.docu;" />
-									<menuseparator class="printXMLsystem" />
+                  <hr class="printXMLsystem" style="border-top-width: 1px;border-top-style: solid;" />
 
 								</menupopup>
 							</menu>
@@ -528,7 +518,7 @@
 								oncommand="reminderfox.mail.doShowMail();" key="key_viewMail" />
 
 							<!-- gW mail Reminders -->
-							<menuseparator />
+              <hr style="border-top-width: 1px;border-top-style: solid;" />
 
 							<menuitem id="treechildren-contextmenu-sendReminder"
 								label="&rf.add.reminders.context.exportSendReminders.label;"
@@ -646,7 +636,8 @@
 							<menuitem id="reminderfox-calendar-addTodo" label="&rf.add.todosr.addbutton.label;"
 								oncommand="reminderOrTodoAdd()" />
 
-							<menuseparator />
+              <hr style="border-top-width: 1px;border-top-style: solid;" />
+
 							<menuitem id="treechildren-contextmenu-edit2" label="&rf.add.todos.context.edit.label;"
 								oncommand="reminderOrTodoEdit()" />
 							<menuitem id="treechildren-contextmenu-copyTodo" label="&rf.add.todos.context.copy.label;"
@@ -667,12 +658,14 @@
 							<menuitem id="treechildren-contextmenu-showInTooltip"
 								label="&rf.add.todos.context.showInTooltip.label;" type="checkbox"
 								autocheck="false" oncommand="toggleShowInTooltipTodo()" />
-							<menuseparator />
+              <hr style="border-top-width: 1px;border-top-style: solid;" />
+
 							<menuitem id="treechildren-contextmenu-moveUp" label="&rf.add.todos.context.moveTodoUp.label;"
 								oncommand="moveTodoUp()" key="key_moveTodoUp" />
 							<menuitem id="treechildren-contextmenu-moveDown" label="&rf.add.todos.context.moveTodoDown.label;"
 								oncommand="moveTodoDown()" key="key_moveTodoDown" />
-							<menuseparator />
+              <hr style="border-top-width: 1px;border-top-style: solid;" />
+
 							<menuitem id="treechildren-contextmenu-find2" label="&rf.add.reminders.context.find.label;"
 								oncommand="doFind()" key="key_find" />
 							<menuitem id="treechildren-contextmenu-hideCompleted2"
@@ -684,7 +677,8 @@
 								<menupopup id="exportXML-todo-popup" onpopupshowing="reminderfox_PrintMenuSetup(this);">
 									<menuitem id="agendaXML" class="printXMLsystem" label="&rf.add.reminders.context.print.agenda.label;"
 										value="Agenda.xsl" oncommand="reminderfox_xmlPrint(this, 'XPI');" />
-									<menuseparator class="printXMLsystem" />
+
+                  <hr class="printXMLsystem" style="border-top-width: 1px;border-top-style: solid;" />
 
 									<menuitem id="agendaXML1" class="printXMLsystem"
 										label="&rf.add.reminders.context.print.all;" value="Events(All).xsl" oncommand="reminderfox_xmlPrint(this, 'XPI');" />
@@ -692,12 +686,13 @@
 										label="&rf.add.reminders.context.print.selected;" value="Events(Selected).xsl"
 										oncommand="reminderfox_xmlPrint(this, 'XPI');" />
 
-									<menuseparator class="printXMLsystem" />
+                  <hr class="printXMLsystem" style="border-top-width: 1px;border-top-style: solid;" />
 
 									<menuitem label="&rf.main.help.label;" class="printXMLsystem"
-										onclick="reminderfox.util.launchHelp('rf.printingUser');reminderfox.calendar.ui.panelClose(); "
+										onclick="reminderfox.util.docRmFX('doc-printing');reminderfox.calendar.ui.panelClose(); "
 										tooltiptext="&rf.add.reminders.context.print.docu;" />
-									<menuseparator class="printXMLsystem" />
+
+                    <hr class="printXMLsystem" style="border-top-width: 1px;border-top-style: solid;" />
 
 								</menupopup>
 							</menu>
@@ -705,7 +700,7 @@
 							<menuitem id="treechildren-contextmenu-showMail2" label="&rf.add.reminders.context.viewMail.label;"
 								oncommand="reminderfox.mail.doShowMailTodo();" key="key_viewMail" />
 
-							<menuseparator />
+              <hr style="border-top-width: 1px;border-top-style: solid;" />
 
 							<menuitem id="treechildren-contextmenu-sendTodos"
 								label="&rf.add.reminders.context.exportSendTodos.label;"
@@ -731,10 +726,10 @@
 
 	</hbox> <!-- rmFx-MainDialog-List-Calendar -->
 
-	<hbox id="bottomButtonBox" hidden="true">
+	<!-- hbox id="bottomButtonBox" hidden="true">
 		<spacer width="4px" />
 
-		<!-- rf.add.addReminder.addbutton.label rf.add.todosr.addbutton.label -->
+		<!- - rf.add.addReminder.addbutton.label rf.add.todosr.addbutton.label - ->
 		<button id="reminderfox-calendar-add" label="&rf.reminderoptions.addEvent;"
 			icon="false" oncommand="reminderOrTodoAdd();" onmouseover="reminderfox.calendar.ui.panelClose()"
 			tooltiptext="&rf.calendar.add.event2list;" />
@@ -744,7 +739,7 @@
 		<button id="reminderfox-calendar-events-donebutton2" label="&rf.add.addReminder.donebutton.label;"
 			oncommand="close();" />
 		<spacer width="4px" />
-	</hbox>
+	</hbox>   -->
 
 
 	<!-- date selector popup -->
@@ -809,12 +804,12 @@
 		}
 
 		var textFilter = document.documentElement.attributes["textFilter"].value
-	//	reminderfox.util.Logger('ALERT', " textFiltering on XUL start" + textFilter )
+	/**/	reminderfox.util.Logger('ALERT', " textFiltering on XUL start: " + textFilter )
 		reminderfox.search.textSearchType = textFilter
 
 		var viewsFilterEvents = +document.documentElement.attributes["viewsFilterEvents"].value
 		var viewsFilterLists  = +document.documentElement.attributes["viewsFilterLists"].value
-	//	reminderfox.util.Logger('ALERT', " viewsFilters on XUL start   Events|Lists : " + viewsFilterEvents + "|" + viewsFilterLists)
+	/**/	reminderfox.util.Logger('ALERT', " viewsFilters on XUL start   Events|Lists : " + viewsFilterEvents + "|" + viewsFilterLists)
 		reminderfox.search.viewsFilterEvents = viewsFilterEvents
 		reminderfox.search.viewsFilterLists  = viewsFilterLists
 

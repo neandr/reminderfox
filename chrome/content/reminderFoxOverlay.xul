@@ -24,6 +24,8 @@
 
 	<!-- core APIs -->
 	<script type="application/x-javascript" src="chrome://reminderfox/content/utils/rmFxUtils.js" />
+  <script type="application/x-javascript" src="chrome://reminderfox/content/doclist.js" />
+
 	<script type="application/x-javascript" src="chrome://reminderfox/content/reminderFoxCore.js" />
 	<script type="application/x-javascript" src="chrome://reminderfox/content/reminderFox.js" />
 
@@ -42,17 +44,18 @@
 	<script type="application/x-javascript"		src="chrome://reminderfox/content/network/passwordManagerUtils.js" />
 <!--****************************** -->
 
+  <script type="application/x-javascript" src="chrome://reminderfox/content/doclist.js" />
 
 	<script type="application/x-javascript">
 		window.addEventListener("load", reminderfox.overlay.start, false);
 	</script>
 
+<!--   disabled for testing with TB65 ...............................
 	<window id="main-window">
 		<popupset id="mainPopupSet"/>
 	</window>
 
-
-	<!-- Firefox Tools Menu -->
+	<!- - Firefox Tools Menu - ->
 	<menupopup id="menu_ToolsPopup">
 		<menu id="reminderFox-tools-menu" label="&rf.name;"
 				accesskey="&rf.toolsmenu.Reminderfox.accesskey;" class="menu-iconic reminderfox-icon"
@@ -71,17 +74,17 @@
 						oncommand="reminderfox.overlay.openOptionsDialog()"
 						accesskey="&rf.toolsmenu.Options.accesskey;" />
 				<menuitem label="&rf.main.help.label;" class="reminderfox-icon-none"
-						oncommand="reminderfox.util.launchHelp();"
+						oncommand="reminderfox.util.docRmFX();"
 						accesskey="&rf.toolsmenu.Help.accesskey;" />
-				<!-- For debugging  -->
+				<!- - For debugging  - ->
 				<menuitem label="Debug"  hidden="true" oncommand="reminderfox.overlay.runDebug();"/>
-		<!--
+		<!- -
 				<menuitem label="Process Alarms"  oncommand="reminderfox.overlay.processRecentReminders();"/>
-		-->
+		- ->
 			</menupopup>
 		</menu>
 	</menupopup>
-
+.........................  -->
 
 	<popupset id="mainPopupSet">
 		<tooltip id="reminderFox_tip" noautohide="true" orient="horizontal"
@@ -141,14 +144,15 @@
 			<menuitem id="reminderfox-options-contextmenu-suspendAlerts" label="&rf.main.showalerts.label;" oncommand="reminderfox.overlay.toggleShowAlert();"/>
 			<menuseparator/>
 			<menuitem label="&rf.main.options.label;" oncommand="reminderfox.overlay.openOptionsDialog();" />
-			<menuitem label="&rf.main.homepage.label;"  oncommand="reminderfox.util.docRmFX();" />
-			<menuitem label="&rf.main.help.label;"  oncommand="reminderfox.util.launchHelp();" />
+			<menuitem label="&rf.main.homepage.label;"  oncommand="reminderfox.util.docRmFX('doc-1');" />
 
 			<menuitem label="Reminderfox Forum / Support / Feedback"
 				oncommand="reminderfox.util.docRmFX('forum');"
 			tooltiptext="See and share user discussions, get answers and recommendations to your questions."/>
 
-			<menuitem id="reminderfox-options-contextmenu-editreminder" label="&rf.main.about.label;" oncommand="reminderfox.overlay.openAboutReminderFoxDialog();"/>
+			<menuitem id="reminderfox-options-contextmenu-editreminder"
+        label="&rf.main.about.label;"
+        oncommand="reminderfox.overlay.openAboutReminderFoxDialog();"/>
 		</menupopup>
 
 		<panel onpopupshowing="reminderfox.overlay.showCalendar(event);"
@@ -157,13 +161,14 @@
 		</panel>
 	</popupset>
 
-
-	<popup id="contentAreaContextMenu">  <!-- context-sep-open" -->
+<!--    disable for TB65    this for FX ......................
+	<popup id="contentAreaContextMenu">  <! - - context-sep-open" - - >
 		<menuitem label="&rf.importing.title;" insertbefore="context-sep-selectall"
 				id="reminderfox_addReminder"  oncommand="reminderfox.userIO.addReminder4WebPage(this);"/>
 		<menuitem label="&rf.main.contextmenu.subscribe.label;" class="menuitem-iconic" insertafter="context-stop"
 				id="reminderfox_subscribeReminder" oncommand="reminderfox.userIO.addReminder4WebPage(this);"/>
 	</popup>
+............... -->
 
 	<!-- Firefox  ******  DISABLED ***** - - >
 	<toolbarpalette id="BrowserToolbarPalette">
@@ -213,21 +218,23 @@
 	<window id="messengerWindow">
 		<popupset id="mainPopupSet"/>
 	</window>
-
+<!-- .....  disable for TB65    this for FX ...........
 	<window id="calendar-window">
 		<popupset id="mainPopupSet"/>
 	</window>
+.............. -->
 
+<!-- ......  disable for TB65    this for Seamonkey ...........
 	<window id="addressbookWindow">
 		<popupset id="mainPopupSet"/>
 	</window>
-
+............... -->
 
 	<!--  Tools file menu -->
 	<menupopup id="taskPopup">
 		<menu id="reminderFox-tools-menu" label="&rf.name;"
 				class="menu-iconic reminderfox-icon menuitem-iconic"
-				insertafter="devToolsSeparator">
+				insertafter="devToolsSeparator">          <!--     ????????????? -->
 			<menupopup>
 				<menuitem label="&rf.main.icons.openReminderfox.label;"
 						oncommand="reminderfox.overlay.openMainDialog(true, 'reminders')"
@@ -241,13 +248,10 @@
 				<menuitem label="&rf.main.options.label;"
 						oncommand="reminderfox.overlay.openOptionsDialog()"
 						accesskey="&rf.toolsmenu.Options.accesskey;" />
-						<menuitem label="&rf.main.help.label;"
-								oncommand="reminderfox.util.launchHelp();"
-								accesskey="&rf.toolsmenu.Help.accesskey;" />
+				<menuitem label="&rf.main.help.label;"
+						oncommand="reminderfox.util.docRmFX('doc-1');"
+						accesskey="&rf.toolsmenu.Help.accesskey;" />
 
-				<!--   TESTING -->
-				<menuitem label="**testing**"
-						oncommand="reminderfox.util.testing();"/>
 			</menupopup>
 		</menu>
 	</menupopup>

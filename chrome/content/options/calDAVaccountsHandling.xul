@@ -12,6 +12,7 @@
 		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<script type="application/x-javascript" src="chrome://reminderfox/content/utils/rmFxUtils.js" />
+  <script type="application/x-javascript" src="chrome://reminderfox/content/doclist.js" />
 
 	<groupbox align="center" orient="horizontal">
 		<hbox>
@@ -25,7 +26,7 @@
 
 			<hbox>
 				<label align="center" class="reminderfox-moreLabel" bold="true"
-					onclick="reminderfox.util.docRmFX('reminderfoxcaldav-support/');"
+					onclick="reminderfox.util.docRmFX('doc-ical');"
 					value="&rf.main.help.label; .."  tooltiptext="&rf.calDav.davFile;"/>
 			</hbox>
 

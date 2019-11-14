@@ -20,10 +20,12 @@ disabled because not used with current XUL -->
 		id="reminderFox-options" windowtype="window:reminderFoxOptions"
 		persist="screenX, screenY" screenX="10" screenY="10"
 		onload="reminderFox_loadOptions()" oncommand="reminderFox_updateButtons(event);"
-		oninput="reminderFox_updateButtons(event);" title="&rf.options.title.label;">
-
+		oninput="reminderFox_updateButtons(event);" title="ReminderFox Options">
+<!-- title="&rf.options.title.label;">  -->
 
 	<script type="application/x-javascript" src="chrome://reminderfox/content/utils/rmFxUtils.js" />
+  <script type="application/x-javascript" src="chrome://reminderfox/content/doclist.js" />
+
 	<script type="application/x-javascript" src="chrome://reminderfox/content/utils/rmFxUserIO.js" />
 	<script type="application/x-javascript" src="chrome://reminderfox/content/network/passwordManagerUtils.js" />
 	<script type="application/x-javascript" src="chrome://reminderfox/content/options/reminderFoxOptions.js" />
@@ -56,11 +58,11 @@ disabled because not used with current XUL -->
 				<!-- 146 x 69 151x50 -->
 				<image src="chrome://reminderfox/skin/images/foxy-head.png"
 					onmouseover="this.style.cursor='pointer';"
-					onclick="reminderfox.util.docRmFX();" />
+					onclick="reminderfox.util.docRmFX('doc-1');" />
 				<vbox>
-					<text value=" http://www.reminderfox.org/" style="font-weight: bold"
+					<text value="&rf.options.title.label;" style="font-weight: bold"
 						class="url" onmouseover="this.style.cursor='pointer';"
-						onclick="reminderfox.util.docRmFX();" />
+						onclick="reminderfox.util.docRmFX('doc-options');" />
 				</vbox>
 			</row>
 		</rows>
@@ -69,9 +71,12 @@ disabled because not used with current XUL -->
 	<tabbox id="tabbox" flex="1" >
 		<tabs>
 			<tab id="general" label="&rf.options.tab.General;" selected="true"   docu="#general"/>
-			<tab id="application" label="&rf.options.tab.Access;"  docu="#system"/>	<!-- host system set with JS -->
-			<tab id="dialog" label="&rf.options.tab.Dialog;"  docu="#dialog"/>
-			<tab id="presets" label="&rf.options.tab.reminderEdit;"  docu="#addEdit"/>
+  <!--    <tab id="application" label="&rf.options.tab.Access;"  docu="#system"/>	 --> <!-- host system set with JS -->
+      <tab id="application" label="System"  docu="#system"/>	<!-- host system set with JS -->
+  <!--    <tab id="dialog" label="&rf.options.tab.Dialog;"  docu="#dialog"/>  -->
+      <tab id="dialog" label="Main Dialog"  docu="#dialog"/>
+  <!--    <tab id="presets" label="&rf.options.tab.reminderEdit;"  docu="#addEdit"/>  -->
+      <tab id="presets" label="Reminder Defaults"  docu="#addEdit"/>
 			<tab id="notifications" label="&rf.options.tab.notifications;" docu="#notifications"/>
 			<tab id="alarms" label="&rf.options.tab.alarms;" docu="#alarms"/>
 			<tab id="todoLists" label="&rf.options.todoLists;" docu="#lists"/>
@@ -89,8 +94,8 @@ disabled because not used with current XUL -->
 							<label value="&rf.options.reminderfox;" />
 							<spacer flex="1" />
 							<label align="center" class="reminderfox-moreLabel"  bold="true"
-								onclick="reminderfox.util.docRmFX('optionsdialog/#general' );"
-								value="&rf.main.help.label; ..." tooltiptext="&rf.options.dataLocations;" />
+								value="&rf.main.help.label; ..." tooltiptext="&rf.options.dataLocations;"
+                onclick="reminderfox.util.docRmFX('doc-options#general');"/>  <!--"/#general' );"-->
 						</hbox>
 					</caption>
 
@@ -139,8 +144,8 @@ disabled because not used with current XUL -->
 							<label value="&rf.options.calendarDefaults;" />
 							<spacer flex="1" />
 							<label align="center" class="reminderfox-moreLabel"  bold="true"
-								onclick="reminderfox.util.docRmFX('optionsdialog/#defaultsCalendar');"
-								value="&rf.main.help.label; ..." tooltiptext="&rf.options.documentation.Base;" />
+								value="&rf.main.help.label; ..." tooltiptext="&rf.options.documentation.Base;"
+                onclick="reminderfox.util.docRmFX('doc-options#calendarDefaults');" />  <!--"/#defaultsCalendar');"-->
 						</hbox>
 					</caption>
 
@@ -220,11 +225,11 @@ disabled because not used with current XUL -->
 
 					<caption flex="1">
 						<hbox align="center" flex="1">
-							<label id="applicationBar" value="Firefox Add-on Bar / Thunderbird Status Bar" />  <!-- host system set with JS -->
+							<label id="applicationBar" value="Thunderbird Status Bar" />  <!-- host system set with JS -->
 							<spacer flex="1" />
 							<label align="center" class="reminderfox-moreLabel" bold="true"
-								onclick="reminderfox.util.docRmFX('optionsDialog/#system');"
-								value="&rf.main.help.label; ..."  tooltiptext="&rf.options.system.menu;" />
+								value="&rf.main.help.label; ..."  tooltiptext="&rf.options.system.menu;"
+                onclick="reminderfox.util.docRmFX('doc-options#system');" />  <!--"/#system');" -->
 						</hbox>
 					</caption>
 
@@ -279,10 +284,10 @@ disabled because not used with current XUL -->
 						<hbox align="center" flex="1">
 							<label value="&rf.options.webMail;" />
 
-							<spacer flex="1" />
-							<label align="center" class="reminderfox-moreLabel"  bold="true"
-								onclick="reminderfox.util.docRmFX('documentation-email-messages/');"
-								value="&rf.main.help.label; ..." tooltiptext="&rf.options.webMail.help;" />
+                <spacer flex="1" />
+  							<label align="center" class="reminderfox-moreLabel"  bold="true"
+  								value="&rf.main.help.label; ..." tooltiptext="&rf.options.webMail.help;"
+                  onclick="reminderfox.util.docRmFX('doc-email');" />
 						</hbox>
 					</caption>
 
@@ -315,8 +320,8 @@ disabled because not used with current XUL -->
 							<label value="&rf.printing.agenda; / &rf.options.printing;" />
 							<spacer flex="1" />
 							<label align="center" class="reminderfox-moreLabel"  bold="true"
-								onclick="reminderfox.util.docRmFX('printing-agenda-preview/');"
-								value="&rf.main.help.label; ..." tooltiptext="&rf.options.printing.agenda;" />
+								value="&rf.main.help.label; ..." tooltiptext="&rf.options.printing.agenda;"
+								onclick="reminderfox.util.docRmFX('doc-printing');"/>
 						</hbox>
 					</caption>
 
@@ -355,8 +360,8 @@ disabled because not used with current XUL -->
 
 							<spacer flex="1" />
 							<label align="center" class="reminderfox-moreLabel" bold="true"
-								onclick="reminderfox.util.docRmFX('optionsdialog/#dialog');"
-								value="&rf.main.help.label; ..." tooltiptext="&rf.main.help.tooltip;" />
+								value="&rf.main.help.label; ..." tooltiptext="&rf.main.help.tooltip;"
+                onclick="reminderfox.util.docRmFX('doc-options#dialog');"/> <!-- "/#dialog');" -->
 						</hbox>
 					</caption>
 
@@ -520,10 +525,11 @@ disabled because not used with current XUL -->
 
 								<label align="center" class="reminderfox-moreLabel"  bold="true"
 									tooltiptext="&rf.options.list.reminder.defaults.textSizeTTT;"
-									value="&rf.main.help.label; ..."  onclick="reminderfox.util.docRmFX('optionsdialog/#textSize');" />
-
+									value="&rf.main.help.label; ..."
+                  onclick="reminderfox.util.docRmFX('doc-overview#textSize');" />  <!-- "/#textSize');" /> -->
 							</row>
 
+          <!--
 							<row align="center">
 								<hbox align="center">
 									<checkbox id="reminderFox-disableLegacy" label="&rf.options.display.singlemenu.label;" />
@@ -531,18 +537,18 @@ disabled because not used with current XUL -->
 								</hbox>
 
 								<label align="center" class="reminderfox-moreLabel"  bold="true"
-									onclick="reminderfox.util.docRmFX('new-functions/#mainmenu')"
+									onclick="reminderfox.util.docRmFX()"
 									value="&rf.main.help.label; ..."  tooltiptext="&rf.options.display.singlemenu.infoTTT;"/>
 							</row>
-
+        -->
 							<row align="center">
 								<hbox align="center">
 									<checkbox id="reminderFox-panelTabHover" label="&rf.options.display.menu.open;" />
 									<spacer flex="1" />
 								</hbox>
 								<label align="center" class="reminderfox-moreLabel" bold="true"
-									onclick="reminderfox.util.docRmFX('new-functions/#RemindersTodosList')"
-									value="&rf.main.help.label; ..."  tooltiptext="&rf.options.layout.help;"/>
+									value="&rf.main.help.label; ..."  tooltiptext="&rf.options.layout.help;"
+                  onclick="reminderfox.util.docRmFX('doc-overview#RemindersTodosList');" />  <!-- "/#RemindersTodosList')" -->
 							</row>
 						</rows>
 
@@ -618,8 +624,8 @@ disabled because not used with current XUL -->
 							label="&rf.categories.options.default.category.label;" autocheck="false"
 							oncommand="rmFXtoggleGroup(rmFXelementIsTrue('reminderFox-cat'), 'inputRmCategories,catChange');" tabindex="12"  width="200px"/>
 						<textbox id="inputRmCategories" value="" disabled="true"  width="330px"/>
-
-						<toolbarbutton id="catChange" type="menu"
+<!-- ##Richard Marti  class="toolbarbutton-1" -->
+						<toolbarbutton id="catChange" type="menu" class="toolbarbutton-1"
 							tooltiptext="&rf.categories.tooltip.catChange;" onmousedown="reminderfox.category.Setup(this);">
 							<menupopup id="categories-menupopup" popupalign="topleft"
 								popupanchor="bottomleft">
@@ -1024,7 +1030,8 @@ disabled because not used with current XUL -->
 		</hbox>
 
 		<hbox class="reminderFox-footer" align="center">
-			<button label="&rf.main.help.label; ..." oncommand="reminderfox.util.docRmFX('optionsdialog')" />
+			<button label="&rf.main.help.label; ..."
+        oncommand="reminderfox.util.docRmFX('doc-options');" />
 			<spacer class="reminderFox-btnspacer" flex="1" />
 			<button label="&rf.ok;" default="true"
 				oncommand="reminderFox_saveOptionsAndClose()" />
