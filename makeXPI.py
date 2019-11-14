@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#  /makeXPI.py/  gWahl  2019-01-16/
+#  /makeXPI.py/  gWahl  2019-11-14/
 
 from __future__ import division
 from datetime import datetime
@@ -17,7 +17,7 @@ import shutil
 NAME = "Reminderfox"
 
 XPI_GUID      = "{ada4b710-8346-4b82-8199-5de2b400a6ae}"
-XPI_VERSION   = "2.1.6.6"
+XPI_VERSION   = "2.1.6.7"
 XPI_FORK      = ""
 
 XPI_LIST      = "license.txt,version.log,install.rdf,manifest.json,chrome.manifest,chrome,defaults,components,makeXPI.py"
@@ -107,7 +107,7 @@ def go_zip():
 if __name__ == "__main__":
 
     print ("""
-      XPI Building for Thunderbird/Firefox/SM """)
+      XPI Building for Thunderbird 60plus """)
 
     if (len(sys.argv) == 2) and sys.argv[1] == "--help":
         print ("""
@@ -131,7 +131,8 @@ if __name__ == "__main__":
           XPI_FORK = sys.argv[1]
 
        if XPI_FORK != "": xpi_fork = XPI_FORK + "_"
-       xpi_name_bak = NAME.lower() + "_" + XPI_VERSION + "_" + xpi_fork + xpi_dt + ".xpi"  #".zip"
+       # xpi_name_bak = NAME.lower() + "_" + XPI_VERSION + "_" + xpi_fork + xpi_dt + ".xpi"  #".zip"
+       xpi_name_bak = NAME.lower() + "_" + XPI_VERSION + ".xpi"  #".zip"
 
 
     xpiVersion()

@@ -1974,9 +1974,8 @@ reminderfox.util.docRmFX= function(UrlToGoTo){
     }
 
     if (UrlToGoTo.indexOf(reminderfox.consts.REMINDER_FOX_PAGE_URL) == -1)
-      UrlToGoTo = "file:///home/guenter/git/rmFx_60/docs/" +  UrlToGoTo;
-
-      //UrlToGoTo = reminderfox.consts.REMINDER_FOX_PAGE_URL + "/" + UrlToGoTo;
+      //UrlToGoTo = "file:///home/guenter/git/rmFx_60/docs/" +  UrlToGoTo;
+      UrlToGoTo = reminderfox.consts.REMINDER_FOX_PAGE_URL + "/" + UrlToGoTo;
   }
   reminderfox.util.openURL(UrlToGoTo);
 };
@@ -3108,7 +3107,7 @@ reminderfox.go4news = {
 //------------------------------------------------------------------------------
 	currentNewsDate : "",
 	currentNews : "--",
-	urlNews: "https://neandr.github.io/reminderfox/rmFXnews",
+	urlNews: "https://neandr.github.io/reminderfox/rmFXnews.html",
 
 
 	/**
