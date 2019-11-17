@@ -1928,32 +1928,98 @@ reminderfox.util.addMultipleEvents= function (newEvents, newTodos) {
 
 
 // *****************************************************************************
-reminderfox.util.openURL= function(UrlToGoTo, pageIdentifier){
-//------------------------------------------------------------------------------
-  if ( pageIdentifier == null ) {
-    pageIdentifier = 'reminderfox_infoPage';
-  }
+reminderfox.util.openURL= function(UrlToGoTo){
 
-	if ("@mozilla.org/messenger;1" in Cc) {
-		var messenger = Cc["@mozilla.org/messenger;1"].createInstance()
-			.QueryInterface(Ci.nsIMessenger);
-		var url = reminderfox.util.encodeUTF8 (UrlToGoTo);
+  if ("@mozilla.org/messenger;1" in Cc) {
+  //	var url = reminderfox.util.encodeUTF8 (UrlToGoTo);
+    var url = (UrlToGoTo);
 
-		try {
-			messenger.launchExternalURL(url);
-		} catch (ex) {
-			var msgString = "Check Messenger settings for opening web pages."
-				+ "\n (Called: " + url;
-			reminderfox.util.PromptAlert (msgString);
-		}
-	}
-};
+    var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
+    var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
+
+    var topWindow = windowManagerInterface.getMostRecentWindow("mail:3pane");
+    topWindow.focus();
+
+    var tabmail = topWindow.document.getElementById("tabmail");
+
+    if (tabmail) {
+      // because we want the "reuse" the same tab, but tabmail hasn't (???)
+      // a reuse mode, the 'contentTab' will be closed before open with the new url
+    //  tabmail.selectTabByMode('contentTab');
+      var tIndex = tabmail.tabContainer.selectedIndex;
+      var tabType = tabmail.tabContainer.selectedItem.getAttribute('type');		// = [string] "folder"
+
+      console.log('//openURL #0.1   tabType ', tabType);
+      if (tabType != "contentTab") {
+        tabmail.openTab("contentTab",
+        {contentPage: url, clickHandler: "http://www.reminderfox.org/"});
+      }
+      else {
+        var aTab = tabmail.tabInfo[tIndex].browser.contentDocument.location;
+        aTab.href = url;
+      }
+    }
+    else {
+      window.openDialog("chrome://messenger/content/", "_blank", "chrome,dialog=no,all", null,
+        { tabType: "contentTab", tabParams: {contentPage: url} });
+    }
+    return;
+    } else {  // --- Firefox part ---
+  		// display on browser tab, if it's known reuse it
+  		reminderfox.util.openAndReuseOneTabPerAttribute('reminderfox_infoPage', UrlToGoTo);
+  	}
+  };
+
+  reminderfox.util.openAndReuseOneTabPerAttribute= function(attrName, url) {
+  //------------------------------------------------------------------------------
+  	var tabbrowser;
+
+  	var wm = Cc["@mozilla.org/appshell/window-mediator;1"]
+  					.getService(Ci.nsIWindowMediator);
+  	for (var found = false, index = 0, tabbrowser = wm.getEnumerator('navigator:browser').getNext().gBrowser;
+  		index < tabbrowser.tabContainer.childNodes.length && !found;
+  		index++) {
+
+  		// Get the next tab
+  		var currentTab = tabbrowser.tabContainer.childNodes[index];
+
+  		// Does this tab contain our custom attribute?
+  		if (currentTab.hasAttribute(attrName)) {
+
+  		// Yes--select and focus it.
+  			tabbrowser.selectedTab = currentTab;
+
+  			// Focus *this* browser window in case another one is currently focused
+  			tabbrowser.ownerDocument.defaultView.focus();
+  			tabbrowser.ownerDocument.defaultView.openUILink(url);
+  			found = true;
+  		}
+  	}
+
+  	if (!found) {
+  		var browserEnumerator = wm.getEnumerator("navigator:browser");
+  		tabbrowser = browserEnumerator.getNext().gBrowser;
+
+  		// Create tab
+  		var newTab = tabbrowser.addTab(url);
+  		newTab.setAttribute(attrName, "xyz");
+
+  		// Focus tab
+  		tabbrowser.selectedTab = newTab;
+
+  		// Focus *this* browser window in case another one is currently focused
+  		tabbrowser.ownerDocument.defaultView.focus();
+  	}
+  };
 
 
 reminderfox.util.docRmFX= function(UrlToGoTo){
 //------------------------------------------------------------------------------
   if (UrlToGoTo == "forum") {
-    UrlToGoTo = "https://groups.google.com/forum/#!forum/reminderfox"
+    var messenger = Cc["@mozilla.org/messenger;1"].createInstance()
+      .QueryInterface(Ci.nsIMessenger);
+    UrlToGoTo = "https://groups.google.com/forum/#!forum/reminderfox";
+    messenger.launchExternalURL(UrlToGoTo);
   } else {
 
     if ((UrlToGoTo === "") || (!UrlToGoTo)) {
@@ -1975,7 +2041,7 @@ reminderfox.util.docRmFX= function(UrlToGoTo){
 
     if (UrlToGoTo.indexOf(reminderfox.consts.REMINDER_FOX_PAGE_URL) == -1)
       //UrlToGoTo = "file:///home/guenter/git/rmFx_60/docs/" +  UrlToGoTo;
-      UrlToGoTo = reminderfox.consts.REMINDER_FOX_PAGE_URL + "/" + UrlToGoTo;
+      UrlToGoTo = reminderfox.consts.REMINDER_FOX_PAGE_URL + UrlToGoTo;
   }
   reminderfox.util.openURL(UrlToGoTo);
 };
@@ -2362,8 +2428,6 @@ reminderfox.aboutXPI= function () {
 
 		if (document.getElementById('logoText')) {
 			document.getElementById('logoText').setAttribute( "tooltiptext", msg);
-
-			document.getElementById('supportPage').setAttribute('value', reminderfox.consts.SUPPORT);
 			sizeToContent();
 		}
 };
@@ -3092,16 +3156,10 @@ reminderfox.online = {
  */
 if (!reminderfox.go4news)    reminderfox.go4news = {};
 
-// in /defaults/preferences/reminderfox.js
-//pref("extensions.reminderFox.news", true);   // last news status, set after reading to false
-//pref("extensions.reminderFox.newsStamp", "[2015-10-01]" );   // last news date
-//pref("extensions.reminderFox.newsLink", "https://neandr.github.io/reminderfox/rmFXnews");
-
 // in reminderFoxCore.js
 //reminderfox.consts.NEWS
 //reminderfox.consts.NEWSSTAMP
 //reminderfox.consts.NEWSLINK
-
 
 reminderfox.go4news = {
 //------------------------------------------------------------------------------
@@ -3109,7 +3167,6 @@ reminderfox.go4news = {
 	currentNews : "--",
   urlNews: "https://neandr.github.io/reminderfox/rmFXnews",
   urlNewsLink: "",
-
 
 	/**
 	 * Called at startup of reminderfox to check for new News
@@ -3153,7 +3210,7 @@ reminderfox.go4news = {
 		// With Main Menu item user can always open News directely
 	//	reminderfox.util.PromptAlert(this.currentNews);
 		var url = this.urlNews + this.currentNewsDate + ".html";
-		reminderfox.util.openURL(url, 'rmFXnews');
+		reminderfox.util.openURL(url);
 
 		reminderfox.core.setPreferenceValue(reminderfox.consts.NEWS, false)
 		document.getElementById('reminderfox-News-box').setAttribute( "hidden", true);
@@ -3545,29 +3602,6 @@ rmFXprefsService.setFilter= function () {
     rmFXprefsService.filterText = document.getElementById("rmFXprefsService.filter").value;
     rmFXprefsService.loadTable();
 }
-
-/* Fix to show the menulist-dropmarker under newer GTK3 versions */
-//menulist[editable="true"] > .menulist-dropmarker {
-//  min-width: 2em;
-//}
-
-
-/* https://stackoverflow.com/questions/1774009/os-specific-css
-reminderfox.util.changeStyle= function() {
-	var ret = false;
-
-	var css = document.createElement('link');
-	css.rel="stylesheet";
-	css.type = 'text/css';
-
-	if (navigator.userAgent.search('Linux')!=-1){ //* IF is Linux
-		css.href = '/chrome/skin/reminderfox/unix/gtk3linux.css';
-		document.getElementsByTagName("head")[0].appendChild(css);
-		ret = true;
-	}
-	return ret;
-}
-*/
 
 
 reminderfox.util.listItemMoveUp=function(_list) {

@@ -1,7 +1,15 @@
-Reminderfox [2.1.6.6] <'20190116_1616'>
-  as of: Wed 16 Jan 2019 16:16 +0000 (CET)
-reminderfox_2.1.6.6_20190116_1616.xpi
 
+Reminderfox [2.1.6.8] <'20191117_2326'>
+  as of: Sun 17 Nov 2019 23:26 +0000 (CET)
+reminderfox_2.1.6.8.xpi
+
+
+
+2019-11-17
+  Update for TB60.*
+  Solved:  reminderfox.org replaced with neandr.github.io/reminderfox/
+  with documentation rebuild
+  Tested: Waterfox Classic (56.3/20191023220600)
 
 
 2018-11-09

@@ -3455,7 +3455,9 @@ function reminderfox_xmlPrint (xThis, isXPI) {
     var prnt = currentXML.path;
     currentXML.append("current.xml");
 
-    var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
+    var file = Components.classes["@mozilla.org/file/local;1"]
+      .createInstance(Components.interfaces.nsIFile);
+
     file.initWithPath(currentXML.path);
     if (file.exists() == false) {
         file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420);

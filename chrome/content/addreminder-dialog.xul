@@ -204,7 +204,7 @@
 					onclick="reminderfox.go4news.callNews();" />
 
 				<menuitem label="&rf.main.help.label;"
-					onclick="reminderfox.util.docRmFX(doc-1);reminderfox.calendar.ui.panelClose(); "
+					onclick="reminderfox.util.docRmFX('doc-1');reminderfox.calendar.ui.panelClose(); "
 					tooltiptext="&rf.calendar.menu.options.docu;" />
 
 				<menuitem label="Reminderfox Forum / Support / Feedback"

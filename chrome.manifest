@@ -1,7 +1,7 @@
 content reminderfox chrome/content/
 
-## overlay chrome://browser/content/browser.xul chrome://reminderfox/content/reminderFoxOverlay.xul
-## overlay chrome://navigator/content/navigator.xul chrome://reminderfox/content/reminderFoxOverlay.xul
+overlay chrome://browser/content/browser.xul chrome://reminderfox/content/reminderFoxOverlay.xul
+overlay chrome://navigator/content/navigator.xul chrome://reminderfox/content/reminderFoxOverlay.xul
 
 #   overlay chrome://messenger/content/mailWindowOverlay.xul chrome://reminderfox/content/reminderFoxOverlay.xul
 overlay chrome://messenger/content/messenger.xul chrome://reminderfox/content/reminderFoxOverlay.xul

@@ -50,12 +50,12 @@
 		window.addEventListener("load", reminderfox.overlay.start, false);
 	</script>
 
-<!--   disabled for testing with TB65 ...............................
+<!--   disabled for testing with TB65 ............................... -->
 	<window id="main-window">
 		<popupset id="mainPopupSet"/>
 	</window>
 
-	<!- - Firefox Tools Menu - ->
+	<!-- Firefox Tools Menu -->
 	<menupopup id="menu_ToolsPopup">
 		<menu id="reminderFox-tools-menu" label="&rf.name;"
 				accesskey="&rf.toolsmenu.Reminderfox.accesskey;" class="menu-iconic reminderfox-icon"
@@ -76,15 +76,15 @@
 				<menuitem label="&rf.main.help.label;" class="reminderfox-icon-none"
 						oncommand="reminderfox.util.docRmFX();"
 						accesskey="&rf.toolsmenu.Help.accesskey;" />
-				<!- - For debugging  - ->
+				<!-- For debugging  -->
 				<menuitem label="Debug"  hidden="true" oncommand="reminderfox.overlay.runDebug();"/>
-		<!- -
+		<!--
 				<menuitem label="Process Alarms"  oncommand="reminderfox.overlay.processRecentReminders();"/>
-		- ->
+		-->
 			</menupopup>
 		</menu>
 	</menupopup>
-.........................  -->
+<!-- .........................  -->
 
 	<popupset id="mainPopupSet">
 		<tooltip id="reminderFox_tip" noautohide="true" orient="horizontal"
@@ -161,16 +161,16 @@
 		</panel>
 	</popupset>
 
-<!--    disable for TB65    this for FX ......................
-	<popup id="contentAreaContextMenu">  <! - - context-sep-open" - - >
+<!--    disable for TB65    this for FX ...................... -->
+	<popup id="contentAreaContextMenu">  <!-- context-sep-open" -->
 		<menuitem label="&rf.importing.title;" insertbefore="context-sep-selectall"
 				id="reminderfox_addReminder"  oncommand="reminderfox.userIO.addReminder4WebPage(this);"/>
 		<menuitem label="&rf.main.contextmenu.subscribe.label;" class="menuitem-iconic" insertafter="context-stop"
 				id="reminderfox_subscribeReminder" oncommand="reminderfox.userIO.addReminder4WebPage(this);"/>
 	</popup>
-............... -->
+<!-- ............... -->
 
-	<!-- Firefox  ******  DISABLED ***** - - >
+	<!-- Firefox  ******  DISABLED ***** -->
 	<toolbarpalette id="BrowserToolbarPalette">
 		<toolbarbutton id="reminderFox_openButton"/>
 		<toolbarbutton id="reminderFox_addReminderButton"/>
@@ -178,7 +178,7 @@
 		<toolbarbutton id="reminderFox_quickAlarmButton"/>
 		<toolbarbutton id="reminderFox_openButton_bow"/>
 	</toolbarpalette>
-	******************   -->
+	<!--******************   -->
 
 
 	<!-- *************** smartFoxy -->
