@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#  /makeXPI.py/  gWahl  2019-11-14/
+#  /makeXPI.py/  gWahl  2019-11-17/
 
 from __future__ import division
 from datetime import datetime
@@ -17,7 +17,7 @@ import shutil
 NAME = "Reminderfox"
 
 XPI_GUID      = "{ada4b710-8346-4b82-8199-5de2b400a6ae}"
-XPI_VERSION   = "2.1.6.7"
+XPI_VERSION   = "2.1.6.8"
 XPI_FORK      = ""
 
 XPI_LIST      = "license.txt,version.log,install.rdf,manifest.json,chrome.manifest,chrome,defaults,components,makeXPI.py"

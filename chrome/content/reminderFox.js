@@ -42,11 +42,9 @@ reminderfox.overlay.alertTimerObject = Components.classes["@mozilla.org/timer;1"
 reminderfox.overlay.start= function() {
 // =====================================================
     rmFx_extractXPI("chrome/content/reminderfox/defaults/"); // unpack
- // (
    // run this later and let the window load.
     window.setTimeout(function() {reminderfox.overlay.start_postInit(); }, 100);
 };
-
 
 /**
  * Extracts dirs/files from xpi 'chrome' directory
@@ -56,73 +54,72 @@ reminderfox.overlay.start= function() {
  * @param  aZipDir     The source ZIP dir in xpi/add-on.
  */
 function rmFx_extractXPI(aZipDir) {
-// ---------------------------------------------------------
+//---------------------------------------------------------
+  // aZipDir = "chrome/content/reminderfox/defaults/"
+
+  var aZipDirLen = aZipDir.length;
+
     function getTargetFile(aDir, entry) {
-        var target =reminderfox.util.ProfD_extend("reminderfox");
-        entry.split("/").forEach(function(aPart) {
-            target.append(aPart);
-        });
-        return target;
+      var target =reminderfox.util.ProfD_extend('reminderfox');
+      entry.split("/").forEach(function(aPart) {
+        target.append(aPart);
+      });
+      return target;
+}
+
+  var aDir =reminderfox.util.ProfD_extend('reminderfox');
+
+  var pathToXpiToRead = reminderfox.util.ProfD_extend('extensions');
+  pathToXpiToRead.append('{ada4b710-8346-4b82-8199-5de2b400a6ae}.xpi');
+
+  var FileUtils = Cu.import("resource://gre/modules/FileUtils.jsm").FileUtils
+  var aZipFile = new FileUtils.File(pathToXpiToRead.path);
+
+  var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"]
+    .createInstance(Ci.nsIZipReader);
+  zipReader.open(aZipFile);
+
+  try {
+    // create directories first
+    var entries = zipReader.findEntries(aZipDir + "*/");
+    while (entries.hasMore()) {
+      var entryName = entries.getNext();
+      var target = getTargetFile(aDir, entryName.substring(aZipDirLen));
+      if (!target.exists()) {
+        try {
+          target.create(Ci.nsIFile.DIRECTORY_TYPE,
+          FileUtils.PERMS_DIRECTORY);
+        }
+        catch (e) {
+          console.error("rmFx_extractXPI: failed to create target directory for extraction file = "
+            + target.path + "\n");
+        }
+      }
     }
 
+    // extract/copy files
+    entries = zipReader.findEntries(aZipDir + "*");
+    while (entries.hasMore()) {
+      var entryName = entries.getNext();
+      var target = getTargetFile(aDir, entryName.substring(aZipDirLen));
+      if (target.exists())
+      continue;
 
-	// aZipDir = "chrome/content/reminderfox/defaults/"
-
-	var aZipDirLen = aZipDir.length;
-
-	var aDir =reminderfox.util.ProfD_extend('reminderfox');
-
-	var pathToXpiToRead = OS.Path.join(OS.Constants.Path.profileDir,
-		'extensions', '{ada4b710-8346-4b82-8199-5de2b400a6ae}.xpi');
-	var aZipFile = new FileUtils.File(pathToXpiToRead);
-
-	var zipReader = Cc["@mozilla.org/libjar/zip-reader;1"]
-		.createInstance(Ci.nsIZipReader);
-	zipReader.open(aZipFile);
-
-	try {
-		// create directories first
-		var entries = zipReader.findEntries(aZipDir + "*/");
-		while (entries.hasMore()) {
-			var entryName = entries.getNext();
-			var target = getTargetFile(aDir, entryName.substring(aZipDirLen));
-			if (!target.exists()) {
-				try {
-					target.create(Ci.nsIFile.DIRECTORY_TYPE,
-					FileUtils.PERMS_DIRECTORY);
-				}
-				catch (e) {
-					console.error("rmFx_extractXPI: failed to create target directory for extraction file = "
-						+ target.path + "\n");
-				}
-			}
-		}
-
-		// extract/copy files
-		entries = zipReader.findEntries(aZipDir + "*");
-		while (entries.hasMore()) {
-			var entryName = entries.getNext();
-			var target = getTargetFile(aDir, entryName.substring(aZipDirLen));
-			if (target.exists())
-				continue;
-
-			zipReader.extract(entryName, target);
-			try {
-				target.permissions |= FileUtils.PERMS_FILE;
-			}
-			catch (e) {
-				console.error("rmFx_extractXPI: Failed to set permissions "
-					+ FileUtils.PERMS_FILE.toString(8) + " on " + target.path + " " + e + "\n");
-			}
-		}
-	} catch (ex) {
-		reminderfox.util.Logger('Alert', ex)
-	}
-	finally {
-		zipReader.close();
-	}
-
-   // reminderfox.core.listAllPrefs();
+      zipReader.extract(entryName, target);
+      try {
+        target.permissions |= FileUtils.PERMS_FILE;
+      }
+      catch (e) {
+        console.error("rmFx_extractXPI: Failed to set permissions "
+          + FileUtils.PERMS_FILE.toString(8) + " on " + target.path + " " + e + "\n");
+      }
+    }
+  } catch (ex) {
+    reminderfox.util.Logger('Alert', ex)
+  }
+  finally {
+  zipReader.close();
+  }
 };
 
 
@@ -3058,11 +3055,18 @@ reminderfox.overlay.showCalendar= function(event){
 
 // +++++++++++ Agenda / Printing ++++++++++++++++
 /**
- *  Convert reminders to a XML model for external XSLT post-processing
- *   (eg. advanced printing with templates)
+ *  Convert reminders to a XML model for XSLT post-processing
+ *   Called from XUL like this:
+ *    <menuitem id="agendaXML1" class="printXMLsystem"
+ *       label="&rf.add.reminders.context.print.all;"
+ *       value="Events(All).xsl" oncommand="reminderfox_xmlPrint(this, 'XPI');" />
  */
 function reminderfox_xmlPrint (xThis, isXPI) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // make sure the printing files are de-zipped
+    var aZipDir = "chrome/content/defaults/"
+    rmFx_extractXPI(aZipDir)
+
     var isReminder = true;
     try {
         isReminder = reminderfox_isReminderTabSelected() ? true : false;
@@ -3396,14 +3400,11 @@ function reminderfox_xmlPrint (xThis, isXPI) {
             remindersElem.appendChild(eventElem);
         }
     }
-
     generalElem.appendChild(remindersElem);
 
 
     // add elements for 'locale' output
-    var xmlLanguage = document.implementation.createDocument("", "", null);
     var localeElem = xmlReminders.createElement("locale");
-
     var localeStrings = {
         "title" : "rf.printing.title",
         "summary": "rf.html.heading.description",
@@ -3442,30 +3443,67 @@ function reminderfox_xmlPrint (xThis, isXPI) {
         attrElem.textContent = reminderfox.string(localeStrings [x]);
         localeElem.appendChild(attrElem);
     }
-
     generalElem.appendChild(localeElem);
-
 
     var oSerializer = new XMLSerializer();
     var stringXML = '<?xml version="1.0" encoding="UTF-8"?>'
         + oSerializer.serializeToString(xmlDoc);
 
-    // get the 'default' XML file in profile directory path
+    // get the 'default' files XML/XSL in profile directory path
     var currentXML = reminderfox_prntPath();
-    var prnt = currentXML.path;
     currentXML.append("current.xml");
 
     var file = Components.classes["@mozilla.org/file/local;1"]
       .createInstance(Components.interfaces.nsIFile);
-
     file.initWithPath(currentXML.path);
     if (file.exists() == false) {
         file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420);
     }
     reminderfox.core.writeStringToFile(stringXML, file, true/*isExport*/);
 
-    var tempURL = "file:///" + prnt + "/viewAndPrint.htm";
-    reminderfox.util.openURL(tempURL)
+    // read the 'current' XSL file from profile directory path
+    xslFile = reminderfox_prntPath();
+    xslFile.append("current.xsl");
+    let getX = "file://" + xslFile.path;   // 'current.xsl';
+    reminderfox.promiseRequest.get(getX, 'xml').then(function(xFile) {
+      rmFX_xsl_file = xFile;
+    });
+
+    xmlFile = reminderfox_prntPath();
+    xmlFile.append("current.xml");
+    getX = "file://" + xmlFile.path;   // 'current.xml';
+    reminderfox.promiseRequest.get(getX, 'xml').then(function(xFile) {
+      rmFX_xml_file = xFile;
+    });
+    setTimeout(function() {reminderfox_prntX ()}, 800);
+}
+
+var rmFX_xsl_file;
+var rmFX_xml_file;
+
+function reminderfox_prntX () {
+    let printX = reminderfox_prntPath().path + "/viewPrint.htm";
+
+    var xsltProcessor = new XSLTProcessor();
+    xsltProcessor.importStylesheet(rmFX_xsl_file);
+    var resultDocument = xsltProcessor.transformToFragment(rmFX_xml_file,document);
+
+    var doc = ' \
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 // Transitional//EN"> \
+    <html> \
+      <meta content="text/html; charset=UTF-8" http-equiv="content-type"> \
+    '
+    doc = doc + resultDocument.childNodes[0].innerHTML + '</html>';
+
+    var file = Components.classes["@mozilla.org/file/local;1"]
+      .createInstance(Components.interfaces.nsIFile);
+    file.initWithPath(printX);
+    if (file.exists() == false) {
+      file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 420);
+    }
+    reminderfox.core.writeStringToFile(doc, file, true/*isExport*/);
+
+    reminderfox.util.openURL("file://" + printX);
 };
 
 
@@ -3525,7 +3563,8 @@ function reminderfox_PrintMenuSetup(xThis){
 function reminderfox_PrintTemplatesCopy (){
 //---------------------------------------------------------
     var prntPath = reminderfox_prntPath();
-    var prntPathEntries = reminderfox_prntPath().directoryEntries.QueryInterface(Components.interfaces.nsIDirectoryEnumerator);
+    var prntPathEntries = reminderfox_prntPath().directoryEntries
+      .QueryInterface(Components.interfaces.nsIDirectoryEnumerator);
 
     while (prntPathEntries.hasMoreElements()) {
         var template = prntPathEntries.getNext();

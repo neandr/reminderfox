@@ -3,6 +3,17 @@
 ##  version.txt
 ##
 
+2019-11-19
+  Update for TB60.*
+  Solved:
+  -- Homepage: Because reminderfox.org was closed, now the project
+     is on https://neandr.github.io/reminderfox/
+  -- Documentation: rebuild and now uses the new homepage
+  -- Printing: CORS error fixed
+  Tested:
+  -- TB60.9.1
+  -- Waterfox Classic (56.3/20191023220600)
+
 
 2018-11-09
    PreVersion for compatibility with TB60

@@ -1949,7 +1949,6 @@ reminderfox.util.openURL= function(UrlToGoTo){
       var tIndex = tabmail.tabContainer.selectedIndex;
       var tabType = tabmail.tabContainer.selectedItem.getAttribute('type');		// = [string] "folder"
 
-      console.log('//openURL #0.1   tabType ', tabType);
       if (tabType != "contentTab") {
         tabmail.openTab("contentTab",
         {contentPage: url, clickHandler: "http://www.reminderfox.org/"});
@@ -2365,45 +2364,49 @@ reminderfox.date.getWeekOfYear= function(aDate, dowOffset) {
 	};
 
 
-
 // *****************************************************************************
 reminderfox.about= function() {
 //--------------------------------------------------------------------------
-	document.getElementById('rmFx_Version').setAttribute( "value",
-		reminderfox.consts.MIGRATED_PREF_VERSION
-			+ "     " + reminderfox.core.getPreferenceValue(reminderfox.consts.VERSION_STAMP));
-	reminderfox.aboutXPI();
-};
-
+  document.getElementById('rmFx_Version').setAttribute("value",
+    reminderfox.consts.MIGRATED_PREF_VERSION +
+    "     " + reminderfox.core.getPreferenceValue(reminderfox.consts.VERSION_STAMP));
+  reminderfox.aboutXPI();
+  };
 
 
 reminderfox.promiseRequest= {
 //--------------------------------------------------------------------------
-	get : function (url) {
-		return new Promise(function(resolve, reject) {
-			var req = new XMLHttpRequest();
+  get : function (url, responseType) {
+    return new Promise(function(resolve, reject) {
+      var req = new XMLHttpRequest();
 
-			req.responseType = 'text';
+      if (!responseType) {
+        responseType = 'text';
+      }
+      req.responseType = responseType;
+      req.open('GET', url);
 
-			req.open('GET', url);
-
-			req.onloadend = function() {
-				if (req.status == 200) {
-				// Resolve the promise with the response text
-					resolve(req.responseText);
-				}
-				else {
-					reject(Error(req.statusText));
-				}
-			};
-			// Handle network errors
-			req.onerror = function() {
-				reject(Error("Network Error"));
-			};
-			// Make the request
-			req.send();
-		});
-	}
+      req.onloadend = function() {
+        if (req.status == 200) {
+        // Resolve the promise with the response text
+          if (responseType == 'text') {
+            resolve(req.responseText);
+          } else {
+            resolve(req.responseXML);
+          }
+        }
+        else {
+          reject(Error(req.statusText));
+        }
+      };
+      // Handle network errors
+      req.onerror = function() {
+        reject(Error("Network Error"));
+      };
+      // Make the request
+      req.send();
+    });
+  }
 }
 
 

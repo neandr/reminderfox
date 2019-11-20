@@ -1,15 +1,20 @@
 
-Reminderfox [2.1.6.8] <'20191117_2326'>
-  as of: Sun 17 Nov 2019 23:26 +0000 (CET)
+Reminderfox [2.1.6.8] <'20191120_1117'>
+  as of: Wed 20 Nov 2019 11:17 +0000 (CET)
 reminderfox_2.1.6.8.xpi
 
 
 
-2019-11-17
+2019-11-19
   Update for TB60.*
-  Solved:  reminderfox.org replaced with neandr.github.io/reminderfox/
-  with documentation rebuild
-  Tested: Waterfox Classic (56.3/20191023220600)
+  Solved:
+  -- Homepage: Because reminderfox.org was closed, now the project
+     is on https://neandr.github.io/reminderfox/
+  -- Documentation: rebuild and now uses the new homepage
+  -- Printing: CORS error fixed
+  Tested:
+  -- TB60.9.1
+  -- Waterfox Classic (56.3/20191023220600)
 
 
 2018-11-09

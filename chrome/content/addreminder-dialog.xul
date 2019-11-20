@@ -481,7 +481,8 @@
 
 							<menu id="exportXML" label="&rf.add.reminders.context.print.label;"
 								tooltiptext="&rf.add.reminders.context.print.ttt;">
-								<menupopup id="exportXML-popup" onpopupshowing="reminderfox_PrintMenuSetup(this);">
+								<menupopup id="exportXML-popup" >
+          <!--        onpopupshowing="reminderfox_PrintMenuSetup(this);">  -->
 
 
 									<menuitem id="agendaXML" class="printXMLsystem" label="&rf.add.reminders.context.print.agenda.label;"
@@ -504,7 +505,8 @@
 									<menuitem label="&rf.main.help.label;" class="printXMLsystem"
 										onclick="reminderfox.util.docRmFX('doc-printing');reminderfox.calendar.ui.panelClose(); "
 										tooltiptext="&rf.add.reminders.context.print.docu;" />
-                  <hr class="printXMLsystem" style="border-top-width: 1px;border-top-style: solid;" />
+
+            <!--      <hr class="printXMLsystem" style="border-top-width: 1px;border-top-style: solid;" />  -->
 
 								</menupopup>
 							</menu>
@@ -674,7 +676,8 @@
 
 							<menu id="exportXML-todo" label="&rf.add.reminders.context.print.label;"
 								tooltiptext="&rf.add.reminders.context.print.ttt;">
-								<menupopup id="exportXML-todo-popup" onpopupshowing="reminderfox_PrintMenuSetup(this);">
+								<menupopup id="exportXML-todo-popup">
+        <!--           onpopupshowing="reminderfox_PrintMenuSetup(this);">   -->
 									<menuitem id="agendaXML" class="printXMLsystem" label="&rf.add.reminders.context.print.agenda.label;"
 										value="Agenda.xsl" oncommand="reminderfox_xmlPrint(this, 'XPI');" />
 

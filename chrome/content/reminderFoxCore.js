@@ -980,12 +980,11 @@ reminderfox.core.listAllPrefs=function() {
         prefString += prefName + ", " + prefType + ", " +
          (((prefType == "string") || (prefType == 32))? ("'" + prefValue + "'"): prefValue) + ", " + prefUserValue + "\n";
     }
-    console.log(prefString);
+  //  console.log(prefString);
 };
 
 reminderfox.core.loadDefaultPreferences= function() {
-    reminderfox.core.listAllPrefs();  // gW ####
-    console.trace();  // gW ####
+    reminderfox.core.listAllPrefs();
 
     try {
         var oldVersionNumber = reminderfox.core.getPreferenceValue(reminderfox.consts.MIGRATED_PREF,"");
