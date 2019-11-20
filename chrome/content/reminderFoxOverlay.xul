@@ -142,7 +142,12 @@
 				</menupopup>
 			</menu>
 			<menuitem id="reminderfox-options-contextmenu-suspendAlerts" label="&rf.main.showalerts.label;" oncommand="reminderfox.overlay.toggleShowAlert();"/>
-			<menuseparator/>
+
+      <menuitem label="Agenda" id="rmFX_openAgenda"
+        onclick="rmFX_openAgenda();reminderfox.calendar.ui.panelClose(); " />
+
+			<hr style="border-top-width: 1px;border-top-style: solid;" />
+
 			<menuitem label="&rf.main.options.label;" oncommand="reminderfox.overlay.openOptionsDialog();" />
 			<menuitem label="&rf.main.homepage.label;"  oncommand="reminderfox.util.docRmFX('doc-1');" />
 
@@ -245,6 +250,9 @@
 				<menuitem label="&rf.main.quickalarm.label;"
 						oncommand="reminderfox.overlay.openQuickAlarmDialog()"
 						accesskey="&rf.toolsmenu.QuickAlarm.accesskey;" />
+        <menuitem label="Agenda" id="rmFX_openAgenda"
+          onclick="rmFX_openAgenda();reminderfox.calendar.ui.panelClose(); " />
+
 				<menuitem label="&rf.main.options.label;"
 						oncommand="reminderfox.overlay.openOptionsDialog()"
 						accesskey="&rf.toolsmenu.Options.accesskey;" />
@@ -275,14 +283,14 @@
 
 
 	<popup id="attachmentListContext">
-		<menuseparator   id="reminderfox-mail-sep2" />
+		<hr  id="reminderfox-mail-sep2"  style="border-top-width: 1px;border-top-style: solid;" />
 		<menuitem label="&rf.main.importFromEmail.label;" class="menuitem-iconic mailRm_ICS" disabled="true"
 				id="reminderfox-mail-ICS_List" oncommand="reminderfox.userIO.addReminder4Email(this); "/>
 	</popup>
 
 
 	<popup id="attachmentItemContext">
-		<menuseparator   id="reminderfox-mail-sep2" />
+    <hr  id="reminderfox-mail-sep2"  style="border-top-width: 1px;border-top-style: solid;" />
 		<menuitem label="&rf.main.importFromEmail.label;" class="menuitem-iconic mailRm_ICS" disabled="true"
 				id="reminderfox-mail-ICS_Item" oncommand="reminderfox.userIO.addReminder4Email(this);"/>
 	</popup>
@@ -290,7 +298,8 @@
 
 	<!--   add Reminder for Contact -->
 	<popup id="abResultsTreeContext">
-		<menuseparator  id="reminderfox-mail-sep3" />
+    <hr  id="reminderfox-mail-sep3"  style="border-top-width: 1px;border-top-style: solid;" />
+
 		<menuitem label="&rf.main.contextmenu.addremindercontact.label;"
 				id="reminderfox-mail-addContact"  oncommand="reminderfox.util.JS.dispatch('addReminder4Contact','Reminder');" />
 		<menuitem label="&rf.main.contextmenu.copycontactmail.label;"

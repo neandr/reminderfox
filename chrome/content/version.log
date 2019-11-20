@@ -1,6 +1,6 @@
 
-Reminderfox [2.1.6.8] <'20191120_1117'>
-  as of: Wed 20 Nov 2019 11:17 +0000 (CET)
+Reminderfox [2.1.6.8] <'20191120_1225'>
+  as of: Wed 20 Nov 2019 12:25 +0000 (CET)
 reminderfox_2.1.6.8.xpi
 
 
@@ -12,6 +12,17 @@ reminderfox_2.1.6.8.xpi
      is on https://neandr.github.io/reminderfox/
   -- Documentation: rebuild and now uses the new homepage
   -- Printing: CORS error fixed
+
+  Improved:
+  -- Agenda: This is showing a page/tab with the current reminders and todo's.
+     Now it can be called with additional menu items 'Agenda'.
+     This feature has not changed but now can be called on
+     different menus behind the Foxy icon, see on:
+       * Reminderfox 'Main List' main menu bar
+       * the TB/FX main menu bar
+       * the TB/FX Tools menu
+     Agenda usage is also configured on Reminderfox 'Options --> System',
+
   Tested:
   -- TB60.9.1
   -- Waterfox Classic (56.3/20191023220600)

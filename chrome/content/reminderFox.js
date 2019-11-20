@@ -3507,6 +3507,13 @@ function reminderfox_prntX () {
 };
 
 
+// open the Agenda
+function rmFX_openAgenda() {
+    var template = {}
+    template.value = "Agenda.xsl";
+    setTimeout(function () {reminderfox_xmlPrint(template, 'XPI')}, 300)
+};
+
 /**
  */
 function reminderfox_prntPath (){

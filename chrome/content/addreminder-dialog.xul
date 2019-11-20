@@ -151,12 +151,16 @@
 					</menupopup>
 				</menu>
 
-				<menuitem label="&rf.main.showalerts.label;"
+        <menuitem label="&rf.main.showalerts.label;"
 					id="reminderfox-options-contextmenu-suspendAlerts"
 					onclick="reminderfox.overlay.toggleShowAlert();reminderfox.calendar.ui.panelClose(); " />
 
-        <hr style="border-top-width: 1px;border-top-style: solid;" />
+        <menuitem label="Agenda"
+  					id="rmFX_openAgenda"
+  					onclick="rmFX_openAgenda();reminderfox.calendar.ui.panelClose(); " />
 
+
+        <hr style="border-top-width: 1px;border-top-style: solid;" />
 
 				<!-- ************* CalDAV ************* -->
 				<menu id="calDAV_accounts_menu" label="&rf.caldav.sync.support;">
