@@ -361,7 +361,6 @@
 		function rmFx_calDAV_AddNew(_calDAVaccounts) {
 		//-------------------------------------------
 			calDAVaccounts = _calDAVaccounts;
-			reminderfox.colorMap.setup();
 
 			var calDAV = [];
 			calDAV.active = false;

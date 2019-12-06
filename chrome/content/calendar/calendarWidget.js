@@ -49,12 +49,8 @@ reminderfox.calendar.drawList = true;
  */
 reminderfox.calendar.layout.Setup= function () {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// var layout = document.documentElement.attributes.layout.value;
-
-	//if (layout == -1 || layout > 2 || layout == "" || !layout) {
-		layout = 1;
-	//	document.documentElement.attributes.layout.value = 1;
-	//}
+	layout = 1;
+	document.documentElement.attributes.layout.value = layout;
 
 	document.getElementById("reminderfox-calendar-box-widget").setAttribute('style', 'font-size:' +
 		document.documentElement.attributes.textSize.value + 'px');
@@ -62,18 +58,10 @@ reminderfox.calendar.layout.Setup= function () {
 	document.getElementById("rmFx-MainDialog-List-Calendar").setAttribute('style', 'font-size:' +
 		document.documentElement.attributes.textSizeList.value + 'px');
 
-//60+	reminderfox.calendar.layout.status = layout;
-//60+	reminderfox.calendar.layout.menuChange(layout);
-
-
-	// remember persistant values for 'small' and 'wide' layout
-	//var id = "WIDE";
-	//if (layout == 0) id = "SMALL";
+	reminderfox.calendar.layout.status = layout;
 
 	document.documentElement.attributes["WIDE_width"].value = document.documentElement.attributes.width.value;
 	document.documentElement.attributes["WIDE_height"].value = document.documentElement.attributes.height.value;
-
-//60+	reminderfox.calendar.layout.XY();
 
 	reminderfox.calendar.setDay();
 };
@@ -392,7 +380,7 @@ reminderfox.calendar.ui.eventContext= function (mode, xThis, selectedDate) {
 
 	var isTodo = !reminderfox_isReminderTabSelected();
 
-	var noStore = false; //60+ (reminderfox.calendar.layout.status == -1) ? false : true;  // layout.status -1  is from FX/TB Main Menu icon all
+	var noStore = (reminderfox.calendar.layout.status == -1) ? false : true;  // layout.status -1  is from FX/TB Main Menu icon all
 
 	if ((reminderfox.calendar.selectedEvents != null) && (reminderfox.calendar.selectedEvents[0] != null))
 		reminderfox.calendar.selectedEvents[0].instanceDate = selectedEventDate;
@@ -484,7 +472,7 @@ var newDayBox;
 	if (widget != null) {
 		reminderfox.calendar.layout.status = -1;  // layout.status -1  is from FX/TB Main Menu icon all
 	}
-	var layout = 1;  //60+ +reminderfox.calendar.layout.status;
+  var layout = +reminderfox.calendar.layout.status;
 
 	if (reminderfox.datePicker.gSelectedDate == null) reminderfox.datePicker.gSelectedDate = new Date();
 
@@ -616,7 +604,7 @@ reminderfox.calendar.ui.mouseDayOnGrid= function(xThis, xEvent) {
 
 	if (reminderfox.calendar.drawGrid == false) return;
 
-	var layout = 1;  //60+ +reminderfox.calendar.layout.status;
+	var layout = +reminderfox.calendar.layout.status;
 	var a = xThis.id.lastIndexOf('-');
 	var selectedDateNum = xThis.id.substring(a+1);
 
@@ -718,7 +706,7 @@ reminderfox.calendar.ui.mouseDayOnGrid= function(xThis, xEvent) {
  */
 reminderfox.calendar.ui.selectDayOnCalndr= function(selectedDate) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var layout = 1;  //60+   +reminderfox.calendar.layout.status;
+	var layout =  +reminderfox.calendar.layout.status;
 
 	var oldDateNum = reminderfox.date.getDateNum(reminderfox.datePicker.gSelectedDate);
 	var selectedDateNum = reminderfox.date.getDateNum(selectedDate);
@@ -803,7 +791,7 @@ reminderfox.calendar.ui.selectDayOnCalndr= function(selectedDate) {
  */
 reminderfox.calendar.ui.redrawCalendarGrid= function (changeToDate) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	var layout = 1;  //60+   reminderfox.calendar.layout.status;
+	var layout = +reminderfox.calendar.layout.status;
 
 	if (changeToDate == null) changeToDate = reminderfox.calendar.numDateFirstMonth;
 
@@ -947,11 +935,9 @@ reminderfox.calendar.filter.close= function () {
 reminderfox.calendar.filter.build= function () {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //reminderfox.util.Logger('filtering', '.calendar.filter.build     ');
-  //var wideOsmall = (+reminderfox.calendar.layout.status == 0) ? "Small" : "Wide";
-  var wideOsmall = "Wide";
 
 	var spyglass = document.getElementById("rmFx-search-spyglass");
-	var searchAndFilter = document.getElementById("rmFx-SearchAndFilter-"+ wideOsmall);
+	var searchAndFilter = document.getElementById("rmFx-SearchAndFilter-Wide");
 	var searchLabels = document.getElementById("rmFx-filters-labels");
 
 	var t = (reminderfox_isReminderTabSelected() == true ? 0 : 7);		// index to access the right Filters/Views menulabel
@@ -1969,12 +1955,6 @@ reminderfox.calendar.dayPanel= function(anchor, mode, xEvent){
 	if (reminderfox.calendar.numDaysArray[numDate] == null) return;
 
 	if (reminderfox.datePicker.gSelectedDate == null) reminderfox.datePicker.gSelectedDate = numDate
-
-	// with Calendar only and having the selected day in focus dont popup
-	// the day panel
-	if ((reminderfox.calendar.layout.status == 0)
-		&& (reminderfox.date.getDateNum(reminderfox.datePicker.gSelectedDate) == numDate)) return;
-
 
 	if (mode == 'over') {
 		// if there are previous popup for same day do nothing

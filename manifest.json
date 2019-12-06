@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Reminderfox",
   "description": "Manage and Sync your reminders and todo's",
-  "version": "2.1.6.8",
+  "version": "2.1.6.9",
   "author": "Reminderfox Team",
   "homepage_url": "https://neandr.github.io/reminderfox/",
   "legacy": true,

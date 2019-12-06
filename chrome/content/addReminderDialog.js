@@ -520,7 +520,6 @@ function rmFx_setTreeRowColors() {
 
 		var color = "";
 
-console.error(" calColor 1 id: ",id, calDAVaccounts[id].calendarColor );
 		if (calDAVaccounts[id].calendarColor != null) {
 			color = calDAVaccounts[id].calendarColor;
 		}
@@ -534,7 +533,7 @@ console.error(" calColor 1 id: ",id, calDAVaccounts[id].calendarColor );
 		reminderfox.core.setPreferenceValue(reminderfox.consts.CALDAV_OPACITY_SELECTED, opacity);
 
 		var color1 = color.split(',');
-		color1[3] = ' ' + opacity/100;
+		color1[3] = '' + opacity/100;
 		color1 = color1.join(',') + ')';
 
 		reminderfox.styleUtil.insertStyle('caldav.css',
@@ -542,7 +541,11 @@ console.error(" calColor 1 id: ",id, calDAVaccounts[id].calendarColor );
 
 		reminderfox.styleUtil.insertStyle('caldav.css',
 			"treechildren::-moz-tree-row(caldav" + id + ", selected) {background-color:" + color1 +" !important;}")
+
+    var msg = " calColor id: " +id + " " +  color.toSource() + " " + color1.toSource();
+    //reminderfox.util.Logger('calDAV', msg);
 	}
+  reminderfox._prefs.savePrefFile(null);
 }
 
 
@@ -552,15 +555,14 @@ console.error(" calColor 1 id: ",id, calDAVaccounts[id].calendarColor );
  */
 function rmFx_mainDialogLoad(restartSkip){
 
-	/* ----- enabled next lines for deeper debugging   // #### gW 2018-10
-	reminderfox.core.listAllPrefs();		//gW
+	/* ----- enabled next lines for deeper debugging   //gW 2018-10 */
+	// reminderfox.core.listAllPrefs();		//gW
 
 	reminderfox._prefsBRANCH.setCharPref('loggers', '{"Reminderfox":"Debug","calndrGrid":"Debug","calndrLayout":"Debug","calDAV":"Info","alarm":"Debug","http":"Debug","alarm":"Debug"}');
 
-	reminderfox._prefsBRANCH.clearUserPref('debug.loglevel');
-	reminderfox._prefsBRANCH.setIntPref('debug.loglevel', 7);
-	-------------*/
-
+	//reminderfox._prefsBRANCH.clearUserPref('debug.loglevel');
+	//reminderfox._prefsBRANCH.setIntPref('debug.loglevel', 7);
+	/*-------------*/
 
 	rmFx_setTreeRowColors();
 
@@ -590,6 +592,9 @@ function rmFx_mainDialogLoad(restartSkip){
 	}
 
 	// get/set calendar/list default values (layout, width, height, etc ...)
+
+  document.documentElement.attributes.layout.value = 1;
+
 	reminderfox.calendar.layout.Setup();
 
 	reminderFox_highlightTodayPreference = reminderfox.core.getPreferenceValue(reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS, reminderfox.consts.HIGHLIGHT_TODAYS_REMINDERS_DEFAULT);
@@ -764,6 +769,8 @@ function rmFx_mainDialogLoad(restartSkip){
 	}
 	reminderFox_updateFoxyBadge();
 	document.commandDispatcher.advanceFocus()
+
+	rmFx_setTreeRowColors();
 
 	// start sync in background for Remote Calendars
 	reminderfox.online.status('rmFx_CalDAV_updatePending','')
@@ -1070,9 +1077,6 @@ function doFind(){
 
 
 function findReminder(){
-
-	//if (reminderfox.calendar.layout.status == 0) return; //gWCalndr just disable with Calendar ONLY!
-
 	var i;
 	var item;
 	var row;
@@ -1816,11 +1820,9 @@ function reminderFox_getStartAndEndDates(filtersTypeIndex, useToday, showAll) {
 
 
 /**
- * Adds an event to the list, if list hidden, do nothing
+ * Adds an event to the list
  */
 function createUIListItemReminder(baseReminder){
-	// don't go if no List is shown
-	//if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
 
 	var lastListIndex = 0;
 	var once = document.getElementById("occurrence");
@@ -2326,8 +2328,6 @@ function rmFx_checkFiltered (reminder) {
 
 
 function createUIListReminderItemSorted(reminder, todaysDate){
-//	if (document.documentElement.attributes.layout.value == 0) return;    // Calendar only mode
-	// if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
 
 	if (!rmFx_checkFiltered (reminder)) return;
 
@@ -2654,9 +2654,6 @@ function reminderFox_downloadSubscribedCalendarCallback(statustxtString, actionI
 
 
 function createUIListItemTodo(todo, sort, todaysDate, addToArray){
-//	if (document.documentElement.attributes.layout.value == 0) return;    // Calendar only mode
-	// if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
-
 	var tree;
 	var treeSelection
 	var boxobject;
@@ -2952,9 +2949,6 @@ function createUIListItemTodo(todo, sort, todaysDate, addToArray){
 
 
 function createUIListItemTodoAtIndex(todo, index){
-//	if (document.documentElement.attributes.layout.value == 0) return;    // Calendar only mode
-//	if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
-
 	var tree;
 	var treeSelection
 	var boxobject;
@@ -3154,6 +3148,7 @@ function treeChildrenGetName () {
  * select (highlight) today's reminder or the next upcoming reminder
  */
 function highlightClosestUpcomingReminder(currentDate, info, lastReminder){
+  if (reminderfox.calendar.layout.status < 1)  return;
 
 	var currentDateNum =  reminderfox.date.convertDate(currentDate);
 
@@ -3213,7 +3208,7 @@ function highlightClosestUpcomingReminder(currentDate, info, lastReminder){
  * ensureRowIsVisible in a scroll pane / tree
  */
 function findHighLight(whichTree, foundIndex, treeLength){
-  return;   //gW_60++
+  // return;   //gW_60++
 	if (foundIndex != -1) {
 		var tree = document.getElementById(whichTree);
 		var boxobject = tree.boxObject;
@@ -3347,7 +3342,7 @@ function highlightTodo(){
 function removeUIListItemReminder(reminder, treeChildren){
 	// don't with no Main List displayed
 
-	//60+  if (reminderfox.util.layoutStatus() < 1)  return;
+	if (reminderfox.calendar.layout.status == -1) return; 
 
 	if (treeChildren == null) {
 		treeChildren = reminderfox_isReminderTabSelected()
@@ -5331,7 +5326,7 @@ function getOriginEventDate() {
 
 
 function selectReminderById(reminderID, list){
-//	if (reminderfox.calendar.layout.status == -1) return; // call from menu icon
+	if (reminderfox.calendar.layout.status == -1) return; // call from menu icon
 	var treeName =  (list == null) ? "reminderTree" : "todoTree";
 	var treeChildren = (list == null) ? document.getElementById("treechildren") : document.getElementById("todo_treechildren");;
 
@@ -5360,7 +5355,7 @@ function selectReminderById(reminderID, list){
 
 
 function selectTodoById(todoListName, reminderID){
-//	if (reminderfox.calendar.layout.status == -1) return; // call from menu icon
+	if (reminderfox.calendar.layout.status == -1) return; // call from menu icon
 
 	var tabList = document.getElementById("rmFx-tabList");
 
@@ -5546,10 +5541,7 @@ function toggleImportantFlag(remindersPassed){
 
 
 function updateInListReminder(reminder){
-
-//	reminderfox.calendar.dateArray.EventUpdate (reminder.date);
-
-//	if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
+	if (reminderfox.calendar.layout.status < 1) return; // call from menu icon or Calndr only
 
 	var currentSelectedDate = reminderfox.datePicker.gSelectedDate
 

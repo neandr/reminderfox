@@ -16,7 +16,7 @@
 
 	<!-- On ALL .XUL  stringbundle/stringbundleset replaced with
 				Services.strings.createBundle(..)
-				see reminderfox.string= function(bString)  in reminderFoxCore.js  -->
+				see reminderfox.string= function(bString)  in rmFxUtils.js  -->
 	<!--  <stringbundleset id="stringbundleset">
 		<stringbundle id="reminderFox-bundle" src="chrome://reminderfox/locale/reminderfox.properties"/>
 		<stringbundle id="reminderfox_addressBook" src="chrome://messenger/locale/addressbook/addressBook.properties"/>
@@ -28,6 +28,7 @@
 
 	<script type="application/x-javascript" src="chrome://reminderfox/content/reminderFoxCore.js" />
 	<script type="application/x-javascript" src="chrome://reminderfox/content/reminderFox.js" />
+  <script type="application/x-javascript" src="chrome://reminderfox/content/agenda.js" />
 
 	<script type="application/x-javascript" src="chrome://reminderfox/content/datepicker/datepicker.js"/>
 	<script type="application/x-javascript" src="chrome://reminderfox/content/calendar/calendarWidget.js" />
@@ -143,8 +144,9 @@
 			</menu>
 			<menuitem id="reminderfox-options-contextmenu-suspendAlerts" label="&rf.main.showalerts.label;" oncommand="reminderfox.overlay.toggleShowAlert();"/>
 
-      <menuitem label="Agenda" id="rmFX_openAgenda"
-        onclick="rmFX_openAgenda();reminderfox.calendar.ui.panelClose(); " />
+      <menuitem label="Agenda" id="gN_openAgenda"
+        onclick="gN_agenda.xmlPrint();" />
+
 
 			<hr style="border-top-width: 1px;border-top-style: solid;" />
 
@@ -250,8 +252,8 @@
 				<menuitem label="&rf.main.quickalarm.label;"
 						oncommand="reminderfox.overlay.openQuickAlarmDialog()"
 						accesskey="&rf.toolsmenu.QuickAlarm.accesskey;" />
-        <menuitem label="Agenda" id="rmFX_openAgenda"
-          onclick="rmFX_openAgenda();reminderfox.calendar.ui.panelClose(); " />
+        <menuitem label="Agenda" id="gN_openAgenda"
+          onclick="gN_agenda.xmlPrint();" />
 
 				<menuitem label="&rf.main.options.label;"
 						oncommand="reminderfox.overlay.openOptionsDialog()"

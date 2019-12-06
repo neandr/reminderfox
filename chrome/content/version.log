@@ -1,9 +1,14 @@
 
-Reminderfox [2.1.6.8] <'20191120_1225'>
-  as of: Wed 20 Nov 2019 12:25 +0000 (CET)
-reminderfox_2.1.6.8.xpi
+Reminderfox [2.1.6.9] <'20191205_2321'>
+  as of: Thu 05 Dec 2019 23:21 +0000 (CET)
+reminderfox_2.1.6.9.xpi
 
 
+
+2019-11-23
+  Fixed:
+  -- Event with CalDAV setting had no background color
+     change for selection
 
 2019-11-19
   Update for TB60.*

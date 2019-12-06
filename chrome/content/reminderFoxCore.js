@@ -15,7 +15,7 @@ if (!reminderfox.calDAV.accounts)   reminderfox.calDAV.accounts = {};  // calDAV
 // constants / prefs
 // see also: https://dxr.mozilla.org/comm-central/source/common/src/extensionSupport.jsm
 //
-reminderfox.consts.MIGRATED_PREF_VERSION                = "2.1.6.8";  // update also install.rdf and build.properties
+reminderfox.consts.MIGRATED_PREF_VERSION                = "2.1.6.9";  // update also install.rdf and build.properties
 
 reminderfox.consts.SUPPORT                              = "reminderfox@googlegroups.com";
 
@@ -125,7 +125,7 @@ reminderfox.consts.CALDAV_OPACITY = "calDAVcolorOpacity"; // INT
 reminderfox.consts.CALDAV_OPACITY_DEFAULT = 15;
 
 reminderfox.consts.CALDAV_OPACITY_SELECTED = "calDAVcolorOpacitySelected"; // INT
-reminderfox.consts.CALDAV_OPACITY_SELECTED_DEFAULT = 45;
+reminderfox.consts.CALDAV_OPACITY_SELECTED_DEFAULT = 85;
 
 reminderfox.consts.CALDAV_COLORS = "calDAVcolors";
 
@@ -984,7 +984,7 @@ reminderfox.core.listAllPrefs=function() {
 };
 
 reminderfox.core.loadDefaultPreferences= function() {
-    reminderfox.core.listAllPrefs();
+    // reminderfox.core.listAllPrefs();
 
     try {
         var oldVersionNumber = reminderfox.core.getPreferenceValue(reminderfox.consts.MIGRATED_PREF,"");
@@ -6486,7 +6486,7 @@ reminderfox.core.storeOrUpdate= function(lastEvent) {
     if (reminderfox.calendar.layout .status == -1) {  //	layout.status -1  is from FX/TB Main Menu icon all
 
         if (!topWindow) reminderfox.core.writeOutRemindersAndTodos(false);
-        if (topWindow) {
+        if (topWindow && (lastEvent != null)) {
             topWindow.reminderfox.calendar.ui.selectDay(lastEvent.date);
             topWindow.modifiedReminders();
         }

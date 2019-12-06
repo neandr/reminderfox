@@ -10,7 +10,6 @@ if (!reminderfox.date)    reminderfox.date = {};
 if (!reminderfox.util)    reminderfox.util = {};
 if (!reminderfox.calDAV)    reminderfox.calDAV = {};
 
-reminderfox.calDAV.colorMap = [];
 reminderfox.calDAV.pendingReminders = false;
 
 if(!reminderfox.msgnr) reminderfox.msgnr = {};
@@ -604,9 +603,7 @@ reminderfox.date.recurrenceString= function (reminder, currentDate) {
 
 
 // *****************************************************************************
-// ****************** Reminderfox Utilities    .util.    ***********************
-
-
+// ************ Reminderfox Utilities    reminderfox.util.    ******************
 /**
  * Remove an object2 from an object1 by name of object1
  * @param {object}  object1 .. the initial object
@@ -823,11 +820,13 @@ reminderfox.util.unEscapeHtml= function(s) {
  *  @return {object} the window
  */
 reminderfox.util.getWindow= function(getThisWindow){
+  return Services.wm.getMostRecentWindow(getThisWindow);
+/*---------
 	var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService();
 	var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
 	return windowManagerInterface.getMostRecentWindow(getThisWindow);
+------*/
 };
-
 
 /**
  *    Lunches a URL link
@@ -1159,6 +1158,7 @@ reminderfox.util.convertFromUnicode= function(aCharset, aSource){
 };
 
 
+/*---- ???? -----------------
 reminderfox.util.getIOService= function(){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	if (reminderfox.util.getIOService.mObject === undefined) {
@@ -1166,7 +1166,7 @@ reminderfox.util.getIOService= function(){
 	}
 	return reminderfox.util.getIOService.mObject;
 };
-
+--------- ??? ----*/
 
 /**
  * Check if fileName is a valid file, not a directory
@@ -1605,15 +1605,12 @@ try {
 /**
  *     Debugging support, prompts an Alert and writes it to console
  */
-reminderfox.util.PromptAlert= function(msgErr, noAlert){
+reminderfox.util.PromptAlert= function(msgErr){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
 		.getService(Ci.nsIPromptService);
 
 	promptService.alert(window, "ReminderFox Alert : \n\n", msgErr);
-	if (noAlert) {
-		console.error(msgErr);
-	}
 };
 
 
@@ -2108,8 +2105,8 @@ reminderfox.util.JS = {
 		var msg = ("ReminderFox   {dispatch: " + object + "=" + status + "}\n" + this.loggedAt);
 		consoleService.logStringMessage(msg);
 
-console.log("//gW ####  Dispatcher  #### \n", msg);
-console.trace();
+//console.log("//gW ####  Dispatcher  #### \n", msg);
+//console.trace();
 	},
 
 
@@ -2433,166 +2430,6 @@ reminderfox.aboutXPI= function () {
 			document.getElementById('logoText').setAttribute( "tooltiptext", msg);
 			sizeToContent();
 		}
-};
-
-
-
-/**
- * Get the file object for the colorMap
- * read it from ProfD/reminder/calDAVmap.css
- * if not exsist, copy a default definition from extDir
- * return {object}  calDAVmap.css
- */
-if (!reminderfox.colorMap)   reminderfox.colorMap = {};
-//------ reminderfox.calDAV.colorMap Handling -------------------------- begin
-
-
-reminderfox.colorMap.cssFileGet= function(){
-//-------------------------------------------------------------
-	var cssFile = reminderfox.util.ProfD_extend("reminderfox");
-	cssFile.append("preferences");
-	cssFile.append("calDAVmap.css");
-
-	if (cssFile.exists() === false) {
-		console.error("reminderfox.colorMap.cssFileGet::  Failed to find  'calDAVmap.css' ");
-		return null;
-	}
-	return cssFile;
-};
-
-
-/**
- * Read the calDAV account color map
- */
-reminderfox.colorMap.cssFileRead= function() {
-//-------------------------------------------------------------
-	var cssFile  = reminderfox.colorMap.cssFileGet();
-	if (cssFile == null) {
-		console.error("reminderfox.colorMap.cssFileRead::  Missing 'calDAV colorMap' file!");
-		return
-	}
-
-	var cssString = reminderfox.core.readInFileContents (cssFile);
-	var colorCode;
-	var pos = 0;
-	var num = 0;
-	reminderfox.calDAV.colorMap = [];
-	var saturation = reminderfox.core.getPreferenceValue(reminderfox.consts.CALDAV_SATURATION, reminderfox.consts.CALDAV_SATURATION_DEFAULT);
-	if (saturation < 5) saturation = 5;
-	var msg = "sat:" + saturation;
-
-	while (num != 999) {
-		pos = cssString.indexOf('caldav', pos + 6);
-		if (pos == -1) break;
-		num = +cssString.charAt(pos + 6);
-
-		//treechildren::-moz-tree-row(caldav0) {background-color:#F9AFFA !important;} /* HSL(299,30,98) */
-		var colorPos = cssString.indexOf('#',pos + 7) + 1;
-		var colorCode0 = cssString.substring(colorPos, colorPos + 6);
-
-		var HSL = reminderfox.colorUtil.getHsvByRgbCode(colorCode0);
-
-		if (!reminderfox.calDAV.colorMap[num]) {
-			reminderfox.calDAV.colorMap[num] = {};
-			colorCode = reminderfox.colorUtil.getRgbCodeByHsv(HSL.hue, saturation, 98 /*B*/);
-			reminderfox.calDAV.colorMap[num][0] = colorCode;
-		} else {
-			colorCode = reminderfox.colorUtil.getRgbCodeByHsv(HSL.hue, saturation, 40 /*B*/);
-			reminderfox.calDAV.colorMap[num][1] = colorCode;
-		}
-		msg += '\n' + num + ':' + colorCode0 + ',' + colorCode;
-	}
-
-	reminderfox.colorMap.cssFileWrite();
-};
-
-
-reminderfox.colorMap.cssFileWrite= function () {
-//-----------------------------------------------------
-	var out = '/*-- tree color selectors --*/\n';
-
-	var colorMapLength = reminderfox.calDAV.colorMap.length;
-
-	for (var n = 0; n < colorMapLength; n++) {
-		var colorCode = reminderfox.calDAV.colorMap[n][0];
-		var HSL = reminderfox.colorUtil.getHsvByRgbCode(colorCode);
-//treechildren::-moz-tree-row(caldav0) {background-color:#F4C8FA !important;} /* HSL(292,20,98) */
-		out += 'treechildren::-moz-tree-row(caldav' + n + ') {background-color:#';
-		out +=  colorCode + ' !important;}';
-		out += ' /* HSL(';
-		out +=       parseInt(HSL.hue, 10);
-		out += ',' + parseInt(HSL.saturation*100, 10);
-		out += ',' + parseInt(HSL.brightness*100, 10);
-		out += ') */\n';
-
-//treechildren::-moz-tree-row(caldav0, selected) {background-color:#635266 !important;}
-		out += 'treechildren::-moz-tree-row(caldav' + n + ', selected) {background-color:#';
-		out +=  reminderfox.calDAV.colorMap[n][1] + ' !important;}\n';
-	}
-
-// add the "spectrum" bar definition,
-//   saturation is set with prefs, brightness is fixed = 98
-	out +=  '\n#rmFx-calDAV-color-selector-hue {';
-	out +=  '\nwidth:256px; height: 20px;';
-	out +=  '\nbackground-image: -moz-linear-gradient(left center,';
-
-	out +=  '#' + hsl(0)   + ' 1%,';     //'#ff0000 1%,'
-	out +=  '#' + hsl(328) + ' 8%,';     //'#ff0088 8%,'
-	out +=  '#' + hsl(300) + ' 16%,';     //'#ff00ff 16%,'
-	out +=  '#' + hsl(272) + ' 24%,';     //'#8800ff 24%,'
-	out +=  '#' + hsl(240) + ' 32%,';     //'#0000ff 32%,'
-	out +=  '#' + hsl(208) + ' 40%,';     //'#0088ff 40%,'
-	out +=  '#' + hsl(180) + ' 48%,';     //'#00ffff 48%,'
-	out +=  '#' + hsl(152) + ' 56%,';     //'#00ff88 56%,'
-	out +=  '#' + hsl(120) + ' 64%,';     //'#00ff00 64%,'
-	out +=  '#' + hsl(88)  + ' 72%,';     //'#88ff00 72%,'
-	out +=  '#' + hsl(60)  + ' 80%,';     //'#ffff00 80%,'
-	out +=  '#' + hsl(32)  + ' 88%,';     //'#ff8800 88%,'
-	out +=  '#' + hsl(0)   + ' 99%';     //'#ff0000 99%'
-	out +=  ');\n}\n';
-
-// add some links for CSS supporting
-	out +=  '\n/* http://indeziner.com/design/css/how-to-create-a-color-spectrum-with-css3-gradients/ */';
-	out +=  '\n/* http://www.colorpicker.com */';
-	out +=  '\ncolorpicker {color: #626262;}';
-
-	var cssFile = reminderfox.colorMap.cssFileGet();
-	if (cssFile == null) {
-		console.error("reminderfox.colorMap.cssFileWrite::  Missing 'calDAV colorMap' file!")
-		return
-	}
-	reminderfox.util.makeFile8(out, cssFile.path)
-
-		function hsl(colorHue) {
-			var saturation = reminderfox.core.getPreferenceValue(reminderfox.consts.CALDAV_SATURATION, reminderfox.consts.CALDAV_SATURATION_DEFAULT);
-			return reminderfox.colorUtil.getRgbCodeByHsv(colorHue, saturation, 98 /*B*/);
-		}
-};
-
-
-/*
-* load calDAVcolorMap and set the CSS file to respect prefs saturation  --------
-*/
-reminderfox.colorMap.setup= function () {
-//-----------------------------------------------------
-	reminderfox.colorMap.cssFileRead();
-
-	var cssFile  = reminderfox.colorMap.cssFileGet();
-	if (cssFile == null) {
-		console.error("reminderfox.colorMap.setup::  Missing 'calDAV cssMap' file!")
-		return
-	}
-
-	var sss = Cc["@mozilla.org/content/style-sheet-service;1"]
-						.getService(Ci.nsIStyleSheetService);
-	var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
-
-	var uri = ios.newURI("file:" + cssFile.path, null, null);
-	try {
-		sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
-	} catch (ex) {
-		Cu.reportError(ex);
-	}
 };
 
 
@@ -3027,21 +2864,9 @@ function reminderfox_isReminderTabSelected(){
 	return isReminder;
 }
 
-/*60+
-reminderfox.util.layoutStatus= function () {
-//-----------------------------------------
-	var status = -1;
-	var mainDialog  = reminderfox.util.getWindow("window:reminderFoxEdit");
-	if (mainDialog) {
-		mainDialog.focus();
-		status = +mainDialog.reminderfox.calendar.layout.status;
-	}
-	return status;
-};
-------------*/
 
 /*
- * Open a panel with a picture with hovering over a image/thumb picture.
+* Open a panel with a picture with hovering over a image/thumb picture.
  * The image DOM definition 'tooltipText' and 'src' are used for title and real picture name.
  * 'src' for the thumb picture has '.thumb.' in the name, for the real picture name that is stripped off.
  * example:
