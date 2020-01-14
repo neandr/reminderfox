@@ -25,12 +25,12 @@
     }
 
     .intro {
-      background-color: #F1F1F1;
+      background-color: #EECCA0;
       margin-bottom: 10px;
     }
 
     .intro:hover {
-      background-color: azure;
+      background-color: #EECBAF;
       cursor: pointer;
     }
 
