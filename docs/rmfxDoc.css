@@ -1,0 +1,44 @@
+  <style>
+    body {
+      /* margin-right: 30%; */
+      padding-left: 2%;
+      font-family:
+        /*Verdana,*/
+        Arial, sans-serif;
+    }
+
+    p {
+      display: block;
+      margin: 0 0 0 20px;
+      padding: 0 0 0 0;
+      border-left: none;
+      font-style: normal;
+      line-height: 1.5em;
+    }
+
+    img {
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+
+    a {
+      color: blue;
+    }
+
+    .intro {
+      background-color: #F1F1F1;
+      margin-bottom: 10px;
+    }
+
+    .intro:hover {
+      background-color: azure;
+      cursor: pointer;
+    }
+
+    .home {
+      text-align: end;
+      margin-top: -50px;
+      margin-right: 15px;
+      color:#F1F1F1;
+    }
+  </style>
